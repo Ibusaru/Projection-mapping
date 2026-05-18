@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projection Mapping System</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 { margin-top: 0; font-size: 1.8rem; }
+        p { margin-bottom: 25px; color: #666; }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            box-sizing: border-box;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn-projector { background: #1a1a1a; }
+        .btn-controller { background: #007bff; }
+        .btn-qr { background: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Projection FX</h1>
+        <p>メニューを選択してください</p>
+        <a href="/projector.html" class="btn btn-projector">プロジェクター画面を開く (本番用)</a>
+        <a href="/controller.html" class="btn btn-controller">スマホ用コントローラーを開く</a>
+        <a href="/qrcode.html" class="btn btn-qr">アクセス用QRコードを表示</a>
+    </div>
+</body>
+</html>
