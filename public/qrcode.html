@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code Generator</title>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background: #f0f2f5;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        #qrcode { 
+            margin: 30px auto; 
+            width: 256px; 
+            height: 256px; 
+        }
+        button { 
+            padding: 12px 24px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        #url-display {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+        @media print {
+            body { background: white; }
+            button { display: none; }
+            .container { box-shadow: none; }
+        }
+    </style>
+    <!-- qrcode.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>コントローラー アクセス用QR</h1>
+        <p>スマートフォンで以下のQRコードを読み取ってください。</p>
+        <div id="qrcode"></div>
+        <p id="url-display"></p>
+        <button onclick="window.print()">PDFとして保存 / 印刷</button>
+    </div>
+
+    <script>
+        // Get the current URL and change path to controller.html
+        const controllerUrl = window.location.origin + '/controller.html';
+        document.getElementById('url-display').textContent = controllerUrl;
+        
+        // Generate QR Code
+        new QRCode(document.getElementById("qrcode"), {
+            text: controllerUrl,
+            width: 256,
+            height: 256,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    </script>
+</body>
+</html>
