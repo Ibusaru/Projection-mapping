@@ -1,5 +1,5 @@
-const ws = new WebSocket(`ws://${location.host}`);
-const statusDot = document.getElementById('status-dot');
+const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+const ws = new WebSocket(`${protocol}//${location.host}`);
 const statusText = document.getElementById('status-text');
 
 let currentState = {
