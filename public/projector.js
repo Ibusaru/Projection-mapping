@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const ws = new WebSocket(`ws://${location.host}`);
+const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+const ws = new WebSocket(`${protocol}//${location.host}`);
 const statusEl = document.getElementById('status');
 
 ws.onopen = () => {
