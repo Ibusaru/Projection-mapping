@@ -2,10 +2,24 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
+
+// API: モデルファイルの一覧を取得
+app.get('/api/models', (req, res) => {
+    const modelsDir = path.join(__dirname, 'public', 'models');
+    if (!fs.existsSync(modelsDir)) {
+        return res.json([]);
+    }
+    fs.readdir(modelsDir, (err, files) => {
+        if (err) return res.status(500).json({ error: 'Failed to read directory' });
+        const glbFiles = files.filter(f => f.endsWith('.glb') || f.endsWith('.gltf'));
+        res.json(glbFiles);
+    });
+});
 
 // 静的ファイルの提供 (publicディレクトリ)
 app.use(express.static(path.join(__dirname, 'public')));

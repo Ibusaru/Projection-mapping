@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const gltfLoader = new GLTFLoader();
 
 const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
 const ws = new WebSocket(`${protocol}//${location.host}`);
@@ -20,8 +23,8 @@ ws.onclose = () => {
 
 // --- Three.js Scene Setup ---
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050505);
-scene.fog = new THREE.FogExp2(0x050505, 0.02);
+scene.background = new THREE.Color(0x000000); // プロジェクションマッピング用に完全な黒
+scene.fog = new THREE.FogExp2(0x000000, 0.02);
 
 // Camera
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -43,17 +46,14 @@ controls.enableDamping = true;
 controls.target.set(0, 1, 0);
 
 // --- Environment & Lighting ---
-// Grid
+// Grid (基準面として残す)
 const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
 scene.add(gridHelper);
 
 // Floor
 const floorGeometry = new THREE.PlaneGeometry(50, 50);
-const floorMaterial = new THREE.MeshStandardMaterial({ 
-    color: 0x111111,
-    roughness: 0.8,
-    metalness: 0.2
-});
+// 影だけを受け取り、それ自体は透明（黒）になるマテリアルを使用
+const floorMaterial = new THREE.ShadowMaterial({ opacity: 0.5 });
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.rotation.x = -Math.PI / 2;
 floor.position.y = -0.01; // slightly below grid
@@ -71,6 +71,7 @@ pointLight.position.set(0, 4, 2);
 pointLight.castShadow = true;
 pointLight.shadow.mapSize.width = 1024;
 pointLight.shadow.mapSize.height = 1024;
+pointLight.shadow.bias = -0.002; // 追加: 四角い謎の影（シャドウアクネ）を防止
 scene.add(pointLight);
 
 // Visual representation of the light (Glowing orb)
@@ -107,29 +108,91 @@ function applyEffectState(state) {
     pointLight.intensity = 100 * (state.intensity + 0.5); // scale light intensity
 
     spawnedObjects.forEach(obj => {
-        const mat = obj.mesh.material;
-        mat.color = color;
-        mat.emissive = color;
-        mat.emissiveIntensity = state.intensity;
-        
-        if (state.effectId === 'fire') {
-            mat.wireframe = true;
-            mat.transparent = false;
-        } else if (state.effectId === 'water') {
-            mat.wireframe = false;
-            mat.transparent = true;
-            mat.opacity = 0.7;
-        } else if (state.effectId === 'lightning') {
-            mat.wireframe = true;
-            mat.emissiveIntensity = state.intensity * 2.5; // Brighter
-        } else if (state.effectId === 'magic') {
-            mat.wireframe = false;
-            mat.transparent = false;
-        }
+        if (obj.isGltf) return; // GLTFモデルは色エフェクトを無視（Blenderの色を維持）
+
+        obj.mesh.traverse((child) => {
+            if (child.isMesh) {
+                const mat = child.material;
+                mat.color = color;
+                mat.emissive = color;
+                mat.emissiveIntensity = state.intensity;
+                
+                if (state.effectId === 'fire') {
+                    mat.wireframe = true;
+                    mat.transparent = false;
+                } else if (state.effectId === 'water') {
+                    mat.wireframe = false;
+                    mat.transparent = true;
+                    mat.opacity = 0.7;
+                } else if (state.effectId === 'lightning') {
+                    mat.wireframe = true;
+                    mat.emissiveIntensity = state.intensity * 2.5; // Brighter
+                } else if (state.effectId === 'magic') {
+                    mat.wireframe = false;
+                    mat.transparent = false;
+                }
+            }
+        });
     });
 }
 
-function spawnObject(shapeType) {
+function spawnObject(shapeType, url = null) {
+    if (shapeType === 'gltf' && url) {
+        gltfLoader.load(
+            url,
+            (gltf) => {
+                const model = gltf.scene;
+                let mixer = null;
+                
+                // Blender等で作ったアニメーションが含まれている場合の処理
+                if (gltf.animations && gltf.animations.length > 0) {
+                    mixer = new THREE.AnimationMixer(model);
+                    gltf.animations.forEach((clip) => {
+                        mixer.clipAction(clip).play(); // アニメーションをセット
+                    });
+                }
+                
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        // Blenderの元のマテリアルを維持するため createMaterial は適用しない
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                });
+
+                // Randomize initial position slightly
+                model.position.set(
+                    (Math.random() - 0.5) * 6,
+                    1 + Math.random() * 2,
+                    (Math.random() - 0.5) * 6
+                );
+                
+                // Blenderのモデルは回転させずに初期状態を維持する
+                model.rotation.set(0, 0, 0);
+
+                scene.add(model);
+                spawnedObjects.push({
+                    mesh: model,
+                    mixer: mixer, // 追加: アニメーションミキサー
+                    isGltf: true, // 追加: GLTFモデルであることを識別
+                    rotationSpeed: {
+                        x: 0, // 回転させない
+                        y: 0,
+                        z: 0
+                    },
+                    floatSpeed: 0.02 + Math.random() * 0.03,
+                    floatOffset: Math.random() * Math.PI * 2,
+                    baseY: model.position.y
+                });
+            },
+            undefined,
+            (error) => {
+                console.error('モデルの読み込みに失敗しました:', error);
+            }
+        );
+        return;
+    }
+
     let geometry;
     switch(shapeType) {
         case 'cube': geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5); break;
@@ -170,8 +233,18 @@ function spawnObject(shapeType) {
 function clearObjects() {
     spawnedObjects.forEach(obj => {
         scene.remove(obj.mesh);
-        obj.mesh.geometry.dispose();
-        obj.mesh.material.dispose();
+        obj.mesh.traverse((child) => {
+            if (child.isMesh) {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(m => m.dispose());
+                    } else {
+                        child.material.dispose();
+                    }
+                }
+            }
+        });
     });
     spawnedObjects = [];
 }
@@ -199,7 +272,11 @@ ws.onmessage = (event) => {
             spawnObject('torus');
             applyEffectState({ effectId: 'fire', color: '#ff4400', intensity: 0.8 });
         } else if (data.type === 'spawn_object') {
-            spawnObject(data.payload.shape);
+            if (data.payload.shape === 'gltf') {
+                spawnObject('gltf', data.payload.url);
+            } else {
+                spawnObject(data.payload.shape);
+            }
         } else if (data.type === 'clear_objects') {
             clearObjects();
         }
@@ -233,6 +310,11 @@ function animate() {
 
         // Animate objects
         spawnedObjects.forEach(obj => {
+            // もしBlenderのアニメーションがあれば再生を進める
+            if (obj.mixer) {
+                obj.mixer.update(delta);
+            }
+
             obj.mesh.rotation.x += obj.rotationSpeed.x;
             obj.mesh.rotation.y += obj.rotationSpeed.y;
             obj.mesh.rotation.z += obj.rotationSpeed.z;
@@ -240,10 +322,9 @@ function animate() {
             // Floating effect
             obj.mesh.position.y = obj.baseY + Math.sin(time * 3 * obj.floatSpeed + obj.floatOffset) * 0.5;
 
-            // Pulse effect based on emissive intensity
-            if (obj.mesh.material.emissiveIntensity !== undefined) {
-                const currentIntensity = obj.mesh.material.emissiveIntensity;
-                const scale = 1 + Math.sin(time * 5 + obj.floatOffset) * 0.05 * currentIntensity;
+            // Pulse effect based on emissive intensity (Blenderモデル以外のみ適用)
+            if (!obj.isGltf) {
+                const scale = 1 + Math.sin(time * 5 + obj.floatOffset) * 0.05 * currentEffectState.intensity;
                 obj.mesh.scale.setScalar(scale);
             }
         });
