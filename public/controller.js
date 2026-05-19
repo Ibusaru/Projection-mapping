@@ -44,9 +44,24 @@ function spawnObject(shapeType) {
     }
 }
 
+function spawnCustomModel() {
+    const filename = document.getElementById('model-filename').value.trim();
+    if (!filename) {
+        alert('モデルを選択してください');
+        return;
+    }
+    if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({
+            type: 'spawn_object',
+            payload: { shape: 'gltf', url: `models/${filename}` }
+        }));
+    }
+}
+
 // Attach functions to window for HTML onclick
 window.spawnObject = spawnObject;
 window.sendAction = sendAction;
+window.spawnCustomModel = spawnCustomModel;
 
 // Effect Buttons
 document.querySelectorAll('#effect-buttons button').forEach(btn => {
@@ -98,3 +113,27 @@ function closeQrModal() {
     qrModal.style.display = 'none';
 }
 window.closeQrModal = closeQrModal;
+
+// Fetch and load 3D models into select
+async function loadModelList() {
+    try {
+        const response = await fetch('/api/models');
+        const models = await response.json();
+        const select = document.getElementById('model-filename');
+        select.innerHTML = '<option value="">-- モデルを選択 --</option>';
+        models.forEach(model => {
+            const option = document.createElement('option');
+            option.value = model;
+            option.textContent = model;
+            select.appendChild(option);
+        });
+        if (models.length === 0) {
+            select.innerHTML = '<option value="">モデルが見つかりません</option>';
+        }
+    } catch (err) {
+        console.error('Failed to load models list', err);
+        const select = document.getElementById('model-filename');
+        select.innerHTML = '<option value="">モデル一覧の取得に失敗</option>';
+    }
+}
+loadModelList();

@@ -216,6 +216,12 @@
             <button onclick="spawnObject('sphere')">Sphere</button>
             <button onclick="spawnObject('torus')">Torus</button>
         </div>
+        <div style="margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+            <select id="model-filename" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); color: #333; font-family: inherit; font-size: 1rem; font-weight: bold; appearance: auto; outline: none;">
+                <option value="">モデル読込中...</option>
+            </select>
+            <button onclick="spawnCustomModel()" style="width: 100%; min-height: 44px; margin-bottom: 0;">3Dモデル読込</button>
+        </div>
         <button class="danger" style="width: 100%;" onclick="sendAction('clear_objects')">すべて削除</button>
     </div>
 
