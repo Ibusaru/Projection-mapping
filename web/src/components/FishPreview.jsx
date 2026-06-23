@@ -1,3 +1,4 @@
+import React from "react";
 import { speciesOptions } from "../config/fishOptions";
 
 function Pattern({ pattern, subColor }) {

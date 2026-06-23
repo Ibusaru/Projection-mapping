@@ -1,3 +1,4 @@
+import React from "react";
 export function SegmentedControl({ label, options, value, onChange }) {
   return (
     <section className="field-block">
