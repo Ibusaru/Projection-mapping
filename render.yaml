@@ -1,0 +1,14 @@
+services:
+  - type: static_site
+    name: ocean-release-web
+    rootDir: web
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: true
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_PUBLIC_APP_URL
+        sync: false
