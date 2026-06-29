@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class FishActor : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class FishActor : MonoBehaviour
     [Header("Visual")]
     [SerializeField] private Renderer[] colorRenderers;
     [SerializeField] private Renderer[] subColorRenderers;
+    [SerializeField] private Renderer[] textureRenderers;
     [SerializeField] private Transform modelRoot;
     [SerializeField] private TMP_Text nicknameLabel;
     [SerializeField] private bool createNicknameLabelWhenMissing = true;
@@ -91,11 +94,16 @@ public class FishActor : MonoBehaviour
     private float curiousLookUntil;
     private string species = "original";
     private string personality = "calm";
+    private string appliedTextureUrl = "";
     private Camera mainCamera;
     private bool releasedFish;
     private bool isSchoolingMode;
+    private float initialBaseSpeed;
+    private float initialSchoolModeChance;
+    private Coroutine textureCoroutine;
 
     public float SpawnTime { get; private set; }
+    public string Nickname { get; private set; } = "";
     public bool IsReleasedFish => releasedFish;
     public float CameraFocusRadius => EstimateFocusRadius();
     public static IReadOnlyList<FishActor> AllActiveFishes => ActiveFishes;
@@ -104,6 +112,8 @@ public class FishActor : MonoBehaviour
     {
         mainCamera = Camera.main;
         SpawnTime = Time.time;
+        initialBaseSpeed = baseSpeed;
+        initialSchoolModeChance = schoolModeChance;
         schoolingNoiseSeed = Random.Range(0f, 1000f);
         AutoWireVisuals();
         PickSchoolSlot();
@@ -152,9 +162,11 @@ public class FishActor : MonoBehaviour
     {
         species = string.IsNullOrWhiteSpace(data.species) ? "original" : data.species;
         personality = string.IsNullOrWhiteSpace(data.personality) ? "calm" : data.personality;
+        Nickname = SanitizeNickname(data.nickname);
 
         ApplyColor(colorRenderers, ParseColor(data.main_color, Color.cyan));
         ApplyColor(subColorRenderers, ParseColor(data.sub_color, Color.white));
+        ApplyRemoteTexture(data.texture_url);
 
         if (modelRoot != null)
         {
@@ -163,12 +175,12 @@ public class FishActor : MonoBehaviour
 
         if (nicknameLabel != null)
         {
-            nicknameLabel.text = SanitizeNickname(data.nickname);
+            nicknameLabel.text = Nickname;
             nicknameLabel.gameObject.SetActive(false);
         }
 
-        baseSpeed *= PersonalitySpeedMultiplier(personality);
-        schoolModeChance = Mathf.Clamp01(schoolModeChance * PersonalitySchoolingMultiplier(personality));
+        baseSpeed = initialBaseSpeed * PersonalitySpeedMultiplier(personality);
+        schoolModeChance = Mathf.Clamp01(initialSchoolModeChance * PersonalitySchoolingMultiplier(personality));
     }
 
     private void Update()
@@ -578,6 +590,11 @@ public class FishActor : MonoBehaviour
         {
             colorRenderers = GetComponentsInChildren<Renderer>(true);
         }
+
+        if (textureRenderers == null || textureRenderers.Length == 0)
+        {
+            textureRenderers = colorRenderers;
+        }
     }
 
     private void EnsureNicknameLabel()
@@ -661,6 +678,57 @@ public class FishActor : MonoBehaviour
             {
                 item.material.color = color;
             }
+        }
+    }
+
+    private void ApplyRemoteTexture(string textureUrl)
+    {
+        if (string.IsNullOrWhiteSpace(textureUrl) || textureUrl == appliedTextureUrl)
+        {
+            return;
+        }
+
+        if (textureCoroutine != null)
+        {
+            StopCoroutine(textureCoroutine);
+        }
+
+        textureCoroutine = StartCoroutine(DownloadAndApplyTexture(textureUrl));
+    }
+
+    private IEnumerator DownloadAndApplyTexture(string textureUrl)
+    {
+        using UnityWebRequest request = UnityWebRequestTexture.GetTexture(textureUrl);
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogWarning($"FishActor: texture download failed for '{Nickname}': {request.error}");
+            textureCoroutine = null;
+            yield break;
+        }
+
+        Texture2D texture = DownloadHandlerTexture.GetContent(request);
+        ApplyTexture(textureRenderers, texture);
+        appliedTextureUrl = textureUrl;
+        textureCoroutine = null;
+    }
+
+    private static void ApplyTexture(Renderer[] renderers, Texture2D texture)
+    {
+        if (renderers == null || texture == null)
+        {
+            return;
+        }
+
+        foreach (Renderer item in renderers)
+        {
+            if (item == null)
+            {
+                continue;
+            }
+
+            item.material.mainTexture = texture;
         }
     }
 

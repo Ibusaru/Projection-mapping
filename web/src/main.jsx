@@ -1,21 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { createClient } from "@supabase/supabase-js";
-import { Check, Fish, QrCode, Send, Sparkles, Waves } from "lucide-react";
-import { FishPreview } from "./components/FishPreview";
-import { ColorGrid, SegmentedControl } from "./components/FormControls";
+import { Check, Fish, QrCode, RotateCcw, Send, Waves } from "lucide-react";
+import { DrawingCanvas } from "./components/DrawingCanvas";
 import { QrPanel } from "./components/QrPanel";
-import {
-  blockedWords,
-  colorOptions,
-  patternOptions,
-  personalityOptions,
-  sizeOptions,
-  speciesOptions,
-  subColorOptions,
-} from "./config/fishOptions";
+import { blockedWords, brushColors, brushSizes, defaultFishPayload } from "./config/fishOptions";
 import "./styles.css";
 
+const storageBucket = "fish-drawings";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase =
@@ -25,6 +17,13 @@ function normalizeNickname(value) {
   return value.replace(/\s+/g, "").trim();
 }
 
+function sanitizePathPart(value) {
+  return encodeURIComponent(value)
+    .replace(/%/g, "")
+    .replace(/[^a-zA-Z0-9_-]/g, "")
+    .slice(0, 48);
+}
+
 function validateNickname(value) {
   const nickname = normalizeNickname(value);
   if (nickname.length < 1) return "ニックネームを入力してね";
@@ -32,79 +31,134 @@ function validateNickname(value) {
   if (/[\r\n]/.test(value)) return "改行は使えません";
   if (/[<>]/.test(value)) return "使えない記号があります";
   if (/^[\p{P}\p{S}]+$/u.test(nickname)) return "文字を1つ以上入れてね";
+
   const lower = nickname.toLowerCase();
   if (blockedWords.some((word) => lower.includes(word.toLowerCase()))) {
     return "別のニックネームにしてね";
   }
+
   return "";
 }
 
+async function uploadFishDrawing({ nickname, blob }) {
+  if (!supabase) {
+    const localFish = JSON.parse(localStorage.getItem("local_fishes") ?? "[]");
+    const publicUrl = URL.createObjectURL(blob);
+    const nextFish = {
+      ...defaultFishPayload,
+      id: crypto.randomUUID(),
+      nickname,
+      texture_path: `local/${sanitizePathPart(nickname)}.png`,
+      texture_url: publicUrl,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    const withoutOld = localFish.filter((fish) => fish.nickname !== nickname);
+    localStorage.setItem("local_fishes", JSON.stringify([...withoutOld, nextFish]));
+    return;
+  }
+
+  const { data: previousFish, error: selectError } = await supabase
+    .from("fishes")
+    .select("id, texture_path")
+    .eq("nickname", nickname)
+    .maybeSingle();
+
+  if (selectError) throw selectError;
+
+  const safeName = sanitizePathPart(nickname) || crypto.randomUUID();
+  const timestamp = Date.now();
+  const texturePath = `${safeName}/${timestamp}.png`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(storageBucket)
+    .upload(texturePath, blob, {
+      cacheControl: "60",
+      contentType: "image/png",
+      upsert: false,
+    });
+
+  if (uploadError) throw uploadError;
+
+  const { data: publicData } = supabase.storage.from(storageBucket).getPublicUrl(texturePath);
+  const textureUrl = publicData.publicUrl;
+  const now = new Date().toISOString();
+
+  const payload = {
+    ...defaultFishPayload,
+    nickname,
+    texture_path: texturePath,
+    texture_url: textureUrl,
+    updated_at: now,
+  };
+
+  const { error: upsertError } = await supabase
+    .from("fishes")
+    .upsert(payload, { onConflict: "nickname" });
+
+  if (upsertError) throw upsertError;
+
+  if (previousFish?.texture_path && previousFish.texture_path !== texturePath) {
+    const { error: removeError } = await supabase.storage
+      .from(storageBucket)
+      .remove([previousFish.texture_path]);
+
+    if (removeError) {
+      console.warn("古い画像の削除に失敗しました", removeError);
+    }
+  }
+}
+
 function App() {
+  const drawingRef = useRef(null);
   const [nickname, setNickname] = useState("");
-  const [species, setSpecies] = useState("clownfish");
-  const [mainColor, setMainColor] = useState("#ff6b4a");
-  const [subColor, setSubColor] = useState("#ffffff");
-  const [pattern, setPattern] = useState("stripe");
-  const [size, setSize] = useState("medium");
-  const [personality, setPersonality] = useState("schooling");
+  const [brushColor, setBrushColor] = useState(brushColors[0].value);
+  const [brushSize, setBrushSize] = useState(brushSizes[1].value);
+  const [tool, setTool] = useState("brush");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
   const [isQrOpen, setIsQrOpen] = useState(false);
 
   const nicknameError = useMemo(() => validateNickname(nickname), [nickname]);
-  const selectedSpecies = speciesOptions.find((item) => item.id === species);
   const canSubmit = !nicknameError && status !== "sending";
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const error = validateNickname(nickname);
+    const normalized = normalizeNickname(nickname);
+    const error = validateNickname(normalized);
     if (error) {
-      setMessage(error);
       setStatus("error");
+      setMessage(error);
       return;
     }
 
-    const payload = {
-      nickname: normalizeNickname(nickname),
-      species,
-      main_color: mainColor,
-      sub_color: subColor,
-      pattern,
-      size,
-      personality,
-    };
-
     setStatus("sending");
-    setMessage("海へ向かっています...");
+    setMessage("海へ送っています...");
 
     try {
-      if (!supabase) {
-        const localFish = JSON.parse(localStorage.getItem("local_fishes") ?? "[]");
-        localFish.push({ ...payload, id: crypto.randomUUID(), created_at: new Date().toISOString() });
-        localStorage.setItem("local_fishes", JSON.stringify(localFish));
-      } else {
-        const { error: insertError } = await supabase.from("fishes").insert(payload);
-        if (insertError) throw insertError;
-      }
+      const blob = await drawingRef.current.exportPngBlob();
+      if (!blob) throw new Error("PNGを書き出せませんでした");
+
+      await uploadFishDrawing({ nickname: normalized, blob });
 
       setStatus("success");
-      setMessage("放流しました。少し待つと大きな海に現れます。");
+      setMessage("送信しました。同じ名前の魚がいれば新しい絵に更新されます。");
     } catch (submitError) {
       setStatus("error");
-      setMessage("放流に失敗しました。近くのスタッフに知らせてください。");
+      setMessage("送信に失敗しました。Supabase設定か通信を確認してください。");
       console.error(submitError);
     }
   }
 
   return (
     <main className="app-shell">
-      <section className="hero">
+      <header className="topbar">
         <div>
           <p className="kicker">
-            <Waves size={18} />
+            <Waves size={17} />
             みんなでつくる海
           </p>
-          <h1>魚をつくって海へ放流</h1>
+          <h1>魚に模様を描く</h1>
         </div>
         <button
           aria-expanded={isQrOpen}
@@ -116,18 +170,18 @@ function App() {
           <QrCode size={18} />
           QR
         </button>
-      </section>
+      </header>
 
       <form className="composer" onSubmit={handleSubmit}>
-        <FishPreview
-          mainColor={mainColor}
-          pattern={pattern}
-          size={size}
-          species={species}
-          subColor={subColor}
+        <DrawingCanvas
+          brushColor={brushColor}
+          brushSize={brushSize}
+          onToolChange={setTool}
+          ref={drawingRef}
+          tool={tool}
         />
 
-        <section className="field-block">
+        <section className="panel name-panel">
           <label htmlFor="nickname">
             <Fish size={18} />
             ニックネーム
@@ -141,41 +195,51 @@ function App() {
             value={nickname}
           />
           <p className={nicknameError ? "hint error" : "hint"}>
-            {nicknameError || "近づいたときだけ海の中で表示されます"}
+            {nicknameError || "同じ名前で送ると、前の魚の画像を新しい絵に更新します。"}
           </p>
         </section>
 
-        <section className="field-block">
-          <h2>魚の種類</h2>
-          <div className="species-list">
-            {speciesOptions.map((option) => (
+        <section className="panel tools-panel" aria-label="色と太さ">
+          <div className="swatches">
+            {brushColors.map((color) => (
               <button
-                className={species === option.id ? "selected" : ""}
-                key={option.id}
-                onClick={() => setSpecies(option.id)}
+                aria-label={color.name}
+                className={brushColor === color.value && tool === "brush" ? "swatch selected" : "swatch"}
+                key={color.value}
+                onClick={() => {
+                  setBrushColor(color.value);
+                  setTool("brush");
+                }}
+                style={{ "--swatch": color.value }}
+                title={color.name}
+                type="button"
+              />
+            ))}
+          </div>
+
+          <div className="size-picker">
+            {brushSizes.map((size) => (
+              <button
+                className={brushSize === size.value ? "size-button selected" : "size-button"}
+                key={size.value}
+                onClick={() => setBrushSize(size.value)}
                 type="button"
               >
-                <span>{option.label}</span>
-                <small>{option.description}</small>
+                {size.label}
               </button>
             ))}
           </div>
+
+          <button
+            aria-label="全部消す"
+            className="icon-button"
+            onClick={() => drawingRef.current.clear()}
+            title="全部消す"
+            type="button"
+          >
+            <RotateCcw size={19} />
+          </button>
         </section>
-
-        <ColorGrid label="メインカラー" onChange={setMainColor} options={colorOptions} value={mainColor} />
-        <ColorGrid label="サブカラー" onChange={setSubColor} options={subColorOptions} value={subColor} />
-
-        <SegmentedControl label="模様" onChange={setPattern} options={patternOptions} value={pattern} />
-        <SegmentedControl label="サイズ" onChange={setSize} options={sizeOptions} value={size} />
-        <SegmentedControl label="性格" onChange={setPersonality} options={personalityOptions} value={personality} />
-
-        <div className="summary">
-          <Sparkles size={18} />
-          <span>
-            {selectedSpecies?.label} / {patternOptions.find((item) => item.id === pattern)?.label} /{" "}
-            {personalityOptions.find((item) => item.id === personality)?.label}
-          </span>
-        </div>
 
         {message ? (
           <p className={`status ${status}`}>
@@ -186,7 +250,7 @@ function App() {
 
         <button className="release-button" disabled={!canSubmit} type="submit">
           <Send size={20} />
-          {status === "sending" ? "放流中..." : "海へ放流"}
+          {status === "sending" ? "送信中..." : "海へ送る"}
         </button>
       </form>
 

@@ -28,19 +28,15 @@ export function QrPanel({ onClose }) {
           margin: 1,
           scale: 8,
           color: {
-            dark: "#06222f",
-            light: "#f7fffe",
+            dark: "#12343a",
+            light: "#fbfffc",
           },
         });
 
-        if (active) {
-          setQrCodeDataUrl(dataUrl);
-        }
+        if (active) setQrCodeDataUrl(dataUrl);
       } catch (error) {
         console.error(error);
-        if (active) {
-          setQrCodeDataUrl("");
-        }
+        if (active) setQrCodeDataUrl("");
       }
     }
 
@@ -53,10 +49,10 @@ export function QrPanel({ onClose }) {
 
   return (
     <div aria-modal="true" className="qr-modal" onClick={onClose} role="dialog">
-      <section className="field-block qr-panel" onClick={(event) => event.stopPropagation()}>
+      <section className="panel qr-panel" onClick={(event) => event.stopPropagation()}>
         <div className="qr-modal-header">
           <h2>QRコード</h2>
-          <button aria-label="閉じる" className="qr-close" onClick={onClose} type="button">
+          <button aria-label="閉じる" className="icon-button" onClick={onClose} type="button">
             <X size={18} />
           </button>
         </div>

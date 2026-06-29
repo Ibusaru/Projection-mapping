@@ -11,7 +11,10 @@ public class FishData
     public string pattern;
     public string size;
     public string personality;
+    public string texture_path;
+    public string texture_url;
     public string created_at;
+    public string updated_at;
 }
 
 [Serializable]

@@ -14,7 +14,7 @@ public class FishApiClient : MonoBehaviour
     [SerializeField] private float pollingSeconds = 8f;
     [SerializeField] private int fetchLimit = 30;
 
-    private readonly HashSet<string> seenFishIds = new HashSet<string>();
+    private readonly Dictionary<string, string> seenFishVersions = new Dictionary<string, string>();
 
     public event Action<IReadOnlyList<FishData>> OnNewFishes;
 
@@ -42,7 +42,7 @@ public class FishApiClient : MonoBehaviour
     {
         string baseUrl = supabaseUrl.TrimEnd('/');
         string url =
-            $"{baseUrl}/rest/v1/fishes?select=*&order=created_at.desc&limit={fetchLimit}";
+            $"{baseUrl}/rest/v1/fishes?select=*&order=updated_at.desc&limit={fetchLimit}";
 
         using UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("apikey", supabaseAnonKey);
@@ -52,7 +52,7 @@ public class FishApiClient : MonoBehaviour
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogWarning($"FishApiClient: fetch failed: {request.error}");
+            Debug.LogWarning($"FishApiClient: fetch failed: {request.error} ({request.responseCode})");
             yield break;
         }
 
@@ -74,14 +74,18 @@ public class FishApiClient : MonoBehaviour
                 continue;
             }
 
-            if (seenFishIds.Add(fish.id))
+            string fishKey = !string.IsNullOrWhiteSpace(fish.nickname) ? fish.nickname : fish.id;
+            string version = !string.IsNullOrWhiteSpace(fish.updated_at) ? fish.updated_at : fish.created_at;
+            if (!seenFishVersions.TryGetValue(fishKey, out string seenVersion) || seenVersion != version)
             {
+                seenFishVersions[fishKey] = version;
                 newFishes.Add(fish);
             }
         }
 
         if (newFishes.Count > 0)
         {
+            Debug.Log($"FishApiClient: received {newFishes.Count} new fish.");
             OnNewFishes?.Invoke(newFishes);
         }
     }

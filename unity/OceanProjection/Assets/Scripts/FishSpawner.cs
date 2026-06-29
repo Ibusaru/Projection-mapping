@@ -31,6 +31,7 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private float lifetimeSeconds = 600f;
 
     private readonly Queue<FishActor> fishQueue = new Queue<FishActor>();
+    private readonly Dictionary<string, FishActor> releasedFishByNickname = new Dictionary<string, FishActor>();
 
     private void Awake()
     {
@@ -79,6 +80,16 @@ public class FishSpawner : MonoBehaviour
 
     private void SpawnFish(FishData fish)
     {
+        string nicknameKey = NormalizeNicknameKey(fish.nickname);
+        if (!string.IsNullOrWhiteSpace(nicknameKey)
+            && releasedFishByNickname.TryGetValue(nicknameKey, out FishActor existingActor)
+            && existingActor != null)
+        {
+            existingActor.Apply(fish);
+            Debug.Log($"FishSpawner: updated '{fish.nickname}' with the latest drawing.");
+            return;
+        }
+
         FishActor prefab = GetPrefab(fish.species);
         if (prefab == null)
         {
@@ -92,6 +103,11 @@ public class FishSpawner : MonoBehaviour
         actor.SetSwimBounds(center, size);
         actor.Apply(fish);
         fishQueue.Enqueue(actor);
+        if (!string.IsNullOrWhiteSpace(nicknameKey))
+        {
+            releasedFishByNickname[nicknameKey] = actor;
+        }
+
         Debug.Log($"FishSpawner: spawned '{fish.nickname}' ({fish.species}) at {position}.");
 
         TrimOverflow();
@@ -289,8 +305,23 @@ public class FishSpawner : MonoBehaviour
         FishActor actor = fishQueue.Dequeue();
         if (actor != null)
         {
+            string nicknameKey = NormalizeNicknameKey(actor.Nickname);
+            if (!string.IsNullOrWhiteSpace(nicknameKey)
+                && releasedFishByNickname.TryGetValue(nicknameKey, out FishActor trackedActor)
+                && trackedActor == actor)
+            {
+                releasedFishByNickname.Remove(nicknameKey);
+            }
+
             Destroy(actor.gameObject);
         }
+    }
+
+    private static string NormalizeNicknameKey(string nickname)
+    {
+        return string.IsNullOrWhiteSpace(nickname)
+            ? ""
+            : nickname.Trim().ToLowerInvariant();
     }
 
     private void OnDrawGizmosSelected()
