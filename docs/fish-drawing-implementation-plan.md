@@ -30,20 +30,20 @@ Webで見せる魚シルエットと、Unityの3DモデルのUV展開が合っ�
 - ズレが大きい場合は、UV展開済みの専用モデルを作るか、Web側のシルエット画像をUVレイアウトに合わせる。
 - 最小検証では「貼れるか」「表示されるか」を優先し、完璧な位置合わせは次段階にする。
 
-### 2. 同じ名前の魚を更新反映する仕様
+### 2. 同じ名前の投稿の扱い
 
-「同じ名前があれば更新」にするには、DB側で `nickname` を一意にする必要がある。ただし展示用途では同名を許可したい場合もあり得る。
+匿名投稿で「同じ名前があれば更新」にすると、公開anon keyだけで既存投稿を書き換えられる範囲が広がる。展示用途では同名を許可し、送信ごとに新しい魚として追加する方が安全でわかりやすい。
 
 今回の案:
 
-- 最小構成では `nickname` を一意キー扱いにする。
-- Webは `upsert` で同名の魚を更新する。
-- Unityは `updated_at` を見て、同じ `nickname` の魚が更新されたら既存Actorのテクスチャを差し替える。
+- 最小構成では `nickname` を一意キーにしない。
+- Webは `insert` で毎回新しい魚を追加する。
+- Unityは `id` を優先してActorを管理する。
 
 注意:
 
-- 同じ名前で別人が投稿すると上書きされる。
-- それが嫌なら、将来は `display_name` と `edit_key` を分ける。
+- 同じ名前の魚が複数表示される。
+- 将来「本人だけ更新」を入れる場合は、`display_name` と `edit_key` を分けて、RPCまたは認証つき更新にする。
 
 ### 3. 匿名投稿とStorage公開範囲
 
@@ -86,7 +86,7 @@ file size limit: 2MB程度
 ```sql
 create table if not exists public.fishes (
   id uuid primary key default gen_random_uuid(),
-  nickname text not null unique,
+  nickname text not null,
   texture_path text not null,
   texture_url text not null,
   spawned boolean not null default false,
@@ -109,7 +109,7 @@ alter table public.fishes
 
 ### Storage RLS案
 
-匿名ユーザーがPNGをアップロードし、同名更新時に上書きできるようにする。
+匿名ユーザーはPNGアップロードとDB追加だけを許可する。既存投稿の更新やStorage削除は公開アプリからは許可しない。
 
 ```sql
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
@@ -137,18 +137,7 @@ with check (
 );
 
 drop policy if exists "Anyone can update fish drawings" on storage.objects;
-create policy "Anyone can update fish drawings"
-on storage.objects
-for update
-to anon
-using (
-  bucket_id = 'fish-drawings'
-  and lower(storage.extension(name)) = 'png'
-)
-with check (
-  bucket_id = 'fish-drawings'
-  and lower(storage.extension(name)) = 'png'
-);
+drop policy if exists "Anyone can delete fish drawings" on storage.objects;
 ```
 
 ## Web実装案
@@ -163,7 +152,7 @@ with check (
 - 投稿時にキャンバスを透過PNGへ変換する。
 - Supabase StorageへPNGアップロードする。
 - `fishes` テーブルへ `nickname`, `texture_path`, `texture_url`, `updated_at` を保存する。
-- 同じ `nickname` は `upsert` で更新する。
+- 同じ `nickname` でも新しい魚として追加する。
 
 ### UI方針
 
@@ -191,9 +180,9 @@ with check (
 流れ:
 
 1. `canvas.toBlob()` でPNG Blobを作る。
-2. `fish-drawings/{safeNickname}.png` に `upsert: true` でアップロードする。
+2. `fish-drawings/{safeNickname}/{timestamp}-{random}.png` にアップロードする。
 3. `getPublicUrl()` でURLを取得する。
-4. `fishes` テーブルに `upsert` する。
+4. `fishes` テーブルに `insert` する。
 
 ## Unity実装案
 
@@ -207,9 +196,9 @@ Unity側では、DBから `texture_url` を取得し、`UnityWebRequestTexture.G
 
 - `FishData` に `texture_url`, `texture_path`, `updated_at` を追加する。
 - `FishApiClient` は `updated_at` 順で取得する。
-- `FishSpawner` は `nickname` または `id` で既存Actorを管理する。
+- `FishSpawner` は `id` を優先して既存Actorを管理する。
 - 新規ならPrefabを生成する。
-- 既存同名ならActorを探してテクスチャを差し替える。
+- 同じ `id` を再取得した場合はActorを更新する。
 - `FishActor` にTexture2D適用用のRenderer参照を追加する。
 
 ### カククマFBXの取り込み手順
@@ -270,7 +259,7 @@ Unity側では、DBから `texture_url` を取得し、`UnityWebRequestTexture.G
 1. `fish-drawings` bucketを作る。
 2. Storage RLSを設定する。
 3. `fishes` テーブルへ画像カラムを追加する。
-4. `nickname` 更新ルールを決める。
+4. 匿名更新を許可しないRLSにする。
 
 ### Phase 3: Web最小実装
 
@@ -279,7 +268,7 @@ Unity側では、DBから `texture_url` を取得し、`UnityWebRequestTexture.G
 3. 色、消しゴム、太さだけ実装する。
 4. 透過PNG書き出しを実装する。
 5. Supabase Storageアップロードを実装する。
-6. `fishes` へのupsertを実装する。
+6. `fishes` へのinsertを実装する。
 7. スマホ幅で触って描けるか確認する。
 
 ### Phase 4: Unity最小実装
@@ -287,7 +276,7 @@ Unity側では、DBから `texture_url` を取得し、`UnityWebRequestTexture.G
 1. `FishData` に画像カラムを追加する。
 2. UnityでPNGをダウンロードする処理を追加する。
 3. Prefab生成後にTextureをMaterialへ適用する。
-4. 同名魚の更新反映を実装する。
+4. 起動中の大量投稿を取りこぼしにくいページング取得を実装する。
 5. カククマPrefabで動作確認する。
 
 ### Phase 5: 結合確認
@@ -297,13 +286,12 @@ Unity側では、DBから `texture_url` を取得し、`UnityWebRequestTexture.G
 3. `fishes` にURLが保存される。
 4. Unityが新規魚を生成する。
 5. 魚モデルにPNGが貼られる。
-6. 同じ名前で再投稿したとき、Unity側の魚のテクスチャが更新される。
+6. 同じ名前で再投稿したとき、新しい魚として追加される。
 
 ## 承認前に決めたい最後の確認
 
-- 同じ `nickname` は上書きでよいか。
 - `fish-drawings` bucketをpublicにしてよいか。
 - `カククマ .fbx` を `Assets/Models/カククマ.fbx` にコピーしてよいか。
 - 実装時に文字化けしているWeb UI文言も直してよいか。
 
-上の4点がOKなら、次に実装へ進む。
+上の3点がOKなら、次に実装へ進む。

@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class FishActor : MonoBehaviour
+public partial class FishActor : MonoBehaviour
 {
     private static readonly List<FishActor> ActiveFishes = new List<FishActor>();
 
@@ -15,6 +13,9 @@ public class FishActor : MonoBehaviour
     [SerializeField] private Transform modelRoot;
     [SerializeField] private TMP_Text nicknameLabel;
     [SerializeField] private bool createNicknameLabelWhenMissing = true;
+    [SerializeField] private bool remapDrawingTextureForModel = true;
+    [SerializeField] private int remappedDrawingTextureSize = 512;
+    [SerializeField] private float drawingAlphaThreshold = 0.05f;
 
     [Header("Movement")]
     [SerializeField] private float baseSpeed = 0.9f;
@@ -70,6 +71,7 @@ public class FishActor : MonoBehaviour
     [Header("Awareness")]
     [SerializeField] private float cameraAwarenessDistance = 5.5f;
     [SerializeField] private float cameraLookWeight = 0.32f;
+    [SerializeField] private float cameraAvoidanceWeight = 1.15f;
     [SerializeField] private float curiousLookSeconds = 1.15f;
 
     private Vector3 targetPosition;
@@ -101,12 +103,78 @@ public class FishActor : MonoBehaviour
     private float initialBaseSpeed;
     private float initialSchoolModeChance;
     private Coroutine textureCoroutine;
+    private static bool warnedMissingTmpResources;
 
     public float SpawnTime { get; private set; }
     public string Nickname { get; private set; } = "";
     public bool IsReleasedFish => releasedFish;
     public float CameraFocusRadius => EstimateFocusRadius();
+    public Vector3 VisualCenter => EstimateVisualCenter();
     public static IReadOnlyList<FishActor> AllActiveFishes => ActiveFishes;
+
+    public bool TryGetVisualBounds(out Bounds bounds)
+    {
+        Renderer[] renderers = colorRenderers != null && colorRenderers.Length > 0
+            ? colorRenderers
+            : GetComponentsInChildren<Renderer>(true);
+        bounds = new Bounds(transform.position, Vector3.zero);
+        bool hasBounds = false;
+
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            if (!hasBounds)
+            {
+                bounds = renderer.bounds;
+                hasBounds = true;
+            }
+            else
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+        }
+
+        return hasBounds;
+    }
+
+    public string DescribeVisualState()
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+        Bounds bounds = new Bounds(transform.position, Vector3.zero);
+        bool hasBounds = false;
+        int enabledCount = 0;
+
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            if (renderer.enabled)
+            {
+                enabledCount++;
+            }
+
+            if (!hasBounds)
+            {
+                bounds = renderer.bounds;
+                hasBounds = true;
+            }
+            else
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+        }
+
+        return hasBounds
+            ? $"renderers={renderers.Length}, enabled={enabledCount}, boundsCenter={bounds.center}, boundsSize={bounds.size}, scale={transform.lossyScale}"
+            : $"renderers={renderers.Length}, enabled={enabledCount}, bounds=none, scale={transform.lossyScale}";
+    }
 
     private void Awake()
     {
@@ -115,6 +183,7 @@ public class FishActor : MonoBehaviour
         initialBaseSpeed = baseSpeed;
         initialSchoolModeChance = schoolModeChance;
         schoolingNoiseSeed = Random.Range(0f, 1000f);
+        RemoveLegacyDrawingBillboards();
         AutoWireVisuals();
         PickSchoolSlot();
         CacheAnimators();
@@ -139,7 +208,11 @@ public class FishActor : MonoBehaviour
     public void SetReleasedFish(bool value)
     {
         releasedFish = value;
-        EnsureNicknameLabel();
+        if (releasedFish)
+        {
+            EnsureNicknameLabel();
+            EnsureReleasedFishMaterials();
+        }
 
         if (nicknameLabel != null)
         {
@@ -160,6 +233,11 @@ public class FishActor : MonoBehaviour
 
     public void Apply(FishData data)
     {
+        if (data == null)
+        {
+            return;
+        }
+
         species = string.IsNullOrWhiteSpace(data.species) ? "original" : data.species;
         personality = string.IsNullOrWhiteSpace(data.personality) ? "calm" : data.personality;
         Nickname = SanitizeNickname(data.nickname);
@@ -260,256 +338,6 @@ public class FishActor : MonoBehaviour
         }
     }
 
-    private void UpdateSwimAnimation()
-    {
-        float baseReferenceSpeed = Mathf.Max(0.1f, baseSpeed * animationSpeedAtBaseSwim);
-        float speedRatio = Mathf.Clamp(currentSpeed / baseReferenceSpeed, 0.35f, 2.25f);
-        currentSwimEffort = Mathf.Lerp(
-            currentSwimEffort,
-            Mathf.InverseLerp(0.45f, 1.65f, speedRatio),
-            1f - Mathf.Exp(-animationSmooth * Time.deltaTime)
-        );
-
-        float targetAnimationSpeed = Mathf.Clamp(
-            speedRatio * animationSpeedMultiplier,
-            minAnimationSpeed,
-            maxAnimationSpeed
-        );
-        currentAnimationSpeed = Mathf.Lerp(
-            currentAnimationSpeed,
-            targetAnimationSpeed,
-            1f - Mathf.Exp(-animationSmooth * Time.deltaTime)
-        );
-
-        for (int i = 0; i < animators.Length; i++)
-        {
-            Animator animator = animators[i];
-            if (animator != null)
-            {
-                animator.speed = animatorBaseSpeeds[i] * currentAnimationSpeed;
-            }
-        }
-    }
-
-    private Vector3 BlendSchoolingDirection(Vector3 direction)
-    {
-        if (!enableSchooling)
-        {
-            schoolDirection = Vector3.Lerp(schoolDirection, Vector3.zero, 0.3f);
-            return direction;
-        }
-
-        if (Time.time < nextSchoolUpdateTime)
-        {
-            return (direction + schoolDirection * currentSchoolStrength).normalized;
-        }
-
-        nextSchoolUpdateTime = Time.time + schoolUpdateSeconds + Random.Range(0f, 0.12f);
-        IReadOnlyList<FishActor> fishes = AllActiveFishes;
-        Vector3 alignment = Vector3.zero;
-        Vector3 cohesion = Vector3.zero;
-        Vector3 separation = Vector3.zero;
-        Vector3 averageForward = Vector3.zero;
-        float averageNeighborY = 0f;
-        int neighborCount = 0;
-
-        for (int i = 0; i < fishes.Count; i++)
-        {
-            FishActor neighbor = fishes[i];
-            if (neighbor == null || neighbor == this)
-            {
-                continue;
-            }
-
-            Vector3 offset = neighbor.transform.position - transform.position;
-            Vector3 horizontalOffset = new Vector3(offset.x, 0f, offset.z);
-            float horizontalDistance = horizontalOffset.magnitude;
-            if (horizontalDistance > neighborRadius)
-            {
-                continue;
-            }
-
-            neighborCount++;
-            Vector3 neighborForward = neighbor.transform.forward;
-            Vector3 horizontalForward = new Vector3(neighborForward.x, 0f, neighborForward.z);
-            alignment += horizontalForward;
-            averageForward += horizontalForward;
-            cohesion += new Vector3(neighbor.transform.position.x, 0f, neighbor.transform.position.z);
-            averageNeighborY += neighbor.transform.position.y;
-
-            if (horizontalDistance < sameColumnAvoidanceRadius)
-            {
-                Vector3 escape = horizontalDistance > 0.001f
-                    ? -horizontalOffset.normalized
-                    : RandomEscapeDirection(neighbor);
-                separation += escape * sameColumnAvoidanceWeight * (1f - horizontalDistance / sameColumnAvoidanceRadius);
-            }
-            else if (horizontalDistance < separationRadius)
-            {
-                separation -= horizontalOffset.normalized * (1f - horizontalDistance / separationRadius);
-            }
-
-            float verticalDistance = Mathf.Abs(offset.y);
-            if (verticalDistance < verticalSeparationRadius)
-            {
-                float pushDirection = offset.y >= 0f ? -1f : 1f;
-                separation += Vector3.up * pushDirection * (1f - verticalDistance / verticalSeparationRadius) * verticalSeparationWeight;
-            }
-        }
-
-        if (neighborCount == 0)
-        {
-            schoolDirection = Vector3.Lerp(schoolDirection, Vector3.zero, 0.45f);
-            return (direction + schoolDirection * currentSchoolStrength).normalized;
-        }
-
-        float schoolingInfluence = currentSchoolStrength;
-        alignment = alignment.normalized * alignmentWeight * schoolingInfluence;
-        Vector3 schoolForward = averageForward.sqrMagnitude > 0.001f
-            ? averageForward.normalized
-            : new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
-        if (schoolForward.sqrMagnitude < 0.001f)
-        {
-            schoolForward = Vector3.forward;
-        }
-
-        Vector3 schoolRight = new Vector3(schoolForward.z, 0f, -schoolForward.x);
-        Vector3 slotOffset = schoolRight * schoolSlotOffset.x + schoolForward * schoolSlotOffset.y;
-        Vector3 cohesionTarget = cohesion / neighborCount + slotOffset;
-        Vector3 horizontalCohesion = cohesionTarget - new Vector3(transform.position.x, 0f, transform.position.z);
-        cohesion = horizontalCohesion.normalized * cohesionWeight * schoolingInfluence;
-        float depthOffset = (averageNeighborY / neighborCount) - transform.position.y;
-        cohesion += Vector3.up * Mathf.Clamp(depthOffset, -1f, 1f) * verticalSchoolingWeight * schoolingInfluence;
-        cohesion += Vector3.up * Mathf.Sin(Time.time * 0.37f + SpawnTime) * preferredDepthDrift * (1f - schoolingInfluence * 0.35f);
-        separation = separation.normalized * Mathf.Lerp(soloSeparationWeight, separationWeight, schoolingInfluence);
-        schoolDirection = Vector3.Lerp(schoolDirection, alignment + cohesion + separation, 0.5f);
-        return (direction + schoolDirection).normalized;
-    }
-
-    private Vector3 LimitVerticalSwim(Vector3 direction)
-    {
-        Vector3 horizontal = new Vector3(direction.x, 0f, direction.z);
-        if (horizontal.sqrMagnitude < 0.001f)
-        {
-            horizontal = new Vector3(transform.forward.x, 0f, transform.forward.z);
-        }
-
-        if (horizontal.sqrMagnitude < 0.001f)
-        {
-            horizontal = Vector3.forward;
-        }
-
-        float vertical = Mathf.Clamp(direction.y, -maxVerticalSwimDirection, maxVerticalSwimDirection);
-        return (horizontal.normalized + Vector3.up * vertical).normalized;
-    }
-
-    private void UpdateSchoolingMode()
-    {
-        if (Time.time >= nextSchoolModeTime)
-        {
-            PickNextSchoolingMode(false);
-        }
-
-        float targetStrength = isSchoolingMode ? 1f : 0f;
-        currentSchoolStrength = Mathf.MoveTowards(
-            currentSchoolStrength,
-            targetStrength,
-            schoolingBlendSpeed * Time.deltaTime
-        );
-    }
-
-    private void PickNextSchoolingMode(bool initial)
-    {
-        isSchoolingMode = Random.value < schoolModeChance;
-        Vector2 durationRange = isSchoolingMode ? schoolingSecondsRange : soloSecondsRange;
-        nextSchoolModeTime = Time.time + Random.Range(durationRange.x, durationRange.y);
-
-        if (isSchoolingMode)
-        {
-            PickSchoolSlot();
-        }
-
-        if (initial)
-        {
-            currentSchoolStrength = isSchoolingMode ? Random.Range(0.65f, 1f) : Random.Range(0f, 0.25f);
-        }
-    }
-
-    private void PickSchoolSlot()
-    {
-        schoolSlotOffset = new Vector2(
-            Random.Range(schoolSlotSideRange.x, schoolSlotSideRange.y),
-            Random.Range(schoolSlotForwardRange.x, schoolSlotForwardRange.y)
-        );
-    }
-
-    private Vector3 RandomEscapeDirection(FishActor neighbor)
-    {
-        float seed = schoolingNoiseSeed * 0.73f + neighbor.schoolingNoiseSeed * 1.37f;
-        return new Vector3(Mathf.Cos(seed), 0f, Mathf.Sin(seed)).normalized;
-    }
-
-    private Vector3 BlendCameraAwareness(Vector3 direction)
-    {
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-            if (mainCamera == null)
-            {
-                return direction;
-            }
-        }
-
-        Vector3 toCamera = mainCamera.transform.position - transform.position;
-        float distance = toCamera.magnitude;
-        if (distance > cameraAwarenessDistance || distance < 0.001f)
-        {
-            return direction;
-        }
-
-        float awareness = 1f - distance / cameraAwarenessDistance;
-        curiousLookUntil = Time.time + curiousLookSeconds * awareness;
-        Vector3 curiousDirection = Vector3.Lerp(direction, toCamera.normalized, cameraLookWeight * awareness);
-        return curiousDirection.normalized;
-    }
-
-    private void UpdateLabel()
-    {
-        if (!releasedFish)
-        {
-            if (nicknameLabel != null)
-            {
-                nicknameLabel.gameObject.SetActive(false);
-            }
-
-            return;
-        }
-
-        if (nicknameLabel == null)
-        {
-            return;
-        }
-
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-            if (mainCamera == null)
-            {
-                return;
-            }
-        }
-
-        float distance = Vector3.Distance(mainCamera.transform.position, transform.position);
-        bool visible = distance <= labelVisibleDistance;
-        nicknameLabel.gameObject.SetActive(visible);
-
-        if (visible)
-        {
-            nicknameLabel.transform.LookAt(mainCamera.transform);
-            nicknameLabel.transform.Rotate(0f, 180f, 0f);
-        }
-    }
-
     private void PickNextTarget()
     {
         float currentDepthTarget = Mathf.Clamp(
@@ -571,52 +399,6 @@ public class FishActor : MonoBehaviour
         );
     }
 
-    private void AutoWireVisuals()
-    {
-        if (!autoWireRenderers)
-        {
-            return;
-        }
-
-        if (modelRoot == null)
-        {
-            modelRoot = transform;
-        }
-
-        initialModelScale = modelRoot.localScale;
-        baseModelLocalRotation = modelRoot.localRotation;
-
-        if (colorRenderers == null || colorRenderers.Length == 0)
-        {
-            colorRenderers = GetComponentsInChildren<Renderer>(true);
-        }
-
-        if (textureRenderers == null || textureRenderers.Length == 0)
-        {
-            textureRenderers = colorRenderers;
-        }
-    }
-
-    private void EnsureNicknameLabel()
-    {
-        if (!releasedFish || nicknameLabel != null || !createNicknameLabelWhenMissing)
-        {
-            return;
-        }
-
-        GameObject labelObject = new GameObject("Nickname Label");
-        labelObject.transform.SetParent(transform, false);
-        labelObject.transform.localPosition = Vector3.up * 0.9f;
-
-        TextMeshPro label = labelObject.AddComponent<TextMeshPro>();
-        label.alignment = TextAlignmentOptions.Center;
-        label.fontSize = 0.42f;
-        label.color = new Color(0.9f, 1f, 1f, 0.92f);
-        label.textWrappingMode = TextWrappingModes.NoWrap;
-        label.text = string.Empty;
-        nicknameLabel = label;
-    }
-
     private void CacheAnimators()
     {
         animators = GetComponentsInChildren<Animator>(true);
@@ -638,98 +420,14 @@ public class FishActor : MonoBehaviour
 
     private float EstimateFocusRadius()
     {
-        Renderer[] renderers = colorRenderers != null && colorRenderers.Length > 0
-            ? colorRenderers
-            : GetComponentsInChildren<Renderer>(true);
-        Bounds bounds = new Bounds(transform.position, Vector3.one * 0.5f);
-        bool hasBounds = false;
-
-        foreach (Renderer renderer in renderers)
-        {
-            if (renderer == null)
-            {
-                continue;
-            }
-
-            if (!hasBounds)
-            {
-                bounds = renderer.bounds;
-                hasBounds = true;
-            }
-            else
-            {
-                bounds.Encapsulate(renderer.bounds);
-            }
-        }
-
-        return hasBounds ? Mathf.Clamp(bounds.extents.magnitude, 0.45f, 5f) : 1f;
+        return TryGetVisualBounds(out Bounds bounds)
+            ? Mathf.Clamp(bounds.extents.magnitude, 0.45f, 5f)
+            : 1f;
     }
 
-    private static void ApplyColor(Renderer[] renderers, Color color)
+    private Vector3 EstimateVisualCenter()
     {
-        if (renderers == null)
-        {
-            return;
-        }
-
-        foreach (Renderer item in renderers)
-        {
-            if (item != null)
-            {
-                item.material.color = color;
-            }
-        }
-    }
-
-    private void ApplyRemoteTexture(string textureUrl)
-    {
-        if (string.IsNullOrWhiteSpace(textureUrl) || textureUrl == appliedTextureUrl)
-        {
-            return;
-        }
-
-        if (textureCoroutine != null)
-        {
-            StopCoroutine(textureCoroutine);
-        }
-
-        textureCoroutine = StartCoroutine(DownloadAndApplyTexture(textureUrl));
-    }
-
-    private IEnumerator DownloadAndApplyTexture(string textureUrl)
-    {
-        using UnityWebRequest request = UnityWebRequestTexture.GetTexture(textureUrl);
-        yield return request.SendWebRequest();
-
-        if (request.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogWarning($"FishActor: texture download failed for '{Nickname}': {request.error}");
-            textureCoroutine = null;
-            yield break;
-        }
-
-        Texture2D texture = DownloadHandlerTexture.GetContent(request);
-        ApplyTexture(textureRenderers, texture);
-        appliedTextureUrl = textureUrl;
-        textureCoroutine = null;
-    }
-
-    private static void ApplyTexture(Renderer[] renderers, Texture2D texture)
-    {
-        if (renderers == null || texture == null)
-        {
-            return;
-        }
-
-        foreach (Renderer item in renderers)
-        {
-            if (item == null)
-            {
-                continue;
-            }
-
-            item.material.mainTexture = texture;
-        }
+        return TryGetVisualBounds(out Bounds bounds) ? bounds.center : transform.position;
     }
 
     private static Color ParseColor(string hex, Color fallback)

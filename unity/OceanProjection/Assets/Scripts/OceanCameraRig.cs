@@ -25,22 +25,21 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float sideOffset = 1.15f;
     [SerializeField] private float heightOffset = 0.55f;
     [SerializeField] private float forwardLookAhead = 2.4f;
-    [SerializeField] private float minFocusDistance = 2.6f;
-    [SerializeField] private float maxFocusDistance = 7.2f;
-    [SerializeField] private float focusRadiusMultiplier = 2.4f;
+    [SerializeField] private float minFocusDistance = 4f;
+    [SerializeField] private float maxFocusDistance = 10f;
+    [SerializeField] private float focusRadiusMultiplier = 3f;
     [SerializeField] private float positionSmoothTime = 2.4f;
     [SerializeField] private float rotationSmooth = 1.55f;
     [SerializeField] private float driftAmplitude = 0.42f;
     [SerializeField] private float driftSpeed = 0.28f;
     [SerializeField] private float maximumCameraSpeed = 5.5f;
-
     [Header("Diver Behavior")]
     [SerializeField] private float scanIntervalSeconds = 2.2f;
     [SerializeField] private float fishInterestDistance = 24f;
     [SerializeField] private float schoolInterestDistance = 34f;
     [SerializeField] private float schoolNeighborRadius = 6.5f;
     [SerializeField] private int minimumSchoolSize = 5;
-    [SerializeField] private float fishApproachDistance = 3.6f;
+    [SerializeField] private float fishApproachDistance = 5.2f;
     [SerializeField] private float schoolApproachDistance = 8.5f;
     [SerializeField] private Vector2 fishObserveSeconds = new Vector2(3.5f, 6f);
     [SerializeField] private Vector2 schoolObserveSeconds = new Vector2(5.5f, 9f);
@@ -49,6 +48,13 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float schoolRadiusPadding = 1.35f;
     [SerializeField] private float relaxedCameraSpeed = 2.8f;
     [SerializeField] private float approachCameraSpeed = 4.8f;
+    [Header("Diver Observation Angles")]
+    [SerializeField] private Vector2 frontViewAngleRange = new Vector2(14f, 28f);
+    [SerializeField] private Vector2 diagonalViewAngleRange = new Vector2(38f, 62f);
+    [SerializeField] private Vector2 sideViewAngleRange = new Vector2(72f, 90f);
+    [SerializeField] private Vector2 rearApproachTurnAngleRange = new Vector2(68f, 88f);
+    [SerializeField] private float observationOrbitSmoothTime = 1.8f;
+    [SerializeField] private float observationOrbitMaxDegreesPerSecond = 85f;
 
     private FishActor focusedFish;
     private DiverIntent intent = DiverIntent.Cruise;
@@ -58,8 +64,13 @@ public class OceanCameraRig : MonoBehaviour
     private Vector3 cruiseDestination;
     private Vector3 lastSchoolCenter;
     private float currentFocusRadius = 1f;
+    private float currentObservationAngleDegrees = 70f;
+    private float targetObservationAngleDegrees = 70f;
+    private float observationAngleVelocity;
     private float nextTargetRefreshTime;
     private float intentUntilTime;
+    private bool hasObservationAngle;
+    private bool hasPlacedInitialCamera;
 
     private void LateUpdate()
     {
@@ -106,6 +117,7 @@ public class OceanCameraRig : MonoBehaviour
         {
             focusRight = transform.right;
         }
+        Vector3 observationDirection = ObservationDirectionFromFocus(focusForward, focusRight);
 
         float driftTime = Time.time * driftSpeed;
         float desiredDistance = intent == DiverIntent.ApproachSchool
@@ -117,10 +129,11 @@ public class OceanCameraRig : MonoBehaviour
         Vector3 passOffset = intent == DiverIntent.DriftPast
             ? focusRight * Mathf.Sin(Time.time * 0.35f + SpawnTimeSeed()) * 2.2f
             : Vector3.zero;
+        float observationSide = currentObservationAngleDegrees >= 0f ? 1f : -1f;
 
         Vector3 desiredPosition = currentFocusPoint
-            - focusForward * desiredDistance
-            + focusRight * (sideOffset + currentFocusRadius * 0.18f)
+            + observationDirection * desiredDistance
+            + focusRight * observationSide * (sideOffset + currentFocusRadius * 0.18f)
             + Vector3.up * (heightOffset + currentFocusRadius * 0.12f)
             + breathingDrift
             + passOffset;
@@ -130,18 +143,14 @@ public class OceanCameraRig : MonoBehaviour
             : relaxedCameraSpeed;
         speed = Mathf.Min(speed, Mathf.Max(0.1f, maximumCameraSpeed));
 
-        transform.position = Vector3.SmoothDamp(
-            transform.position,
-            desiredPosition,
-            ref positionVelocity,
-            positionSmoothTime,
-            speed
-        );
-
+        float trailingLookAheadBlend = Mathf.InverseLerp(105f, 170f, Mathf.Abs(currentObservationAngleDegrees));
+        float observationLead = Mathf.Lerp(0.45f + currentFocusRadius * 0.12f, dynamicLookAhead, trailingLookAheadBlend);
         Vector3 lookTarget = currentFocusPoint
-            + focusForward * dynamicLookAhead
+            + focusForward * observationLead
             + Vector3.up * Mathf.Sin(driftTime) * 0.18f;
-        SmoothLookAt(lookTarget, rotationSmooth);
+
+        bool snapped = MoveCamera(desiredPosition, lookTarget, positionSmoothTime, speed);
+        LookAtTarget(lookTarget, rotationSmooth, snapped);
     }
 
     private void UpdateCurrentFocus()
@@ -158,11 +167,94 @@ public class OceanCameraRig : MonoBehaviour
         }
 
         Transform fishTransform = focusedFish.transform;
-        currentFocusPoint = fishTransform.position;
+        currentFocusPoint = focusedFish.VisualCenter;
         currentFocusForward = fishTransform.forward.sqrMagnitude > 0.001f
             ? fishTransform.forward.normalized
             : currentFocusForward;
         currentFocusRadius = focusedFish.CameraFocusRadius;
+    }
+
+    private Vector3 ObservationDirectionFromFocus(Vector3 focusForward, Vector3 focusRight)
+    {
+        if (!hasObservationAngle)
+        {
+            ChooseObservationAngle(currentFocusPoint, focusForward);
+        }
+
+        currentObservationAngleDegrees = Mathf.SmoothDampAngle(
+            currentObservationAngleDegrees,
+            targetObservationAngleDegrees,
+            ref observationAngleVelocity,
+            observationOrbitSmoothTime,
+            observationOrbitMaxDegreesPerSecond
+        );
+
+        float radians = currentObservationAngleDegrees * Mathf.Deg2Rad;
+        Vector3 direction = focusForward * Mathf.Cos(radians) + focusRight * Mathf.Sin(radians);
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            return focusRight;
+        }
+
+        return direction.normalized;
+    }
+
+    private void ChooseObservationAngle(Vector3 focusPoint, Vector3 focusForward)
+    {
+        Vector3 flatForward = FlattenDirection(focusForward);
+        Vector3 focusRight = Vector3.Cross(Vector3.up, flatForward).normalized;
+        if (focusRight.sqrMagnitude < 0.001f)
+        {
+            focusRight = transform.right;
+        }
+
+        Vector3 toCamera = transform.position - focusPoint;
+        Vector3 flatToCamera = new Vector3(toCamera.x, 0f, toCamera.z);
+        bool hasCameraDirection = flatToCamera.sqrMagnitude > 0.001f;
+        float side = 1f;
+        if (hasCameraDirection)
+        {
+            flatToCamera.Normalize();
+            side = Vector3.Dot(flatToCamera, focusRight) >= 0f ? 1f : -1f;
+        }
+
+        if (Random.value < 0.28f)
+        {
+            side *= -1f;
+        }
+
+        bool approachedFromBehind = hasCameraDirection && Vector3.Dot(flatToCamera, flatForward) < -0.25f;
+        float angleMagnitude = approachedFromBehind
+            ? RandomInRange(rearApproachTurnAngleRange)
+            : PickObservationAngleMagnitude();
+
+        targetObservationAngleDegrees = angleMagnitude * side;
+        currentObservationAngleDegrees = hasCameraDirection
+            ? Vector3.SignedAngle(flatForward, flatToCamera, Vector3.up)
+            : targetObservationAngleDegrees;
+        observationAngleVelocity = 0f;
+        hasObservationAngle = true;
+    }
+
+    private float PickObservationAngleMagnitude()
+    {
+        float roll = Random.value;
+        if (roll < 0.24f)
+        {
+            return RandomInRange(frontViewAngleRange);
+        }
+
+        if (roll < 0.66f)
+        {
+            return RandomInRange(diagonalViewAngleRange);
+        }
+
+        return RandomInRange(sideViewAngleRange);
+    }
+
+    private static float RandomInRange(Vector2 range)
+    {
+        return Random.Range(Mathf.Min(range.x, range.y), Mathf.Max(range.x, range.y));
     }
 
     private Vector3 DiverDrift(float driftTime, float radius)
@@ -190,10 +282,9 @@ public class OceanCameraRig : MonoBehaviour
         float driftTime = Time.time * driftSpeed;
         Vector3 desiredPosition = cruiseDestination + DiverDrift(driftTime, 1f);
 
-        transform.position = Vector3.SmoothDamp(
-            transform.position,
+        bool snapped = MoveCamera(
             desiredPosition,
-            ref positionVelocity,
+            center,
             positionSmoothTime * 1.1f,
             Mathf.Min(relaxedCameraSpeed, Mathf.Max(0.1f, maximumCameraSpeed))
         );
@@ -202,7 +293,7 @@ public class OceanCameraRig : MonoBehaviour
         Vector3 lookTarget = target != null
             ? target.position
             : transform.position + forward * lookAhead + Vector3.up * Mathf.Sin(driftTime) * 0.2f;
-        SmoothLookAt(lookTarget, rotationSmooth * 0.9f);
+        LookAtTarget(lookTarget, rotationSmooth * 0.9f, snapped);
     }
 
     private void PickCruiseDestination()
@@ -232,10 +323,11 @@ public class OceanCameraRig : MonoBehaviour
             return;
         }
 
+        bool hasReleasedFish = prioritizeReleasedFish && HasReleasedFish(fishes);
         bool foundSchool = TryFindSchool(fishes, out Vector3 schoolCenter, out Vector3 schoolForward, out float schoolRadius, out int schoolSize);
-        FishActor fish = PickCinematicFish(fishes);
+        FishActor fish = PickCinematicFish(fishes, hasReleasedFish);
 
-        if (foundSchool && (fish == null || schoolSize >= minimumSchoolSize + 2 || Random.value < 0.68f))
+        if (!hasReleasedFish && foundSchool && (fish == null || schoolSize >= minimumSchoolSize + 2 || Random.value < 0.68f))
         {
             focusedFish = null;
             intent = DiverIntent.ApproachSchool;
@@ -243,21 +335,24 @@ public class OceanCameraRig : MonoBehaviour
             currentFocusPoint = schoolCenter;
             currentFocusForward = schoolForward;
             currentFocusRadius = Mathf.Max(1.5f, schoolRadius);
+            ChooseObservationAngle(currentFocusPoint, currentFocusForward);
             intentUntilTime = Time.time + Random.Range(schoolObserveSeconds.x, schoolObserveSeconds.y);
         }
         else if (fish != null)
         {
             focusedFish = fish;
             intent = Random.value < 0.22f ? DiverIntent.DriftPast : DiverIntent.ApproachFish;
-            currentFocusPoint = fish.transform.position;
+            currentFocusPoint = fish.VisualCenter;
             currentFocusForward = fish.transform.forward;
             currentFocusRadius = fish.CameraFocusRadius;
+            ChooseObservationAngle(currentFocusPoint, currentFocusForward);
             intentUntilTime = Time.time + Random.Range(fishObserveSeconds.x, fishObserveSeconds.y);
         }
         else
         {
             focusedFish = null;
             intent = DiverIntent.Cruise;
+            hasObservationAngle = false;
             PickCruiseDestination();
         }
 
@@ -363,7 +458,7 @@ public class OceanCameraRig : MonoBehaviour
         return Mathf.Max(0.6f, Mathf.Min(scanIntervalSeconds, targetRefreshSeconds));
     }
 
-    private FishActor PickCinematicFish(IReadOnlyList<FishActor> fishes)
+    private FishActor PickCinematicFish(IReadOnlyList<FishActor> fishes, bool releasedOnly)
     {
         FishActor best = null;
         float bestScore = float.NegativeInfinity;
@@ -376,17 +471,23 @@ public class OceanCameraRig : MonoBehaviour
                 continue;
             }
 
+            if (releasedOnly && !fish.IsReleasedFish)
+            {
+                continue;
+            }
+
             Vector3 toFish = fish.transform.position - transform.position;
             float distance = toFish.magnitude;
-            if (distance > fishInterestDistance)
+            if (!releasedOnly && distance > fishInterestDistance)
             {
                 continue;
             }
 
             float forwardScore = Vector3.Dot(transform.forward, toFish.normalized);
-            float distanceScore = -Mathf.Abs(distance - followDistance * 1.6f);
+            float idealDistance = releasedOnly ? followDistance * 1.15f : followDistance * 1.6f;
+            float distanceScore = -Mathf.Abs(distance - idealDistance);
             float centerScore = -Vector3.Distance(fish.transform.position, center) * 0.08f;
-            float releasedScore = prioritizeReleasedFish && fish.IsReleasedFish ? 60f : 0f;
+            float releasedScore = fish.IsReleasedFish ? 60f : 0f;
             float score = releasedScore + forwardScore * 3.5f + distanceScore + centerScore + Random.Range(0f, 0.75f);
 
             if (score > bestScore)
@@ -397,6 +498,64 @@ public class OceanCameraRig : MonoBehaviour
         }
 
         return best;
+    }
+
+    private static bool HasReleasedFish(IReadOnlyList<FishActor> fishes)
+    {
+        for (int i = 0; i < fishes.Count; i++)
+        {
+            FishActor fish = fishes[i];
+            if (fish != null && fish.IsReleasedFish)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool MoveCamera(Vector3 desiredPosition, Vector3 lookTarget, float smoothTime, float maxSpeed)
+    {
+        if (!hasPlacedInitialCamera)
+        {
+            transform.position = desiredPosition;
+            positionVelocity = Vector3.zero;
+            hasPlacedInitialCamera = true;
+            return true;
+        }
+
+        Vector3 nextPosition = Vector3.SmoothDamp(
+            transform.position,
+            desiredPosition,
+            ref positionVelocity,
+            smoothTime,
+            maxSpeed
+        );
+        transform.position = nextPosition;
+
+        return false;
+    }
+
+    private void LookAtTarget(Vector3 lookTarget, float smooth, bool snap)
+    {
+        if (snap)
+        {
+            SnapLookAt(lookTarget);
+            return;
+        }
+
+        SmoothLookAt(lookTarget, smooth);
+    }
+
+    private void SnapLookAt(Vector3 lookTarget)
+    {
+        Vector3 lookDirection = lookTarget - transform.position;
+        if (lookDirection.sqrMagnitude < 0.001f)
+        {
+            return;
+        }
+
+        transform.rotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
     }
 
     private void SmoothLookAt(Vector3 lookTarget, float smooth)

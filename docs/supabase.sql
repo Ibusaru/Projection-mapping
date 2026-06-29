@@ -52,7 +52,31 @@ begin
 end;
 $$;
 
-create unique index if not exists fishes_nickname_unique_idx on public.fishes (nickname);
+do $$
+declare
+  constraint_name text;
+begin
+  for constraint_name in
+    select c.conname
+    from pg_constraint c
+    join pg_class t on t.oid = c.conrelid
+    join pg_namespace n on n.oid = t.relnamespace
+    where n.nspname = 'public'
+      and t.relname = 'fishes'
+      and c.contype = 'u'
+      and (
+        select array_agg(a.attname::text order by a.attnum)
+        from unnest(c.conkey) key(attnum)
+        join pg_attribute a on a.attrelid = t.oid and a.attnum = key.attnum
+      ) = array['nickname']
+  loop
+    execute format('alter table public.fishes drop constraint if exists %I', constraint_name);
+  end loop;
+end;
+$$;
+
+drop index if exists fishes_nickname_unique_idx;
+drop index if exists fishes_nickname_key;
 
 alter table public.fishes enable row level security;
 
@@ -81,22 +105,7 @@ to anon
 using (true);
 
 drop policy if exists "Anyone can update fishes" on public.fishes;
-create policy "Anyone can update fishes"
-on public.fishes
-for update
-to anon
-using (true)
-with check (
-  char_length(nickname) between 1 and 12
-  and species in ('clownfish', 'jellyfish', 'tuna', 'original')
-  and pattern in ('none', 'stripe', 'spot')
-  and size in ('small', 'medium', 'large')
-  and personality in ('calm', 'fast', 'schooling')
-  and main_color ~ '^#[0-9A-Fa-f]{6}$'
-  and sub_color ~ '^#[0-9A-Fa-f]{6}$'
-  and (texture_path is null or texture_path like '%.png')
-  and (texture_url is null or texture_url like 'http%')
-);
+-- Anonymous visitors can add new fish but cannot rewrite existing submissions.
 
 create or replace function public.set_fishes_updated_at()
 returns trigger
@@ -143,25 +152,5 @@ with check (
 );
 
 drop policy if exists "Anyone can update fish drawings" on storage.objects;
-create policy "Anyone can update fish drawings"
-on storage.objects
-for update
-to anon
-using (
-  bucket_id = 'fish-drawings'
-  and lower(storage.extension(name)) = 'png'
-)
-with check (
-  bucket_id = 'fish-drawings'
-  and lower(storage.extension(name)) = 'png'
-);
-
 drop policy if exists "Anyone can delete fish drawings" on storage.objects;
-create policy "Anyone can delete fish drawings"
-on storage.objects
-for delete
-to anon
-using (
-  bucket_id = 'fish-drawings'
-  and lower(storage.extension(name)) = 'png'
-);
+-- Storage objects are append-only from the public app. Delete bad submissions from the Supabase dashboard.

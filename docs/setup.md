@@ -52,12 +52,21 @@ http://PCのIPアドレス:5173
 
 ## 4. Unity
 
-1. Unityプロジェクトを `unity/` に作成する。
-2. `unity/Scripts` のC#ファイルをUnityの `Assets/Scripts` に置く。
-3. 空のGameObjectを作り、`FishApiClient` と `FishSpawner` をアタッチする。
-4. `FishApiClient` にSupabase URLとanon keyを設定する。
+1. Unityプロジェクトは `unity/OceanProjection` を開く。
+2. 実行時コードの本体は `unity/OceanProjection/Assets/Scripts` に置く。
+3. `FishApiClient` と `FishSpawner` がシーン内GameObjectにアタッチされていることを確認する。
+4. Supabase URLとanon keyは、公開リポジトリへ残さないため環境変数で渡す。
 5. 魚のPrefabを `FishSpawner` に設定する。
 6. Playして、Webから放流した魚がスポーンするか確認する。
+
+Unity起動前にPowerShellで設定する例:
+
+```powershell
+$env:OCEAN_SUPABASE_URL="https://your-project.supabase.co"
+$env:OCEAN_SUPABASE_ANON_KEY="your-anon-key"
+```
+
+`FishApiClient` のInspector欄に直接入れた値も使えるが、シーン保存時にキーが残るため共有前に空にする。
 
 ## 5. 投影テスト
 

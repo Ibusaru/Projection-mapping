@@ -36,10 +36,9 @@ function drawSilhouette(context, fillStyle = "rgba(9, 31, 42, 0.86)") {
 
 function getCanvasPoint(canvas, event) {
   const rect = canvas.getBoundingClientRect();
-  const pointer = event.touches?.[0] ?? event;
   return {
-    x: ((pointer.clientX - rect.left) / rect.width) * CANVAS_WIDTH,
-    y: ((pointer.clientY - rect.top) / rect.height) * CANVAS_HEIGHT,
+    x: ((event.clientX - rect.left) / rect.width) * CANVAS_WIDTH,
+    y: ((event.clientY - rect.top) / rect.height) * CANVAS_HEIGHT,
   };
 }
 
@@ -75,6 +74,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
         context.save();
         const mask = createFishPath();
+        drawSilhouette(context, "rgba(255, 255, 255, 0.96)");
         context.clip(mask);
         context.drawImage(source, 0, 0);
         context.restore();
@@ -95,9 +95,15 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     context.globalCompositeOperation = tool === "eraser" ? "destination-out" : "source-over";
     context.strokeStyle = brushColor;
     context.beginPath();
-    context.moveTo(previous.x, previous.y);
-    context.lineTo(point.x, point.y);
-    context.stroke();
+    if (previous.x === point.x && previous.y === point.y) {
+      context.arc(point.x, point.y, brushSize * 0.5, 0, Math.PI * 2);
+      context.fillStyle = brushColor;
+      context.fill();
+    } else {
+      context.moveTo(previous.x, previous.y);
+      context.lineTo(point.x, point.y);
+      context.stroke();
+    }
     context.restore();
 
     lastPointRef.current = point;
@@ -105,6 +111,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
   function startDrawing(event) {
     event.preventDefault();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
     const point = getCanvasPoint(canvasRef.current, event);
     drawingRef.current = true;
     lastPointRef.current = point;
@@ -117,7 +124,8 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     drawSegment(getCanvasPoint(canvasRef.current, event));
   }
 
-  function stopDrawing() {
+  function stopDrawing(event) {
+    event?.currentTarget?.releasePointerCapture?.(event.pointerId);
     drawingRef.current = false;
     lastPointRef.current = null;
   }
@@ -141,14 +149,11 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
           aria-label="お絵かきキャンバス"
           className="drawing-canvas"
           height={CANVAS_HEIGHT}
-          onMouseDown={startDrawing}
-          onMouseLeave={stopDrawing}
-          onMouseMove={moveDrawing}
-          onMouseUp={stopDrawing}
-          onTouchCancel={stopDrawing}
-          onTouchEnd={stopDrawing}
-          onTouchMove={moveDrawing}
-          onTouchStart={startDrawing}
+          onPointerCancel={stopDrawing}
+          onPointerDown={startDrawing}
+          onPointerLeave={stopDrawing}
+          onPointerMove={moveDrawing}
+          onPointerUp={stopDrawing}
           ref={canvasRef}
           width={CANVAS_WIDTH}
         />
