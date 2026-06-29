@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { createClient } from "@supabase/supabase-js";
-import { Check, Fish, Send, Sparkles, Waves } from "lucide-react";
+import { Check, Fish, QrCode, Send, Sparkles, Waves } from "lucide-react";
 import { FishPreview } from "./components/FishPreview";
 import { ColorGrid, SegmentedControl } from "./components/FormControls";
 import { QrPanel } from "./components/QrPanel";
@@ -49,6 +49,7 @@ function App() {
   const [personality, setPersonality] = useState("schooling");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
+  const [isQrOpen, setIsQrOpen] = useState(false);
 
   const nicknameError = useMemo(() => validateNickname(nickname), [nickname]);
   const selectedSpecies = speciesOptions.find((item) => item.id === species);
@@ -105,11 +106,19 @@ function App() {
           </p>
           <h1>魚をつくって海へ放流</h1>
         </div>
+        <button
+          aria-expanded={isQrOpen}
+          aria-haspopup="dialog"
+          className="qr-trigger"
+          onClick={() => setIsQrOpen(true)}
+          type="button"
+        >
+          <QrCode size={18} />
+          QR
+        </button>
       </section>
 
       <form className="composer" onSubmit={handleSubmit}>
-        <QrPanel />
-
         <FishPreview
           mainColor={mainColor}
           pattern={pattern}
@@ -180,6 +189,8 @@ function App() {
           {status === "sending" ? "放流中..." : "海へ放流"}
         </button>
       </form>
+
+      {isQrOpen ? <QrPanel onClose={() => setIsQrOpen(false)} /> : null}
     </main>
   );
 }

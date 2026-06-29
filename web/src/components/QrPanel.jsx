@@ -1,5 +1,5 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ExternalLink, X } from "lucide-react";
 import QRCode from "qrcode";
 
 function resolveQrTarget() {
@@ -9,7 +9,7 @@ function resolveQrTarget() {
   return "";
 }
 
-export function QrPanel() {
+export function QrPanel({ onClose }) {
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState("");
   const qrTarget = resolveQrTarget();
 
@@ -52,21 +52,26 @@ export function QrPanel() {
   }, [qrTarget]);
 
   return (
-    <section className="field-block qr-panel">
-      <div className="qr-copy">
-        <h2>掲示用QRコード</h2>
-        <p>デプロイ後に `VITE_PUBLIC_APP_URL` を設定すると、このQRが本番URLを指します。</p>
-      </div>
-      <div className="qr-card">
-        {qrCodeDataUrl ? (
-          <img alt="このアプリを開くQRコード" className="qr-image" src={qrCodeDataUrl} />
-        ) : (
-          <div className="qr-placeholder">QRを生成できませんでした</div>
-        )}
-        <a className="qr-link" href={qrTarget} rel="noreferrer" target="_blank">
-          {qrTarget || "URL未設定"}
-        </a>
-      </div>
-    </section>
+    <div aria-modal="true" className="qr-modal" onClick={onClose} role="dialog">
+      <section className="field-block qr-panel" onClick={(event) => event.stopPropagation()}>
+        <div className="qr-modal-header">
+          <h2>QRコード</h2>
+          <button aria-label="閉じる" className="qr-close" onClick={onClose} type="button">
+            <X size={18} />
+          </button>
+        </div>
+        <div className="qr-card">
+          {qrCodeDataUrl ? (
+            <img alt="このアプリを開くQRコード" className="qr-image" src={qrCodeDataUrl} />
+          ) : (
+            <div className="qr-placeholder">QRコードを生成できませんでした</div>
+          )}
+          <a className="qr-link" href={qrTarget} rel="noreferrer" target="_blank">
+            <ExternalLink size={14} />
+            {qrTarget || "URL未設定"}
+          </a>
+        </div>
+      </section>
+    </div>
   );
 }

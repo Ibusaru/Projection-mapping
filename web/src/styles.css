@@ -41,8 +41,24 @@ button {
 .hero {
   min-height: 118px;
   display: flex;
+  justify-content: space-between;
   align-items: end;
+  gap: 12px;
   padding: 10px 2px 18px;
+}
+
+.qr-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: start;
+  padding: 10px 14px;
+  border: 1px solid rgba(216, 253, 255, 0.18);
+  border-radius: 999px;
+  color: #eafcff;
+  background: rgba(3, 32, 47, 0.68);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  font-weight: 800;
 }
 
 .kicker {
@@ -471,13 +487,42 @@ input:focus {
 .qr-panel {
   display: grid;
   gap: 14px;
+  width: min(100%, 360px);
+  margin: 24px 16px;
+  padding: 16px;
 }
 
-.qr-copy p {
+.qr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(2, 18, 27, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.qr-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.qr-modal-header h2 {
   margin: 0;
-  color: #b7d8dc;
-  font-size: 0.84rem;
-  line-height: 1.5;
+}
+
+.qr-close {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(216, 253, 255, 0.18);
+  border-radius: 999px;
+  color: #eafcff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .qr-card {
@@ -513,12 +558,26 @@ input:focus {
 }
 
 .qr-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   width: 100%;
   color: #d8fbf4;
   font-size: 0.8rem;
   line-height: 1.5;
   text-align: center;
   word-break: break-all;
+}
+
+@media (max-width: 420px) {
+  .hero {
+    align-items: start;
+  }
+
+  .qr-trigger {
+    padding-inline: 12px;
+  }
 }
 
 @keyframes floaty {
