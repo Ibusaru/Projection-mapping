@@ -1,8 +1,9 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { Eraser, Paintbrush } from "lucide-react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { Eraser, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-react";
 
 const CANVAS_WIDTH = 1024;
 const CANVAS_HEIGHT = 512;
+const MAX_HISTORY_STEPS = 30;
 
 function createFishPath(context) {
   const path = new Path2D();
@@ -42,13 +43,59 @@ function getCanvasPoint(canvas, event) {
   };
 }
 
+function toHexColor(red, green, blue) {
+  return `#${[red, green, blue]
+    .map((value) => value.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
 export const DrawingCanvas = forwardRef(function DrawingCanvas(
-  { brushColor, brushSize, tool, onToolChange },
+  { brushColor, brushSize, tool, onColorPick, onToolChange },
   ref
 ) {
   const canvasRef = useRef(null);
   const drawingRef = useRef(false);
+  const changedRef = useRef(false);
   const lastPointRef = useRef(null);
+  const historyRef = useRef([]);
+  const historyIndexRef = useRef(-1);
+  const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
+
+  function updateHistoryState() {
+    setHistoryState({
+      canUndo: historyIndexRef.current > 0,
+      canRedo: historyIndexRef.current < historyRef.current.length - 1,
+    });
+  }
+
+  function pushHistory() {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    const snapshot = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    const activeHistory = historyRef.current.slice(0, historyIndexRef.current + 1);
+    activeHistory.push(snapshot);
+
+    if (activeHistory.length > MAX_HISTORY_STEPS) {
+      activeHistory.shift();
+    }
+
+    historyRef.current = activeHistory;
+    historyIndexRef.current = activeHistory.length - 1;
+    updateHistoryState();
+  }
+
+  function restoreHistory(index) {
+    const snapshot = historyRef.current[index];
+    if (!snapshot) return;
+
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.putImageData(snapshot, 0, 0);
+    historyIndexRef.current = index;
+    updateHistoryState();
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -56,6 +103,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     context.lineCap = "round";
     context.lineJoin = "round";
+    pushHistory();
   }, []);
 
   useImperativeHandle(ref, () => ({
@@ -63,6 +111,15 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
       context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      pushHistory();
+    },
+    undo() {
+      if (historyIndexRef.current <= 0) return;
+      restoreHistory(historyIndexRef.current - 1);
+    },
+    redo() {
+      if (historyIndexRef.current >= historyRef.current.length - 1) return;
+      restoreHistory(historyIndexRef.current + 1);
     },
     exportPngBlob() {
       return new Promise((resolve) => {
@@ -106,14 +163,35 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     }
     context.restore();
 
+    changedRef.current = true;
     lastPointRef.current = point;
+  }
+
+  function pickColor(point) {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    const sampleX = Math.max(0, Math.min(CANVAS_WIDTH - 1, Math.floor(point.x)));
+    const sampleY = Math.max(0, Math.min(CANVAS_HEIGHT - 1, Math.floor(point.y)));
+    const [red, green, blue, alpha] = context.getImageData(sampleX, sampleY, 1, 1).data;
+
+    if (alpha === 0) return;
+
+    onColorPick(toHexColor(red, green, blue));
+    onToolChange("brush");
   }
 
   function startDrawing(event) {
     event.preventDefault();
     event.currentTarget.setPointerCapture?.(event.pointerId);
     const point = getCanvasPoint(canvasRef.current, event);
+
+    if (tool === "eyedropper") {
+      pickColor(point);
+      return;
+    }
+
     drawingRef.current = true;
+    changedRef.current = false;
     lastPointRef.current = point;
     drawSegment(point);
   }
@@ -126,7 +204,12 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
   function stopDrawing(event) {
     event?.currentTarget?.releasePointerCapture?.(event.pointerId);
+    if (drawingRef.current && changedRef.current) {
+      pushHistory();
+    }
+
     drawingRef.current = false;
+    changedRef.current = false;
     lastPointRef.current = null;
   }
 
@@ -177,6 +260,36 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
           type="button"
         >
           <Eraser size={19} />
+        </button>
+        <button
+          aria-label="スポイト"
+          className={tool === "eyedropper" ? "icon-button selected" : "icon-button"}
+          onClick={() => onToolChange("eyedropper")}
+          title="スポイト"
+          type="button"
+        >
+          <Pipette size={19} />
+        </button>
+        <span className="tool-divider" aria-hidden="true" />
+        <button
+          aria-label="元に戻す"
+          className="icon-button"
+          disabled={!historyState.canUndo}
+          onClick={() => restoreHistory(historyIndexRef.current - 1)}
+          title="元に戻す"
+          type="button"
+        >
+          <Undo2 size={19} />
+        </button>
+        <button
+          aria-label="やり直し"
+          className="icon-button"
+          disabled={!historyState.canRedo}
+          onClick={() => restoreHistory(historyIndexRef.current + 1)}
+          title="やり直し"
+          type="button"
+        >
+          <Redo2 size={19} />
         </button>
       </div>
     </section>

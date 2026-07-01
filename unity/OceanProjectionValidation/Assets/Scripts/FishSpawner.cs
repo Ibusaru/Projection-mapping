@@ -17,13 +17,13 @@ public class FishSpawner : MonoBehaviour
     [Header("Spawn Area")]
     [SerializeField] private Vector3 center = Vector3.zero;
     [SerializeField] private Vector3 size = new Vector3(16f, 7f, 10f);
-    [SerializeField] private float releasedFishScaleMultiplier = 40f;
+    [SerializeField] private float releasedFishScaleMultiplier = 4f;
     [SerializeField] private Vector3 releasedFishSpawnSpread = new Vector3(6f, 2f, 4f);
 
     [Header("Default School")]
     [SerializeField] private bool spawnDefaultFishOnStart = true;
     [SerializeField] private int defaultFishCount = 54;
-    [SerializeField] private Vector2 defaultFishScaleRange = new Vector2(1.45f, 2.2f);
+    [SerializeField] private Vector2 defaultFishScaleRange = new Vector2(0.24f, 0.45f);
     [SerializeField] private bool autoFindFishAlivePrefabs = true;
     [SerializeField] private bool disableImportedFishMotion = true;
 
@@ -33,7 +33,7 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private float lifetimeSeconds = 600f;
 
     private readonly Queue<FishActor> fishQueue = new Queue<FishActor>();
-    private readonly Dictionary<string, FishActor> releasedFishByNickname = new Dictionary<string, FishActor>();
+    private readonly Dictionary<string, FishActor> releasedFishByKey = new Dictionary<string, FishActor>();
 
     private void Awake()
     {
@@ -76,19 +76,29 @@ public class FishSpawner : MonoBehaviour
     {
         foreach (FishData fish in fishes)
         {
+            if (fish == null)
+            {
+                continue;
+            }
+
             SpawnFish(fish);
         }
     }
 
     private void SpawnFish(FishData fish)
     {
-        string nicknameKey = NormalizeNicknameKey(fish.nickname);
-        if (!string.IsNullOrWhiteSpace(nicknameKey)
-            && releasedFishByNickname.TryGetValue(nicknameKey, out FishActor existingActor)
+        if (fish == null)
+        {
+            return;
+        }
+
+        string fishKey = NormalizeFishKey(fish);
+        if (!string.IsNullOrWhiteSpace(fishKey)
+            && releasedFishByKey.TryGetValue(fishKey, out FishActor existingActor)
             && existingActor != null)
         {
             existingActor.Apply(fish);
-            Debug.Log($"FishSpawner: updated '{fish.nickname}' with the latest drawing.");
+            Debug.Log($"FishSpawner: updated '{fish.nickname}' ({fish.id}) with the latest drawing.");
             return;
         }
 
@@ -114,9 +124,9 @@ public class FishSpawner : MonoBehaviour
         actor.SetSwimBounds(center, size);
         actor.Apply(fish);
         fishQueue.Enqueue(actor);
-        if (!string.IsNullOrWhiteSpace(nicknameKey))
+        if (!string.IsNullOrWhiteSpace(fishKey))
         {
-            releasedFishByNickname[nicknameKey] = actor;
+            releasedFishByKey[fishKey] = actor;
         }
 
         Debug.Log($"FishSpawner: spawned '{fish.nickname}' ({fish.species}) at {position}.");
@@ -339,16 +349,58 @@ public class FishSpawner : MonoBehaviour
         FishActor actor = fishQueue.Dequeue();
         if (actor != null)
         {
-            string nicknameKey = NormalizeNicknameKey(actor.Nickname);
-            if (!string.IsNullOrWhiteSpace(nicknameKey)
-                && releasedFishByNickname.TryGetValue(nicknameKey, out FishActor trackedActor)
-                && trackedActor == actor)
-            {
-                releasedFishByNickname.Remove(nicknameKey);
-            }
+            RemoveTrackedActor(actor);
 
             Destroy(actor.gameObject);
         }
+    }
+
+    private void RemoveTrackedActor(FishActor actor)
+    {
+        string keyToRemove = "";
+        foreach (KeyValuePair<string, FishActor> pair in releasedFishByKey)
+        {
+            if (pair.Value == actor)
+            {
+                keyToRemove = pair.Key;
+                break;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(keyToRemove))
+        {
+            releasedFishByKey.Remove(keyToRemove);
+        }
+    }
+
+    private static string NormalizeFishKey(FishData fish)
+    {
+        if (fish == null)
+        {
+            return "";
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.id))
+        {
+            return fish.id.Trim().ToLowerInvariant();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.texture_path))
+        {
+            return fish.texture_path.Trim().ToLowerInvariant();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.texture_url))
+        {
+            return fish.texture_url.Trim().ToLowerInvariant();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.created_at) || !string.IsNullOrWhiteSpace(fish.updated_at))
+        {
+            return $"{NormalizeNicknameKey(fish.nickname)}|{fish.created_at}|{fish.updated_at}";
+        }
+
+        return NormalizeNicknameKey(fish.nickname);
     }
 
     private static string NormalizeNicknameKey(string nickname)

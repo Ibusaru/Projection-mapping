@@ -15,6 +15,11 @@ public static class FishRendererUtility
         "billboard",
         "sprite",
         "canvas",
+        "label",
+        "nickname",
+        "name tag",
+        "tag line",
+        "drawing fish",
         "drawing image"
     };
 
@@ -85,6 +90,12 @@ public static class FishRendererUtility
                 continue;
             }
 
+            Mesh mesh = GetMesh(renderer);
+            if (HasIgnoredNamePart(renderer, mesh))
+            {
+                continue;
+            }
+
             fallback.Add(renderer);
         }
 
@@ -104,16 +115,26 @@ public static class FishRendererUtility
             return false;
         }
 
+        if (HasIgnoredNamePart(renderer, mesh))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool HasIgnoredNamePart(Renderer renderer, Mesh mesh)
+    {
         string searchableName = RendererSearchName(renderer, mesh);
         for (int i = 0; i < IgnoredNameParts.Length; i++)
         {
             if (searchableName.Contains(IgnoredNameParts[i]))
             {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     private static bool IsNonMeshRenderer(Renderer renderer)

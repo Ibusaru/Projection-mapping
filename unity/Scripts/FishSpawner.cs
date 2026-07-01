@@ -20,8 +20,8 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private Vector3 center = Vector3.zero;
     [SerializeField] private Vector3 size = new Vector3(16f, 7f, 10f);
     [FormerlySerializedAs("releasedFishScaleMultiplier")]
-    [SerializeField] private float releasedFishTargetLength = 1.8f;
-    [SerializeField] private Vector3 releasedFishSpawnSpread = new Vector3(6f, 2f, 4f);
+    [SerializeField] private float releasedFishTargetLength = 0.55f;
+    [SerializeField] private Vector3 releasedFishSpawnSpread = new Vector3(11f, 4f, 7f);
     [SerializeField] private float minimumReleasedFishSpawnDistanceFromCamera = 7f;
     [SerializeField] private int spawnPositionAttempts = 18;
 
@@ -29,7 +29,13 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private bool spawnDefaultFishOnStart = true;
     [SerializeField] private int defaultFishCount = 150;
     [FormerlySerializedAs("defaultFishScaleRange")]
-    [SerializeField] private Vector2 defaultFishTargetLengthRange = new Vector2(0.45f, 0.85f);
+    [SerializeField] private Vector2 defaultFishTargetLengthRange = new Vector2(0.18f, 0.38f);
+    [SerializeField] private Vector3 defaultSchoolSpread = new Vector3(44f, 4.4f, 28f);
+    [SerializeField] private float defaultSchoolYawJitter = 62f;
+    [SerializeField] private int defaultSchoolClusterCount = 14;
+    [SerializeField] private Vector2 defaultSchoolClusterRadiusRange = new Vector2(2.0f, 4.2f);
+    [SerializeField] private float defaultSchoolEdgeMargin = 4.8f;
+    [SerializeField] private float mediumSchoolChance = 0.28f;
     [SerializeField] private bool autoFindFishAlivePrefabs = true;
     [SerializeField] private bool disableImportedFishMotion = true;
 
@@ -41,6 +47,16 @@ public class FishSpawner : MonoBehaviour
     private readonly Queue<FishActor> fishQueue = new Queue<FishActor>();
     private readonly Dictionary<string, FishActor> releasedFishByKey = new Dictionary<string, FishActor>();
     private Transform runtimeFishParent;
+
+    private struct DefaultSchoolCluster
+    {
+        public int id;
+        public int count;
+        public Vector3 center;
+        public Vector3 forward;
+        public Quaternion orientation;
+        public float radius;
+    }
 
     private void Awake()
     {
@@ -137,7 +153,7 @@ public class FishSpawner : MonoBehaviour
             releasedFishByKey[fishKey] = actor;
         }
 
-        Debug.Log($"FishSpawner: spawned '{fish.nickname}' ({fish.species}) at {position}.");
+        Debug.Log($"FishSpawner: spawned '{fish.nickname}' ({fish.species}) key='{fishKey}' at {position}. trackedReleased={releasedFishByKey.Count}, totalQueue={fishQueue.Count}");
         Debug.Log($"FishSpawner: visual state for '{fish.nickname}' -> {actor.DescribeVisualState()}");
 
         TrimOverflow();
@@ -153,31 +169,41 @@ public class FishSpawner : MonoBehaviour
         }
 
         int spawnCount = Mathf.Clamp(defaultFishCount, 0, maxFishCount);
-        for (int i = 0; i < spawnCount; i++)
+        DefaultSchoolCluster[] clusters = CreateDefaultSchoolClusters(spawnCount);
+        int fishIndex = 0;
+        for (int clusterIndex = 0; clusterIndex < clusters.Length; clusterIndex++)
         {
-            GameObject prefab = prefabs[i % prefabs.Length];
-            if (prefab == null)
+            DefaultSchoolCluster cluster = clusters[clusterIndex];
+            for (int localIndex = 0; localIndex < cluster.count; localIndex++)
             {
-                continue;
+                GameObject prefab = prefabs[fishIndex % prefabs.Length];
+                if (prefab == null)
+                {
+                    fishIndex++;
+                    continue;
+                }
+
+                Vector3 position = DistributedPointInSchoolCluster(localIndex, cluster);
+                Quaternion rotation = Quaternion.LookRotation(cluster.forward, Vector3.up)
+                    * Quaternion.Euler(0f, Random.Range(-defaultSchoolYawJitter, defaultSchoolYawJitter), 0f);
+                GameObject instance = Instantiate(prefab, position, rotation, GetFishParent());
+                instance.name = $"Default Fish {prefab.name}";
+                PrepareSpawnedInstance(instance, false);
+
+                FishActor actor = instance.GetComponent<FishActor>();
+                if (actor == null)
+                {
+                    actor = instance.AddComponent<FishActor>();
+                }
+
+                actor.SetReleasedFish(false);
+                actor.SetSwimBounds(center, size);
+                actor.ConfigureSchoolGroup(cluster.id, cluster.center, cluster.forward, cluster.radius);
+                actor.Apply(CreateDefaultFishData(prefab.name, fishIndex));
+                NormalizeFishScaleToLength(instance, Random.Range(defaultFishTargetLengthRange.x, defaultFishTargetLengthRange.y));
+                fishQueue.Enqueue(actor);
+                fishIndex++;
             }
-
-            Vector3 position = DistributedPointInSpawnArea(i, spawnCount);
-            Quaternion rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-            GameObject instance = Instantiate(prefab, position, rotation, GetFishParent());
-            instance.name = $"Default Fish {prefab.name}";
-            PrepareSpawnedInstance(instance, false);
-
-            FishActor actor = instance.GetComponent<FishActor>();
-            if (actor == null)
-            {
-                actor = instance.AddComponent<FishActor>();
-            }
-
-            actor.SetReleasedFish(false);
-            actor.SetSwimBounds(center, size);
-            actor.Apply(CreateDefaultFishData(prefab.name, i));
-            NormalizeFishScaleToLength(instance, Random.Range(defaultFishTargetLengthRange.x, defaultFishTargetLengthRange.y));
-            fishQueue.Enqueue(actor);
         }
 
         TrimOverflow();
@@ -247,27 +273,183 @@ public class FishSpawner : MonoBehaviour
 
     private Vector3 ClampToSpawnArea(Vector3 position)
     {
+        return ClampToSpawnArea(position, 0f);
+    }
+
+    private Vector3 ClampToSpawnArea(Vector3 position, float inset)
+    {
+        Vector3 halfSize = new Vector3(
+            Mathf.Abs(size.x) * 0.5f,
+            Mathf.Abs(size.y) * 0.5f,
+            Mathf.Abs(size.z) * 0.5f
+        );
+        float horizontalInset = Mathf.Max(0f, inset);
+        float verticalInset = Mathf.Max(0f, inset * 0.35f);
+        float xInset = Mathf.Clamp(horizontalInset, 0f, Mathf.Max(0f, halfSize.x - 0.05f));
+        float yInset = Mathf.Clamp(verticalInset, 0f, Mathf.Max(0f, halfSize.y - 0.05f));
+        float zInset = Mathf.Clamp(horizontalInset, 0f, Mathf.Max(0f, halfSize.z - 0.05f));
+
         return new Vector3(
-            Mathf.Clamp(position.x, center.x - size.x * 0.5f, center.x + size.x * 0.5f),
-            Mathf.Clamp(position.y, center.y - size.y * 0.5f, center.y + size.y * 0.5f),
-            Mathf.Clamp(position.z, center.z - size.z * 0.5f, center.z + size.z * 0.5f)
+            Mathf.Clamp(position.x, center.x - halfSize.x + xInset, center.x + halfSize.x - xInset),
+            Mathf.Clamp(position.y, center.y - halfSize.y + yInset, center.y + halfSize.y - yInset),
+            Mathf.Clamp(position.z, center.z - halfSize.z + zInset, center.z + halfSize.z - zInset)
         );
     }
 
-    private Vector3 DistributedPointInSpawnArea(int index, int totalCount)
+    private Vector3 SafeSpawnHalfSize(float inset)
     {
-        int columns = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(totalCount)));
-        int rows = Mathf.Max(1, Mathf.CeilToInt(totalCount / (float)columns));
-        int row = index / columns;
-        int column = index % columns;
-        float normalizedX = (column + Random.Range(0.18f, 0.82f)) / columns - 0.5f;
-        float normalizedZ = (row + Random.Range(0.18f, 0.82f)) / rows - 0.5f;
-
-        return center + new Vector3(
-            normalizedX * size.x,
-            Random.Range(-size.y * 0.34f, size.y * 0.34f),
-            normalizedZ * size.z
+        Vector3 halfSize = new Vector3(
+            Mathf.Abs(size.x) * 0.5f,
+            Mathf.Abs(size.y) * 0.5f,
+            Mathf.Abs(size.z) * 0.5f
         );
+        return new Vector3(
+            Mathf.Max(0.1f, halfSize.x - Mathf.Max(0f, inset)),
+            Mathf.Max(0.1f, halfSize.y - Mathf.Max(0f, inset * 0.35f)),
+            Mathf.Max(0.1f, halfSize.z - Mathf.Max(0f, inset))
+        );
+    }
+
+    private Vector3 DistributedPointInSpawnArea(int index, int totalCount, Quaternion schoolOrientation)
+    {
+        float safeTotal = Mathf.Max(1, totalCount);
+        float goldenAngle = 137.508f * Mathf.Deg2Rad;
+        float radius = Mathf.Sqrt((index + 0.5f) / safeTotal);
+        float angle = index * goldenAngle + Random.Range(-0.18f, 0.18f);
+        Vector3 safeSpread = new Vector3(
+            Mathf.Min(Mathf.Abs(defaultSchoolSpread.x), Mathf.Abs(size.x) * 0.78f),
+            Mathf.Min(Mathf.Abs(defaultSchoolSpread.y), Mathf.Abs(size.y) * 0.72f),
+            Mathf.Min(Mathf.Abs(defaultSchoolSpread.z), Mathf.Abs(size.z) * 0.78f)
+        );
+
+        Vector3 localOffset = new Vector3(
+            Mathf.Cos(angle) * radius * safeSpread.x * 0.5f,
+            Random.Range(-safeSpread.y * 0.5f, safeSpread.y * 0.5f),
+            Mathf.Sin(angle) * radius * safeSpread.z * 0.5f
+        );
+        localOffset += new Vector3(
+            Random.Range(-safeSpread.x * 0.035f, safeSpread.x * 0.035f),
+            Random.Range(-safeSpread.y * 0.08f, safeSpread.y * 0.08f),
+            Random.Range(-safeSpread.z * 0.035f, safeSpread.z * 0.035f)
+        );
+
+        return ClampToSpawnArea(center + schoolOrientation * localOffset);
+    }
+
+    private DefaultSchoolCluster[] CreateDefaultSchoolClusters(int totalCount)
+    {
+        if (totalCount <= 0)
+        {
+            return new DefaultSchoolCluster[0];
+        }
+
+        int clusterCount = Mathf.Clamp(
+            defaultSchoolClusterCount > 0 ? defaultSchoolClusterCount : Mathf.RoundToInt(Mathf.Sqrt(totalCount)),
+            1,
+            totalCount
+        );
+        DefaultSchoolCluster[] clusters = new DefaultSchoolCluster[clusterCount];
+        int remaining = totalCount;
+        Quaternion spreadOrientation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+
+        for (int i = 0; i < clusterCount; i++)
+        {
+            int remainingClusters = clusterCount - i;
+            int count = i == clusterCount - 1
+                ? remaining
+                : PickClusterSize(totalCount, clusterCount, remaining, remainingClusters);
+            remaining -= count;
+
+            float yaw = Random.Range(0f, 360f);
+            Vector3 forward = Quaternion.Euler(0f, yaw, 0f) * Vector3.forward;
+            float radius = Random.Range(defaultSchoolClusterRadiusRange.x, defaultSchoolClusterRadiusRange.y);
+            if (Random.value < mediumSchoolChance)
+            {
+                radius *= Random.Range(1.18f, 1.45f);
+            }
+
+            clusters[i] = new DefaultSchoolCluster
+            {
+                id = i,
+                count = count,
+                center = DistributedClusterCenter(i, clusterCount, spreadOrientation, radius),
+                forward = forward.normalized,
+                orientation = Quaternion.LookRotation(forward, Vector3.up),
+                radius = Mathf.Max(1.5f, radius)
+            };
+
+            remaining = Mathf.Max(0, totalCount - SumClusterCounts(clusters, i + 1));
+        }
+
+        if (SumClusterCounts(clusters, clusters.Length) != totalCount && clusters.Length > 0)
+        {
+            clusters[clusters.Length - 1].count += totalCount - SumClusterCounts(clusters, clusters.Length);
+        }
+
+        return clusters;
+    }
+
+    private int PickClusterSize(int totalCount, int clusterCount, int remaining, int remainingClusters)
+    {
+        int average = Mathf.Max(1, Mathf.RoundToInt(totalCount / (float)clusterCount));
+        int minCount = Mathf.Max(3, Mathf.RoundToInt(average * 0.55f));
+        int maxCount = Mathf.Max(minCount, Mathf.RoundToInt(average * 1.55f));
+        int reserve = Mathf.Max(0, remainingClusters - 1) * minCount;
+        int upper = Mathf.Clamp(remaining - reserve, minCount, maxCount);
+        return Mathf.Clamp(Random.Range(minCount, upper + 1), 1, remaining);
+    }
+
+    private int SumClusterCounts(DefaultSchoolCluster[] clusters, int count)
+    {
+        int total = 0;
+        for (int i = 0; i < count && i < clusters.Length; i++)
+        {
+            total += clusters[i].count;
+        }
+
+        return total;
+    }
+
+    private Vector3 DistributedClusterCenter(int index, int totalCount, Quaternion spreadOrientation, float clusterRadius)
+    {
+        float safeTotal = Mathf.Max(1, totalCount);
+        float goldenAngle = 137.508f * Mathf.Deg2Rad;
+        float radius = Mathf.Sqrt((index + 0.5f) / safeTotal);
+        float angle = index * goldenAngle + Random.Range(-0.32f, 0.32f);
+        float edgeMargin = Mathf.Max(defaultSchoolEdgeMargin, clusterRadius + 1.4f);
+        Vector3 safeHalfSize = SafeSpawnHalfSize(edgeMargin);
+        Vector3 safeSpread = new Vector3(
+            Mathf.Min(Mathf.Abs(defaultSchoolSpread.x), safeHalfSize.x * 2f),
+            Mathf.Min(Mathf.Abs(defaultSchoolSpread.y), safeHalfSize.y * 2f),
+            Mathf.Min(Mathf.Abs(defaultSchoolSpread.z), safeHalfSize.z * 2f)
+        );
+
+        Vector3 localOffset = new Vector3(
+            Mathf.Cos(angle) * radius * safeSpread.x * 0.5f,
+            Random.Range(-safeSpread.y * 0.5f, safeSpread.y * 0.5f),
+            Mathf.Sin(angle) * radius * safeSpread.z * 0.5f
+        );
+        return ClampToSpawnArea(center + spreadOrientation * localOffset, edgeMargin);
+    }
+
+    private Vector3 DistributedPointInSchoolCluster(int index, DefaultSchoolCluster cluster)
+    {
+        float safeCount = Mathf.Max(1, cluster.count);
+        float goldenAngle = 137.508f * Mathf.Deg2Rad;
+        float radius = Mathf.Sqrt((index + 0.5f) / safeCount) * cluster.radius;
+        float angle = index * goldenAngle + Random.Range(-0.22f, 0.22f);
+        Vector3 localOffset = new Vector3(
+            Mathf.Cos(angle) * radius,
+            Random.Range(-cluster.radius * 0.22f, cluster.radius * 0.22f),
+            Mathf.Sin(angle) * radius * 0.68f
+        );
+        localOffset += new Vector3(
+            Random.Range(-cluster.radius * 0.14f, cluster.radius * 0.14f),
+            Random.Range(-cluster.radius * 0.08f, cluster.radius * 0.08f),
+            Random.Range(-cluster.radius * 0.14f, cluster.radius * 0.14f)
+        );
+
+        return ClampToSpawnArea(cluster.center + cluster.orientation * localOffset, Mathf.Max(1.2f, defaultSchoolEdgeMargin * 0.35f));
     }
 
     private GameObject[] GetDefaultFishPrefabs()
@@ -464,7 +646,7 @@ public class FishSpawner : MonoBehaviour
 
     private void NormalizeReleasedFishScale(GameObject instance, string sizeName)
     {
-        NormalizeFishScaleToLength(instance, Mathf.Max(0.5f, releasedFishTargetLength) * ReleasedFishSizeMultiplier(sizeName));
+        NormalizeFishScaleToLength(instance, Mathf.Max(0.05f, releasedFishTargetLength) * ReleasedFishSizeMultiplier(sizeName));
     }
 
     private void NormalizeFishScaleToLength(GameObject instance, float targetLength)
@@ -476,7 +658,7 @@ public class FishSpawner : MonoBehaviour
             return;
         }
 
-        float scaleFactor = Mathf.Max(0.15f, targetLength) / currentLength;
+        float scaleFactor = Mathf.Max(0.05f, targetLength) / currentLength;
         instance.transform.localScale *= scaleFactor;
     }
 
@@ -602,9 +784,27 @@ public class FishSpawner : MonoBehaviour
             return "";
         }
 
-        return !string.IsNullOrWhiteSpace(fish.id)
-            ? fish.id.Trim().ToLowerInvariant()
-            : NormalizeNicknameKey(fish.nickname);
+        if (!string.IsNullOrWhiteSpace(fish.id))
+        {
+            return fish.id.Trim().ToLowerInvariant();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.texture_path))
+        {
+            return fish.texture_path.Trim().ToLowerInvariant();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.texture_url))
+        {
+            return fish.texture_url.Trim().ToLowerInvariant();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.created_at) || !string.IsNullOrWhiteSpace(fish.updated_at))
+        {
+            return $"{NormalizeNicknameKey(fish.nickname)}|{fish.created_at}|{fish.updated_at}";
+        }
+
+        return NormalizeNicknameKey(fish.nickname);
     }
 
     private static string NormalizeNicknameKey(string nickname)

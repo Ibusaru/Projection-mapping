@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1188mm" height="841mm" viewBox="0 0 1188 841" role="img" aria-labelledby="title desc">
+  <title id="title">A1×2ポスター レイアウト案</title>
+  <desc id="desc">A1用紙を横に2枚並べた研究ポスターのレイアウト案。左に背景と目的、中央に方法とメイン結果、右に考察と結論を配置。</desc>
+  <defs>
+    <style>
+      .page { fill: #f7f9fb; }
+      .guide { stroke: #94a3b8; stroke-width: 1.2; stroke-dasharray: 8 8; }
+      .band { fill: #123047; }
+      .section { fill: #ffffff; stroke: #d5dde6; stroke-width: 1.4; rx: 5; }
+      .section-soft { fill: #eef6f5; stroke: #b8d8d4; stroke-width: 1.4; rx: 5; }
+      .result { fill: #fff8ed; stroke: #f0b86a; stroke-width: 2; rx: 5; }
+      .small { fill: #edf2f7; stroke: #cbd5e1; stroke-width: 1.2; rx: 4; }
+      .title-text { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; font-size: 33px; font-weight: 700; fill: #ffffff; }
+      .meta-text { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; font-size: 12px; fill: #dbeafe; }
+      .h1 { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; font-size: 20px; font-weight: 700; fill: #123047; }
+      .h2 { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; font-size: 17px; font-weight: 700; fill: #123047; }
+      .body { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; font-size: 12.5px; fill: #425466; }
+      .note { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; font-size: 10.5px; fill: #64748b; }
+      .label { font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif; font-size: 13px; font-weight: 700; fill: #ffffff; }
+      .accent-blue { fill: #1f6f8b; }
+      .accent-teal { fill: #2f8f83; }
+      .accent-orange { fill: #d97706; }
+      .line-blue { stroke: #1f6f8b; stroke-width: 3; fill: none; }
+      .line-teal { stroke: #2f8f83; stroke-width: 3; fill: none; }
+      .line-orange { stroke: #d97706; stroke-width: 3; fill: none; }
+    </style>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f6f8b"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2f8f83"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <rect class="page" x="0" y="0" width="1188" height="841"/>
+  <line class="guide" x1="594" y1="0" x2="594" y2="841"/>
+  <text class="note" x="560" y="824">A1</text>
+  <text class="note" x="608" y="824">A1</text>
+
+  <rect class="band" x="32" y="28" width="1124" height="92" rx="6"/>
+  <text class="title-text" x="58" y="76">研究タイトル：○○を用いた□□の設計と評価</text>
+  <text class="meta-text" x="60" y="102">氏名・所属・発表番号　/　最重要メッセージを1文でここに置く</text>
+  <rect x="1018" y="50" width="102" height="48" rx="4" fill="#ffffff" opacity="0.95"/>
+  <text class="note" x="1035" y="79">QR / 連絡先</text>
+
+  <rect class="section" x="44" y="148" width="300" height="168"/>
+  <rect class="accent-blue" x="44" y="148" width="300" height="32" rx="5"/>
+  <text class="label" x="62" y="169">1. 背景・問題</text>
+  <text class="h2" x="65" y="210">なぜこの研究が必要か</text>
+  <text class="body" x="65" y="237">・現状の課題</text>
+  <text class="body" x="65" y="260">・既存手法の限界</text>
+  <text class="body" x="65" y="283">・本研究で扱う対象</text>
+
+  <rect class="section-soft" x="44" y="346" width="300" height="150"/>
+  <rect class="accent-teal" x="44" y="346" width="300" height="32" rx="5"/>
+  <text class="label" x="62" y="367">2. 目的・問い</text>
+  <text class="h2" x="65" y="409">研究のゴール</text>
+  <text class="body" x="65" y="438">「○○を実現できるか？」</text>
+  <text class="body" x="65" y="462">評価指標：精度・時間・使いやすさ</text>
+
+  <rect class="section" x="44" y="526" width="300" height="202"/>
+  <rect class="accent-blue" x="44" y="526" width="300" height="32" rx="5"/>
+  <text class="label" x="62" y="547">3. 提案・方法</text>
+  <rect class="small" x="70" y="590" width="72" height="48"/>
+  <text class="note" x="85" y="619">入力</text>
+  <rect class="small" x="165" y="590" width="72" height="48"/>
+  <text class="note" x="180" y="619">処理</text>
+  <rect class="small" x="260" y="590" width="54" height="48"/>
+  <text class="note" x="272" y="619">出力</text>
+  <path class="line-blue" d="M143 614 L160 614" marker-end="url(#arrow-blue)"/>
+  <path class="line-blue" d="M238 614 L254 614" marker-end="url(#arrow-blue)"/>
+  <text class="body" x="65" y="678">手順は図で見せ、本文は短く。</text>
+  <text class="body" x="65" y="703">発表時にここを指しながら説明。</text>
+
+  <rect class="result" x="382" y="148" width="424" height="398"/>
+  <rect class="accent-orange" x="382" y="148" width="424" height="38" rx="5"/>
+  <text class="label" x="404" y="173">4. メイン結果：一番見せたい図を大きく</text>
+  <rect x="424" y="224" width="338" height="220" rx="4" fill="#ffffff" stroke="#f2c98b" stroke-width="1.4"/>
+  <path d="M458 396 L458 258" stroke="#94a3b8" stroke-width="1.2"/>
+  <path d="M458 396 L724 396" stroke="#94a3b8" stroke-width="1.2"/>
+  <path class="line-orange" d="M474 372 C530 342, 558 322, 604 296 S682 264, 710 245"/>
+  <path class="line-teal" d="M474 374 C530 360, 560 354, 604 340 S680 316, 710 300"/>
+  <circle cx="710" cy="245" r="5" fill="#d97706"/>
+  <circle cx="710" cy="300" r="5" fill="#2f8f83"/>
+  <text class="note" x="458" y="424">比較グラフ・実験結果・完成物写真など</text>
+  <text class="h1" x="424" y="486">結論につながる数字を大きく</text>
+  <text class="body" x="424" y="514">例：従来比 ○○% 改善 / 誤差 ○○ 低減</text>
+
+  <rect class="section-soft" x="382" y="576" width="424" height="152"/>
+  <rect class="accent-teal" x="382" y="576" width="424" height="32" rx="5"/>
+  <text class="label" x="404" y="597">5. サブ結果・比較</text>
+  <rect class="small" x="420" y="635" width="90" height="54"/>
+  <rect class="small" x="548" y="635" width="90" height="54"/>
+  <rect class="small" x="676" y="635" width="90" height="54"/>
+  <text class="note" x="440" y="666">条件A</text>
+  <text class="note" x="568" y="666">条件B</text>
+  <text class="note" x="696" y="666">条件C</text>
+  <text class="body" x="424" y="716">横並び比較で差がすぐ分かるようにする。</text>
+
+  <rect class="section" x="844" y="148" width="300" height="178"/>
+  <rect class="accent-blue" x="844" y="148" width="300" height="32" rx="5"/>
+  <text class="label" x="862" y="169">6. 考察</text>
+  <text class="h2" x="866" y="212">結果から言えること</text>
+  <text class="body" x="866" y="242">・なぜ改善したのか</text>
+  <text class="body" x="866" y="266">・どの条件で有効か</text>
+  <text class="body" x="866" y="290">・限界や注意点</text>
+
+  <rect class="section-soft" x="844" y="356" width="300" height="178"/>
+  <rect class="accent-teal" x="844" y="356" width="300" height="32" rx="5"/>
+  <text class="label" x="862" y="377">7. 結論</text>
+  <text class="h1" x="866" y="424">本研究の答え</text>
+  <text class="body" x="866" y="456">1文で主張を書く。</text>
+  <text class="body" x="866" y="480">重要な貢献を2〜3点に絞る。</text>
+  <text class="body" x="866" y="504">発表の最後にここへ戻る。</text>
+
+  <rect class="section" x="844" y="564" width="300" height="164"/>
+  <rect class="accent-orange" x="844" y="564" width="300" height="32" rx="5"/>
+  <text class="label" x="862" y="585">8. 今後・参考文献</text>
+  <text class="body" x="866" y="630">今後の展望：実装拡張・評価追加</text>
+  <text class="body" x="866" y="656">参考文献：主要なものだけ小さく</text>
+  <text class="body" x="866" y="682">謝辞・助成情報など</text>
+
+  <path class="line-blue" d="M350 438 C366 438, 366 278, 378 278" marker-end="url(#arrow-blue)"/>
+  <path class="line-teal" d="M810 474 C824 474, 824 440, 838 440" marker-end="url(#arrow-teal)"/>
+  <path class="line-orange" d="M994 538 L994 558" marker-end="url(#arrow-orange)"/>
+
+  <text class="note" x="44" y="771">配色：白背景 + 濃紺 + 青緑 + オレンジ。本文は少なく、図の中にラベルを入れる。</text>
+  <text class="note" x="44" y="793">視線誘導：背景 → 目的 → 方法 → メイン結果 → 考察 → 結論。</text>
+</svg>

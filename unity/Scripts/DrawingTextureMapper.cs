@@ -2,6 +2,63 @@ using UnityEngine;
 
 public static class DrawingTextureMapper
 {
+    public static Texture2D CreateProjectionTexture(Texture2D source, float alphaThreshold)
+    {
+        if (source == null)
+        {
+            return null;
+        }
+
+        Color32[] sourcePixels = source.GetPixels32();
+        if (!TryFindPaintedBounds(sourcePixels, source.width, source.height, alphaThreshold, out RectInt paintedBounds))
+        {
+            return CreateSolidTexture(source.name, source.width, source.height, Color.white, "ProjectionFilledFallback");
+        }
+
+        Color32 fallbackColor = AveragePaintedColor(sourcePixels, alphaThreshold);
+        Color32[] columnColors = BuildColumnColors(sourcePixels, source.width, paintedBounds, fallbackColor, alphaThreshold);
+        Color32[] outputPixels = new Color32[sourcePixels.Length];
+
+        for (int y = 0; y < source.height; y++)
+        {
+            float v = source.height <= 1 ? 0f : y / (float)(source.height - 1);
+            int sourceY = Mathf.Clamp(
+                Mathf.RoundToInt(Mathf.Lerp(paintedBounds.yMin, paintedBounds.yMax - 1, v)),
+                0,
+                source.height - 1
+            );
+
+            for (int x = 0; x < source.width; x++)
+            {
+                float u = source.width <= 1 ? 0f : x / (float)(source.width - 1);
+                int sourceX = Mathf.Clamp(
+                    Mathf.RoundToInt(Mathf.Lerp(paintedBounds.xMin, paintedBounds.xMax - 1, u)),
+                    0,
+                    source.width - 1
+                );
+
+                outputPixels[y * source.width + x] = SampleFilledColor(
+                    sourcePixels,
+                    source.width,
+                    sourceX,
+                    sourceY,
+                    columnColors[sourceX],
+                    alphaThreshold
+                );
+            }
+        }
+
+        Texture2D texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, true)
+        {
+            name = $"{source.name}_ProjectionFilled",
+            filterMode = FilterMode.Bilinear,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        texture.SetPixels32(outputPixels);
+        texture.Apply(true, false);
+        return texture;
+    }
+
     public static Texture2D CreateModelTexture(Texture2D source, int textureSize, float alphaThreshold)
     {
         if (source == null)
@@ -13,7 +70,7 @@ public static class DrawingTextureMapper
         Color32[] sourcePixels = source.GetPixels32();
         if (!TryFindPaintedBounds(sourcePixels, source.width, source.height, alphaThreshold, out RectInt paintedBounds))
         {
-            return CreateSolidTexture(source.name, outputSize, Color.white);
+            return CreateSolidTexture(source.name, outputSize, outputSize, Color.white, "ModelMappedFallback");
         }
 
         Color32 fallbackColor = AveragePaintedColor(sourcePixels, alphaThreshold);
@@ -38,12 +95,14 @@ public static class DrawingTextureMapper
                     source.width - 1
                 );
 
-                Color32 sampled = sourcePixels[sourceY * source.width + sourceX];
-                Color32 color = sampled.a / 255f >= alphaThreshold
-                    ? sampled
-                    : columnColors[sourceX];
-                color.a = 255;
-                outputPixels[y * outputSize + x] = color;
+                outputPixels[y * outputSize + x] = SampleFilledColor(
+                    sourcePixels,
+                    source.width,
+                    sourceX,
+                    sourceY,
+                    columnColors[sourceX],
+                    alphaThreshold
+                );
             }
         }
 
@@ -56,6 +115,25 @@ public static class DrawingTextureMapper
         texture.SetPixels32(outputPixels);
         texture.Apply(true, false);
         return texture;
+    }
+
+    private static Color32 SampleFilledColor(
+        Color32[] pixels,
+        int width,
+        int x,
+        int y,
+        Color32 fallbackColor,
+        float alphaThreshold
+    )
+    {
+        Color32 color = pixels[y * width + x];
+        if (color.a / 255f < alphaThreshold)
+        {
+            color = fallbackColor;
+        }
+
+        color.a = 255;
+        return color;
     }
 
     private static bool TryFindPaintedBounds(Color32[] pixels, int width, int height, float alphaThreshold, out RectInt bounds)
@@ -132,6 +210,7 @@ public static class DrawingTextureMapper
     )
     {
         Color32[] colors = new Color32[width];
+        bool[] hasColor = new bool[width];
         byte alphaByteThreshold = AlphaByteThreshold(alphaThreshold);
 
         for (int x = 0; x < width; x++)
@@ -157,9 +236,66 @@ public static class DrawingTextureMapper
             colors[x] = count > 0
                 ? new Color32((byte)(r / count), (byte)(g / count), (byte)(b / count), 255)
                 : fallbackColor;
+            hasColor[x] = count > 0;
         }
 
+        FillEmptyColumnColors(colors, hasColor, fallbackColor);
         return colors;
+    }
+
+    private static void FillEmptyColumnColors(Color32[] colors, bool[] hasColor, Color32 fallbackColor)
+    {
+        int lastPainted = -1;
+        int[] nearestLeft = new int[colors.Length];
+        int[] nearestRight = new int[colors.Length];
+
+        for (int x = 0; x < colors.Length; x++)
+        {
+            if (hasColor[x])
+            {
+                lastPainted = x;
+            }
+
+            nearestLeft[x] = lastPainted;
+        }
+
+        lastPainted = -1;
+        for (int x = colors.Length - 1; x >= 0; x--)
+        {
+            if (hasColor[x])
+            {
+                lastPainted = x;
+            }
+
+            nearestRight[x] = lastPainted;
+        }
+
+        for (int x = 0; x < colors.Length; x++)
+        {
+            if (hasColor[x])
+            {
+                continue;
+            }
+
+            int left = nearestLeft[x];
+            int right = nearestRight[x];
+            if (left < 0 && right < 0)
+            {
+                colors[x] = fallbackColor;
+            }
+            else if (left < 0)
+            {
+                colors[x] = colors[right];
+            }
+            else if (right < 0)
+            {
+                colors[x] = colors[left];
+            }
+            else
+            {
+                colors[x] = x - left <= right - x ? colors[left] : colors[right];
+            }
+        }
     }
 
     private static byte AlphaByteThreshold(float alphaThreshold)
@@ -167,17 +303,17 @@ public static class DrawingTextureMapper
         return (byte)Mathf.Clamp(Mathf.RoundToInt(alphaThreshold * 255f), 1, 255);
     }
 
-    private static Texture2D CreateSolidTexture(string sourceName, int outputSize, Color32 color)
+    private static Texture2D CreateSolidTexture(string sourceName, int width, int height, Color32 color, string suffix)
     {
-        Color32[] pixels = new Color32[outputSize * outputSize];
+        Color32[] pixels = new Color32[width * height];
         for (int i = 0; i < pixels.Length; i++)
         {
             pixels[i] = color;
         }
 
-        Texture2D texture = new Texture2D(outputSize, outputSize, TextureFormat.RGBA32, true)
+        Texture2D texture = new Texture2D(width, height, TextureFormat.RGBA32, true)
         {
-            name = $"{sourceName}_ModelMappedFallback",
+            name = $"{sourceName}_{suffix}",
             filterMode = FilterMode.Bilinear,
             wrapMode = TextureWrapMode.Clamp
         };

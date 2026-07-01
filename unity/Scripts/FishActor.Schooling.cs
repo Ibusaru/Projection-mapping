@@ -44,17 +44,31 @@ public partial class FishActor
 
         if (Time.time < nextSchoolUpdateTime)
         {
-            return (direction + schoolDirection * currentSchoolStrength).normalized;
+            return ApplySchoolDirection(direction);
         }
 
         nextSchoolUpdateTime = Time.time + schoolUpdateSeconds + Random.Range(0f, 0.12f);
         IReadOnlyList<FishActor> fishes = AllActiveFishes;
         Vector3 alignment = Vector3.zero;
-        Vector3 cohesion = Vector3.zero;
+        Vector3 cohesionCenter = Vector3.zero;
         Vector3 separation = Vector3.zero;
         Vector3 averageForward = Vector3.zero;
-        float averageNeighborY = 0f;
+        Vector3 gatherCenter = Vector3.zero;
+        Vector3 gatherForward = Vector3.zero;
+        float totalNeighborWeight = 0f;
+        float totalGatherWeight = 0f;
         int neighborCount = 0;
+        Vector3 position = transform.position;
+        Vector3 forward = StableForward(direction);
+        float neighborRadiusValue = Mathf.Max(0.1f, neighborRadius);
+        float neighborRadiusSqr = neighborRadiusValue * neighborRadiusValue;
+        float gatherRadiusValue = Mathf.Max(neighborRadiusValue, schoolGatherRadius);
+        float gatherRadiusSqr = gatherRadiusValue * gatherRadiusValue;
+        float queryRadiusSqr = releasedFish ? neighborRadiusSqr : Mathf.Max(neighborRadiusSqr, gatherRadiusSqr);
+        float separationRadiusValue = Mathf.Max(0.05f, separationRadius);
+        float sameColumnRadiusValue = Mathf.Max(0.05f, sameColumnAvoidanceRadius);
+        float verticalSeparationRadiusValue = Mathf.Max(0.05f, verticalSeparationRadius);
+        float visionDot = Mathf.Cos(Mathf.Clamp(schoolVisionAngle, 30f, 360f) * 0.5f * Mathf.Deg2Rad);
 
         for (int i = 0; i < fishes.Count; i++)
         {
@@ -64,69 +78,158 @@ public partial class FishActor
                 continue;
             }
 
-            Vector3 offset = neighbor.transform.position - transform.position;
-            Vector3 horizontalOffset = new Vector3(offset.x, 0f, offset.z);
-            float horizontalDistance = horizontalOffset.magnitude;
-            if (horizontalDistance > neighborRadius)
+            Vector3 offset = neighbor.transform.position - position;
+            float distanceSqr = offset.sqrMagnitude;
+            if (distanceSqr > queryRadiusSqr || distanceSqr < 0.0001f)
             {
                 continue;
             }
 
-            neighborCount++;
+            float distance = Mathf.Sqrt(distanceSqr);
+            Vector3 toNeighbor = offset / distance;
             Vector3 neighborForward = neighbor.transform.forward;
-            Vector3 horizontalForward = new Vector3(neighborForward.x, 0f, neighborForward.z);
-            alignment += horizontalForward;
-            averageForward += horizontalForward;
-            cohesion += new Vector3(neighbor.transform.position.x, 0f, neighbor.transform.position.z);
-            averageNeighborY += neighbor.transform.position.y;
+            float horizontalDistance = new Vector2(offset.x, offset.z).magnitude;
+            bool personalSpace = distance < separationRadiusValue || horizontalDistance < sameColumnRadiusValue;
+            bool schoolMate = CanSchoolWith(neighbor);
 
-            if (horizontalDistance < sameColumnAvoidanceRadius)
+            if (!schoolMate && !personalSpace)
             {
-                Vector3 escape = horizontalDistance > 0.001f
-                    ? -horizontalOffset.normalized
-                    : RandomEscapeDirection(neighbor);
-                separation += escape * sameColumnAvoidanceWeight * (1f - horizontalDistance / sameColumnAvoidanceRadius);
+                continue;
             }
-            else if (horizontalDistance < separationRadius)
+
+            if (schoolMate && !releasedFish && !neighbor.releasedFish && distanceSqr <= gatherRadiusSqr)
             {
-                separation -= horizontalOffset.normalized * (1f - horizontalDistance / separationRadius);
+                float gatherWeight = Mathf.Lerp(0.25f, 1f, 1f - distance / gatherRadiusValue);
+                gatherCenter += neighbor.transform.position * gatherWeight;
+                gatherForward += StableDirection(neighborForward, forward) * gatherWeight;
+                totalGatherWeight += gatherWeight;
+            }
+
+            if (distanceSqr > neighborRadiusSqr)
+            {
+                continue;
+            }
+
+            if (schoolMate && !personalSpace && Vector3.Dot(forward, toNeighbor) < visionDot)
+            {
+                continue;
+            }
+
+            float distanceWeight = Mathf.Lerp(0.35f, 1f, 1f - distance / neighborRadiusValue);
+            float neighborWeight = distanceWeight * (schoolMate ? NeighborSchoolingWeight(neighbor) : 0.35f);
+            if (neighborWeight <= 0.001f)
+            {
+                continue;
+            }
+
+            if (schoolMate)
+            {
+                neighborCount++;
+                Vector3 softenedForward = ScaleVertical(StableDirection(neighborForward, forward), 0.65f);
+                if (softenedForward.sqrMagnitude > 0.001f)
+                {
+                    alignment += softenedForward.normalized * neighborWeight;
+                }
+
+                averageForward += StableDirection(neighborForward, forward) * neighborWeight;
+                cohesionCenter += neighbor.transform.position * neighborWeight;
+                totalNeighborWeight += neighborWeight;
+            }
+
+            if (distance < separationRadiusValue)
+            {
+                Vector3 separationAxis = ScaleVertical(toNeighbor, 0.85f);
+                if (separationAxis.sqrMagnitude > 0.001f)
+                {
+                    float personalSpaceWeight = 1f - distance / separationRadiusValue;
+                    separation -= separationAxis.normalized * personalSpaceWeight * neighborWeight / Mathf.Max(distance, 0.35f);
+                }
+            }
+
+            if (horizontalDistance < sameColumnRadiusValue)
+            {
+                Vector3 horizontalEscape = horizontalDistance > 0.001f
+                    ? new Vector3(-offset.x, 0f, -offset.z).normalized
+                    : RandomEscapeDirection(neighbor);
+                float columnWeight = 1f - horizontalDistance / sameColumnRadiusValue;
+                separation += horizontalEscape * columnWeight * sameColumnAvoidanceWeight * neighborWeight;
             }
 
             float verticalDistance = Mathf.Abs(offset.y);
-            if (verticalDistance < verticalSeparationRadius)
+            if (verticalDistance < verticalSeparationRadiusValue)
             {
                 float pushDirection = offset.y >= 0f ? -1f : 1f;
-                separation += Vector3.up * pushDirection * (1f - verticalDistance / verticalSeparationRadius) * verticalSeparationWeight;
+                separation += Vector3.up * pushDirection * (1f - verticalDistance / verticalSeparationRadiusValue) * verticalSeparationWeight * neighborWeight;
             }
         }
 
-        if (neighborCount == 0)
+        float schoolingInfluence = EffectiveSchoolingStrength();
+        Vector3 boidDirection = Vector3.zero;
+        if (neighborCount > 0 && alignment.sqrMagnitude > 0.001f)
         {
-            schoolDirection = Vector3.Lerp(schoolDirection, Vector3.zero, 0.45f);
-            return (direction + schoolDirection * currentSchoolStrength).normalized;
+            boidDirection += alignment.normalized * alignmentWeight * schoolingInfluence;
         }
 
-        float schoolingInfluence = currentSchoolStrength;
-        alignment = alignment.normalized * alignmentWeight * schoolingInfluence;
-        Vector3 schoolForward = averageForward.sqrMagnitude > 0.001f
-            ? averageForward.normalized
-            : new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
-        if (schoolForward.sqrMagnitude < 0.001f)
+        if (neighborCount > 0 && totalNeighborWeight > 0.001f)
         {
-            schoolForward = Vector3.forward;
+            Vector3 schoolForward = averageForward.sqrMagnitude > 0.001f
+                ? StableDirection(averageForward, forward)
+                : forward;
+            Vector3 cohesionTarget = cohesionCenter / totalNeighborWeight + SchoolFormationOffset(schoolForward);
+            Vector3 cohesionOffset = ScaleVertical(cohesionTarget - position, verticalCohesionScale + verticalSchoolingWeight);
+            if (cohesionOffset.sqrMagnitude > 0.001f)
+            {
+                float cohesionPressure = Mathf.InverseLerp(
+                    0.35f,
+                    Mathf.Max(1.5f, neighborRadiusValue * 0.75f),
+                    cohesionOffset.magnitude
+                );
+                boidDirection += cohesionOffset.normalized
+                    * cohesionWeight
+                    * Mathf.Lerp(0.55f, 1.25f, cohesionPressure)
+                    * schoolingInfluence;
+            }
         }
 
-        Vector3 schoolRight = new Vector3(schoolForward.z, 0f, -schoolForward.x);
-        Vector3 slotOffset = schoolRight * schoolSlotOffset.x + schoolForward * schoolSlotOffset.y;
-        Vector3 cohesionTarget = cohesion / neighborCount + slotOffset;
-        Vector3 horizontalCohesion = cohesionTarget - new Vector3(transform.position.x, 0f, transform.position.z);
-        cohesion = horizontalCohesion.normalized * cohesionWeight * schoolingInfluence;
-        float depthOffset = (averageNeighborY / neighborCount) - transform.position.y;
-        cohesion += Vector3.up * Mathf.Clamp(depthOffset, -1f, 1f) * verticalSchoolingWeight * schoolingInfluence;
-        cohesion += Vector3.up * Mathf.Sin(Time.time * 0.37f + SpawnTime) * preferredDepthDrift * (1f - schoolingInfluence * 0.35f);
-        separation = separation.normalized * Mathf.Lerp(soloSeparationWeight, separationWeight, schoolingInfluence);
-        schoolDirection = Vector3.Lerp(schoolDirection, alignment + cohesion + separation, 0.5f);
-        return (direction + schoolDirection).normalized;
+        if (!releasedFish && totalGatherWeight > 0.001f)
+        {
+            float gatherInfluence = Mathf.Lerp(0.35f, 1f, schoolingInfluence);
+            Vector3 gatheredCenter = gatherCenter / totalGatherWeight;
+            Vector3 gatherOffset = ScaleVertical(gatheredCenter - position, verticalCohesionScale);
+            float gatherDistance = gatherOffset.magnitude;
+            if (gatherDistance > schoolGatherDeadZone && gatherOffset.sqrMagnitude > 0.001f)
+            {
+                float gatherPressure = Mathf.InverseLerp(schoolGatherDeadZone, gatherRadiusValue, gatherDistance);
+                boidDirection += gatherOffset.normalized * schoolGatherWeight * gatherPressure * gatherInfluence;
+            }
+
+            if (gatherForward.sqrMagnitude > 0.001f)
+            {
+                boidDirection += StableDirection(gatherForward, forward) * schoolGatherForwardWeight * gatherInfluence;
+            }
+        }
+
+        Vector3 homeDirection = SchoolGroupHomeDirection(position, schoolingInfluence);
+        if (homeDirection.sqrMagnitude > 0.001f)
+        {
+            boidDirection += homeDirection;
+        }
+
+        if (separation.sqrMagnitude > 0.001f)
+        {
+            boidDirection += separation.normalized * Mathf.Lerp(soloSeparationWeight, separationWeight, schoolingInfluence);
+        }
+
+        if (neighborCount == 0 && totalGatherWeight <= 0.001f && boidDirection.sqrMagnitude <= 0.001f)
+        {
+            schoolDirection = Vector3.Lerp(schoolDirection, DepthDrift(schoolingInfluence), 0.25f);
+            return ApplySchoolDirection(direction);
+        }
+
+        boidDirection += DepthDrift(schoolingInfluence);
+        boidDirection += SchoolNoiseDirection() * schoolNoiseWeight * (1f - schoolingInfluence * 0.35f);
+        schoolDirection = Vector3.Lerp(schoolDirection, boidDirection, 0.5f);
+        return ApplySchoolDirection(direction);
     }
 
     private Vector3 LimitVerticalSwim(Vector3 direction)
@@ -142,7 +245,8 @@ public partial class FishActor
             horizontal = Vector3.forward;
         }
 
-        float vertical = Mathf.Clamp(direction.y, -maxVerticalSwimDirection, maxVerticalSwimDirection);
+        float verticalLimit = Mathf.Max(maxVerticalSwimDirection, 0.1f);
+        float vertical = Mathf.Clamp(direction.y, -verticalLimit, verticalLimit);
         return (horizontal.normalized + Vector3.up * vertical).normalized;
     }
 
@@ -180,9 +284,13 @@ public partial class FishActor
 
     private void PickSchoolSlot()
     {
-        schoolSlotOffset = new Vector2(
-            Random.Range(schoolSlotSideRange.x, schoolSlotSideRange.y),
-            Random.Range(schoolSlotForwardRange.x, schoolSlotForwardRange.y)
+        float sideJitter = Mathf.Abs(schoolSlotSideRange.y - schoolSlotSideRange.x) * 0.035f;
+        float depthJitter = Mathf.Abs(schoolSlotDepthRange.y - schoolSlotDepthRange.x) * 0.12f;
+        float forwardJitter = Mathf.Abs(schoolSlotForwardRange.y - schoolSlotForwardRange.x) * 0.045f;
+        schoolFormationOffset = new Vector3(
+            Random.Range(-sideJitter, sideJitter),
+            Random.Range(-depthJitter, depthJitter),
+            Random.Range(-forwardJitter, forwardJitter)
         );
     }
 
@@ -192,8 +300,205 @@ public partial class FishActor
         return new Vector3(Mathf.Cos(seed), 0f, Mathf.Sin(seed)).normalized;
     }
 
+    private Vector3 ApplySchoolDirection(Vector3 direction)
+    {
+        Vector3 blendedDirection = direction + schoolDirection;
+        return blendedDirection.sqrMagnitude > 0.001f ? blendedDirection.normalized : direction;
+    }
+
+    private float EffectiveSchoolingStrength()
+    {
+        float strength = currentSchoolStrength;
+        if (releasedFish)
+        {
+            strength *= Mathf.Clamp01(releasedFishSchoolingMultiplier);
+        }
+
+        return Mathf.Clamp01(strength);
+    }
+
+    private float NeighborSchoolingWeight(FishActor neighbor)
+    {
+        return neighbor.releasedFish ? Mathf.Clamp01(releasedFishNeighborWeight) : 1f;
+    }
+
+    private Vector3 SchoolFormationOffset(Vector3 schoolForward)
+    {
+        Vector3 flatForward = new Vector3(schoolForward.x, 0f, schoolForward.z);
+        if (flatForward.sqrMagnitude < 0.001f)
+        {
+            flatForward = new Vector3(transform.forward.x, 0f, transform.forward.z);
+        }
+
+        if (flatForward.sqrMagnitude < 0.001f)
+        {
+            flatForward = Vector3.forward;
+        }
+
+        flatForward.Normalize();
+        Vector3 right = Vector3.Cross(Vector3.up, flatForward).normalized;
+        Vector3 localSlot = SchoolFormationSlotLocalOffset();
+        return right * localSlot.x
+            + Vector3.up * localSlot.y
+            + flatForward * localSlot.z;
+    }
+
+    private Vector3 SchoolFormationSlotLocalOffset()
+    {
+        int cohortIndex = SchoolCohortIndex(out int cohortCount);
+        cohortIndex = Mathf.Max(0, cohortIndex);
+        cohortCount = Mathf.Max(1, cohortCount);
+
+        int laneCount = Mathf.Clamp(
+            Mathf.CeilToInt(Mathf.Sqrt(cohortCount) * 0.9f),
+            1,
+            MaxSchoolFormationLanes
+        );
+        laneCount = Mathf.Min(laneCount, cohortCount);
+        if (cohortCount >= 3 && laneCount % 2 == 0)
+        {
+            laneCount++;
+        }
+        laneCount = Mathf.Min(laneCount, cohortCount);
+
+        int row = cohortIndex / laneCount;
+        int lane = cohortIndex % laneCount;
+        int maxRow = Mathf.Max(1, Mathf.CeilToInt(cohortCount / (float)laneCount) - 1);
+        float laneT = laneCount <= 1 ? 0.5f : lane / (float)(laneCount - 1);
+        if (row % 2 == 1)
+        {
+            float stagger = 0.5f / Mathf.Max(1, laneCount - 1);
+            laneT = Mathf.Clamp01(laneT + stagger);
+        }
+
+        float rowT = row / (float)maxRow;
+        float depthT = Mathf.Repeat(cohortIndex * 0.381966f + row * 0.17f, 1f);
+        return new Vector3(
+            Mathf.Lerp(schoolSlotSideRange.x, schoolSlotSideRange.y, laneT),
+            Mathf.Lerp(schoolSlotDepthRange.x, schoolSlotDepthRange.y, depthT),
+            Mathf.Lerp(schoolSlotForwardRange.y, schoolSlotForwardRange.x, rowT)
+        ) + schoolFormationOffset;
+    }
+
+    private int SchoolCohortIndex(out int cohortCount)
+    {
+        int index = -1;
+        cohortCount = 0;
+        for (int i = 0; i < ActiveFishes.Count; i++)
+        {
+            FishActor fish = ActiveFishes[i];
+            if (!IsSchoolFormationMember(fish))
+            {
+                continue;
+            }
+
+            if (fish == this)
+            {
+                index = cohortCount;
+            }
+
+            cohortCount++;
+        }
+
+        return index;
+    }
+
+    private bool IsSchoolFormationMember(FishActor fish)
+    {
+        return CanSchoolWith(fish);
+    }
+
+    private bool CanSchoolWith(FishActor fish)
+    {
+        if (fish == null || fish == this || fish.species == "jellyfish" || species == "jellyfish")
+        {
+            return false;
+        }
+
+        if (fish.releasedFish != releasedFish)
+        {
+            return false;
+        }
+
+        bool hasGroup = schoolGroupId != UnassignedSchoolGroupId;
+        bool otherHasGroup = fish.schoolGroupId != UnassignedSchoolGroupId;
+        if (hasGroup || otherHasGroup)
+        {
+            return hasGroup && otherHasGroup && schoolGroupId == fish.schoolGroupId;
+        }
+
+        return true;
+    }
+
+    private Vector3 SchoolGroupHomeDirection(Vector3 position, float schoolingInfluence)
+    {
+        if (schoolGroupId == UnassignedSchoolGroupId)
+        {
+            return Vector3.zero;
+        }
+
+        Vector3 offset = ScaleVertical(schoolGroupCenter - position, 0.35f);
+        float distance = offset.magnitude;
+        if (distance < schoolGroupRadius || offset.sqrMagnitude < 0.001f)
+        {
+            return Vector3.zero;
+        }
+
+        float pressure = Mathf.InverseLerp(schoolGroupRadius, schoolGroupRadius * 2.2f, distance);
+        return offset.normalized * schoolGroupHomeWeight * pressure * Mathf.Lerp(0.45f, 1f, schoolingInfluence);
+    }
+
+    private Vector3 DepthDrift(float schoolingInfluence)
+    {
+        return Vector3.up
+            * Mathf.Sin(Time.time * 0.37f + SpawnTime + schoolingNoiseSeed)
+            * preferredDepthDrift
+            * Mathf.Lerp(1f, 0.45f, schoolingInfluence);
+    }
+
+    private Vector3 SchoolNoiseDirection()
+    {
+        float seed = schoolingNoiseSeed + Time.time * 0.23f;
+        Vector3 noise = new Vector3(
+            Mathf.Sin(seed * 1.7f),
+            Mathf.Sin(seed * 0.9f) * 0.25f,
+            Mathf.Cos(seed * 1.3f)
+        );
+        return noise.sqrMagnitude > 0.001f ? noise.normalized : Vector3.zero;
+    }
+
+    private Vector3 StableForward(Vector3 fallback)
+    {
+        return StableDirection(transform.forward, fallback);
+    }
+
+    private static Vector3 StableDirection(Vector3 direction, Vector3 fallback)
+    {
+        if (direction.sqrMagnitude > 0.001f)
+        {
+            return direction.normalized;
+        }
+
+        if (fallback.sqrMagnitude > 0.001f)
+        {
+            return fallback.normalized;
+        }
+
+        return Vector3.forward;
+    }
+
+    private static Vector3 ScaleVertical(Vector3 vector, float verticalScale)
+    {
+        return new Vector3(vector.x, vector.y * Mathf.Clamp01(verticalScale), vector.z);
+    }
+
     private Vector3 BlendCameraAwareness(Vector3 direction)
     {
+        if (releasedFish)
+        {
+            return direction;
+        }
+
         if (mainCamera == null)
         {
             mainCamera = Camera.main;

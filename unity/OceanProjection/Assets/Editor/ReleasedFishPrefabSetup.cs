@@ -37,7 +37,7 @@ public static class ReleasedFishPrefabSetup
         }
 
         Scene scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
-        FishSpawner spawner = Object.FindFirstObjectByType<FishSpawner>();
+        FishSpawner spawner = Object.FindAnyObjectByType<FishSpawner>();
         if (spawner == null)
         {
             Debug.LogWarning("ReleasedFishPrefabSetup: FishSpawner not found in SampleScene.");

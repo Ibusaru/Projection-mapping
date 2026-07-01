@@ -588,11 +588,11 @@ MonoBehaviour:
   defaultFishAlivePrefabs: []
   center: {x: 0, y: -0.9, z: 0}
   size: {x: 58, y: 7.2, z: 38}
-  releasedFishScaleMultiplier: 40
-  releasedFishSpawnSpread: {x: 6, y: 2, z: 4}
+  releasedFishScaleMultiplier: 4
+  releasedFishSpawnSpread: {x: 11, y: 4, z: 7}
   spawnDefaultFishOnStart: 1
   defaultFishCount: 150
-  defaultFishScaleRange: {x: 1.55, y: 2.35}
+  defaultFishScaleRange: {x: 0.24, y: 0.45}
   autoFindFishAlivePrefabs: 1
   disableImportedFishMotion: 1
   maxFishCount: 340
@@ -613,7 +613,7 @@ MonoBehaviour:
   supabaseUrl: https://iorpramozjnqdeczgete.supabase.co
   supabaseAnonKey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvcnByYW1vempucWRlY3pnZXRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0Mjc4NjMsImV4cCI6MjA5NzAwMzg2M30.jYG1h35tisVJk7HXVXyHnC6k8tvcKhgoZjFRtxqn-SY
   pollingSeconds: 8
-  fetchLimit: 30
+  fetchLimit: 100
 --- !u!4 &963426410
 Transform:
   m_ObjectHideFlags: 0

@@ -11,15 +11,16 @@ public partial class FishActor
             return;
         }
 
-        if (modelRoot == null)
+        Renderer[] visualRenderers = FishRendererUtility.GetVisualRenderers(gameObject, true);
+        if (modelRoot == null || modelRoot == transform)
         {
-            modelRoot = transform;
+            modelRoot = ResolveModelRoot(visualRenderers);
         }
 
-        initialModelScale = modelRoot.localScale;
-        baseModelLocalRotation = modelRoot.localRotation;
+        Transform scaleRoot = modelRoot != null ? modelRoot : transform;
+        initialModelScale = scaleRoot.localScale;
+        baseModelLocalRotation = modelRoot != null ? modelRoot.localRotation : Quaternion.identity;
 
-        Renderer[] visualRenderers = FishRendererUtility.GetVisualRenderers(gameObject, true);
         if (visualRenderers.Length > 0)
         {
             colorRenderers = visualRenderers;
@@ -28,7 +29,7 @@ public partial class FishActor
         }
         else if (colorRenderers == null || colorRenderers.Length == 0)
         {
-            colorRenderers = GetComponentsInChildren<Renderer>(true);
+            colorRenderers = new Renderer[0];
             subColorRenderers = colorRenderers;
             textureRenderers = colorRenderers;
         }
@@ -36,6 +37,57 @@ public partial class FishActor
         EnsureRenderersVisible(colorRenderers);
         EnsureRenderersVisible(subColorRenderers);
         EnsureRenderersVisible(textureRenderers);
+    }
+
+    private Transform ResolveModelRoot(Renderer[] visualRenderers)
+    {
+        if (visualRenderers == null || visualRenderers.Length == 0)
+        {
+            return null;
+        }
+
+        Transform root = null;
+        for (int i = 0; i < visualRenderers.Length; i++)
+        {
+            Renderer renderer = visualRenderers[i];
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            Transform candidate = TopLevelVisualChild(renderer.transform);
+            if (candidate == null)
+            {
+                return null;
+            }
+
+            if (root == null)
+            {
+                root = candidate;
+            }
+            else if (root != candidate)
+            {
+                return null;
+            }
+        }
+
+        return root != transform ? root : null;
+    }
+
+    private Transform TopLevelVisualChild(Transform item)
+    {
+        if (item == null || item == transform)
+        {
+            return null;
+        }
+
+        Transform current = item;
+        while (current.parent != null && current.parent != transform)
+        {
+            current = current.parent;
+        }
+
+        return current.parent == transform ? current : null;
     }
 
     private void EnsureReleasedFishMaterials()
@@ -105,14 +157,95 @@ public partial class FishActor
         }
 
         Texture2D texture = DownloadHandlerTexture.GetContent(request);
+        if (releasedFish)
+        {
+            if (useProjectedDrawingTextureForReleasedFish && ApplyProjectedDrawingTexture(texture))
+            {
+                appliedTextureUrl = textureUrl;
+                textureCoroutine = null;
+                yield break;
+            }
+
+            ApplyReleasedDrawingTexture(texture);
+            appliedTextureUrl = textureUrl;
+            textureCoroutine = null;
+            yield break;
+        }
+
         if (remapDrawingTextureForModel)
         {
             texture = DrawingTextureMapper.CreateModelTexture(texture, remappedDrawingTextureSize, drawingAlphaThreshold);
         }
 
+        RefreshTextureRenderers();
         ApplyTexture(textureRenderers, texture);
         appliedTextureUrl = textureUrl;
         textureCoroutine = null;
+    }
+
+    private void RefreshTextureRenderers()
+    {
+        Renderer[] visualTextureRenderers = FishRendererUtility.GetVisualRenderers(gameObject, true);
+        textureRenderers = visualTextureRenderers;
+    }
+
+    private void ApplyReleasedDrawingTexture(Texture2D texture)
+    {
+        Renderer[] visualTextureRenderers = FishRendererUtility.GetVisualRenderers(gameObject, true);
+        if (visualTextureRenderers.Length > 0)
+        {
+            Texture2D modelTexture = remapDrawingTextureForModel
+                ? DrawingTextureMapper.CreateModelTexture(texture, remappedDrawingTextureSize, drawingAlphaThreshold)
+                : texture;
+            textureRenderers = visualTextureRenderers;
+            colorRenderers = visualTextureRenderers;
+            subColorRenderers = visualTextureRenderers;
+            ApplyTexture(textureRenderers, modelTexture);
+            Debug.LogWarning($"FishActor: projection was unavailable for '{Nickname}', applied drawing to the 3D model instead of using a flat fallback.");
+            return;
+        }
+
+        Bounds visualBounds = TryGetVisualBounds(out Bounds bounds)
+            ? bounds
+            : new Bounds(transform.position, new Vector3(1.8f, 0.9f, 0.1f));
+
+        Renderer[] originalRenderers = FishRendererUtility.GetVisualRenderers(gameObject, false);
+        drawingFishVisual = EnsureDrawingFishVisual();
+        drawingFishVisual.Apply(texture, visualBounds);
+
+        for (int i = 0; i < originalRenderers.Length; i++)
+        {
+            Renderer item = originalRenderers[i];
+            if (item != null && item != drawingFishVisual.Renderer)
+            {
+                item.enabled = false;
+            }
+        }
+
+        Renderer drawingRenderer = drawingFishVisual.Renderer;
+        colorRenderers = new[] { drawingRenderer };
+        subColorRenderers = colorRenderers;
+        textureRenderers = colorRenderers;
+        Debug.LogWarning($"FishActor: no 3D renderers were found for '{Nickname}', so the emergency flat drawing fallback was used.");
+    }
+
+    private DrawingFishVisual EnsureDrawingFishVisual()
+    {
+        if (drawingFishVisual != null)
+        {
+            return drawingFishVisual;
+        }
+
+        drawingFishVisual = GetComponentInChildren<DrawingFishVisual>(true);
+        if (drawingFishVisual != null)
+        {
+            return drawingFishVisual;
+        }
+
+        GameObject visualObject = new GameObject("Drawing Fish Visual");
+        visualObject.transform.SetParent(transform, false);
+        drawingFishVisual = visualObject.AddComponent<DrawingFishVisual>();
+        return drawingFishVisual;
     }
 
     private static void ApplyTexture(Renderer[] renderers, Texture2D texture)
@@ -235,7 +368,9 @@ public partial class FishActor
                 continue;
             }
 
-            if (child.name != "Drawing Image Left" && child.name != "Drawing Image Right")
+            if (child.name != "Drawing Image Left"
+                && child.name != "Drawing Image Right"
+                && child.name != "Drawing Fish Visual")
             {
                 continue;
             }

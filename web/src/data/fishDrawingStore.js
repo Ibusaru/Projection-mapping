@@ -35,12 +35,14 @@ function sanitizePathPart(value) {
 export async function uploadFishDrawing({ nickname, blob }) {
   if (!supabase) {
     const localFish = readLocalFishes();
+    const id = createId();
+    const safeName = sanitizePathPart(nickname) || "fish";
     const publicUrl = URL.createObjectURL(blob);
     const nextFish = {
       ...defaultFishPayload,
-      id: createId(),
+      id,
       nickname,
-      texture_path: `local/${sanitizePathPart(nickname) || createId()}.png`,
+      texture_path: `local/${safeName}/${id}.png`,
       texture_url: publicUrl,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

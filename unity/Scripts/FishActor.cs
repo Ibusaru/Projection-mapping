@@ -5,6 +5,8 @@ using UnityEngine;
 public partial class FishActor : MonoBehaviour
 {
     private static readonly List<FishActor> ActiveFishes = new List<FishActor>();
+    private const int MaxSchoolFormationLanes = 11;
+    private const int UnassignedSchoolGroupId = -1;
 
     [Header("Visual")]
     [SerializeField] private Renderer[] colorRenderers;
@@ -13,27 +15,71 @@ public partial class FishActor : MonoBehaviour
     [SerializeField] private Transform modelRoot;
     [SerializeField] private TMP_Text nicknameLabel;
     [SerializeField] private bool createNicknameLabelWhenMissing = true;
+    [SerializeField] private float focusedLabelVisibleDistance = 140f;
+    [SerializeField] private float nearbyLabelVisibleDistance = 48f;
+    [SerializeField] private float labelForwardConeDistance = 96f;
+    [SerializeField] private float labelForwardConeAngle = 70f;
+    [SerializeField] private bool showDefaultNicknameWhenNearby = false;
+    [SerializeField] private float defaultNearbyLabelVisibleDistance = 12f;
+    [SerializeField] private float defaultForwardConeLabelDistance = 18f;
+    [SerializeField] private float defaultFocusedLabelVisibleDistance = 28f;
+    [SerializeField] private Vector2 nicknameTagOffset = new Vector2(0.075f, 0.095f);
+    [SerializeField] private float nicknameTagAnchorLift = 0.18f;
+    [SerializeField] private float nicknameTagLineWidth = 0.0032f;
+    [SerializeField] private float nicknameTagFontSize = 0.9f;
+    [SerializeField] private float nicknameTagHorizontalLength = 0.18f;
+    [SerializeField] private float nicknameTagTextLift = 0.0035f;
+    [SerializeField] private float nicknameTagTextViewportHeight = 0.064f;
+    [SerializeField] private float nicknameTagTextMaxWidthRatio = 1.05f;
+    [SerializeField] private float nicknameTagRevealDistance = 6.2f;
+    [SerializeField] private float nicknameTagRevealHysteresisDistance = 0.75f;
+    [SerializeField] private float nicknameTagMinApparentRadiusViewport = 0.045f;
+    [SerializeField] private float nicknameTagNearScaleDistance = 1.2f;
+    [SerializeField] private float nicknameTagFarScaleDistance = 9.5f;
+    [SerializeField] private Vector2 nicknameTagDistanceScaleRange = new Vector2(0.82f, 1.12f);
+    [SerializeField] private float nicknameTagMinFitScale = 0.48f;
+    [SerializeField] private float nicknameTagRevealSeconds = 0.68f;
+    [SerializeField] private float nicknameTagRetreatSeconds = 0.26f;
+    [SerializeField] private float nicknameTagViewportPadding = 0.055f;
+    [SerializeField] private bool useBuiltInNicknameFallback = true;
+    [SerializeField] private bool logNicknameTagDebug = true;
+    [SerializeField] private float nicknameTagDebugInterval = 4f;
     [SerializeField] private bool remapDrawingTextureForModel = true;
     [SerializeField] private int remappedDrawingTextureSize = 512;
     [SerializeField] private float drawingAlphaThreshold = 0.05f;
+    [SerializeField] private bool useProjectedDrawingTextureForReleasedFish = true;
+    [SerializeField] private bool flipReleasedDrawingHorizontally = true;
 
     [Header("Movement")]
     [SerializeField] private float baseSpeed = 0.9f;
-    [SerializeField] private float turnSpeed = 1.55f;
-    [SerializeField] private float labelVisibleDistance = 4.2f;
+    [SerializeField] private float turnSpeed = 3.2f;
+    [SerializeField] private float labelVisibleDistance = 72f;
     [SerializeField] private float boundsPadding = 0.7f;
     [SerializeField] private float acceleration = 2.1f;
     [SerializeField] private float turnSlowdown = 0.58f;
     [SerializeField] private bool autoWireRenderers = true;
+    [SerializeField] private float boundsAvoidancePadding = 5.4f;
+    [SerializeField] private float boundsAvoidanceWeight = 4.1f;
+    [SerializeField] private float boundsReturnWeight = 6.2f;
+    [SerializeField] private float edgeTurnBoost = 3.4f;
+    [SerializeField] private float edgeMovementSteer = 0.78f;
 
     [Header("Natural Swim")]
-    [SerializeField] private float targetReachDistance = 1.25f;
+    [SerializeField] private float targetReachDistance = 2.05f;
     [SerializeField] private float slowSwimMultiplier = 0.82f;
     [SerializeField] private float fastSwimMultiplier = 1.55f;
     [SerializeField] private float fastSwimChance = 0.24f;
     [SerializeField] private Vector2 slowSwimSecondsRange = new Vector2(3.5f, 7f);
     [SerializeField] private Vector2 fastSwimSecondsRange = new Vector2(0.9f, 2.2f);
-    [SerializeField] private float waypointForwardBias = 0.58f;
+    [SerializeField] private float waypointForwardBias = 0.18f;
+    [SerializeField] private float defaultFishTargetAreaScale = 0.58f;
+    [SerializeField] private float releasedFishTargetAreaScale = 0.72f;
+    [SerializeField] private float targetTurnAngle = 126f;
+    [SerializeField] private Vector2 targetDistanceRange = new Vector2(0.12f, 0.3f);
+    [SerializeField] private float targetSideSlip = 0.28f;
+    [SerializeField] private Vector2 wanderTurnSecondsRange = new Vector2(0.45f, 1.25f);
+    [SerializeField] private float wanderTurnAngle = 108f;
+    [SerializeField] private float wanderTurnWeight = 0.72f;
 
     [Header("Animation Sync")]
     [SerializeField] private float animationSpeedAtBaseSwim = 1f;
@@ -47,26 +93,37 @@ public partial class FishActor : MonoBehaviour
 
     [Header("Schooling")]
     [SerializeField] private bool enableSchooling = true;
-    [SerializeField] private float neighborRadius = 7.4f;
-    [SerializeField] private float separationRadius = 1.35f;
-    [SerializeField] private float alignmentWeight = 0.42f;
-    [SerializeField] private float cohesionWeight = 0.28f;
-    [SerializeField] private float separationWeight = 0.72f;
-    [SerializeField] private float schoolUpdateSeconds = 0.24f;
-    [SerializeField] private float schoolModeChance = 0.62f;
+    [SerializeField] private float neighborRadius = 6.8f;
+    [SerializeField] private float separationRadius = 1.2f;
+    [SerializeField] private float alignmentWeight = 0.48f;
+    [SerializeField] private float cohesionWeight = 0.58f;
+    [SerializeField] private float separationWeight = 0.95f;
+    [SerializeField] private float schoolUpdateSeconds = 0.12f;
+    [SerializeField] private float schoolModeChance = 0.92f;
     [SerializeField] private Vector2 schoolingSecondsRange = new Vector2(5.5f, 12f);
     [SerializeField] private Vector2 soloSecondsRange = new Vector2(3f, 8f);
     [SerializeField] private float schoolingBlendSpeed = 1.8f;
-    [SerializeField] private float soloSeparationWeight = 0.42f;
-    [SerializeField] private float verticalSchoolingWeight = 0.08f;
+    [SerializeField] private float soloSeparationWeight = 0.55f;
+    [SerializeField] private float verticalSchoolingWeight = 0.04f;
     [SerializeField] private float verticalSeparationRadius = 0.9f;
-    [SerializeField] private float verticalSeparationWeight = 0.65f;
-    [SerializeField] private float preferredDepthDrift = 0.16f;
-    [SerializeField] private float maxVerticalSwimDirection = 0.04f;
+    [SerializeField] private float verticalSeparationWeight = 0.82f;
+    [SerializeField] private float preferredDepthDrift = 0.06f;
+    [SerializeField] private float maxVerticalSwimDirection = 0.2f;
     [SerializeField] private float sameColumnAvoidanceRadius = 1.2f;
-    [SerializeField] private float sameColumnAvoidanceWeight = 2.4f;
-    [SerializeField] private Vector2 schoolSlotSideRange = new Vector2(-3.2f, 3.2f);
-    [SerializeField] private Vector2 schoolSlotForwardRange = new Vector2(-2.6f, 2.6f);
+    [SerializeField] private float sameColumnAvoidanceWeight = 1.5f;
+    [SerializeField] private Vector2 schoolSlotSideRange = new Vector2(-2.6f, 2.6f);
+    [SerializeField] private Vector2 schoolSlotForwardRange = new Vector2(-1.8f, 1.8f);
+    [SerializeField] private Vector2 schoolSlotDepthRange = new Vector2(-0.52f, 0.52f);
+    [SerializeField] private float schoolVisionAngle = 210f;
+    [SerializeField] private float verticalCohesionScale = 0.22f;
+    [SerializeField] private float releasedFishSchoolingMultiplier = 0.12f;
+    [SerializeField] private float releasedFishNeighborWeight = 0.2f;
+    [SerializeField] private float schoolNoiseWeight = 0.12f;
+    [SerializeField] private float schoolGatherRadius = 8.5f;
+    [SerializeField] private float schoolGatherDeadZone = 2.6f;
+    [SerializeField] private float schoolGatherWeight = 0.38f;
+    [SerializeField] private float schoolGatherForwardWeight = 0.12f;
+    [SerializeField] private float schoolGroupHomeWeight = 0.32f;
 
     [Header("Awareness")]
     [SerializeField] private float cameraAwarenessDistance = 5.5f;
@@ -79,7 +136,11 @@ public partial class FishActor : MonoBehaviour
     private Vector3 swimSize = new Vector3(16f, 7f, 10f);
     private Vector3 initialModelScale = Vector3.one;
     private Vector3 schoolDirection;
-    private Vector2 schoolSlotOffset;
+    private Vector3 schoolFormationOffset;
+    private Vector3 wanderDirection = Vector3.forward;
+    private Vector3 schoolGroupCenter;
+    private Vector3 schoolGroupForward = Vector3.forward;
+    private float schoolGroupRadius = 4f;
     private Quaternion baseModelLocalRotation = Quaternion.identity;
     private Animator[] animators = new Animator[0];
     private float[] animatorBaseSpeeds = new float[0];
@@ -89,6 +150,7 @@ public partial class FishActor : MonoBehaviour
     private float currentSpeedMultiplier = 1f;
     private float schoolingNoiseSeed;
     private float nextSpeedModeTime;
+    private float nextWanderTurnTime;
     private float activeTargetReachDistance;
     private float nextSchoolUpdateTime;
     private float nextSchoolModeTime;
@@ -99,11 +161,25 @@ public partial class FishActor : MonoBehaviour
     private string appliedTextureUrl = "";
     private Camera mainCamera;
     private bool releasedFish;
+    private bool cameraFocused;
+    private int schoolGroupId = UnassignedSchoolGroupId;
+    private LineRenderer nicknameTagLine;
+    private TextMesh nicknameFallbackLabel;
+    private Renderer nicknameFallbackRenderer;
     private bool isSchoolingMode;
     private float initialBaseSpeed;
     private float initialSchoolModeChance;
     private Coroutine textureCoroutine;
+    private DrawingFishVisual drawingFishVisual;
+    private Material[] projectedDrawingMaterials = new Material[0];
+    private Transform drawingProjectionRoot;
     private static bool warnedMissingTmpResources;
+    private float nextNicknameTagDebugTime;
+    private float nicknameTagRevealProgress;
+    private bool hasStableNicknameTagLayout;
+    private int stableNicknameTagHorizontalSide = 1;
+    private int stableNicknameTagTextSide = 1;
+    private float stableNicknameTagFitScale = 1f;
 
     public float SpawnTime { get; private set; }
     public string Nickname { get; private set; } = "";
@@ -119,10 +195,16 @@ public partial class FishActor : MonoBehaviour
             : GetComponentsInChildren<Renderer>(true);
         bounds = new Bounds(transform.position, Vector3.zero);
         bool hasBounds = false;
+        Renderer labelRenderer = nicknameLabel != null ? nicknameLabel.GetComponent<Renderer>() : null;
 
         foreach (Renderer renderer in renderers)
         {
             if (renderer == null)
+            {
+                continue;
+            }
+
+            if (renderer == labelRenderer || renderer == nicknameFallbackRenderer || renderer == nicknameTagLine)
             {
                 continue;
             }
@@ -186,6 +268,7 @@ public partial class FishActor : MonoBehaviour
         RemoveLegacyDrawingBillboards();
         AutoWireVisuals();
         PickSchoolSlot();
+        PickWanderDirection(true);
         CacheAnimators();
         PickNextSchoolingMode(true);
         PickNextSpeedMode(true);
@@ -210,13 +293,23 @@ public partial class FishActor : MonoBehaviour
         releasedFish = value;
         if (releasedFish)
         {
-            EnsureNicknameLabel();
+            useProjectedDrawingTextureForReleasedFish = true;
+            schoolDirection = Vector3.zero;
+            currentSchoolStrength *= Mathf.Clamp01(releasedFishSchoolingMultiplier);
             EnsureReleasedFishMaterials();
         }
 
-        if (nicknameLabel != null)
+        HideNicknameTag();
+    }
+
+    public void SetCameraFocused(bool value)
+    {
+        cameraFocused = value;
+        if (!cameraFocused)
         {
-            nicknameLabel.gameObject.SetActive(false);
+            nicknameTagRevealProgress = 0f;
+            ResetStableNicknameTagLayout();
+            HideNicknameTag();
         }
     }
 
@@ -229,6 +322,16 @@ public partial class FishActor : MonoBehaviour
             Mathf.Max(1f, size.z)
         );
         PickNextTarget();
+    }
+
+    public void ConfigureSchoolGroup(int groupId, Vector3 groupCenter, Vector3 groupForward, float groupRadius)
+    {
+        schoolGroupId = groupId;
+        schoolGroupCenter = groupCenter;
+        schoolGroupForward = StableHorizontalDirection(groupForward, transform.forward);
+        schoolGroupRadius = Mathf.Max(1.5f, groupRadius);
+        PickSchoolSlot();
+        PickWanderDirection(true);
     }
 
     public void Apply(FishData data)
@@ -246,10 +349,8 @@ public partial class FishActor : MonoBehaviour
         ApplyColor(subColorRenderers, ParseColor(data.sub_color, Color.white));
         ApplyRemoteTexture(data.texture_url);
 
-        if (modelRoot != null)
-        {
-            modelRoot.localScale = initialModelScale * SizeToScale(data.size);
-        }
+        Transform scaleRoot = modelRoot != null ? modelRoot : transform;
+        scaleRoot.localScale = initialModelScale * SizeToScale(data.size);
 
         if (nicknameLabel != null)
         {
@@ -257,13 +358,26 @@ public partial class FishActor : MonoBehaviour
             nicknameLabel.gameObject.SetActive(false);
         }
 
+        if (nicknameFallbackLabel != null)
+        {
+            nicknameFallbackLabel.text = Nickname;
+            nicknameFallbackLabel.gameObject.SetActive(false);
+        }
+
         baseSpeed = initialBaseSpeed * PersonalitySpeedMultiplier(personality);
-        schoolModeChance = Mathf.Clamp01(initialSchoolModeChance * PersonalitySchoolingMultiplier(personality));
+        float schoolingMultiplier = PersonalitySchoolingMultiplier(personality);
+        if (releasedFish)
+        {
+            schoolingMultiplier *= Mathf.Clamp01(releasedFishSchoolingMultiplier);
+        }
+
+        schoolModeChance = Mathf.Clamp01(initialSchoolModeChance * schoolingMultiplier);
     }
 
     private void Update()
     {
         Swim();
+        UpdateDrawingProjectionMatrix();
         UpdateLabel();
     }
 
@@ -271,7 +385,7 @@ public partial class FishActor : MonoBehaviour
     {
         if (!IsInsideSwimBounds(transform.position, boundsPadding))
         {
-            targetPosition = ClampToSwimBounds(transform.position, boundsPadding * 2f);
+            PickBoundsRecoveryTarget();
         }
 
         if (species == "jellyfish")
@@ -303,32 +417,65 @@ public partial class FishActor : MonoBehaviour
             PickNextSpeedMode(false);
         }
 
+        if (Time.time >= nextWanderTurnTime)
+        {
+            PickWanderDirection(false);
+        }
+
         UpdateSchoolingMode();
 
         Vector3 desiredDirection = toTarget.normalized;
+        desiredDirection = BlendWanderDirection(desiredDirection);
         desiredDirection = BlendSchoolingDirection(desiredDirection);
         desiredDirection = BlendCameraAwareness(desiredDirection);
+        desiredDirection = BlendBoundsAvoidance(desiredDirection);
         desiredDirection = LimitVerticalSwim(desiredDirection);
         if (desiredDirection.sqrMagnitude < 0.001f)
         {
             desiredDirection = transform.forward;
         }
 
+        float edgePressure = HorizontalEdgePressure(transform.position, boundsAvoidancePadding);
         Quaternion desiredRotation = Quaternion.LookRotation(desiredDirection.normalized, Vector3.up);
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             desiredRotation,
-            turnSpeed * Time.deltaTime
+            turnSpeed * Mathf.Lerp(1f, edgeTurnBoost, edgePressure) * Time.deltaTime
         );
 
         float alignment = Mathf.Clamp01(Vector3.Dot(transform.forward, desiredDirection.normalized));
         float targetSpeed = baseSpeed * currentSpeedMultiplier * Mathf.Lerp(turnSlowdown, 1f, alignment);
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.deltaTime);
-        transform.position += transform.forward * currentSpeed * Time.deltaTime;
-        transform.position = ClampToSwimBounds(transform.position, 0f);
+        Vector3 swimDirection = transform.forward;
+        if (edgePressure > 0.001f)
+        {
+            swimDirection = Vector3.Slerp(
+                transform.forward,
+                desiredDirection.normalized,
+                Mathf.Clamp01(edgePressure * edgeMovementSteer)
+            ).normalized;
+        }
+
+        Vector3 nextPosition = transform.position + swimDirection * currentSpeed * Time.deltaTime;
+        Vector3 clampedPosition = ClampToSwimBounds(nextPosition, 0f);
+        if ((nextPosition - clampedPosition).sqrMagnitude > 0.0001f)
+        {
+            currentSpeed = Mathf.Max(currentSpeed * 0.45f, baseSpeed * currentSpeedMultiplier * 0.28f);
+            schoolDirection = Vector3.Lerp(schoolDirection, Vector3.zero, 0.55f);
+            Vector3 recoveryDirection = StableHorizontalDirection(swimCenter - transform.position, -transform.forward);
+            wanderDirection = recoveryDirection;
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(LimitVerticalSwim(recoveryDirection), Vector3.up),
+                Mathf.Clamp01(turnSpeed * edgeTurnBoost * Time.deltaTime)
+            );
+            PickBoundsRecoveryTarget();
+        }
+
+        transform.position = clampedPosition;
         UpdateSwimAnimation();
 
-        if (modelRoot != null)
+        if (modelRoot != null && modelRoot != transform)
         {
             float swimAnimationRate = Mathf.Lerp(0.86f, 1.16f, currentSwimEffort);
             float tailAmplitude = Mathf.Lerp(slowTailSwayDegrees, fastTailSwayDegrees, currentSwimEffort);
@@ -340,25 +487,199 @@ public partial class FishActor : MonoBehaviour
 
     private void PickNextTarget()
     {
+        if (IsNearHorizontalSwimBoundsEdge(transform.position, boundsAvoidancePadding * 0.72f))
+        {
+            PickBoundsRecoveryTarget();
+            return;
+        }
+
+        float areaScale = Mathf.Clamp01(releasedFish ? releasedFishTargetAreaScale : defaultFishTargetAreaScale);
+        float horizontalScale = Mathf.Lerp(0.22f, 0.5f, areaScale);
+        float verticalScale = Mathf.Lerp(0.16f, 0.42f, areaScale);
         float currentDepthTarget = Mathf.Clamp(
-            transform.position.y + Random.Range(-swimSize.y * 0.16f, swimSize.y * 0.16f),
-            swimCenter.y - swimSize.y * 0.42f,
-            swimCenter.y + swimSize.y * 0.42f
+            transform.position.y + Random.Range(-swimSize.y * verticalScale * 0.38f, swimSize.y * verticalScale * 0.38f),
+            swimCenter.y - swimSize.y * verticalScale,
+            swimCenter.y + swimSize.y * verticalScale
         );
 
         Vector3 randomPoint = new Vector3(
-            Random.Range(swimCenter.x - swimSize.x * 0.46f, swimCenter.x + swimSize.x * 0.46f),
+            Random.Range(swimCenter.x - swimSize.x * horizontalScale, swimCenter.x + swimSize.x * horizontalScale),
             currentDepthTarget,
-            Random.Range(swimCenter.z - swimSize.z * 0.46f, swimCenter.z + swimSize.z * 0.46f)
+            Random.Range(swimCenter.z - swimSize.z * horizontalScale, swimCenter.z + swimSize.z * horizontalScale)
         );
 
-        Vector3 forwardPoint = transform.position + transform.forward * Random.Range(swimSize.z * 0.08f, swimSize.z * 0.22f);
-        forwardPoint += transform.right * Random.Range(-swimSize.x * 0.08f, swimSize.x * 0.08f);
-        forwardPoint.y = currentDepthTarget + Random.Range(-swimSize.y * 0.08f, swimSize.y * 0.08f);
+        Vector3 roamDirection = PickTargetRoamDirection();
+        float reachBase = Mathf.Min(swimSize.x, swimSize.z);
+        float roamReach = reachBase * Random.Range(targetDistanceRange.x, targetDistanceRange.y);
+        Vector3 sideDirection = Vector3.Cross(Vector3.up, roamDirection);
+        if (sideDirection.sqrMagnitude < 0.001f)
+        {
+            sideDirection = transform.right;
+        }
 
-        targetPosition = Vector3.Lerp(randomPoint, forwardPoint, waypointForwardBias);
-        targetPosition = ClampToSwimBounds(targetPosition, boundsPadding);
+        Vector3 roamPoint = transform.position
+            + roamDirection * roamReach
+            + sideDirection.normalized * Random.Range(-roamReach * targetSideSlip, roamReach * targetSideSlip);
+        roamPoint.y = currentDepthTarget + Random.Range(-swimSize.y * 0.08f, swimSize.y * 0.08f);
+
+        targetPosition = Vector3.Lerp(roamPoint, randomPoint, Mathf.Clamp01(waypointForwardBias));
+        targetPosition = BlendTargetTowardSchoolHome(targetPosition, currentDepthTarget);
+        targetPosition = ClampToSwimBounds(
+            targetPosition,
+            Mathf.Max(boundsPadding, boundsAvoidancePadding * 0.42f),
+            boundsPadding
+        );
         activeTargetReachDistance = targetReachDistance * Random.Range(0.85f, 1.45f);
+    }
+
+    private Vector3 PickTargetRoamDirection()
+    {
+        Vector3 baseForward = StableHorizontalDirection(transform.forward, schoolGroupForward);
+        float yaw = Random.Range(-targetTurnAngle, targetTurnAngle);
+        if (Random.value < 0.22f)
+        {
+            yaw += Random.value < 0.5f ? -Random.Range(70f, 145f) : Random.Range(70f, 145f);
+        }
+
+        Vector3 direction = Quaternion.Euler(0f, yaw, 0f) * baseForward;
+        return StableHorizontalDirection(direction, baseForward);
+    }
+
+    private Vector3 BlendTargetTowardSchoolHome(Vector3 target, float depthTarget)
+    {
+        if (schoolGroupId == UnassignedSchoolGroupId)
+        {
+            return target;
+        }
+
+        Vector3 flatPosition = new Vector3(transform.position.x, 0f, transform.position.z);
+        Vector3 flatHome = new Vector3(schoolGroupCenter.x, 0f, schoolGroupCenter.z);
+        float distanceFromHome = Vector3.Distance(flatPosition, flatHome);
+        float homePressure = Mathf.InverseLerp(schoolGroupRadius * 1.15f, schoolGroupRadius * 2.8f, distanceFromHome);
+        if (homePressure <= 0.001f)
+        {
+            return target;
+        }
+
+        Vector3 homeTarget = new Vector3(schoolGroupCenter.x, depthTarget, schoolGroupCenter.z);
+        return Vector3.Lerp(target, homeTarget, Mathf.Clamp01(homePressure * 0.58f));
+    }
+
+    private void PickWanderDirection(bool initial)
+    {
+        Vector3 baseForward = StableHorizontalDirection(transform.forward, schoolGroupForward);
+        float yaw = Random.Range(-wanderTurnAngle, wanderTurnAngle);
+        if (!initial && Random.value < 0.18f)
+        {
+            yaw += Random.value < 0.5f ? -Random.Range(80f, 150f) : Random.Range(80f, 150f);
+        }
+
+        Vector3 horizontal = Quaternion.Euler(0f, yaw, 0f) * baseForward;
+        wanderDirection = new Vector3(
+            horizontal.x,
+            Random.Range(-maxVerticalSwimDirection, maxVerticalSwimDirection) * 0.65f,
+            horizontal.z
+        ).normalized;
+
+        float min = Mathf.Max(0.25f, Mathf.Min(wanderTurnSecondsRange.x, wanderTurnSecondsRange.y));
+        float max = Mathf.Max(min, Mathf.Max(wanderTurnSecondsRange.x, wanderTurnSecondsRange.y));
+        nextWanderTurnTime = Time.time + (initial ? Random.Range(0f, max) : Random.Range(min, max));
+    }
+
+    private Vector3 BlendWanderDirection(Vector3 direction)
+    {
+        float weight = Mathf.Clamp01(wanderTurnWeight);
+        Vector3 blended = direction + wanderDirection * weight;
+        return blended.sqrMagnitude > 0.001f ? blended.normalized : direction;
+    }
+
+    private static Vector3 StableHorizontalDirection(Vector3 direction, Vector3 fallback)
+    {
+        Vector3 flat = new Vector3(direction.x, 0f, direction.z);
+        if (flat.sqrMagnitude > 0.001f)
+        {
+            return flat.normalized;
+        }
+
+        flat = new Vector3(fallback.x, 0f, fallback.z);
+        return flat.sqrMagnitude > 0.001f ? flat.normalized : Vector3.forward;
+    }
+
+    private void PickBoundsRecoveryTarget()
+    {
+        Vector3 inward = swimCenter - transform.position;
+        if (inward.sqrMagnitude < 0.001f)
+        {
+            inward = -transform.forward;
+        }
+
+        Vector3 recoveryTarget = transform.position + inward.normalized * Mathf.Max(2f, Mathf.Min(swimSize.x, swimSize.z) * 0.22f);
+        recoveryTarget += transform.right * Random.Range(-swimSize.x * 0.05f, swimSize.x * 0.05f);
+        recoveryTarget.y = Mathf.Lerp(transform.position.y, swimCenter.y, 0.35f);
+        targetPosition = ClampToSwimBounds(
+            recoveryTarget,
+            Mathf.Max(boundsPadding, boundsAvoidancePadding * 0.65f),
+            boundsPadding
+        );
+        activeTargetReachDistance = targetReachDistance * 0.85f;
+    }
+
+    private Vector3 BlendBoundsAvoidance(Vector3 direction)
+    {
+        Vector3 avoidance = BoundsAvoidanceVector(transform.position);
+        if (avoidance.sqrMagnitude < 0.001f)
+        {
+            return direction;
+        }
+
+        Vector3 blended = direction + avoidance;
+        return blended.sqrMagnitude > 0.001f ? blended.normalized : direction;
+    }
+
+    private Vector3 BoundsAvoidanceVector(Vector3 position)
+    {
+        Vector3 halfSize = swimSize * 0.5f;
+        Vector3 min = swimCenter - halfSize;
+        Vector3 max = swimCenter + halfSize;
+        float horizontalPadding = Mathf.Clamp(
+            Mathf.Max(boundsAvoidancePadding, boundsPadding + 0.1f),
+            0.1f,
+            Mathf.Max(0.1f, Mathf.Min(halfSize.x, halfSize.z) * 0.95f)
+        );
+        float verticalPadding = Mathf.Clamp(
+            Mathf.Max(boundsPadding + 0.18f, boundsAvoidancePadding * 0.24f),
+            0.1f,
+            Mathf.Max(0.1f, halfSize.y * 0.58f)
+        );
+
+        Vector3 avoidance = Vector3.zero;
+        AddAxisBoundsAvoidance(ref avoidance.x, position.x, min.x, max.x, horizontalPadding);
+        AddAxisBoundsAvoidance(ref avoidance.y, position.y, min.y, max.y, verticalPadding);
+        AddAxisBoundsAvoidance(ref avoidance.z, position.z, min.z, max.z, horizontalPadding);
+
+        if (!IsInsideSwimBounds(position, 0f))
+        {
+            Vector3 toCenter = swimCenter - position;
+            if (toCenter.sqrMagnitude > 0.001f)
+            {
+                avoidance += toCenter.normalized * boundsReturnWeight;
+            }
+        }
+
+        avoidance.y *= 0.45f;
+        return avoidance * boundsAvoidanceWeight;
+    }
+
+    private static void AddAxisBoundsAvoidance(ref float axis, float value, float min, float max, float padding)
+    {
+        if (value < min + padding)
+        {
+            axis += Mathf.Clamp01((min + padding - value) / padding);
+        }
+        else if (value > max - padding)
+        {
+            axis -= Mathf.Clamp01((value - (max - padding)) / padding);
+        }
     }
 
     private void PickNextSpeedMode(bool initial)
@@ -388,14 +709,83 @@ public partial class FishActor : MonoBehaviour
             && position.z <= swimCenter.z + halfSize.z - padding;
     }
 
-    private Vector3 ClampToSwimBounds(Vector3 position, float inset)
+    private bool IsNearSwimBoundsEdge(Vector3 position, float padding)
     {
         Vector3 halfSize = swimSize * 0.5f;
-        float safeInset = Mathf.Max(0f, inset);
+        float safePadding = Mathf.Clamp(
+            Mathf.Max(0f, padding),
+            0f,
+            Mathf.Max(0f, Mathf.Min(halfSize.x, halfSize.y, halfSize.z) - 0.1f)
+        );
+
+        return position.x <= swimCenter.x - halfSize.x + safePadding
+            || position.x >= swimCenter.x + halfSize.x - safePadding
+            || position.y <= swimCenter.y - halfSize.y + safePadding
+            || position.y >= swimCenter.y + halfSize.y - safePadding
+            || position.z <= swimCenter.z - halfSize.z + safePadding
+            || position.z >= swimCenter.z + halfSize.z - safePadding;
+    }
+
+    private bool IsNearHorizontalSwimBoundsEdge(Vector3 position, float padding)
+    {
+        Vector3 halfSize = swimSize * 0.5f;
+        float safePadding = Mathf.Clamp(
+            Mathf.Max(0f, padding),
+            0f,
+            Mathf.Max(0f, Mathf.Min(halfSize.x, halfSize.z) - 0.1f)
+        );
+
+        return position.x <= swimCenter.x - halfSize.x + safePadding
+            || position.x >= swimCenter.x + halfSize.x - safePadding
+            || position.z <= swimCenter.z - halfSize.z + safePadding
+            || position.z >= swimCenter.z + halfSize.z - safePadding;
+    }
+
+    private float HorizontalEdgePressure(Vector3 position, float padding)
+    {
+        Vector3 halfSize = swimSize * 0.5f;
+        float safePadding = Mathf.Clamp(
+            Mathf.Max(0.1f, padding),
+            0.1f,
+            Mathf.Max(0.1f, Mathf.Min(halfSize.x, halfSize.z) - 0.1f)
+        );
+        float minX = swimCenter.x - halfSize.x;
+        float maxX = swimCenter.x + halfSize.x;
+        float minZ = swimCenter.z - halfSize.z;
+        float maxZ = swimCenter.z + halfSize.z;
+        float xPressure = Mathf.Max(
+            Mathf.InverseLerp(minX + safePadding, minX, position.x),
+            Mathf.InverseLerp(maxX - safePadding, maxX, position.x)
+        );
+        float zPressure = Mathf.Max(
+            Mathf.InverseLerp(minZ + safePadding, minZ, position.z),
+            Mathf.InverseLerp(maxZ - safePadding, maxZ, position.z)
+        );
+        return Mathf.Clamp01(Mathf.Max(xPressure, zPressure));
+    }
+
+    private Vector3 ClampToSwimBounds(Vector3 position, float inset)
+    {
+        return ClampToSwimBounds(position, inset, inset);
+    }
+
+    private Vector3 ClampToSwimBounds(Vector3 position, float horizontalInset, float verticalInset)
+    {
+        Vector3 halfSize = swimSize * 0.5f;
+        float safeHorizontalInset = Mathf.Clamp(
+            Mathf.Max(0f, horizontalInset),
+            0f,
+            Mathf.Max(0f, Mathf.Min(halfSize.x, halfSize.z) - 0.05f)
+        );
+        float safeVerticalInset = Mathf.Clamp(
+            Mathf.Max(0f, verticalInset),
+            0f,
+            Mathf.Max(0f, halfSize.y - 0.05f)
+        );
         return new Vector3(
-            Mathf.Clamp(position.x, swimCenter.x - halfSize.x + safeInset, swimCenter.x + halfSize.x - safeInset),
-            Mathf.Clamp(position.y, swimCenter.y - halfSize.y + safeInset, swimCenter.y + halfSize.y - safeInset),
-            Mathf.Clamp(position.z, swimCenter.z - halfSize.z + safeInset, swimCenter.z + halfSize.z - safeInset)
+            Mathf.Clamp(position.x, swimCenter.x - halfSize.x + safeHorizontalInset, swimCenter.x + halfSize.x - safeHorizontalInset),
+            Mathf.Clamp(position.y, swimCenter.y - halfSize.y + safeVerticalInset, swimCenter.y + halfSize.y - safeVerticalInset),
+            Mathf.Clamp(position.z, swimCenter.z - halfSize.z + safeHorizontalInset, swimCenter.z + halfSize.z - safeHorizontalInset)
         );
     }
 

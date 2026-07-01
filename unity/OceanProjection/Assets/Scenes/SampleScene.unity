@@ -18780,14 +18780,14 @@ MonoBehaviour:
   orbitSeconds: 58
   lookAhead: 4.5
   focusFish: 1
-  targetRefreshSeconds: 4.8
+  targetRefreshSeconds: 5
   prioritizeReleasedFish: 1
-  followDistance: 4.2
-  sideOffset: 1.15
+  followDistance: 3.5
+  sideOffset: 0.48
   heightOffset: 0.55
   forwardLookAhead: 2.4
-  minFocusDistance: 4
-  maxFocusDistance: 10
+  minFocusDistance: 3.2
+  maxFocusDistance: 8.5
   focusRadiusMultiplier: 3
   positionSmoothTime: 2.35
   rotationSmooth: 1.5
@@ -18799,9 +18799,9 @@ MonoBehaviour:
   schoolInterestDistance: 34
   schoolNeighborRadius: 6.5
   minimumSchoolSize: 5
-  fishApproachDistance: 5.2
-  schoolApproachDistance: 8.5
-  fishObserveSeconds: {x: 3.5, y: 6}
+  fishApproachDistance: 4.1
+  schoolApproachDistance: 7.4
+  fishObserveSeconds: {x: 5, y: 9}
   schoolObserveSeconds: {x: 5.5, y: 9}
   cruiseSeconds: {x: 4, y: 8}
   diverLookAhead: 1.8
@@ -53566,13 +53566,19 @@ MonoBehaviour:
   fishParent: {fileID: 0}
   center: {x: 0, y: -0.9, z: 0}
   size: {x: 58, y: 7.2, z: 38}
-  releasedFishTargetLength: 1.8
-  releasedFishSpawnSpread: {x: 6, y: 2, z: 4}
+  releasedFishTargetLength: 0.55
+  releasedFishSpawnSpread: {x: 11, y: 4, z: 7}
   minimumReleasedFishSpawnDistanceFromCamera: 7
   spawnPositionAttempts: 18
   spawnDefaultFishOnStart: 1
   defaultFishCount: 150
-  defaultFishTargetLengthRange: {x: 0.45, y: 0.85}
+  defaultFishTargetLengthRange: {x: 0.18, y: 0.38}
+  defaultSchoolSpread: {x: 44, y: 4.4, z: 28}
+  defaultSchoolYawJitter: 62
+  defaultSchoolClusterCount: 14
+  defaultSchoolClusterRadiusRange: {x: 2, y: 4.2}
+  defaultSchoolEdgeMargin: 4.8
+  mediumSchoolChance: 0.28
   autoFindFishAlivePrefabs: 1
   disableImportedFishMotion: 1
   maxFishCount: 340
@@ -53593,7 +53599,7 @@ MonoBehaviour:
   supabaseUrl: 
   supabaseAnonKey: 
   pollingSeconds: 8
-  fetchLimit: 30
+  fetchLimit: 100
 --- !u!4 &963426410
 Transform:
   m_ObjectHideFlags: 0

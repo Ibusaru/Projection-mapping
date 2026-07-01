@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class OceanCameraRig : MonoBehaviour
 {
+    private const float ReleasedFishFocusDistanceFloor = 3f;
+    private const float ReleasedFishApproachDistanceFloor = 3.15f;
+    private const float ReleasedFishRadiusMultiplierFloor = 0.95f;
+
     private enum DiverIntent
     {
         Cruise,
@@ -19,15 +23,18 @@ public class OceanCameraRig : MonoBehaviour
 
     [Header("Diver Follow")]
     [SerializeField] private bool focusFish = true;
-    [SerializeField] private float targetRefreshSeconds = 4.8f;
+    [SerializeField] private float targetRefreshSeconds = 5f;
     [SerializeField] private bool prioritizeReleasedFish = true;
-    [SerializeField] private float followDistance = 4.2f;
-    [SerializeField] private float sideOffset = 1.15f;
+    [SerializeField] private float followDistance = 3.5f;
+    [SerializeField] private float sideOffset = 0.48f;
     [SerializeField] private float heightOffset = 0.55f;
     [SerializeField] private float forwardLookAhead = 2.4f;
-    [SerializeField] private float minFocusDistance = 4f;
-    [SerializeField] private float maxFocusDistance = 10f;
+    [SerializeField] private float minFocusDistance = 3.2f;
+    [SerializeField] private float maxFocusDistance = 8.5f;
     [SerializeField] private float focusRadiusMultiplier = 3f;
+    [SerializeField] private float releasedFishApproachDistance = 3.15f;
+    [SerializeField] private float releasedFishFocusRadiusMultiplier = 0.95f;
+    [SerializeField] private float minReleasedFishFocusDistance = 3f;
     [SerializeField] private float positionSmoothTime = 2.4f;
     [SerializeField] private float rotationSmooth = 1.55f;
     [SerializeField] private float driftAmplitude = 0.42f;
@@ -39,20 +46,27 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float schoolInterestDistance = 34f;
     [SerializeField] private float schoolNeighborRadius = 6.5f;
     [SerializeField] private int minimumSchoolSize = 5;
-    [SerializeField] private float fishApproachDistance = 5.2f;
-    [SerializeField] private float schoolApproachDistance = 8.5f;
-    [SerializeField] private Vector2 fishObserveSeconds = new Vector2(3.5f, 6f);
+    [SerializeField] private float fishApproachDistance = 4.1f;
+    [SerializeField] private float schoolApproachDistance = 7.4f;
+    [SerializeField] private Vector2 fishObserveSeconds = new Vector2(5f, 9f);
+    [SerializeField] private Vector2 goodAngleFishObserveSeconds = new Vector2(8f, 22f);
     [SerializeField] private Vector2 schoolObserveSeconds = new Vector2(5.5f, 9f);
     [SerializeField] private Vector2 cruiseSeconds = new Vector2(4f, 8f);
     [SerializeField] private float diverLookAhead = 1.8f;
     [SerializeField] private float schoolRadiusPadding = 1.35f;
     [SerializeField] private float relaxedCameraSpeed = 2.8f;
     [SerializeField] private float approachCameraSpeed = 4.8f;
+    [SerializeField] private float maxContinuousFishFocusSeconds = 28f;
+    [SerializeField] private int recentFishFocusStackSize = 6;
+    [SerializeField] private float recentFishFocusPenalty = 10f;
+    [SerializeField] private float currentFishRepeatPenalty = 18f;
     [Header("Diver Observation Angles")]
-    [SerializeField] private Vector2 frontViewAngleRange = new Vector2(14f, 28f);
-    [SerializeField] private Vector2 diagonalViewAngleRange = new Vector2(38f, 62f);
-    [SerializeField] private Vector2 sideViewAngleRange = new Vector2(72f, 90f);
+    [SerializeField] private Vector2 frontViewAngleRange = new Vector2(10f, 22f);
+    [SerializeField] private Vector2 diagonalViewAngleRange = new Vector2(26f, 48f);
+    [SerializeField] private Vector2 sideViewAngleRange = new Vector2(58f, 72f);
     [SerializeField] private Vector2 rearApproachTurnAngleRange = new Vector2(68f, 88f);
+    [SerializeField] private float maximumObservationAngleFromFront = 68f;
+    [SerializeField] private float goodObservationAngleDegrees = 52f;
     [SerializeField] private float observationOrbitSmoothTime = 1.8f;
     [SerializeField] private float observationOrbitMaxDegreesPerSecond = 85f;
 
@@ -71,6 +85,19 @@ public class OceanCameraRig : MonoBehaviour
     private float intentUntilTime;
     private bool hasObservationAngle;
     private bool hasPlacedInitialCamera;
+    private readonly List<FishActor> recentFishFocusStack = new List<FishActor>();
+    private readonly Queue<FishActor> newFishFocusQueue = new Queue<FishActor>();
+    private readonly Queue<FishActor> releasedFishFocusQueue = new Queue<FishActor>();
+    private readonly HashSet<FishActor> knownReleasedFish = new HashSet<FishActor>();
+    private readonly HashSet<FishActor> queuedNewFishFocus = new HashSet<FishActor>();
+    private readonly HashSet<FishActor> queuedReleasedFishFocus = new HashSet<FishActor>();
+    private readonly List<FishActor> focusQueuePruneBuffer = new List<FishActor>();
+    private float focusedFishSinceTime;
+
+    private void OnDisable()
+    {
+        SetFocusedFish(null);
+    }
 
     private void LateUpdate()
     {
@@ -120,9 +147,7 @@ public class OceanCameraRig : MonoBehaviour
         Vector3 observationDirection = ObservationDirectionFromFocus(focusForward, focusRight);
 
         float driftTime = Time.time * driftSpeed;
-        float desiredDistance = intent == DiverIntent.ApproachSchool
-            ? schoolApproachDistance + currentFocusRadius * schoolRadiusPadding
-            : Mathf.Clamp(fishApproachDistance + currentFocusRadius * focusRadiusMultiplier, minFocusDistance, maxFocusDistance);
+        float desiredDistance = CalculateDesiredFocusDistance();
         float dynamicLookAhead = forwardLookAhead + diverLookAhead + currentFocusRadius * 0.45f;
 
         Vector3 breathingDrift = DiverDrift(driftTime, currentFocusRadius);
@@ -174,6 +199,28 @@ public class OceanCameraRig : MonoBehaviour
         currentFocusRadius = focusedFish.CameraFocusRadius;
     }
 
+    private float CalculateDesiredFocusDistance()
+    {
+        if (intent == DiverIntent.ApproachSchool)
+        {
+            return schoolApproachDistance + currentFocusRadius * schoolRadiusPadding;
+        }
+
+        if (focusedFish != null && focusedFish.IsReleasedFish)
+        {
+            float approachDistance = Mathf.Max(releasedFishApproachDistance, ReleasedFishApproachDistanceFloor);
+            float radiusMultiplier = Mathf.Max(releasedFishFocusRadiusMultiplier, ReleasedFishRadiusMultiplierFloor);
+            float minimumDistance = Mathf.Max(minReleasedFishFocusDistance, ReleasedFishFocusDistanceFloor);
+            return Mathf.Clamp(
+                approachDistance + currentFocusRadius * radiusMultiplier,
+                minimumDistance,
+                maxFocusDistance
+            );
+        }
+
+        return Mathf.Clamp(fishApproachDistance + currentFocusRadius * focusRadiusMultiplier, minFocusDistance, maxFocusDistance);
+    }
+
     private Vector3 ObservationDirectionFromFocus(Vector3 focusForward, Vector3 focusRight)
     {
         if (!hasObservationAngle)
@@ -188,6 +235,7 @@ public class OceanCameraRig : MonoBehaviour
             observationOrbitSmoothTime,
             observationOrbitMaxDegreesPerSecond
         );
+        currentObservationAngleDegrees = ClampObservationAngle(currentObservationAngleDegrees);
 
         float radians = currentObservationAngleDegrees * Mathf.Deg2Rad;
         Vector3 direction = focusForward * Mathf.Cos(radians) + focusRight * Mathf.Sin(radians);
@@ -225,13 +273,16 @@ public class OceanCameraRig : MonoBehaviour
 
         bool approachedFromBehind = hasCameraDirection && Vector3.Dot(flatToCamera, flatForward) < -0.25f;
         float angleMagnitude = approachedFromBehind
-            ? RandomInRange(rearApproachTurnAngleRange)
+            ? PickBehindRecoveryAngleMagnitude()
             : PickObservationAngleMagnitude();
 
         targetObservationAngleDegrees = angleMagnitude * side;
-        currentObservationAngleDegrees = hasCameraDirection
+        float startingAngle = hasCameraDirection
             ? Vector3.SignedAngle(flatForward, flatToCamera, Vector3.up)
             : targetObservationAngleDegrees;
+        currentObservationAngleDegrees = Mathf.Abs(startingAngle) > maximumObservationAngleFromFront
+            ? targetObservationAngleDegrees
+            : ClampObservationAngle(startingAngle);
         observationAngleVelocity = 0f;
         hasObservationAngle = true;
     }
@@ -239,17 +290,48 @@ public class OceanCameraRig : MonoBehaviour
     private float PickObservationAngleMagnitude()
     {
         float roll = Random.value;
-        if (roll < 0.24f)
+        if (focusedFish != null && focusedFish.IsReleasedFish)
+        {
+            if (roll < 0.2f)
+            {
+                return RandomInRange(frontViewAngleRange);
+            }
+
+            if (roll < 0.97f)
+            {
+                return RandomInRange(diagonalViewAngleRange);
+            }
+
+            return Mathf.Min(RandomInRange(sideViewAngleRange), maximumObservationAngleFromFront);
+        }
+
+        if (roll < 0.28f)
         {
             return RandomInRange(frontViewAngleRange);
         }
 
-        if (roll < 0.66f)
+        if (roll < 0.9f)
         {
             return RandomInRange(diagonalViewAngleRange);
         }
 
-        return RandomInRange(sideViewAngleRange);
+        return Mathf.Min(RandomInRange(sideViewAngleRange), maximumObservationAngleFromFront);
+    }
+
+    private float PickBehindRecoveryAngleMagnitude()
+    {
+        if (focusedFish != null && focusedFish.IsReleasedFish)
+        {
+            return RandomInRange(diagonalViewAngleRange);
+        }
+
+        return Mathf.Min(RandomInRange(rearApproachTurnAngleRange), maximumObservationAngleFromFront);
+    }
+
+    private float ClampObservationAngle(float angle)
+    {
+        float limit = Mathf.Clamp(maximumObservationAngleFromFront, 25f, 89f);
+        return Mathf.Clamp(angle, -limit, limit);
     }
 
     private static float RandomInRange(Vector2 range)
@@ -309,27 +391,48 @@ public class OceanCameraRig : MonoBehaviour
 
     private void RefreshDiverIntentIfNeeded()
     {
-        if (Time.time < nextTargetRefreshTime && Time.time < intentUntilTime)
-        {
-            return;
-        }
-
         IReadOnlyList<FishActor> fishes = FishActor.AllActiveFishes;
         if (fishes == null || fishes.Count == 0)
         {
-            focusedFish = null;
+            ClearReleasedFishFocusQueues();
+            SetFocusedFish(null);
             intent = DiverIntent.Cruise;
             nextTargetRefreshTime = Time.time + ScanDelay();
             return;
         }
 
-        bool hasReleasedFish = prioritizeReleasedFish && HasReleasedFish(fishes);
-        bool foundSchool = TryFindSchool(fishes, out Vector3 schoolCenter, out Vector3 schoolForward, out float schoolRadius, out int schoolSize);
-        FishActor fish = PickCinematicFish(fishes, hasReleasedFish);
+        TrackReleasedFishFocusCandidates(fishes);
 
-        if (!hasReleasedFish && foundSchool && (fish == null || schoolSize >= minimumSchoolSize + 2 || Random.value < 0.68f))
+        if (ShouldHoldCurrentIntent())
         {
-            focusedFish = null;
+            return;
+        }
+
+        RequeueCompletedFocusedFish(fishes);
+
+        FishActor fish = PickQueuedReleasedFish(fishes);
+        bool selectedQueuedFish = fish != null;
+        bool hasReleasedFish = HasReleasedFish(fishes);
+        bool foundSchool = false;
+        Vector3 schoolCenter = Vector3.zero;
+        Vector3 schoolForward = transform.forward;
+        float schoolRadius = 0f;
+        int schoolSize = 0;
+
+        if (!selectedQueuedFish)
+        {
+            bool releasedOnly = prioritizeReleasedFish && hasReleasedFish;
+            foundSchool = TryFindSchool(fishes, out schoolCenter, out schoolForward, out schoolRadius, out schoolSize);
+            fish = PickCinematicFish(fishes, releasedOnly);
+            if (fish == focusedFish && HasExceededContinuousFishFocus())
+            {
+                fish = null;
+            }
+        }
+
+        if (!selectedQueuedFish && !hasReleasedFish && foundSchool && (fish == null || schoolSize >= minimumSchoolSize + 2 || Random.value < 0.68f))
+        {
+            SetFocusedFish(null);
             intent = DiverIntent.ApproachSchool;
             lastSchoolCenter = schoolCenter;
             currentFocusPoint = schoolCenter;
@@ -340,23 +443,210 @@ public class OceanCameraRig : MonoBehaviour
         }
         else if (fish != null)
         {
-            focusedFish = fish;
-            intent = Random.value < 0.22f ? DiverIntent.DriftPast : DiverIntent.ApproachFish;
+            SetFocusedFish(fish);
+            intent = fish.IsReleasedFish || Random.value >= 0.22f
+                ? DiverIntent.ApproachFish
+                : DiverIntent.DriftPast;
             currentFocusPoint = fish.VisualCenter;
             currentFocusForward = fish.transform.forward;
             currentFocusRadius = fish.CameraFocusRadius;
             ChooseObservationAngle(currentFocusPoint, currentFocusForward);
-            intentUntilTime = Time.time + Random.Range(fishObserveSeconds.x, fishObserveSeconds.y);
+            intentUntilTime = Time.time + FishObserveDurationForCurrentAngle();
         }
         else
         {
-            focusedFish = null;
+            SetFocusedFish(null);
             intent = DiverIntent.Cruise;
             hasObservationAngle = false;
             PickCruiseDestination();
         }
 
         nextTargetRefreshTime = Time.time + ScanDelay();
+    }
+
+    private bool ShouldHoldCurrentIntent()
+    {
+        if (Time.time >= intentUntilTime)
+        {
+            return false;
+        }
+
+        if ((intent == DiverIntent.ApproachFish || intent == DiverIntent.DriftPast) && focusedFish != null)
+        {
+            return true;
+        }
+
+        if (intent == DiverIntent.ApproachSchool)
+        {
+            return true;
+        }
+
+        return Time.time < nextTargetRefreshTime;
+    }
+
+    private void TrackReleasedFishFocusCandidates(IReadOnlyList<FishActor> fishes)
+    {
+        PruneKnownReleasedFish(fishes);
+
+        for (int i = 0; i < fishes.Count; i++)
+        {
+            FishActor fish = fishes[i];
+            if (!IsReleasedFocusCandidate(fish) || knownReleasedFish.Contains(fish))
+            {
+                continue;
+            }
+
+            knownReleasedFish.Add(fish);
+            EnqueueNewFishFocus(fish);
+        }
+    }
+
+    private void RequeueCompletedFocusedFish(IReadOnlyList<FishActor> activeFishes)
+    {
+        if ((intent == DiverIntent.ApproachFish || intent == DiverIntent.DriftPast)
+            && IsValidQueuedReleasedFish(focusedFish, activeFishes))
+        {
+            EnqueueReleasedFishFocus(focusedFish);
+        }
+    }
+
+    private void EnqueueNewFishFocus(FishActor fish)
+    {
+        if (!IsReleasedFocusCandidate(fish)
+            || queuedNewFishFocus.Contains(fish)
+            || queuedReleasedFishFocus.Contains(fish))
+        {
+            return;
+        }
+
+        newFishFocusQueue.Enqueue(fish);
+        queuedNewFishFocus.Add(fish);
+    }
+
+    private void EnqueueReleasedFishFocus(FishActor fish)
+    {
+        if (!IsReleasedFocusCandidate(fish)
+            || queuedNewFishFocus.Contains(fish)
+            || queuedReleasedFishFocus.Contains(fish))
+        {
+            return;
+        }
+
+        releasedFishFocusQueue.Enqueue(fish);
+        queuedReleasedFishFocus.Add(fish);
+    }
+
+    private FishActor PickQueuedReleasedFish(IReadOnlyList<FishActor> activeFishes)
+    {
+        FishActor fish = DequeueValidQueuedFish(newFishFocusQueue, queuedNewFishFocus, activeFishes);
+        return fish != null
+            ? fish
+            : DequeueValidQueuedFish(releasedFishFocusQueue, queuedReleasedFishFocus, activeFishes);
+    }
+
+    private FishActor DequeueValidQueuedFish(Queue<FishActor> queue, HashSet<FishActor> queuedSet, IReadOnlyList<FishActor> activeFishes)
+    {
+        while (queue.Count > 0)
+        {
+            FishActor fish = queue.Dequeue();
+            queuedSet.Remove(fish);
+            if (IsValidQueuedReleasedFish(fish, activeFishes))
+            {
+                return fish;
+            }
+        }
+
+        return null;
+    }
+
+    private void PruneKnownReleasedFish(IReadOnlyList<FishActor> activeFishes)
+    {
+        focusQueuePruneBuffer.Clear();
+        foreach (FishActor fish in knownReleasedFish)
+        {
+            if (!IsValidQueuedReleasedFish(fish, activeFishes))
+            {
+                focusQueuePruneBuffer.Add(fish);
+            }
+        }
+
+        for (int i = 0; i < focusQueuePruneBuffer.Count; i++)
+        {
+            knownReleasedFish.Remove(focusQueuePruneBuffer[i]);
+        }
+
+        focusQueuePruneBuffer.Clear();
+    }
+
+    private void ClearReleasedFishFocusQueues()
+    {
+        newFishFocusQueue.Clear();
+        releasedFishFocusQueue.Clear();
+        knownReleasedFish.Clear();
+        queuedNewFishFocus.Clear();
+        queuedReleasedFishFocus.Clear();
+        focusQueuePruneBuffer.Clear();
+    }
+
+    private static bool IsReleasedFocusCandidate(FishActor fish)
+    {
+        return fish != null && fish.IsReleasedFish;
+    }
+
+    private static bool IsValidQueuedReleasedFish(FishActor fish, IReadOnlyList<FishActor> activeFishes)
+    {
+        return IsReleasedFocusCandidate(fish) && ContainsFish(activeFishes, fish);
+    }
+
+    private static bool ContainsFish(IReadOnlyList<FishActor> fishes, FishActor fish)
+    {
+        if (fish == null || fishes == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < fishes.Count; i++)
+        {
+            if (fishes[i] == fish)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void SetFocusedFish(FishActor fish)
+    {
+        if (focusedFish == fish)
+        {
+            if (focusedFish != null)
+            {
+                focusedFish.SetCameraFocused(true);
+                focusedFishSinceTime = Time.time;
+                PushRecentFishFocus(focusedFish);
+            }
+
+            return;
+        }
+
+        if (focusedFish != null)
+        {
+            focusedFish.SetCameraFocused(false);
+        }
+
+        focusedFish = fish;
+
+        if (focusedFish != null)
+        {
+            focusedFish.SetCameraFocused(true);
+            focusedFishSinceTime = Time.time;
+            PushRecentFishFocus(focusedFish);
+        }
+        else
+        {
+            focusedFishSinceTime = 0f;
+        }
     }
 
     private bool TryFindSchool(IReadOnlyList<FishActor> fishes, out Vector3 schoolCenter, out Vector3 schoolForward, out float schoolRadius, out int schoolSize)
@@ -458,10 +748,22 @@ public class OceanCameraRig : MonoBehaviour
         return Mathf.Max(0.6f, Mathf.Min(scanIntervalSeconds, targetRefreshSeconds));
     }
 
+    private float FishObserveDurationForCurrentAngle()
+    {
+        float angle = Mathf.Abs(targetObservationAngleDegrees);
+        bool goodAngle = angle <= Mathf.Clamp(goodObservationAngleDegrees, 10f, maximumObservationAngleFromFront);
+        Vector2 range = goodAngle ? goodAngleFishObserveSeconds : fishObserveSeconds;
+        float min = Mathf.Max(1f, Mathf.Min(range.x, range.y));
+        float max = Mathf.Max(min, Mathf.Max(range.x, range.y));
+        return Random.Range(min, max);
+    }
+
     private FishActor PickCinematicFish(IReadOnlyList<FishActor> fishes, bool releasedOnly)
     {
         FishActor best = null;
         float bestScore = float.NegativeInfinity;
+        int eligibleCount = CountEligibleFish(fishes, releasedOnly);
+        bool shouldAvoidCurrentFish = eligibleCount > 1 && HasExceededContinuousFishFocus();
 
         for (int i = 0; i < fishes.Count; i++)
         {
@@ -483,12 +785,25 @@ public class OceanCameraRig : MonoBehaviour
                 continue;
             }
 
+            if (shouldAvoidCurrentFish && fish == focusedFish)
+            {
+                continue;
+            }
+
             float forwardScore = Vector3.Dot(transform.forward, toFish.normalized);
             float idealDistance = releasedOnly ? followDistance * 1.15f : followDistance * 1.6f;
             float distanceScore = -Mathf.Abs(distance - idealDistance);
             float centerScore = -Vector3.Distance(fish.transform.position, center) * 0.08f;
             float releasedScore = fish.IsReleasedFish ? 60f : 0f;
             float score = releasedScore + forwardScore * 3.5f + distanceScore + centerScore + Random.Range(0f, 0.75f);
+            score -= RecentFishFocusPenalty(fish);
+
+            if (fish == focusedFish && focusedFishSinceTime > 0f)
+            {
+                float focusAge = Time.time - focusedFishSinceTime;
+                float repeatBlend = Mathf.InverseLerp(maxContinuousFishFocusSeconds * 0.45f, maxContinuousFishFocusSeconds, focusAge);
+                score -= currentFishRepeatPenalty * repeatBlend;
+            }
 
             if (score > bestScore)
             {
@@ -498,6 +813,82 @@ public class OceanCameraRig : MonoBehaviour
         }
 
         return best;
+    }
+
+    private int CountEligibleFish(IReadOnlyList<FishActor> fishes, bool releasedOnly)
+    {
+        int count = 0;
+        for (int i = 0; i < fishes.Count; i++)
+        {
+            FishActor fish = fishes[i];
+            if (fish == null)
+            {
+                continue;
+            }
+
+            if (releasedOnly && !fish.IsReleasedFish)
+            {
+                continue;
+            }
+
+            if (!releasedOnly && Vector3.Distance(transform.position, fish.transform.position) > fishInterestDistance)
+            {
+                continue;
+            }
+
+            count++;
+        }
+
+        return count;
+    }
+
+    private bool HasExceededContinuousFishFocus()
+    {
+        return focusedFish != null
+            && focusedFishSinceTime > 0f
+            && Time.time - focusedFishSinceTime >= Mathf.Max(1f, maxContinuousFishFocusSeconds);
+    }
+
+    private void PushRecentFishFocus(FishActor fish)
+    {
+        PruneRecentFishFocusStack();
+        recentFishFocusStack.Remove(fish);
+        recentFishFocusStack.Insert(0, fish);
+
+        int maxStackSize = Mathf.Max(0, recentFishFocusStackSize);
+        while (recentFishFocusStack.Count > maxStackSize)
+        {
+            recentFishFocusStack.RemoveAt(recentFishFocusStack.Count - 1);
+        }
+    }
+
+    private float RecentFishFocusPenalty(FishActor fish)
+    {
+        if (fish == null || recentFishFocusStackSize <= 0)
+        {
+            return 0f;
+        }
+
+        PruneRecentFishFocusStack();
+        int index = recentFishFocusStack.IndexOf(fish);
+        if (index < 0)
+        {
+            return 0f;
+        }
+
+        float recency = 1f - index / (float)Mathf.Max(1, recentFishFocusStackSize);
+        return recentFishFocusPenalty * Mathf.Clamp01(recency);
+    }
+
+    private void PruneRecentFishFocusStack()
+    {
+        for (int i = recentFishFocusStack.Count - 1; i >= 0; i--)
+        {
+            if (recentFishFocusStack[i] == null)
+            {
+                recentFishFocusStack.RemoveAt(i);
+            }
+        }
     }
 
     private static bool HasReleasedFish(IReadOnlyList<FishActor> fishes)

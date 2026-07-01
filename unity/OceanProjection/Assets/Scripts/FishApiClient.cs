@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -12,38 +13,41 @@ public class FishApiClient : MonoBehaviour
 
     [Header("Polling")]
     [SerializeField] private float pollingSeconds = 8f;
-    [SerializeField] private int fetchLimit = 30;
+    [SerializeField] private int fetchLimit = 100;
     [SerializeField] private int catchUpPageLimit = 6;
 
     private readonly Dictionary<string, string> seenFishVersions = new Dictionary<string, string>();
-    private string latestSeenUpdatedAt = "";
 
     public event Action<IReadOnlyList<FishData>> OnNewFishes;
 
     private void Start()
     {
+        Dictionary<string, string> localEnv = ReadLocalEnvFile();
         supabaseUrl = FirstNonEmpty(
             supabaseUrl,
             Environment.GetEnvironmentVariable("OCEAN_SUPABASE_URL"),
             Environment.GetEnvironmentVariable("SUPABASE_URL"),
-            Environment.GetEnvironmentVariable("VITE_SUPABASE_URL")
+            Environment.GetEnvironmentVariable("VITE_SUPABASE_URL"),
+            GetLocalEnvValue(localEnv, "VITE_SUPABASE_URL")
         );
         supabaseAnonKey = FirstNonEmpty(
             supabaseAnonKey,
             Environment.GetEnvironmentVariable("OCEAN_SUPABASE_ANON_KEY"),
             Environment.GetEnvironmentVariable("SUPABASE_ANON_KEY"),
-            Environment.GetEnvironmentVariable("VITE_SUPABASE_ANON_KEY")
+            Environment.GetEnvironmentVariable("VITE_SUPABASE_ANON_KEY"),
+            GetLocalEnvValue(localEnv, "VITE_SUPABASE_ANON_KEY")
         );
 
         if (string.IsNullOrWhiteSpace(supabaseUrl) || string.IsNullOrWhiteSpace(supabaseAnonKey))
         {
-            Debug.LogWarning("FishApiClient: Supabase URL or anon key is empty.");
+            Debug.LogWarning("FishApiClient: Supabase URL or anon key is empty. Set OCEAN_SUPABASE_URL/OCEAN_SUPABASE_ANON_KEY or web/.env.local.");
             return;
         }
 
         fetchLimit = Mathf.Max(1, fetchLimit);
         catchUpPageLimit = Mathf.Max(1, catchUpPageLimit);
         pollingSeconds = Mathf.Max(1f, pollingSeconds);
+        Debug.Log($"FishApiClient: Supabase config loaded. Polling every {pollingSeconds:0.#} seconds.");
         StartCoroutine(PollLoop());
     }
 
@@ -60,12 +64,11 @@ public class FishApiClient : MonoBehaviour
     {
         string baseUrl = supabaseUrl.TrimEnd('/');
         List<FishData> newFishes = new List<FishData>();
-        bool catchUpMode = !string.IsNullOrWhiteSpace(latestSeenUpdatedAt);
-        int pageLimit = catchUpMode ? catchUpPageLimit : 1;
+        int pageLimit = Mathf.Max(1, catchUpPageLimit);
 
         for (int page = 0; page < pageLimit; page++)
         {
-            string url = BuildFetchUrl(baseUrl, catchUpMode ? latestSeenUpdatedAt : "");
+            string url = BuildFetchUrl(baseUrl, page);
             using UnityWebRequest request = UnityWebRequest.Get(url);
             request.SetRequestHeader("apikey", supabaseAnonKey);
             request.SetRequestHeader("Authorization", $"Bearer {supabaseAnonKey}");
@@ -86,28 +89,14 @@ public class FishApiClient : MonoBehaviour
                 break;
             }
 
-            if (catchUpMode)
+            Debug.Log($"FishApiClient: fetched page {page + 1}/{pageLimit}, rows={list.items.Length}, seen={seenFishVersions.Count}.");
+
+            for (int index = list.items.Length - 1; index >= 0; index--)
             {
-                for (int index = 0; index < list.items.Length; index++)
-                {
-                    CollectNewFish(list.items[index], newFishes);
-                }
-            }
-            else
-            {
-                for (int index = list.items.Length - 1; index >= 0; index--)
-                {
-                    CollectNewFish(list.items[index], newFishes);
-                }
+                CollectNewFish(list.items[index], newFishes);
             }
 
-            string pageLatestVersion = LatestVersionInPage(list.items);
-            if (IsLaterVersion(pageLatestVersion, latestSeenUpdatedAt))
-            {
-                latestSeenUpdatedAt = pageLatestVersion;
-            }
-
-            if (!catchUpMode || list.items.Length < fetchLimit)
+            if (list.items.Length < fetchLimit)
             {
                 break;
             }
@@ -120,15 +109,11 @@ public class FishApiClient : MonoBehaviour
         }
     }
 
-    private string BuildFetchUrl(string baseUrl, string updatedAfter)
+    private string BuildFetchUrl(string baseUrl, int page)
     {
-        if (string.IsNullOrWhiteSpace(updatedAfter))
-        {
-            return $"{baseUrl}/rest/v1/fishes?select=*&order=updated_at.desc&limit={fetchLimit}";
-        }
-
-        string escapedCursor = Uri.EscapeDataString(updatedAfter);
-        return $"{baseUrl}/rest/v1/fishes?select=*&updated_at=gt.{escapedCursor}&order=updated_at.asc&limit={fetchLimit}";
+        int safePage = Mathf.Max(0, page);
+        int offset = safePage * fetchLimit;
+        return $"{baseUrl}/rest/v1/fishes?select=*&order=updated_at.desc,created_at.desc&limit={fetchLimit}&offset={offset}";
     }
 
     private void CollectNewFish(FishData fish, List<FishData> newFishes)
@@ -138,7 +123,7 @@ public class FishApiClient : MonoBehaviour
             return;
         }
 
-        string fishKey = !string.IsNullOrWhiteSpace(fish.id) ? fish.id : fish.nickname;
+        string fishKey = FishKey(fish);
         if (string.IsNullOrWhiteSpace(fishKey))
         {
             return;
@@ -154,27 +139,8 @@ public class FishApiClient : MonoBehaviour
         {
             seenFishVersions[fishKey] = version;
             newFishes.Add(fish);
+            Debug.Log($"FishApiClient: queued fish key='{fishKey}', nickname='{fish.nickname}', version='{version}'.");
         }
-    }
-
-    private static string LatestVersionInPage(FishData[] fishes)
-    {
-        string latest = "";
-        if (fishes == null)
-        {
-            return latest;
-        }
-
-        for (int index = 0; index < fishes.Length; index++)
-        {
-            string version = FishVersion(fishes[index]);
-            if (IsLaterVersion(version, latest))
-            {
-                latest = version;
-            }
-        }
-
-        return latest;
     }
 
     private static string FishVersion(FishData fish)
@@ -187,10 +153,35 @@ public class FishApiClient : MonoBehaviour
         return !string.IsNullOrWhiteSpace(fish.updated_at) ? fish.updated_at : fish.created_at;
     }
 
-    private static bool IsLaterVersion(string candidate, string current)
+    private static string FishKey(FishData fish)
     {
-        return !string.IsNullOrWhiteSpace(candidate)
-            && (string.IsNullOrWhiteSpace(current) || string.CompareOrdinal(candidate, current) > 0);
+        if (fish == null)
+        {
+            return "";
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.id))
+        {
+            return fish.id.Trim();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.texture_path))
+        {
+            return fish.texture_path.Trim();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fish.texture_url))
+        {
+            return fish.texture_url.Trim();
+        }
+
+        string version = FishVersion(fish);
+        if (!string.IsNullOrWhiteSpace(version) || !string.IsNullOrWhiteSpace(fish.nickname))
+        {
+            return $"{fish.nickname?.Trim()}|{version}";
+        }
+
+        return "";
     }
 
     private static string FirstNonEmpty(params string[] values)
@@ -200,6 +191,113 @@ public class FishApiClient : MonoBehaviour
             if (!string.IsNullOrWhiteSpace(values[index]))
             {
                 return values[index].Trim();
+            }
+        }
+
+        return "";
+    }
+
+    private static string GetLocalEnvValue(Dictionary<string, string> values, string key)
+    {
+        return values != null && values.TryGetValue(key, out string value) ? value : "";
+    }
+
+    private static Dictionary<string, string> ReadLocalEnvFile()
+    {
+        string path = FindLocalEnvPath();
+        Dictionary<string, string> values = new Dictionary<string, string>();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return values;
+        }
+
+        try
+        {
+            foreach (string line in File.ReadLines(path))
+            {
+                if (TryParseEnvLine(line, out string key, out string value))
+                {
+                    values[key] = value;
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            Debug.LogWarning($"FishApiClient: failed to read web/.env.local at '{path}': {exception.Message}");
+        }
+
+        return values;
+    }
+
+    private static bool TryParseEnvLine(string line, out string key, out string value)
+    {
+        key = "";
+        value = "";
+
+        if (string.IsNullOrWhiteSpace(line))
+        {
+            return false;
+        }
+
+        string trimmed = line.Trim();
+        if (trimmed.StartsWith("#"))
+        {
+            return false;
+        }
+
+        const string exportPrefix = "export ";
+        if (trimmed.StartsWith(exportPrefix, StringComparison.Ordinal))
+        {
+            trimmed = trimmed.Substring(exportPrefix.Length).TrimStart();
+        }
+
+        int separator = trimmed.IndexOf('=');
+        if (separator <= 0)
+        {
+            return false;
+        }
+
+        key = trimmed.Substring(0, separator).Trim();
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return false;
+        }
+
+        value = NormalizeEnvValue(trimmed.Substring(separator + 1).Trim());
+        return true;
+    }
+
+    private static string NormalizeEnvValue(string value)
+    {
+        if (value.Length >= 2)
+        {
+            char first = value[0];
+            char last = value[value.Length - 1];
+            if ((first == '"' && last == '"') || (first == '\'' && last == '\''))
+            {
+                return value.Substring(1, value.Length - 2);
+            }
+        }
+
+        return value;
+    }
+
+    private static string FindLocalEnvPath()
+    {
+        string[] candidates =
+        {
+            Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "..", "web", ".env.local")),
+            Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "web", ".env.local")),
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "web", ".env.local")),
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "web", ".env.local")),
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "web", ".env.local"))
+        };
+
+        for (int index = 0; index < candidates.Length; index++)
+        {
+            if (File.Exists(candidates[index]))
+            {
+                return candidates[index];
             }
         }
 

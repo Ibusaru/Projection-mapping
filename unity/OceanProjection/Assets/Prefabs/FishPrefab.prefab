@@ -131,19 +131,19 @@ MonoBehaviour:
   nicknameLabel: {fileID: 0}
   createNicknameLabelWhenMissing: 1
   baseSpeed: 0.9
-  turnSpeed: 1.55
-  labelVisibleDistance: 4.2
+  turnSpeed: 3.2
+  labelVisibleDistance: 72
   boundsPadding: 0.7
   acceleration: 2.1
   turnSlowdown: 0.58
   autoWireRenderers: 1
-  targetReachDistance: 1.25
+  targetReachDistance: 2.05
   slowSwimMultiplier: 0.82
   fastSwimMultiplier: 1.55
   fastSwimChance: 0.24
   slowSwimSecondsRange: {x: 3.5, y: 7}
   fastSwimSecondsRange: {x: 0.9, y: 2.2}
-  waypointForwardBias: 0.58
+  waypointForwardBias: 0.18
   animationSpeedAtBaseSwim: 1
   animationSpeedMultiplier: 0.92
   minAnimationSpeed: 0.72
@@ -153,26 +153,26 @@ MonoBehaviour:
   fastTailSwayDegrees: 8.5
   tailSwayFrequency: 4.8
   enableSchooling: 1
-  neighborRadius: 7.4
-  separationRadius: 1.35
-  alignmentWeight: 0.42
-  cohesionWeight: 0.28
-  separationWeight: 0.72
-  schoolUpdateSeconds: 0.24
-  schoolModeChance: 0.62
+  neighborRadius: 6.8
+  separationRadius: 1.2
+  alignmentWeight: 0.48
+  cohesionWeight: 0.58
+  separationWeight: 0.95
+  schoolUpdateSeconds: 0.12
+  schoolModeChance: 0.92
   schoolingSecondsRange: {x: 5.5, y: 12}
   soloSecondsRange: {x: 3, y: 8}
   schoolingBlendSpeed: 1.8
-  soloSeparationWeight: 0.42
-  verticalSchoolingWeight: 0.08
+  soloSeparationWeight: 0.55
+  verticalSchoolingWeight: 0.04
   verticalSeparationRadius: 0.9
-  verticalSeparationWeight: 0.65
-  preferredDepthDrift: 0.16
-  maxVerticalSwimDirection: 0.04
+  verticalSeparationWeight: 0.82
+  preferredDepthDrift: 0.06
+  maxVerticalSwimDirection: 0.2
   sameColumnAvoidanceRadius: 1.2
-  sameColumnAvoidanceWeight: 2.4
-  schoolSlotSideRange: {x: -3.2, y: 3.2}
-  schoolSlotForwardRange: {x: -2.6, y: 2.6}
+  sameColumnAvoidanceWeight: 1.5
+  schoolSlotSideRange: {x: -2.6, y: 2.6}
+  schoolSlotForwardRange: {x: -1.8, y: 1.8}
   cameraAwarenessDistance: 5.5
   cameraLookWeight: 0.32
   curiousLookSeconds: 1.15
