@@ -80,6 +80,7 @@ Shader "OceanProjection/Drawing Fish Projection"
                 uv = saturate(uv);
 
                 half4 color = SAMPLE_TEXTURE2D(_DrawingTex, sampler_DrawingTex, uv) * _Tint;
+                clip(color.a - _AlphaClip);
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - input.positionWS);
                 float edgeLight = saturate(abs(dot(normalize(input.normalWS), viewDirection)));
                 color.rgb *= lerp(0.68, 1.08, edgeLight);

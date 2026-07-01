@@ -15,8 +15,6 @@ public static class DrawingTextureMapper
             return CreateSolidTexture(source.name, source.width, source.height, Color.white, "ProjectionFilledFallback");
         }
 
-        Color32 fallbackColor = AveragePaintedColor(sourcePixels, alphaThreshold);
-        Color32[] columnColors = BuildColumnColors(sourcePixels, source.width, paintedBounds, fallbackColor, alphaThreshold);
         Color32[] outputPixels = new Color32[sourcePixels.Length];
 
         for (int y = 0; y < source.height; y++)
@@ -42,7 +40,7 @@ public static class DrawingTextureMapper
                     source.width,
                     sourceX,
                     sourceY,
-                    columnColors[sourceX],
+                    Transparent,
                     alphaThreshold
                 );
             }
@@ -58,6 +56,8 @@ public static class DrawingTextureMapper
         texture.Apply(true, false);
         return texture;
     }
+
+    private static readonly Color32 Transparent = new Color32(0, 0, 0, 0);
 
     public static Texture2D CreateModelTexture(Texture2D source, int textureSize, float alphaThreshold)
     {
@@ -131,8 +131,6 @@ public static class DrawingTextureMapper
         {
             color = fallbackColor;
         }
-
-        color.a = 255;
         return color;
     }
 
