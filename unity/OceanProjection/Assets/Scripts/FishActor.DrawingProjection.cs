@@ -36,6 +36,7 @@ public partial class FishActor
             return false;
         }
 
+        ExpandProjectionBounds(ref projectionBounds, drawingProjectionPaddingRatio);
         Texture2D projectionTexture = DrawingTextureMapper.CreateProjectionTexture(texture, drawingAlphaThreshold);
         if (projectionTexture == null)
         {
@@ -72,11 +73,14 @@ public partial class FishActor
             Material[] nextMaterials = new Material[materialCount];
             for (int materialIndex = 0; materialIndex < materialCount; materialIndex++)
             {
+                Material sourceMaterial = currentMaterials != null && materialIndex < currentMaterials.Length
+                    ? currentMaterials[materialIndex]
+                    : null;
                 Material material = new Material(shader)
                 {
                     name = "Released Fish Drawing Projection"
                 };
-                ConfigureProjectionMaterial(material, projectionTexture, worldToProjector, origin, uVector, vVector);
+                ConfigureProjectionMaterial(material, sourceMaterial, projectionTexture, worldToProjector, origin, uVector, vVector);
                 nextMaterials[materialIndex] = material;
                 projectionMaterials.Add(material);
             }
@@ -108,6 +112,7 @@ public partial class FishActor
 
     private void ConfigureProjectionMaterial(
         Material material,
+        Material sourceMaterial,
         Texture2D texture,
         Matrix4x4 worldToProjector,
         Vector3 origin,
@@ -117,11 +122,32 @@ public partial class FishActor
     {
         material.SetTexture("_DrawingTex", texture);
         material.SetColor("_Tint", Color.white);
+        material.SetColor("_BaseColor", ReadMaterialBaseColor(sourceMaterial));
         material.SetFloat("_AlphaClip", Mathf.Clamp01(drawingAlphaThreshold));
         material.SetMatrix("_DrawingWorldToProjector", worldToProjector);
         material.SetVector("_DrawingProjectorOrigin", origin);
         material.SetVector("_DrawingProjectorU", uVector);
         material.SetVector("_DrawingProjectorV", vVector);
+    }
+
+    private static Color ReadMaterialBaseColor(Material material)
+    {
+        if (material == null)
+        {
+            return Color.white;
+        }
+
+        if (material.HasProperty("_BaseColor"))
+        {
+            return material.GetColor("_BaseColor");
+        }
+
+        if (material.HasProperty("_Color"))
+        {
+            return material.GetColor("_Color");
+        }
+
+        return material.color;
     }
 
     private static void CreateProjectionFrame(
@@ -150,6 +176,24 @@ public partial class FishActor
 
         origin.x = flipHorizontal ? bounds.max.x : bounds.min.x;
         uVector = (flipHorizontal ? Vector3.left : Vector3.right) * length;
+    }
+
+    private static void ExpandProjectionBounds(ref Bounds bounds, Vector2 paddingRatio)
+    {
+        Vector3 size = bounds.size;
+        bool useZLength = size.z >= size.x;
+        float horizontalPadding = Mathf.Max(useZLength ? size.z : size.x, 0.001f)
+            * Mathf.Clamp(paddingRatio.x, 0f, 0.45f);
+        float verticalPadding = Mathf.Max(size.y, 0.001f)
+            * Mathf.Clamp(paddingRatio.y, 0f, 0.45f);
+
+        if (useZLength)
+        {
+            bounds.Expand(new Vector3(0f, verticalPadding * 2f, horizontalPadding * 2f));
+            return;
+        }
+
+        bounds.Expand(new Vector3(horizontalPadding * 2f, verticalPadding * 2f, 0f));
     }
 
     private static bool TryCalculateProjectionBounds(Renderer[] renderers, Transform projector, out Bounds bounds)

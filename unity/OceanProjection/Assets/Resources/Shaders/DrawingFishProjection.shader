@@ -3,6 +3,7 @@ Shader "OceanProjection/Drawing Fish Projection"
     Properties
     {
         _DrawingTex ("Drawing Texture", 2D) = "white" {}
+        _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
         _Tint ("Tint", Color) = (1, 1, 1, 1)
         _AlphaClip ("Alpha Clip", Range(0, 1)) = 0.05
     }
@@ -35,6 +36,7 @@ Shader "OceanProjection/Drawing Fish Projection"
             SAMPLER(sampler_DrawingTex);
 
             CBUFFER_START(UnityPerMaterial)
+                float4 _BaseColor;
                 float4 _Tint;
                 float _AlphaClip;
                 float4x4 _DrawingWorldToProjector;
@@ -79,10 +81,16 @@ Shader "OceanProjection/Drawing Fish Projection"
 
                 uv = saturate(uv);
 
-                half4 color = SAMPLE_TEXTURE2D(_DrawingTex, sampler_DrawingTex, uv) * _Tint;
-                clip(color.a - _AlphaClip);
+                half4 drawing = SAMPLE_TEXTURE2D(_DrawingTex, sampler_DrawingTex, uv) * _Tint;
+                float drawingMax = max(drawing.r, max(drawing.g, drawing.b));
+                float drawingMin = min(drawing.r, min(drawing.g, drawing.b));
+                float saturation = drawingMax - drawingMin;
+                float whiteBacking = saturate((drawingMax - 0.9) * 10.0) * saturate((0.08 - saturation) * 12.5);
+                float paintAlpha = saturate((drawing.a - _AlphaClip) / max(1.0 - _AlphaClip, 0.0001)) * (1.0 - whiteBacking);
+
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - input.positionWS);
                 float edgeLight = saturate(abs(dot(normalize(input.normalWS), viewDirection)));
+                half4 color = half4(lerp(_BaseColor.rgb, drawing.rgb, paintAlpha), _BaseColor.a);
                 color.rgb *= lerp(0.68, 1.08, edgeLight);
                 color.a = 1.0;
                 return color;
