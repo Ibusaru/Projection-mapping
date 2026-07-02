@@ -5,6 +5,8 @@ const CANVAS_WIDTH = 1024;
 const CANVAS_HEIGHT = 512;
 const MAX_HISTORY_STEPS = 30;
 const EMPTY_ALPHA_THRESHOLD = 24;
+const SEAM_ALPHA_THRESHOLD = 180;
+const SEAM_GROW_STEPS = 2;
 let fishMaskPixels = null;
 
 function createFishPath(context) {
@@ -121,14 +123,56 @@ function isFillCandidate(data, offset, target, tolerance, transparentTarget) {
 }
 
 function paintPixel(data, offset, maskAlpha, replacement, transparentTarget) {
-  const sourceAlpha = data[offset + 3];
+  const alpha = transparentTarget
+    ? Math.round(replacement.a * (maskAlpha / 255))
+    : Math.min(replacement.a, maskAlpha);
+  const changed = data[offset] !== replacement.r
+    || data[offset + 1] !== replacement.g
+    || data[offset + 2] !== replacement.b
+    || data[offset + 3] !== alpha;
 
   data[offset] = replacement.r;
   data[offset + 1] = replacement.g;
   data[offset + 2] = replacement.b;
-  data[offset + 3] = transparentTarget
-    ? Math.round(replacement.a * (maskAlpha / 255))
-    : Math.min(sourceAlpha, replacement.a, maskAlpha);
+  data[offset + 3] = alpha;
+
+  return changed;
+}
+
+function addSoftSeamPixel(index, data, mask, filled, filledPixels, nextFrontier) {
+  if (filledPixels[index]) {
+    return;
+  }
+
+  const offset = index * 4;
+  if (mask[offset + 3] === 0 || data[offset + 3] > SEAM_ALPHA_THRESHOLD) {
+    return;
+  }
+
+  filledPixels[index] = 1;
+  filled.push(index);
+  nextFrontier.push(index);
+}
+
+function closeSoftSeams(data, mask, filled, filledPixels) {
+  let frontier = filled.slice();
+
+  for (let step = 0; step < SEAM_GROW_STEPS && frontier.length > 0; step += 1) {
+    const nextFrontier = [];
+
+    for (let i = 0; i < frontier.length; i += 1) {
+      const index = frontier[i];
+      const x = index % CANVAS_WIDTH;
+      const y = Math.floor(index / CANVAS_WIDTH);
+
+      if (x > 0) addSoftSeamPixel(index - 1, data, mask, filled, filledPixels, nextFrontier);
+      if (x < CANVAS_WIDTH - 1) addSoftSeamPixel(index + 1, data, mask, filled, filledPixels, nextFrontier);
+      if (y > 0) addSoftSeamPixel(index - CANVAS_WIDTH, data, mask, filled, filledPixels, nextFrontier);
+      if (y < CANVAS_HEIGHT - 1) addSoftSeamPixel(index + CANVAS_WIDTH, data, mask, filled, filledPixels, nextFrontier);
+    }
+
+    frontier = nextFrontier;
+  }
 }
 
 function getFishMaskPixels() {
@@ -168,11 +212,8 @@ function floodFill(canvas, point, fillColor, tolerance) {
   const replacement = hexToRgba(fillColor);
   const transparentTarget = isTransparentFillTarget(target);
 
-  if (!transparentTarget && colorMatches(data, startOffset, replacement, 0)) {
-    return false;
-  }
-
   const visited = new Uint8Array(CANVAS_WIDTH * CANVAS_HEIGHT);
+  const filledPixels = new Uint8Array(CANVAS_WIDTH * CANVAS_HEIGHT);
   const stack = [startY * CANVAS_WIDTH + startX];
   const filled = [];
   let changed = false;
@@ -190,8 +231,8 @@ function floodFill(canvas, point, fillColor, tolerance) {
       continue;
     }
 
+    filledPixels[index] = 1;
     filled.push(index);
-    changed = true;
 
     const x = index % CANVAS_WIDTH;
     const y = Math.floor(index / CANVAS_WIDTH);
@@ -201,12 +242,17 @@ function floodFill(canvas, point, fillColor, tolerance) {
     if (y < CANVAS_HEIGHT - 1) stack.push(index + CANVAS_WIDTH);
   }
 
-  if (changed) {
+  if (filled.length > 0) {
+    closeSoftSeams(data, mask, filled, filledPixels);
+
     for (let i = 0; i < filled.length; i += 1) {
       const offset = filled[i] * 4;
-      paintPixel(data, offset, mask[offset + 3], replacement, transparentTarget);
+      changed = paintPixel(data, offset, mask[offset + 3], replacement, transparentTarget) || changed;
     }
-    context.putImageData(image, 0, 0);
+
+    if (changed) {
+      context.putImageData(image, 0, 0);
+    }
   }
 
   return changed;
