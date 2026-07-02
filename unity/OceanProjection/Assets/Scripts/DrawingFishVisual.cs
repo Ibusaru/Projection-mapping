@@ -291,7 +291,7 @@ public sealed class DrawingFishVisual : MonoBehaviour
         private int AddVertex(Vector2 canvasPoint)
         {
             vertices.Add(CanvasToLocal(canvasPoint));
-            uvs.Add(new Vector2(canvasPoint.x / CanvasWidth, 1f - canvasPoint.y / CanvasHeight));
+            uvs.Add(new Vector2(1f - canvasPoint.x / CanvasWidth, 1f - canvasPoint.y / CanvasHeight));
             return vertices.Count - 1;
         }
 

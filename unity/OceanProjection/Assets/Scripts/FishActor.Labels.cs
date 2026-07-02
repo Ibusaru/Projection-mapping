@@ -1018,8 +1018,7 @@ public partial class FishActor
             return;
         }
 
-        labelTransform.LookAt(mainCamera.transform.position, mainCamera.transform.up);
-        labelTransform.Rotate(0f, 180f, 0f);
+        labelTransform.rotation = Quaternion.LookRotation(mainCamera.transform.forward, mainCamera.transform.up);
     }
 
     private float NicknameFallbackCharacterSize()
