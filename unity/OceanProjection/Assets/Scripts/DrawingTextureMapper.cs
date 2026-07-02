@@ -10,45 +10,16 @@ public static class DrawingTextureMapper
         }
 
         Color32[] sourcePixels = source.GetPixels32();
-        if (!TryFindPaintedBounds(sourcePixels, source.width, source.height, alphaThreshold, out RectInt paintedBounds))
-        {
-            return CreateSolidTexture(source.name, source.width, source.height, Color.white, "ProjectionFilledFallback");
-        }
-
         Color32[] outputPixels = new Color32[sourcePixels.Length];
-
-        for (int y = 0; y < source.height; y++)
+        for (int i = 0; i < sourcePixels.Length; i++)
         {
-            float v = source.height <= 1 ? 0f : y / (float)(source.height - 1);
-            int sourceY = Mathf.Clamp(
-                Mathf.RoundToInt(Mathf.Lerp(paintedBounds.yMin, paintedBounds.yMax - 1, v)),
-                0,
-                source.height - 1
-            );
-
-            for (int x = 0; x < source.width; x++)
-            {
-                float u = source.width <= 1 ? 0f : x / (float)(source.width - 1);
-                int sourceX = Mathf.Clamp(
-                    Mathf.RoundToInt(Mathf.Lerp(paintedBounds.xMin, paintedBounds.xMax - 1, u)),
-                    0,
-                    source.width - 1
-                );
-
-                outputPixels[y * source.width + x] = SampleFilledColor(
-                    sourcePixels,
-                    source.width,
-                    sourceX,
-                    sourceY,
-                    Transparent,
-                    alphaThreshold
-                );
-            }
+            Color32 color = sourcePixels[i];
+            outputPixels[i] = color.a / 255f < alphaThreshold ? Transparent : color;
         }
 
         Texture2D texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, true)
         {
-            name = $"{source.name}_ProjectionFilled",
+            name = $"{source.name}_ProjectionCanvas",
             filterMode = FilterMode.Bilinear,
             wrapMode = TextureWrapMode.Clamp
         };
