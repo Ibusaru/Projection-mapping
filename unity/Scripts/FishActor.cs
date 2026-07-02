@@ -48,7 +48,7 @@ public partial class FishActor : MonoBehaviour
     [SerializeField] private int remappedDrawingTextureSize = 512;
     [SerializeField] private float drawingAlphaThreshold = 0.05f;
     [SerializeField] private bool useProjectedDrawingTextureForReleasedFish = true;
-    [SerializeField] private bool flipReleasedDrawingHorizontally = true;
+    [SerializeField] private bool flipReleasedDrawingHorizontally = false;
     [SerializeField] private Vector2 drawingProjectionPaddingRatio = new Vector2(0.16f, 0.18f);
 
     [Header("Movement")]

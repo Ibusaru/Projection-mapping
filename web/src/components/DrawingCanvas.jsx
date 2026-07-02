@@ -9,38 +9,44 @@ let fishMaskPixels = null;
 function createFishPath(context) {
   const path = new Path2D();
 
-  path.moveTo(92, 252);
-  path.bezierCurveTo(104, 190, 178, 145, 275, 134);
-  path.bezierCurveTo(304, 102, 348, 82, 406, 84);
-  path.bezierCurveTo(466, 86, 512, 119, 520, 152);
-  path.bezierCurveTo(546, 134, 586, 128, 620, 146);
-  path.bezierCurveTo(648, 160, 674, 187, 704, 202);
-  path.bezierCurveTo(730, 216, 758, 216, 786, 222);
-  path.bezierCurveTo(800, 238, 807, 256, 804, 275);
-  path.bezierCurveTo(770, 284, 736, 286, 710, 304);
-  path.bezierCurveTo(660, 342, 584, 368, 470, 379);
-  path.bezierCurveTo(340, 393, 200, 372, 130, 316);
-  path.bezierCurveTo(104, 294, 91, 273, 92, 252);
+  path.moveTo(932, 252);
+  path.bezierCurveTo(920, 190, 846, 145, 749, 134);
+  path.bezierCurveTo(720, 102, 676, 82, 618, 84);
+  path.bezierCurveTo(558, 86, 512, 119, 504, 152);
+  path.bezierCurveTo(478, 134, 438, 128, 404, 146);
+  path.bezierCurveTo(376, 160, 350, 187, 320, 202);
+  path.bezierCurveTo(294, 216, 266, 216, 238, 222);
+  path.bezierCurveTo(224, 238, 217, 256, 220, 275);
+  path.bezierCurveTo(254, 284, 288, 286, 314, 304);
+  path.bezierCurveTo(364, 342, 440, 368, 554, 379);
+  path.bezierCurveTo(684, 393, 824, 372, 894, 316);
+  path.bezierCurveTo(920, 294, 933, 273, 932, 252);
   path.closePath();
 
-  path.moveTo(780, 220);
-  path.bezierCurveTo(820, 198, 870, 178, 935, 181);
-  path.bezierCurveTo(972, 184, 991, 205, 988, 244);
-  path.bezierCurveTo(985, 270, 985, 294, 990, 326);
-  path.bezierCurveTo(952, 341, 900, 335, 850, 313);
-  path.bezierCurveTo(820, 300, 796, 288, 780, 286);
+  path.moveTo(244, 220);
+  path.bezierCurveTo(204, 198, 154, 178, 89, 181);
+  path.bezierCurveTo(52, 184, 33, 205, 36, 244);
+  path.bezierCurveTo(39, 270, 39, 294, 34, 326);
+  path.bezierCurveTo(72, 341, 124, 335, 174, 313);
+  path.bezierCurveTo(204, 300, 228, 288, 244, 286);
   path.closePath();
 
-  path.moveTo(228, 360);
-  path.bezierCurveTo(260, 424, 342, 416, 374, 348);
-  path.lineTo(314, 360);
-  path.bezierCurveTo(286, 366, 254, 366, 228, 360);
+  path.moveTo(796, 360);
+  path.bezierCurveTo(764, 424, 682, 416, 650, 348);
+  path.lineTo(710, 360);
+  path.bezierCurveTo(738, 366, 770, 366, 796, 360);
   path.closePath();
 
-  path.moveTo(502, 354);
-  path.bezierCurveTo(540, 430, 626, 438, 668, 360);
-  path.lineTo(604, 370);
-  path.bezierCurveTo(568, 370, 532, 364, 502, 354);
+  path.moveTo(522, 354);
+  path.bezierCurveTo(484, 430, 398, 438, 356, 360);
+  path.lineTo(420, 370);
+  path.bezierCurveTo(456, 370, 492, 364, 522, 354);
+  path.closePath();
+
+  path.moveTo(548, 346);
+  path.bezierCurveTo(584, 392, 592, 460, 560, 500);
+  path.bezierCurveTo(528, 505, 505, 486, 506, 448);
+  path.bezierCurveTo(508, 404, 520, 370, 548, 346);
   path.closePath();
 
   if (context) {
