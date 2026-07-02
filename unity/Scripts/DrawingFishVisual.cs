@@ -119,35 +119,39 @@ public sealed class DrawingFishVisual : MonoBehaviour
     {
         MeshBuilder builder = new MeshBuilder(localBounds);
 
-        List<Vector2> body = new List<Vector2> { new Vector2(144f, 252f) };
-        AddCubic(body, new Vector2(144f, 252f), new Vector2(168f, 164f), new Vector2(270f, 118f), new Vector2(410f, 118f), CurveSegments);
-        AddCubic(body, new Vector2(410f, 118f), new Vector2(548f, 118f), new Vector2(674f, 158f), new Vector2(754f, 222f), CurveSegments);
-        body.Add(new Vector2(808f, 224f));
-        AddCubic(body, new Vector2(808f, 224f), new Vector2(830f, 236f), new Vector2(842f, 245f), new Vector2(848f, 256f), CurveSegments);
-        AddCubic(body, new Vector2(848f, 256f), new Vector2(842f, 267f), new Vector2(830f, 276f), new Vector2(808f, 288f), CurveSegments);
-        body.Add(new Vector2(754f, 290f));
-        AddCubic(body, new Vector2(754f, 290f), new Vector2(674f, 354f), new Vector2(548f, 394f), new Vector2(410f, 394f), CurveSegments);
-        AddCubic(body, new Vector2(410f, 394f), new Vector2(270f, 394f), new Vector2(168f, 348f), new Vector2(144f, 260f), CurveSegments);
-        AddCubic(body, new Vector2(144f, 260f), new Vector2(143f, 257f), new Vector2(143f, 255f), new Vector2(144f, 252f), 4);
+        List<Vector2> body = new List<Vector2> { new Vector2(92f, 252f) };
+        AddCubic(body, new Vector2(92f, 252f), new Vector2(104f, 190f), new Vector2(178f, 145f), new Vector2(275f, 134f), CurveSegments);
+        AddCubic(body, new Vector2(275f, 134f), new Vector2(304f, 102f), new Vector2(348f, 82f), new Vector2(406f, 84f), CurveSegments);
+        AddCubic(body, new Vector2(406f, 84f), new Vector2(466f, 86f), new Vector2(512f, 119f), new Vector2(520f, 152f), CurveSegments);
+        AddCubic(body, new Vector2(520f, 152f), new Vector2(546f, 134f), new Vector2(586f, 128f), new Vector2(620f, 146f), CurveSegments);
+        AddCubic(body, new Vector2(620f, 146f), new Vector2(648f, 160f), new Vector2(674f, 187f), new Vector2(704f, 202f), CurveSegments);
+        AddCubic(body, new Vector2(704f, 202f), new Vector2(730f, 216f), new Vector2(758f, 216f), new Vector2(786f, 222f), CurveSegments);
+        AddCubic(body, new Vector2(786f, 222f), new Vector2(800f, 238f), new Vector2(807f, 256f), new Vector2(804f, 275f), CurveSegments);
+        AddCubic(body, new Vector2(804f, 275f), new Vector2(770f, 284f), new Vector2(736f, 286f), new Vector2(710f, 304f), CurveSegments);
+        AddCubic(body, new Vector2(710f, 304f), new Vector2(660f, 342f), new Vector2(584f, 368f), new Vector2(470f, 379f), CurveSegments);
+        AddCubic(body, new Vector2(470f, 379f), new Vector2(340f, 393f), new Vector2(200f, 372f), new Vector2(130f, 316f), CurveSegments);
+        AddCubic(body, new Vector2(130f, 316f), new Vector2(104f, 294f), new Vector2(91f, 273f), new Vector2(92f, 252f), CurveSegments);
         builder.AddFan(body);
 
-        List<Vector2> tail = new List<Vector2> { new Vector2(804f, 224f), new Vector2(968f, 128f) };
-        AddCubic(tail, new Vector2(968f, 128f), new Vector2(940f, 186f), new Vector2(925f, 229f), new Vector2(925f, 256f), CurveSegments);
-        AddCubic(tail, new Vector2(925f, 256f), new Vector2(925f, 283f), new Vector2(940f, 326f), new Vector2(968f, 384f), CurveSegments);
-        tail.Add(new Vector2(804f, 288f));
+        List<Vector2> tail = new List<Vector2> { new Vector2(780f, 220f) };
+        AddCubic(tail, new Vector2(780f, 220f), new Vector2(820f, 198f), new Vector2(870f, 178f), new Vector2(935f, 181f), CurveSegments);
+        AddCubic(tail, new Vector2(935f, 181f), new Vector2(972f, 184f), new Vector2(991f, 205f), new Vector2(988f, 244f), CurveSegments);
+        AddCubic(tail, new Vector2(988f, 244f), new Vector2(985f, 270f), new Vector2(985f, 294f), new Vector2(990f, 326f), CurveSegments);
+        AddCubic(tail, new Vector2(990f, 326f), new Vector2(952f, 341f), new Vector2(900f, 335f), new Vector2(850f, 313f), CurveSegments);
+        AddCubic(tail, new Vector2(850f, 313f), new Vector2(820f, 300f), new Vector2(796f, 288f), new Vector2(780f, 286f), CurveSegments);
         builder.AddFan(tail);
 
-        List<Vector2> topFin = new List<Vector2> { new Vector2(350f, 123f) };
-        AddCubic(topFin, new Vector2(350f, 123f), new Vector2(420f, 50f), new Vector2(548f, 70f), new Vector2(606f, 144f), CurveSegments);
-        topFin.Add(new Vector2(514f, 150f));
-        AddCubic(topFin, new Vector2(514f, 150f), new Vector2(470f, 130f), new Vector2(410f, 120f), new Vector2(350f, 123f), CurveSegments);
-        builder.AddFan(topFin);
+        List<Vector2> frontFin = new List<Vector2> { new Vector2(228f, 360f) };
+        AddCubic(frontFin, new Vector2(228f, 360f), new Vector2(260f, 424f), new Vector2(342f, 416f), new Vector2(374f, 348f), CurveSegments);
+        frontFin.Add(new Vector2(314f, 360f));
+        AddCubic(frontFin, new Vector2(314f, 360f), new Vector2(286f, 366f), new Vector2(254f, 366f), new Vector2(228f, 360f), CurveSegments);
+        builder.AddFan(frontFin);
 
-        List<Vector2> bottomFin = new List<Vector2> { new Vector2(455f, 382f) };
-        AddCubic(bottomFin, new Vector2(455f, 382f), new Vector2(515f, 454f), new Vector2(625f, 432f), new Vector2(666f, 354f), CurveSegments);
-        bottomFin.Add(new Vector2(570f, 366f));
-        AddCubic(bottomFin, new Vector2(570f, 366f), new Vector2(528f, 380f), new Vector2(490f, 386f), new Vector2(455f, 382f), CurveSegments);
-        builder.AddFan(bottomFin);
+        List<Vector2> bellyFin = new List<Vector2> { new Vector2(502f, 354f) };
+        AddCubic(bellyFin, new Vector2(502f, 354f), new Vector2(540f, 430f), new Vector2(626f, 438f), new Vector2(668f, 360f), CurveSegments);
+        bellyFin.Add(new Vector2(604f, 370f));
+        AddCubic(bellyFin, new Vector2(604f, 370f), new Vector2(568f, 370f), new Vector2(532f, 364f), new Vector2(502f, 354f), CurveSegments);
+        builder.AddFan(bellyFin);
 
         return builder.ToMesh();
     }

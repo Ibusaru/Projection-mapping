@@ -9,35 +9,38 @@ let fishMaskPixels = null;
 function createFishPath(context) {
   const path = new Path2D();
 
-  path.moveTo(144, 252);
-  path.bezierCurveTo(168, 164, 270, 118, 410, 118);
-  path.bezierCurveTo(548, 118, 674, 158, 754, 222);
-  path.lineTo(808, 224);
-  path.bezierCurveTo(830, 236, 842, 245, 848, 256);
-  path.bezierCurveTo(842, 267, 830, 276, 808, 288);
-  path.lineTo(754, 290);
-  path.bezierCurveTo(674, 354, 548, 394, 410, 394);
-  path.bezierCurveTo(270, 394, 168, 348, 144, 260);
-  path.bezierCurveTo(143, 257, 143, 255, 144, 252);
+  path.moveTo(92, 252);
+  path.bezierCurveTo(104, 190, 178, 145, 275, 134);
+  path.bezierCurveTo(304, 102, 348, 82, 406, 84);
+  path.bezierCurveTo(466, 86, 512, 119, 520, 152);
+  path.bezierCurveTo(546, 134, 586, 128, 620, 146);
+  path.bezierCurveTo(648, 160, 674, 187, 704, 202);
+  path.bezierCurveTo(730, 216, 758, 216, 786, 222);
+  path.bezierCurveTo(800, 238, 807, 256, 804, 275);
+  path.bezierCurveTo(770, 284, 736, 286, 710, 304);
+  path.bezierCurveTo(660, 342, 584, 368, 470, 379);
+  path.bezierCurveTo(340, 393, 200, 372, 130, 316);
+  path.bezierCurveTo(104, 294, 91, 273, 92, 252);
   path.closePath();
 
-  path.moveTo(804, 224);
-  path.lineTo(968, 128);
-  path.bezierCurveTo(940, 186, 925, 229, 925, 256);
-  path.bezierCurveTo(925, 283, 940, 326, 968, 384);
-  path.lineTo(804, 288);
+  path.moveTo(780, 220);
+  path.bezierCurveTo(820, 198, 870, 178, 935, 181);
+  path.bezierCurveTo(972, 184, 991, 205, 988, 244);
+  path.bezierCurveTo(985, 270, 985, 294, 990, 326);
+  path.bezierCurveTo(952, 341, 900, 335, 850, 313);
+  path.bezierCurveTo(820, 300, 796, 288, 780, 286);
   path.closePath();
 
-  path.moveTo(350, 123);
-  path.bezierCurveTo(420, 50, 548, 70, 606, 144);
-  path.lineTo(514, 150);
-  path.bezierCurveTo(470, 130, 410, 120, 350, 123);
+  path.moveTo(228, 360);
+  path.bezierCurveTo(260, 424, 342, 416, 374, 348);
+  path.lineTo(314, 360);
+  path.bezierCurveTo(286, 366, 254, 366, 228, 360);
   path.closePath();
 
-  path.moveTo(455, 382);
-  path.bezierCurveTo(515, 454, 625, 432, 666, 354);
-  path.lineTo(570, 366);
-  path.bezierCurveTo(528, 380, 490, 386, 455, 382);
+  path.moveTo(502, 354);
+  path.bezierCurveTo(540, 430, 626, 438, 668, 360);
+  path.lineTo(604, 370);
+  path.bezierCurveTo(568, 370, 532, 364, 502, 354);
   path.closePath();
 
   if (context) {
@@ -379,31 +382,32 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
           ref={canvasRef}
           width={CANVAS_WIDTH}
         />
-      </div>
-
-      <div className="tool-row" role="toolbar" aria-label="描画ツール">
-        <div className="tool-group">
-          <ToolButton active={tool === "brush"} label="ペン" onClick={() => onToolChange("brush")}>
-            <Paintbrush size={19} />
-          </ToolButton>
-          <ToolButton active={tool === "fill"} label="塗りつぶし" onClick={() => onToolChange("fill")}>
-            <PaintBucket size={19} />
-          </ToolButton>
-          <ToolButton active={tool === "eraser"} label="消しゴム" onClick={() => onToolChange("eraser")}>
-            <Eraser size={19} />
-          </ToolButton>
-          <ToolButton active={tool === "eyedropper"} label="スポイト" onClick={() => onToolChange("eyedropper")}>
-            <Pipette size={19} />
-          </ToolButton>
+        <div className="canvas-toolbar canvas-toolbar-left" role="toolbar" aria-label="描画ツール">
+          <div className="tool-group">
+            <ToolButton active={tool === "brush"} label="ペン" onClick={() => onToolChange("brush")}>
+              <Paintbrush size={19} />
+            </ToolButton>
+            <ToolButton active={tool === "fill"} label="塗りつぶし" onClick={() => onToolChange("fill")}>
+              <PaintBucket size={19} />
+            </ToolButton>
+            <ToolButton active={tool === "eraser"} label="消しゴム" onClick={() => onToolChange("eraser")}>
+              <Eraser size={19} />
+            </ToolButton>
+            <ToolButton active={tool === "eyedropper"} label="スポイト" onClick={() => onToolChange("eyedropper")}>
+              <Pipette size={19} />
+            </ToolButton>
+          </div>
         </div>
-        <span className="active-tool-swatch" style={{ "--active-tool-color": brushColor }} aria-hidden="true" />
-        <div className="tool-group">
-          <ToolButton disabled={!historyState.canUndo} label="元に戻す" onClick={() => restoreHistory(historyIndexRef.current - 1)}>
-            <Undo2 size={19} />
-          </ToolButton>
-          <ToolButton disabled={!historyState.canRedo} label="やり直す" onClick={() => restoreHistory(historyIndexRef.current + 1)}>
-            <Redo2 size={19} />
-          </ToolButton>
+        <div className="canvas-toolbar canvas-toolbar-right" role="toolbar" aria-label="編集ツール">
+          <span className="active-tool-swatch" style={{ "--active-tool-color": brushColor }} aria-hidden="true" />
+          <div className="tool-group">
+            <ToolButton disabled={!historyState.canUndo} label="元に戻す" onClick={() => restoreHistory(historyIndexRef.current - 1)}>
+              <Undo2 size={19} />
+            </ToolButton>
+            <ToolButton disabled={!historyState.canRedo} label="やり直す" onClick={() => restoreHistory(historyIndexRef.current + 1)}>
+              <Redo2 size={19} />
+            </ToolButton>
+          </div>
         </div>
       </div>
     </section>
