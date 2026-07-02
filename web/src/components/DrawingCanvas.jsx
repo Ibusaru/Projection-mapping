@@ -4,6 +4,7 @@ import { Eraser, PaintBucket, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-r
 const CANVAS_WIDTH = 1024;
 const CANVAS_HEIGHT = 512;
 const MAX_HISTORY_STEPS = 30;
+const EMPTY_ALPHA_THRESHOLD = 24;
 let fishMaskPixels = null;
 
 function createFishPath(context) {
@@ -91,11 +92,43 @@ function hexToRgba(hex) {
   };
 }
 
+function getColorDistance(data, offset, target) {
+  const redDistance = data[offset] - target.r;
+  const greenDistance = data[offset + 1] - target.g;
+  const blueDistance = data[offset + 2] - target.b;
+
+  return redDistance * redDistance + greenDistance * greenDistance + blueDistance * blueDistance;
+}
+
 function colorMatches(data, offset, target, tolerance) {
-  return Math.abs(data[offset] - target.r) <= tolerance
-    && Math.abs(data[offset + 1] - target.g) <= tolerance
-    && Math.abs(data[offset + 2] - target.b) <= tolerance
-    && Math.abs(data[offset + 3] - target.a) <= tolerance;
+  const colorDistance = getColorDistance(data, offset, target);
+  const colorLimit = Math.max(1, tolerance) * Math.max(1, tolerance) * 3;
+
+  return colorDistance <= colorLimit;
+}
+
+function isTransparentFillTarget(target) {
+  return target.a <= EMPTY_ALPHA_THRESHOLD;
+}
+
+function isFillCandidate(data, offset, target, tolerance, transparentTarget) {
+  if (transparentTarget) {
+    const alphaLimit = Math.min(96, EMPTY_ALPHA_THRESHOLD + tolerance);
+    return data[offset + 3] <= alphaLimit;
+  }
+
+  return data[offset + 3] > 0 && colorMatches(data, offset, target, tolerance);
+}
+
+function paintPixel(data, offset, maskAlpha, replacement, transparentTarget) {
+  const sourceAlpha = data[offset + 3];
+
+  data[offset] = replacement.r;
+  data[offset + 1] = replacement.g;
+  data[offset + 2] = replacement.b;
+  data[offset + 3] = transparentTarget
+    ? Math.round(replacement.a * (maskAlpha / 255))
+    : Math.min(sourceAlpha, replacement.a, maskAlpha);
 }
 
 function getFishMaskPixels() {
@@ -133,13 +166,15 @@ function floodFill(canvas, point, fillColor, tolerance) {
     a: data[startOffset + 3],
   };
   const replacement = hexToRgba(fillColor);
+  const transparentTarget = isTransparentFillTarget(target);
 
-  if (colorMatches(data, startOffset, replacement, 0)) {
+  if (!transparentTarget && colorMatches(data, startOffset, replacement, 0)) {
     return false;
   }
 
   const visited = new Uint8Array(CANVAS_WIDTH * CANVAS_HEIGHT);
   const stack = [startY * CANVAS_WIDTH + startX];
+  const filled = [];
   let changed = false;
 
   while (stack.length > 0) {
@@ -150,14 +185,12 @@ function floodFill(canvas, point, fillColor, tolerance) {
     visited[index] = 1;
 
     const offset = index * 4;
-    if (mask[offset + 3] === 0 || !colorMatches(data, offset, target, tolerance)) {
+    const maskAlpha = mask[offset + 3];
+    if (maskAlpha === 0 || !isFillCandidate(data, offset, target, tolerance, transparentTarget)) {
       continue;
     }
 
-    data[offset] = replacement.r;
-    data[offset + 1] = replacement.g;
-    data[offset + 2] = replacement.b;
-    data[offset + 3] = replacement.a;
+    filled.push(index);
     changed = true;
 
     const x = index % CANVAS_WIDTH;
@@ -169,6 +202,10 @@ function floodFill(canvas, point, fillColor, tolerance) {
   }
 
   if (changed) {
+    for (let i = 0; i < filled.length; i += 1) {
+      const offset = filled[i] * 4;
+      paintPixel(data, offset, mask[offset + 3], replacement, transparentTarget);
+    }
     context.putImageData(image, 0, 0);
   }
 
