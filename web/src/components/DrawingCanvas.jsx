@@ -1,9 +1,10 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { Eraser, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-react";
+import { Eraser, PaintBucket, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-react";
 
 const CANVAS_WIDTH = 1024;
 const CANVAS_HEIGHT = 512;
 const MAX_HISTORY_STEPS = 30;
+let fishMaskPixels = null;
 
 function createFishPath(context) {
   const path = new Path2D();
@@ -49,8 +50,121 @@ function toHexColor(red, green, blue) {
     .join("")}`;
 }
 
+function hexToRgba(hex) {
+  const clean = hex.replace("#", "");
+  const value = Number.parseInt(clean.length === 3
+    ? clean.split("").map((char) => char + char).join("")
+    : clean, 16);
+
+  return {
+    r: (value >> 16) & 255,
+    g: (value >> 8) & 255,
+    b: value & 255,
+    a: 255,
+  };
+}
+
+function colorMatches(data, offset, target, tolerance) {
+  return Math.abs(data[offset] - target.r) <= tolerance
+    && Math.abs(data[offset + 1] - target.g) <= tolerance
+    && Math.abs(data[offset + 2] - target.b) <= tolerance
+    && Math.abs(data[offset + 3] - target.a) <= tolerance;
+}
+
+function getFishMaskPixels() {
+  if (fishMaskPixels) {
+    return fishMaskPixels;
+  }
+
+  const maskCanvas = document.createElement("canvas");
+  maskCanvas.width = CANVAS_WIDTH;
+  maskCanvas.height = CANVAS_HEIGHT;
+  const context = maskCanvas.getContext("2d");
+  context.fillStyle = "#fff";
+  createFishPath(context);
+  fishMaskPixels = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT).data;
+  return fishMaskPixels;
+}
+
+function floodFill(canvas, point, fillColor, tolerance) {
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const path = createFishPath();
+  const startX = Math.max(0, Math.min(CANVAS_WIDTH - 1, Math.floor(point.x)));
+  const startY = Math.max(0, Math.min(CANVAS_HEIGHT - 1, Math.floor(point.y)));
+  if (!context.isPointInPath(path, startX, startY)) {
+    return false;
+  }
+
+  const image = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  const data = image.data;
+  const mask = getFishMaskPixels();
+  const startOffset = (startY * CANVAS_WIDTH + startX) * 4;
+  const target = {
+    r: data[startOffset],
+    g: data[startOffset + 1],
+    b: data[startOffset + 2],
+    a: data[startOffset + 3],
+  };
+  const replacement = hexToRgba(fillColor);
+
+  if (colorMatches(data, startOffset, replacement, 0)) {
+    return false;
+  }
+
+  const visited = new Uint8Array(CANVAS_WIDTH * CANVAS_HEIGHT);
+  const stack = [startY * CANVAS_WIDTH + startX];
+  let changed = false;
+
+  while (stack.length > 0) {
+    const index = stack.pop();
+    if (visited[index]) {
+      continue;
+    }
+    visited[index] = 1;
+
+    const offset = index * 4;
+    if (mask[offset + 3] === 0 || !colorMatches(data, offset, target, tolerance)) {
+      continue;
+    }
+
+    data[offset] = replacement.r;
+    data[offset + 1] = replacement.g;
+    data[offset + 2] = replacement.b;
+    data[offset + 3] = replacement.a;
+    changed = true;
+
+    const x = index % CANVAS_WIDTH;
+    const y = Math.floor(index / CANVAS_WIDTH);
+    if (x > 0) stack.push(index - 1);
+    if (x < CANVAS_WIDTH - 1) stack.push(index + 1);
+    if (y > 0) stack.push(index - CANVAS_WIDTH);
+    if (y < CANVAS_HEIGHT - 1) stack.push(index + CANVAS_WIDTH);
+  }
+
+  if (changed) {
+    context.putImageData(image, 0, 0);
+  }
+
+  return changed;
+}
+
+function ToolButton({ active, children, disabled, label, onClick }) {
+  return (
+    <button
+      aria-label={label}
+      className={active ? "icon-button selected" : "icon-button"}
+      disabled={disabled}
+      onClick={onClick}
+      title={label}
+      type="button"
+    >
+      {children}
+    </button>
+  );
+}
+
 export const DrawingCanvas = forwardRef(function DrawingCanvas(
-  { brushColor, brushSize, tool, onColorPick, onToolChange },
+  { brushColor, brushSize, fillTolerance, tool, onColorPick, onToolChange },
   ref
 ) {
   const canvasRef = useRef(null);
@@ -151,10 +265,10 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     context.lineWidth = brushSize;
     context.globalCompositeOperation = tool === "eraser" ? "destination-out" : "source-over";
     context.strokeStyle = brushColor;
+    context.fillStyle = brushColor;
     context.beginPath();
     if (previous.x === point.x && previous.y === point.y) {
       context.arc(point.x, point.y, brushSize * 0.5, 0, Math.PI * 2);
-      context.fillStyle = brushColor;
       context.fill();
     } else {
       context.moveTo(previous.x, previous.y);
@@ -187,6 +301,13 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
     if (tool === "eyedropper") {
       pickColor(point);
+      return;
+    }
+
+    if (tool === "fill") {
+      if (floodFill(canvasRef.current, point, brushColor, fillTolerance)) {
+        pushHistory();
+      }
       return;
     }
 
@@ -229,8 +350,8 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
           width={CANVAS_WIDTH}
         />
         <canvas
-          aria-label="お絵かきキャンバス"
-          className="drawing-canvas"
+          aria-label="お絵描きキャンバス"
+          className={`drawing-canvas tool-${tool}`}
           height={CANVAS_HEIGHT}
           onPointerCancel={stopDrawing}
           onPointerDown={startDrawing}
@@ -243,54 +364,29 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
       </div>
 
       <div className="tool-row" role="toolbar" aria-label="描画ツール">
-        <button
-          aria-label="ペン"
-          className={tool === "brush" ? "icon-button selected" : "icon-button"}
-          onClick={() => onToolChange("brush")}
-          title="ペン"
-          type="button"
-        >
-          <Paintbrush size={19} />
-        </button>
-        <button
-          aria-label="消しゴム"
-          className={tool === "eraser" ? "icon-button selected" : "icon-button"}
-          onClick={() => onToolChange("eraser")}
-          title="消しゴム"
-          type="button"
-        >
-          <Eraser size={19} />
-        </button>
-        <button
-          aria-label="スポイト"
-          className={tool === "eyedropper" ? "icon-button selected" : "icon-button"}
-          onClick={() => onToolChange("eyedropper")}
-          title="スポイト"
-          type="button"
-        >
-          <Pipette size={19} />
-        </button>
-        <span className="tool-divider" aria-hidden="true" />
-        <button
-          aria-label="元に戻す"
-          className="icon-button"
-          disabled={!historyState.canUndo}
-          onClick={() => restoreHistory(historyIndexRef.current - 1)}
-          title="元に戻す"
-          type="button"
-        >
-          <Undo2 size={19} />
-        </button>
-        <button
-          aria-label="やり直し"
-          className="icon-button"
-          disabled={!historyState.canRedo}
-          onClick={() => restoreHistory(historyIndexRef.current + 1)}
-          title="やり直し"
-          type="button"
-        >
-          <Redo2 size={19} />
-        </button>
+        <div className="tool-group">
+          <ToolButton active={tool === "brush"} label="ペン" onClick={() => onToolChange("brush")}>
+            <Paintbrush size={19} />
+          </ToolButton>
+          <ToolButton active={tool === "fill"} label="塗りつぶし" onClick={() => onToolChange("fill")}>
+            <PaintBucket size={19} />
+          </ToolButton>
+          <ToolButton active={tool === "eraser"} label="消しゴム" onClick={() => onToolChange("eraser")}>
+            <Eraser size={19} />
+          </ToolButton>
+          <ToolButton active={tool === "eyedropper"} label="スポイト" onClick={() => onToolChange("eyedropper")}>
+            <Pipette size={19} />
+          </ToolButton>
+        </div>
+        <span className="active-tool-swatch" style={{ "--active-tool-color": brushColor }} aria-hidden="true" />
+        <div className="tool-group">
+          <ToolButton disabled={!historyState.canUndo} label="元に戻す" onClick={() => restoreHistory(historyIndexRef.current - 1)}>
+            <Undo2 size={19} />
+          </ToolButton>
+          <ToolButton disabled={!historyState.canRedo} label="やり直す" onClick={() => restoreHistory(historyIndexRef.current + 1)}>
+            <Redo2 size={19} />
+          </ToolButton>
+        </div>
       </div>
     </section>
   );

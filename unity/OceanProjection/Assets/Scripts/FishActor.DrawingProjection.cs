@@ -37,7 +37,11 @@ public partial class FishActor
         }
 
         ExpandProjectionBounds(ref projectionBounds, drawingProjectionPaddingRatio);
-        Texture2D projectionTexture = DrawingTextureMapper.CreateProjectionTexture(texture, drawingAlphaThreshold);
+        Texture2D projectionTexture = DrawingTextureMapper.CreateProjectionTexture(
+            texture,
+            drawingAlphaThreshold,
+            drawingProjectionPaddingRatio
+        );
         if (projectionTexture == null)
         {
             return false;

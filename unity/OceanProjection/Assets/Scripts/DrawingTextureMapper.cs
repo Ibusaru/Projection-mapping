@@ -2,7 +2,25 @@ using UnityEngine;
 
 public static class DrawingTextureMapper
 {
+    private const float ProjectionContentInsetExtra = 0.035f;
+
     public static Texture2D CreateProjectionTexture(Texture2D source, float alphaThreshold)
+    {
+        return CreateProjectionTexture(source, alphaThreshold, Vector2.zero, 0f);
+    }
+
+    public static Texture2D CreateProjectionTexture(Texture2D source, float alphaThreshold, Vector2 projectionPaddingRatio)
+    {
+        Vector2 contentInset = ProjectionContentInset(projectionPaddingRatio);
+        return CreateProjectionTexture(source, alphaThreshold, contentInset, ProjectionContentInsetExtra);
+    }
+
+    private static Texture2D CreateProjectionTexture(
+        Texture2D source,
+        float alphaThreshold,
+        Vector2 contentInset,
+        float extraInset
+    )
     {
         if (source == null)
         {
@@ -11,10 +29,26 @@ public static class DrawingTextureMapper
 
         Color32[] sourcePixels = source.GetPixels32();
         Color32[] outputPixels = new Color32[sourcePixels.Length];
-        for (int i = 0; i < sourcePixels.Length; i++)
+        RectInt contentRect = CalculateContentRect(source.width, source.height, contentInset, extraInset);
+
+        for (int y = 0; y < source.height; y++)
         {
-            Color32 color = sourcePixels[i];
-            outputPixels[i] = color.a / 255f < alphaThreshold ? Transparent : color;
+            for (int x = 0; x < source.width; x++)
+            {
+                int outputIndex = y * source.width + x;
+                if (!contentRect.Contains(new Vector2Int(x, y)))
+                {
+                    outputPixels[outputIndex] = Transparent;
+                    continue;
+                }
+
+                float u = contentRect.width <= 1 ? 0f : (x - contentRect.xMin) / (float)(contentRect.width - 1);
+                float v = contentRect.height <= 1 ? 0f : (y - contentRect.yMin) / (float)(contentRect.height - 1);
+                int sourceX = Mathf.Clamp(Mathf.RoundToInt(u * (source.width - 1)), 0, source.width - 1);
+                int sourceY = Mathf.Clamp(Mathf.RoundToInt(v * (source.height - 1)), 0, source.height - 1);
+                Color32 color = sourcePixels[sourceY * source.width + sourceX];
+                outputPixels[outputIndex] = color.a / 255f < alphaThreshold ? Transparent : color;
+            }
         }
 
         Texture2D texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, true)
@@ -29,6 +63,42 @@ public static class DrawingTextureMapper
     }
 
     private static readonly Color32 Transparent = new Color32(0, 0, 0, 0);
+
+    private static Vector2 ProjectionContentInset(Vector2 paddingRatio)
+    {
+        return new Vector2(
+            PaddingRatioToTextureInset(paddingRatio.x),
+            PaddingRatioToTextureInset(paddingRatio.y)
+        );
+    }
+
+    private static float PaddingRatioToTextureInset(float paddingRatio)
+    {
+        float safePadding = Mathf.Clamp(paddingRatio, 0f, 0.45f);
+        return safePadding / (1f + safePadding * 2f);
+    }
+
+    private static RectInt CalculateContentRect(int width, int height, Vector2 contentInset, float extraInset)
+    {
+        float safeExtraInset = Mathf.Clamp(extraInset, 0f, 0.12f);
+        int insetX = Mathf.Clamp(
+            Mathf.RoundToInt(width * Mathf.Clamp(contentInset.x + safeExtraInset, 0f, 0.45f)),
+            0,
+            Mathf.Max(0, width / 2 - 1)
+        );
+        int insetY = Mathf.Clamp(
+            Mathf.RoundToInt(height * Mathf.Clamp(contentInset.y + safeExtraInset, 0f, 0.45f)),
+            0,
+            Mathf.Max(0, height / 2 - 1)
+        );
+
+        return new RectInt(
+            insetX,
+            insetY,
+            Mathf.Max(1, width - insetX * 2),
+            Mathf.Max(1, height - insetY * 2)
+        );
+    }
 
     public static Texture2D CreateModelTexture(Texture2D source, int textureSize, float alphaThreshold)
     {

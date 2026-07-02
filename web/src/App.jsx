@@ -1,8 +1,8 @@
 import React, { useMemo, useRef, useState } from "react";
-import { Check, Fish, Palette, QrCode, RotateCcw, Send, Waves } from "lucide-react";
+import { Check, Fish, Gauge, Palette, QrCode, RotateCcw, Send, Waves } from "lucide-react";
 import { DrawingCanvas } from "./components/DrawingCanvas";
 import { QrPanel } from "./components/QrPanel";
-import { brushColors, brushSizeRange } from "./config/fishOptions";
+import { brushColors, brushSizeRange, fillToleranceRange } from "./config/fishOptions";
 import { uploadFishDrawing } from "./data/fishDrawingStore";
 import { normalizeNickname, validateNickname } from "./validation/nickname";
 
@@ -12,6 +12,7 @@ export function App() {
   const [nicknameTouched, setNicknameTouched] = useState(false);
   const [brushColor, setBrushColor] = useState(brushColors[0].value);
   const [brushSize, setBrushSize] = useState(brushSizeRange.defaultValue);
+  const [fillTolerance, setFillTolerance] = useState(fillToleranceRange.defaultValue);
   const [tool, setTool] = useState("brush");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
@@ -82,6 +83,7 @@ export function App() {
         <DrawingCanvas
           brushColor={brushColor}
           brushSize={brushSize}
+          fillTolerance={fillTolerance}
           onColorPick={handleColorChange}
           onToolChange={setTool}
           ref={drawingRef}
@@ -140,6 +142,24 @@ export function App() {
                 style={{ "--brush-size": `${brushSize}px`, "--brush-color": brushColor }}
               />
             </div>
+          </div>
+
+          <div className="tool-section fill-section">
+            <label className="tool-section-title" htmlFor="fill-tolerance">
+              <Gauge size={18} />
+              <span>塗り範囲</span>
+              <span className="size-value">{fillTolerance}</span>
+            </label>
+            <input
+              aria-label="塗りつぶしの範囲"
+              id="fill-tolerance"
+              max={fillToleranceRange.max}
+              min={fillToleranceRange.min}
+              onChange={(event) => setFillTolerance(Number(event.target.value))}
+              step="1"
+              type="range"
+              value={fillTolerance}
+            />
           </div>
 
           <button

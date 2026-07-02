@@ -1,5 +1,6 @@
 export const blockedWords = [
   "死ね",
+  "しね",
   "ばか",
   "バカ",
   "あほ",
@@ -30,6 +31,12 @@ export const brushColors = [
 export const brushSizeRange = {
   min: 4,
   max: 52,
+  defaultValue: 18,
+};
+
+export const fillToleranceRange = {
+  min: 0,
+  max: 72,
   defaultValue: 18,
 };
 
