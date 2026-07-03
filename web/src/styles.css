@@ -517,37 +517,50 @@ input[type="range"] {
   }
 
   .canvas-stage {
-    min-height: 188px;
+    aspect-ratio: auto;
+    min-height: calc((100vw - 20px) * 0.5 + 58px);
+  }
+
+  .silhouette-canvas,
+  .drawing-canvas {
+    inset: 0 0 58px;
+    height: auto;
   }
 
   .canvas-toolbar {
-    gap: 6px;
-    padding: 6px;
+    top: auto;
+    bottom: 8px;
+    gap: 4px;
+    padding: 5px;
+    background: rgba(251, 255, 252, 0.9);
   }
 
   .canvas-toolbar-left {
-    top: 8px;
     left: 8px;
   }
 
   .canvas-toolbar-right {
-    top: 8px;
     right: 8px;
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .canvas-toolbar-right .tool-group {
-    flex-direction: column;
+    flex-direction: row;
+  }
+
+  .canvas-toolbar .tool-group {
+    gap: 4px;
   }
 
   .canvas-toolbar .icon-button {
-    min-width: 36px;
-    height: 36px;
+    min-width: 34px;
+    height: 34px;
   }
 
   .canvas-toolbar .active-tool-swatch {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
+    border-width: 1px;
   }
 
   .tools-panel {
