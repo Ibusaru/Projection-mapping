@@ -4,7 +4,12 @@ import { DrawingCanvas } from "./components/DrawingCanvas";
 import { QrPanel } from "./components/QrPanel";
 import { brushColors, brushSizeRange, fillToleranceRange } from "./config/fishOptions";
 import { uploadFishDrawing } from "./data/fishDrawingStore";
-import { normalizeNickname, validateNickname } from "./validation/nickname";
+import {
+  BLANK_NICKNAME_MESSAGE,
+  NG_NICKNAME_MESSAGE,
+  normalizeNickname,
+  validateNickname,
+} from "./validation/nickname";
 
 export function App() {
   const drawingRef = useRef(null);
@@ -17,19 +22,35 @@ export function App() {
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
   const [isQrOpen, setIsQrOpen] = useState(false);
+  const [shouldShakeNickname, setShouldShakeNickname] = useState(false);
 
   const nicknameError = useMemo(() => validateNickname(nickname), [nickname]);
-  const shownNicknameError = nicknameTouched ? nicknameError : "";
+  const shouldShowNicknameError =
+    nicknameTouched || nicknameError === NG_NICKNAME_MESSAGE || nicknameError === BLANK_NICKNAME_MESSAGE;
+  const shownNicknameError = shouldShowNicknameError ? nicknameError : "";
   const canSubmit = !nicknameError && status !== "sending";
+  const nicknameInputClass = [
+    "nickname-input",
+    shownNicknameError ? "invalid" : "",
+    shouldShakeNickname ? "shake" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  function triggerNicknameShake() {
+    setShouldShakeNickname(false);
+    window.requestAnimationFrame(() => setShouldShakeNickname(true));
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
     const normalized = normalizeNickname(nickname);
-    const error = validateNickname(normalized);
+    const error = validateNickname(nickname);
     setNicknameTouched(true);
     if (error) {
       setStatus("error");
       setMessage(error);
+      triggerNicknameShake();
       return;
     }
 
@@ -55,6 +76,17 @@ export function App() {
   function handleColorChange(color) {
     setBrushColor(color);
     setTool("brush");
+  }
+
+  function handleNicknameChange(event) {
+    const nextValue = event.target.value;
+    const nextError = validateNickname(nextValue);
+
+    setNickname(nextValue);
+    if (nextError === NG_NICKNAME_MESSAGE || nextError === BLANK_NICKNAME_MESSAGE) {
+      setNicknameTouched(true);
+      triggerNicknameShake();
+    }
   }
 
   return (
@@ -179,15 +211,19 @@ export function App() {
             ニックネーム
           </label>
           <input
+            aria-describedby="nickname-hint"
+            aria-invalid={shownNicknameError ? "true" : "false"}
             autoComplete="nickname"
+            className={nicknameInputClass}
             id="nickname"
             maxLength={12}
             onBlur={() => setNicknameTouched(true)}
-            onChange={(event) => setNickname(event.target.value)}
+            onAnimationEnd={() => setShouldShakeNickname(false)}
+            onChange={handleNicknameChange}
             placeholder="例: うみたろう"
             value={nickname}
           />
-          <p className={shownNicknameError ? "hint error" : "hint"}>
+          <p className={shownNicknameError ? "hint error" : "hint"} id="nickname-hint">
             {shownNicknameError || "1から12文字で入力してね。送信ごとに新しい魚が増えます。"}
           </p>
         </section>
