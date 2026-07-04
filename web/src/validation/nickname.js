@@ -1,4 +1,8 @@
-import { blockedWordPatterns, blockedWords } from "../config/fishOptions";
+import {
+  blockedNicknameContainsTerms,
+  blockedNicknameExactTerms,
+  blockedNicknamePatterns,
+} from "../config/nicknameModeration";
 
 export const BLANK_NICKNAME_MESSAGE = "空白だけのニックネームは使えません";
 export const NG_NICKNAME_MESSAGE = "NGワードです";
@@ -11,6 +15,7 @@ function normalizeForBlockedWordCheck(value) {
   return normalizeNickname(value)
     .normalize("NFKC")
     .toLowerCase()
+    .replace(/[\u30A1-\u30F6]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0x60))
     .replace(/[\p{P}\p{S}_ー～〜・]/gu, "");
 }
 
@@ -37,8 +42,11 @@ export function validateNickname(value) {
   const patternNickname = normalizeNickname(nickname).normalize("NFKC").toLowerCase();
   const blockedNickname = normalizeLeetspeak(normalizeForBlockedWordCheck(nickname));
   if (
-    blockedWords.some((word) => blockedNickname.includes(normalizeLeetspeak(normalizeForBlockedWordCheck(word)))) ||
-    blockedWordPatterns.some((pattern) => pattern.test(patternNickname))
+    blockedNicknameContainsTerms.some((word) =>
+      blockedNickname.includes(normalizeLeetspeak(normalizeForBlockedWordCheck(word))),
+    ) ||
+    blockedNicknameExactTerms.some((word) => blockedNickname === normalizeLeetspeak(normalizeForBlockedWordCheck(word))) ||
+    blockedNicknamePatterns.some((pattern) => pattern.test(patternNickname))
   ) {
     return NG_NICKNAME_MESSAGE;
   }
