@@ -274,7 +274,7 @@ function ToolButton({ active, children, disabled, label, onClick }) {
 }
 
 export const DrawingCanvas = forwardRef(function DrawingCanvas(
-  { brushColor, brushSize, fillTolerance, tool, onColorPick, onToolChange },
+  { brushColor, brushSize, fillTolerance, tool, onColorPick, onDrawingActive, onToolChange },
   ref
 ) {
   const canvasRef = useRef(null);
@@ -284,6 +284,8 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
   const historyRef = useRef([]);
   const historyIndexRef = useRef(-1);
   const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
+
+  useEffect(() => () => onDrawingActive?.(false), [onDrawingActive]);
 
   function updateHistoryState() {
     setHistoryState({
@@ -422,6 +424,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     }
 
     drawingRef.current = true;
+    onDrawingActive?.(true);
     changedRef.current = false;
     lastPointRef.current = point;
     drawSegment(point);
@@ -440,6 +443,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     }
 
     drawingRef.current = false;
+    onDrawingActive?.(false);
     changedRef.current = false;
     lastPointRef.current = null;
   }

@@ -22,6 +22,7 @@ export function App() {
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
   const [isQrOpen, setIsQrOpen] = useState(false);
+  const [isDrawingActive, setIsDrawingActive] = useState(false);
   const [shouldShakeNickname, setShouldShakeNickname] = useState(false);
 
   const nicknameError = useMemo(() => validateNickname(nickname), [nickname]);
@@ -111,12 +112,13 @@ export function App() {
         </button>
       </header>
 
-      <form className="composer" onSubmit={handleSubmit}>
+      <form className={isDrawingActive ? "composer is-drawing" : "composer"} onSubmit={handleSubmit}>
         <DrawingCanvas
           brushColor={brushColor}
           brushSize={brushSize}
           fillTolerance={fillTolerance}
           onColorPick={handleColorChange}
+          onDrawingActive={setIsDrawingActive}
           onToolChange={setTool}
           ref={drawingRef}
           tool={tool}

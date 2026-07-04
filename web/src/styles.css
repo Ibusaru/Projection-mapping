@@ -72,6 +72,16 @@ h1 {
   gap: 12px;
 }
 
+.tools-panel,
+.name-panel,
+.status,
+.release-button,
+.canvas-toolbar {
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+}
+
 .panel,
 .drawing-board {
   border: 1px solid rgba(18, 52, 58, 0.12);
@@ -620,6 +630,224 @@ input[type="range"] {
 
   .size-control {
     grid-template-columns: minmax(0, 1fr) 48px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  body {
+    overflow: hidden;
+  }
+
+  .app-shell {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    max-width: none;
+    height: 100svh;
+    min-height: 100svh;
+    padding:
+      max(6px, env(safe-area-inset-top))
+      max(8px, env(safe-area-inset-right))
+      max(6px, env(safe-area-inset-bottom))
+      max(8px, env(safe-area-inset-left));
+    overflow: hidden;
+  }
+
+  .topbar {
+    align-items: center;
+    padding: 0 2px 6px;
+  }
+
+  .kicker {
+    margin-bottom: 0;
+    font-size: 0.72rem;
+  }
+
+  h1 {
+    font-size: 1.05rem;
+    line-height: 1.12;
+  }
+
+  .qr-trigger {
+    min-width: 38px;
+    height: 34px;
+    padding-inline: 10px;
+  }
+
+  .composer {
+    grid-template-columns: minmax(0, 1fr) clamp(210px, 30vw, 260px);
+    grid-template-areas:
+      "drawing tools"
+      "drawing name"
+      "drawing status"
+      "drawing release";
+    grid-template-rows: minmax(0, 1fr) auto auto auto;
+    align-items: stretch;
+    min-height: 0;
+    height: 100%;
+    gap: 8px;
+  }
+
+  .drawing-board {
+    grid-area: drawing;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .canvas-stage {
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  .silhouette-canvas,
+  .drawing-canvas {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .canvas-toolbar {
+    gap: 5px;
+    padding: 5px;
+    background: rgba(251, 255, 252, 0.82);
+  }
+
+  .canvas-toolbar-left {
+    top: 50%;
+    bottom: auto;
+    left: 8px;
+    transform: translateY(-50%);
+  }
+
+  .canvas-toolbar-left .tool-group {
+    flex-direction: column;
+  }
+
+  .canvas-toolbar-right {
+    top: 8px;
+    right: 8px;
+    bottom: auto;
+  }
+
+  .canvas-toolbar .icon-button {
+    min-width: 34px;
+    height: 34px;
+  }
+
+  .canvas-toolbar .active-tool-swatch {
+    width: 22px;
+    height: 22px;
+    border-width: 1px;
+  }
+
+  .tools-panel {
+    grid-area: tools;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 6px;
+    min-height: 0;
+    padding: 8px;
+    overflow-y: auto;
+  }
+
+  .color-section,
+  .size-section,
+  .fill-section,
+  .clear-button {
+    grid-column: auto;
+  }
+
+  .tool-section {
+    gap: 5px;
+  }
+
+  .color-section .tool-section-title {
+    display: none;
+  }
+
+  .tool-section-title {
+    min-height: 20px;
+    font-size: 0.78rem;
+  }
+
+  .swatches {
+    gap: 4px;
+  }
+
+  .swatch,
+  .custom-color {
+    width: 24px;
+    height: 24px;
+  }
+
+  .custom-color::after {
+    width: 12px;
+    height: 12px;
+  }
+
+  .current-color {
+    width: 20px;
+    height: 20px;
+  }
+
+  .size-control {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .brush-preview {
+    display: none;
+  }
+
+  input[type="range"] {
+    height: 24px;
+  }
+
+  .name-panel {
+    grid-area: name;
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .name-panel label {
+    font-size: 0.82rem;
+  }
+
+  input {
+    height: 38px;
+    padding-inline: 10px;
+  }
+
+  .hint {
+    display: none;
+  }
+
+  .status {
+    grid-area: status;
+    min-height: 38px;
+    max-height: 56px;
+    padding: 8px 10px;
+    overflow: auto;
+    font-size: 0.76rem;
+  }
+
+  .release-button {
+    grid-area: release;
+    min-height: 44px;
+  }
+
+  .composer.is-drawing .tools-panel,
+  .composer.is-drawing .name-panel,
+  .composer.is-drawing .status,
+  .composer.is-drawing .release-button {
+    opacity: 0.12;
+    pointer-events: none;
+    transform: translateX(8px);
+  }
+
+  .composer.is-drawing .canvas-toolbar {
+    opacity: 0.16;
+    pointer-events: none;
   }
 }
 
