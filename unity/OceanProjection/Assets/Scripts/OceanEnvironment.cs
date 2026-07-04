@@ -4,23 +4,29 @@ using UnityEditor;
 #endif
 
 [ExecuteAlways]
-public class OceanEnvironment : MonoBehaviour
+public partial class OceanEnvironment : MonoBehaviour
 {
     [Header("Layout")]
-    [SerializeField] private Vector2 oceanSize = new Vector2(64f, 44f);
-    [SerializeField] private float seabedY = -4.8f;
-    [SerializeField] private float waterSurfaceY = 3.2f;
-    [SerializeField, Range(8, 80)] private int seabedResolution = 36;
+    [SerializeField] private Vector2 oceanSize = new Vector2(140f, 96f);
+    [SerializeField] private float seabedY = -8f;
+    [SerializeField] private float waterSurfaceY = 4.5f;
+    [SerializeField, Range(16, 160)] private int seabedResolution = 128;
     [SerializeField] private int decorationSeed = 4217;
+
+    [Header("Seabed Terrain")]
+    [SerializeField, Range(0f, 6f)] private float seabedRelief = 3.6f;
+    [SerializeField, Range(0, 8)] private int basinCount = 5;
+    [SerializeField, Range(0, 10)] private int reefMoundCount = 7;
+    [SerializeField, Range(0f, 1f)] private float reefDecorationBias = 0.74f;
 
     [Header("Water")]
     [SerializeField] private Color waterColor = new Color(0.16f, 0.78f, 0.96f, 0.36f);
     [SerializeField] private Color deepFogColor = new Color(0.04f, 0.58f, 0.82f, 1f);
     [SerializeField] private float fogDensity = 0.035f;
-    [SerializeField, Range(8, 80)] private int waterResolution = 32;
-    [SerializeField] private float waveAmplitude = 0.22f;
-    [SerializeField] private float waveSpeed = 0.72f;
-    [SerializeField] private float waveLength = 0.42f;
+    [SerializeField, Range(16, 128)] private int waterResolution = 96;
+    [SerializeField] private float waveAmplitude = 0.32f;
+    [SerializeField] private float waveSpeed = 0.68f;
+    [SerializeField] private float waveLength = 0.32f;
     [SerializeField] private bool tintCameras = true;
 
     [Header("Suimono Water System")]
@@ -35,11 +41,11 @@ public class OceanEnvironment : MonoBehaviour
     [SerializeField] private Color foamColor = new Color(0.92f, 1f, 1f, 0.48f);
 
     [Header("Decorations")]
-    [SerializeField] private int rockCount = 10;
-    [SerializeField] private int simpleCoralCount = 16;
-    [SerializeField] private int branchCoralCount = 28;
+    [SerializeField] private int rockCount = 52;
+    [SerializeField] private int simpleCoralCount = 72;
+    [SerializeField] private int branchCoralCount = 96;
     [SerializeField] private int bubbleColumnCount = 5;
-    [SerializeField] private int causticLineCount = 30;
+    [SerializeField] private int causticLineCount = 96;
 
     private const string GeneratedRootName = "_GeneratedOceanEnvironment";
     private Transform generatedRoot;
@@ -53,6 +59,7 @@ public class OceanEnvironment : MonoBehaviour
     private Mesh seabedMesh;
     private Mesh waterMesh;
     private Vector3[] waterBaseVertices;
+    private OceanSeabedTerrain seabedTerrain;
     private LineRenderer[] causticLines;
     private LineRenderer[] foamLines;
     private bool needsRebuild;
@@ -65,8 +72,11 @@ public class OceanEnvironment : MonoBehaviour
 
     private void OnValidate()
     {
-        seabedResolution = Mathf.Max(8, seabedResolution);
-        waterResolution = Mathf.Max(8, waterResolution);
+        seabedResolution = Mathf.Max(16, seabedResolution);
+        waterResolution = Mathf.Max(16, waterResolution);
+        seabedRelief = Mathf.Max(0f, seabedRelief);
+        basinCount = Mathf.Max(0, basinCount);
+        reefMoundCount = Mathf.Max(0, reefMoundCount);
         needsRebuild = true;
     }
 
@@ -92,6 +102,7 @@ public class OceanEnvironment : MonoBehaviour
         ClearGenerated();
         CreateMaterials();
         Random.InitState(decorationSeed);
+        seabedTerrain = OceanSeabedTerrain.Create(oceanSize, seabedY, waterSurfaceY, decorationSeed, seabedRelief, basinCount, reefMoundCount);
 
         generatedRoot = new GameObject(GeneratedRootName).transform;
         generatedRoot.SetParent(transform, false);
@@ -558,9 +569,7 @@ public class OceanEnvironment : MonoBehaviour
                 float tz = z / (float)seabedResolution;
                 float px = Mathf.Lerp(-halfX, halfX, tx);
                 float pz = Mathf.Lerp(-halfZ, halfZ, tz);
-                float ripple = Mathf.Sin(px * 0.8f + pz * 0.35f) * 0.18f
-                    + Mathf.Cos(pz * 0.9f) * 0.11f;
-                vertices[z * points + x] = new Vector3(px, seabedY + ripple, pz);
+                vertices[z * points + x] = SampleSeabedPosition(px, pz);
                 uvs[z * points + x] = new Vector2(tx * 4f, tz * 4f);
             }
         }
@@ -591,338 +600,6 @@ public class OceanEnvironment : MonoBehaviour
         seabed.transform.SetParent(generatedRoot, false);
         seabed.AddComponent<MeshFilter>().sharedMesh = seabedMesh;
         seabed.AddComponent<MeshRenderer>().sharedMaterial = seabedMaterial;
-    }
-
-    private void CreateWaterSurface()
-    {
-        int points = waterResolution + 1;
-        Vector3[] vertices = new Vector3[points * points];
-        Vector2[] uvs = new Vector2[vertices.Length];
-        int[] triangles = new int[waterResolution * waterResolution * 6];
-        float halfX = oceanSize.x * 0.5f;
-        float halfZ = oceanSize.y * 0.5f;
-
-        for (int z = 0; z < points; z++)
-        {
-            for (int x = 0; x < points; x++)
-            {
-                float tx = x / (float)waterResolution;
-                float tz = z / (float)waterResolution;
-                vertices[z * points + x] = new Vector3(
-                    Mathf.Lerp(-halfX, halfX, tx),
-                    waterSurfaceY,
-                    Mathf.Lerp(-halfZ, halfZ, tz)
-                );
-                uvs[z * points + x] = new Vector2(tx * 3f, tz * 3f);
-            }
-        }
-
-        int index = 0;
-        for (int z = 0; z < waterResolution; z++)
-        {
-            for (int x = 0; x < waterResolution; x++)
-            {
-                int i = z * points + x;
-                triangles[index++] = i;
-                triangles[index++] = i + points;
-                triangles[index++] = i + 1;
-                triangles[index++] = i + 1;
-                triangles[index++] = i + points;
-                triangles[index++] = i + points + 1;
-            }
-        }
-
-        waterMesh = new Mesh { name = "Generated Water Surface Mesh" };
-        waterMesh.vertices = vertices;
-        waterMesh.uv = uvs;
-        waterMesh.triangles = triangles;
-        waterMesh.RecalculateNormals();
-        waterMesh.RecalculateBounds();
-        waterBaseVertices = vertices;
-
-        GameObject water = new GameObject("Water Surface");
-        water.transform.SetParent(generatedRoot, false);
-        water.AddComponent<MeshFilter>().sharedMesh = waterMesh;
-        water.AddComponent<MeshRenderer>().sharedMaterial = waterMaterial;
-    }
-
-    private void AnimateWater()
-    {
-        if (waterMesh == null)
-        {
-            return;
-        }
-
-        Vector3[] vertices = waterMesh.vertices;
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            Vector3 baseVertex = waterBaseVertices[i];
-            float waveA = Mathf.Sin(Time.time * waveSpeed + baseVertex.x * waveLength + baseVertex.z * 0.22f);
-            float waveB = Mathf.Cos(Time.time * waveSpeed * 1.37f + baseVertex.z * waveLength * 1.2f);
-            float waveC = Mathf.Sin(Time.time * waveSpeed * 0.63f + (baseVertex.x + baseVertex.z) * waveLength * 0.58f);
-            vertices[i].y = waterSurfaceY + (waveA * 0.52f + waveB * 0.31f + waveC * 0.17f) * waveAmplitude;
-        }
-
-        waterMesh.vertices = vertices;
-        waterMesh.RecalculateNormals();
-
-        if (causticLines == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < causticLines.Length; i++)
-        {
-            LineRenderer line = causticLines[i];
-            if (line == null)
-            {
-                continue;
-            }
-
-            float width = 0.018f + Mathf.Sin(Time.time * 1.4f + i * 0.47f) * 0.006f;
-            line.startWidth = width;
-            line.endWidth = width * 0.72f;
-        }
-
-        if (foamLines == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < foamLines.Length; i++)
-        {
-            LineRenderer line = foamLines[i];
-            if (line == null)
-            {
-                continue;
-            }
-
-            float shimmer = 0.5f + Mathf.Sin(Time.time * 1.8f + i * 0.91f) * 0.5f;
-            Color color = Color.Lerp(new Color(foamColor.r, foamColor.g, foamColor.b, 0.12f), foamColor, shimmer);
-            line.startColor = color;
-            line.endColor = new Color(color.r, color.g, color.b, color.a * 0.35f);
-        }
-    }
-
-    private void CreateSunlight()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            GameObject lightObject = new GameObject("Underwater Sun Spot");
-            lightObject.transform.SetParent(generatedRoot, false);
-            lightObject.transform.position = new Vector3(Mathf.Lerp(-10f, 10f, i / 3f), waterSurfaceY - 0.1f, -5f + i * 3f);
-            lightObject.transform.rotation = Quaternion.Euler(78f, Mathf.Lerp(-20f, 20f, i / 3f), 0f);
-
-            Light spot = lightObject.AddComponent<Light>();
-            spot.type = LightType.Spot;
-            spot.color = new Color(0.82f, 0.98f, 1f);
-            spot.intensity = 1.65f;
-            spot.range = waterSurfaceY - seabedY + 3f;
-            spot.spotAngle = 54f;
-            spot.shadows = LightShadows.None;
-        }
-    }
-
-    private void CreateCausticLines()
-    {
-        causticLines = new LineRenderer[causticLineCount];
-
-        for (int i = 0; i < causticLineCount; i++)
-        {
-            GameObject lineObject = new GameObject("Thin Reef Caustic");
-            lineObject.transform.SetParent(generatedRoot, false);
-
-            Vector3 start = RandomSeabedPosition(0.72f) + Vector3.up * 0.035f;
-            float length = Random.Range(0.55f, 1.35f);
-            float angle = Random.Range(0f, Mathf.PI * 2f);
-            Vector3 direction = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
-            Vector3 side = new Vector3(-direction.z, 0f, direction.x);
-
-            LineRenderer line = lineObject.AddComponent<LineRenderer>();
-            line.sharedMaterial = causticLineMaterial;
-            line.positionCount = 4;
-            line.useWorldSpace = true;
-            line.textureMode = LineTextureMode.Stretch;
-            line.alignment = LineAlignment.View;
-            line.startWidth = 0.018f;
-            line.endWidth = 0.012f;
-
-            for (int point = 0; point < 4; point++)
-            {
-                float t = point / 3f;
-                Vector3 position = start + direction * (length * (t - 0.5f));
-                position += side * Mathf.Sin(t * Mathf.PI * 2f + i) * 0.08f;
-                line.SetPosition(point, position);
-            }
-
-            causticLines[i] = line;
-        }
-    }
-
-    private void CreateSurfaceHighlights()
-    {
-        int highlightCount = Mathf.Max(8, causticLineCount / 2);
-        foamLines = new LineRenderer[highlightCount];
-        float halfX = oceanSize.x * 0.5f;
-        float halfZ = oceanSize.y * 0.5f;
-
-        for (int i = 0; i < highlightCount; i++)
-        {
-            GameObject lineObject = new GameObject("Surface Sparkle");
-            lineObject.transform.SetParent(generatedRoot, false);
-
-            float x = Random.Range(-halfX * 0.92f, halfX * 0.92f);
-            float z = Random.Range(-halfZ * 0.92f, halfZ * 0.92f);
-            float length = Random.Range(0.35f, 1.1f);
-            float angle = Random.Range(-35f, 35f) * Mathf.Deg2Rad;
-            Vector3 direction = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
-
-            LineRenderer line = lineObject.AddComponent<LineRenderer>();
-            line.sharedMaterial = foamMaterial;
-            line.positionCount = 3;
-            line.useWorldSpace = true;
-            line.textureMode = LineTextureMode.Stretch;
-            line.alignment = LineAlignment.View;
-            line.startWidth = Random.Range(0.012f, 0.028f);
-            line.endWidth = 0.004f;
-            line.startColor = foamColor;
-            line.endColor = new Color(foamColor.r, foamColor.g, foamColor.b, 0.12f);
-
-            Vector3 center = new Vector3(x, waterSurfaceY + 0.045f, z);
-            line.SetPosition(0, center - direction * length * 0.5f);
-            line.SetPosition(1, center + Vector3.up * Random.Range(0.01f, 0.04f));
-            line.SetPosition(2, center + direction * length * 0.5f);
-            foamLines[i] = line;
-        }
-    }
-
-    private void CreateDecorations()
-    {
-        for (int i = 0; i < rockCount; i++)
-        {
-            Vector3 position = RandomSeabedPosition(0.82f);
-            GameObject rock = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            rock.name = "Seabed Rock";
-            rock.transform.SetParent(generatedRoot, false);
-            rock.transform.position = position;
-            rock.transform.localScale = new Vector3(Random.Range(0.7f, 1.8f), Random.Range(0.18f, 0.45f), Random.Range(0.5f, 1.35f));
-            rock.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-            rock.GetComponent<MeshRenderer>().sharedMaterial = rockMaterial;
-            DestroyCollider(rock);
-        }
-
-        for (int i = 0; i < simpleCoralCount; i++)
-        {
-            Vector3 position = RandomSeabedPosition(0.9f);
-            GameObject coral = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            coral.name = "Simple Coral";
-            coral.transform.SetParent(generatedRoot, false);
-            coral.transform.position = position + Vector3.up * 0.18f;
-            coral.transform.localScale = new Vector3(Random.Range(0.08f, 0.18f), Random.Range(0.35f, 0.85f), Random.Range(0.08f, 0.18f));
-            coral.transform.rotation = Quaternion.Euler(Random.Range(-12f, 12f), Random.Range(0f, 360f), Random.Range(-12f, 12f));
-            coral.GetComponent<MeshRenderer>().sharedMaterial = coralMaterial;
-            DestroyCollider(coral);
-        }
-
-        for (int i = 0; i < branchCoralCount; i++)
-        {
-            CreateBranchCoralCluster(RandomSeabedPosition(0.86f), i);
-        }
-    }
-
-    private void CreateBranchCoralCluster(Vector3 position, int index)
-    {
-        GameObject cluster = new GameObject("Branch Coral Cluster");
-        cluster.transform.SetParent(generatedRoot, false);
-        cluster.transform.position = position + Vector3.up * 0.05f;
-
-        Material material = index % 3 == 0 ? coralMaterial : whiteCoralMaterial;
-        int branchCount = Random.Range(7, 13);
-        float baseYaw = Random.Range(0f, 360f);
-
-        for (int i = 0; i < branchCount; i++)
-        {
-            float angle = baseYaw + i * (360f / branchCount) + Random.Range(-16f, 16f);
-            float angleRadians = angle * Mathf.Deg2Rad;
-            float spread = Random.Range(0.36f, 0.72f);
-            Vector3 direction = new Vector3(
-                Mathf.Cos(angleRadians) * spread,
-                Random.Range(0.58f, 0.94f),
-                Mathf.Sin(angleRadians) * spread
-            ).normalized;
-            float length = Random.Range(0.42f, 0.95f);
-            float radius = Random.Range(0.025f, 0.055f);
-            AddCoralBranch(cluster.transform, Vector3.zero, direction, length, radius, material);
-
-            if (Random.value > 0.35f)
-            {
-                Vector3 forkStart = direction.normalized * length * Random.Range(0.45f, 0.72f);
-                Vector3 forkDirection = Quaternion.Euler(Random.Range(-18f, 20f), Random.Range(-38f, 38f), Random.Range(-20f, 20f)) * direction;
-                AddCoralBranch(cluster.transform, forkStart, forkDirection, length * Random.Range(0.38f, 0.58f), radius * 0.7f, material);
-            }
-        }
-
-        GameObject mound = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        mound.name = "Coral Base";
-        mound.transform.SetParent(cluster.transform, false);
-        mound.transform.localPosition = Vector3.up * 0.03f;
-        mound.transform.localScale = new Vector3(Random.Range(0.38f, 0.72f), 0.12f, Random.Range(0.38f, 0.72f));
-        mound.GetComponent<MeshRenderer>().sharedMaterial = whiteCoralMaterial;
-        DestroyCollider(mound);
-    }
-
-    private void AddCoralBranch(Transform parent, Vector3 start, Vector3 direction, float length, float radius, Material material)
-    {
-        GameObject branch = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        branch.name = "Coral Branch";
-        branch.transform.SetParent(parent, false);
-
-        Vector3 normalized = direction.normalized;
-        branch.transform.localPosition = start + normalized * length * 0.5f;
-        branch.transform.localRotation = Quaternion.FromToRotation(Vector3.up, normalized);
-        branch.transform.localScale = new Vector3(radius, length * 0.5f, radius);
-        branch.GetComponent<MeshRenderer>().sharedMaterial = material;
-        DestroyCollider(branch);
-    }
-
-    private void CreateBubbleColumns()
-    {
-        for (int i = 0; i < bubbleColumnCount; i++)
-        {
-            GameObject column = new GameObject("Bubble Column");
-            column.transform.SetParent(generatedRoot, false);
-            column.transform.position = RandomSeabedPosition(0.65f) + Vector3.up * 0.8f;
-
-            ParticleSystem particles = column.AddComponent<ParticleSystem>();
-            ParticleSystem.MainModule main = particles.main;
-            main.startColor = new Color(0.75f, 0.95f, 1f, 0.36f);
-            main.startLifetime = new ParticleSystem.MinMaxCurve(3.4f, 5.2f);
-            main.startSpeed = new ParticleSystem.MinMaxCurve(0.45f, 0.9f);
-            main.startSize = new ParticleSystem.MinMaxCurve(0.035f, 0.12f);
-            main.maxParticles = 90;
-            main.simulationSpace = ParticleSystemSimulationSpace.World;
-
-            ParticleSystem.EmissionModule emission = particles.emission;
-            emission.rateOverTime = new ParticleSystem.MinMaxCurve(8f, 16f);
-
-            ParticleSystem.ShapeModule shape = particles.shape;
-            shape.shapeType = ParticleSystemShapeType.Circle;
-            shape.radius = 0.18f;
-
-            ParticleSystem.VelocityOverLifetimeModule velocity = particles.velocityOverLifetime;
-            velocity.enabled = true;
-            velocity.y = new ParticleSystem.MinMaxCurve(0.5f, 1.1f);
-            velocity.x = new ParticleSystem.MinMaxCurve(-0.08f, 0.08f);
-            velocity.z = new ParticleSystem.MinMaxCurve(-0.08f, 0.08f);
-        }
-    }
-
-    private Vector3 RandomSeabedPosition(float inset)
-    {
-        float x = Random.Range(-oceanSize.x * 0.5f * inset, oceanSize.x * 0.5f * inset);
-        float z = Random.Range(-oceanSize.y * 0.5f * inset, oceanSize.y * 0.5f * inset);
-        float ripple = Mathf.Sin(x * 0.8f + z * 0.35f) * 0.18f + Mathf.Cos(z * 0.9f) * 0.11f;
-        return new Vector3(x, seabedY + ripple, z);
     }
 
     private void ClearGenerated()

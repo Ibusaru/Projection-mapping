@@ -21,6 +21,16 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float orbitSeconds = 38f;
     [SerializeField] private float lookAhead = 2.5f;
 
+    [Header("Cinematic Auto Tour")]
+    [SerializeField] private bool useCinematicShots = true;
+    [SerializeField] private OceanEnvironment oceanEnvironment;
+    [SerializeField] private Vector2 cinematicShotSeconds = new Vector2(10f, 17f);
+    [SerializeField] private float cinematicSmoothTime = 3.2f;
+    [SerializeField] private float cinematicRotationSmooth = 1.35f;
+    [SerializeField] private float cinematicMaxSpeed = 22f;
+    [SerializeField] private float cinematicDroneHeightScale = 0.28f;
+    [SerializeField] private float cinematicSurfaceHeight = 1.35f;
+
     [Header("Diver Follow")]
     [SerializeField] private bool focusFish = true;
     [SerializeField] private float targetRefreshSeconds = 5f;
@@ -93,6 +103,21 @@ public class OceanCameraRig : MonoBehaviour
     private readonly HashSet<FishActor> queuedReleasedFishFocus = new HashSet<FishActor>();
     private readonly List<FishActor> focusQueuePruneBuffer = new List<FishActor>();
     private float focusedFishSinceTime;
+    private static readonly OceanCinematicShotKind[] CinematicSequence =
+    {
+        OceanCinematicShotKind.DroneOverview,
+        OceanCinematicShotKind.SurfaceSkim,
+        OceanCinematicShotKind.ReefDive,
+        OceanCinematicShotKind.FishFocus,
+        OceanCinematicShotKind.TrenchRun,
+        OceanCinematicShotKind.RockMountainReveal,
+        OceanCinematicShotKind.FishFocus
+    };
+    private OceanCinematicShotKind currentCinematicShot = OceanCinematicShotKind.DroneOverview;
+    private float cinematicShotStartedAt;
+    private float cinematicShotDuration = 12f;
+    private int cinematicShotIndex = -1;
+    private bool hasCinematicShot;
 
     private void OnDisable()
     {
@@ -101,6 +126,12 @@ public class OceanCameraRig : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (useCinematicShots)
+        {
+            UpdateCinematicCamera();
+            return;
+        }
+
         if (focusFish)
         {
             UpdateDiverFollowCamera();
@@ -125,6 +156,211 @@ public class OceanCameraRig : MonoBehaviour
             Quaternion.LookRotation(lookTarget - transform.position),
             1.8f * Time.deltaTime
         );
+    }
+
+    public bool TryEvaluateCinematicShot(OceanCinematicShotKind shot, float normalizedTime, out Vector3 position, out Vector3 lookTarget)
+    {
+        return TryEvaluateCinematicShot(shot, normalizedTime, ResolveOceanEnvironment(), out position, out lookTarget);
+    }
+
+    private void UpdateCinematicCamera()
+    {
+        if (!hasCinematicShot || Time.time >= cinematicShotStartedAt + cinematicShotDuration)
+        {
+            BeginNextCinematicShot();
+        }
+
+        if (currentCinematicShot == OceanCinematicShotKind.FishFocus)
+        {
+            UpdateDiverFollowCamera();
+            return;
+        }
+
+        float normalizedTime = Mathf.Clamp01((Time.time - cinematicShotStartedAt) / Mathf.Max(0.1f, cinematicShotDuration));
+        if (!TryEvaluateCinematicShot(currentCinematicShot, normalizedTime, ResolveOceanEnvironment(), out Vector3 desiredPosition, out Vector3 lookTarget))
+        {
+            UpdateFallbackDiverCruise();
+            return;
+        }
+
+        bool snapped = MoveCamera(
+            desiredPosition,
+            lookTarget,
+            Mathf.Max(0.1f, cinematicSmoothTime),
+            Mathf.Max(0.1f, cinematicMaxSpeed)
+        );
+        LookAtTarget(lookTarget, cinematicRotationSmooth, snapped);
+    }
+
+    private void BeginNextCinematicShot()
+    {
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        for (int attempt = 0; attempt < CinematicSequence.Length; attempt++)
+        {
+            cinematicShotIndex = (cinematicShotIndex + 1) % CinematicSequence.Length;
+            OceanCinematicShotKind candidate = CinematicSequence[cinematicShotIndex];
+            if (candidate == OceanCinematicShotKind.FishFocus && (!focusFish || !HasAnyActiveFish()))
+            {
+                continue;
+            }
+
+            if (candidate != OceanCinematicShotKind.FishFocus
+                && !TryEvaluateCinematicShot(candidate, 0f, environment, out _, out _))
+            {
+                continue;
+            }
+
+            currentCinematicShot = candidate;
+            cinematicShotStartedAt = Time.time;
+            float min = Mathf.Max(2f, Mathf.Min(cinematicShotSeconds.x, cinematicShotSeconds.y));
+            float max = Mathf.Max(min, Mathf.Max(cinematicShotSeconds.x, cinematicShotSeconds.y));
+            cinematicShotDuration = Random.Range(min, max);
+            hasCinematicShot = true;
+            if (candidate != OceanCinematicShotKind.FishFocus)
+            {
+                SetFocusedFish(null);
+            }
+            return;
+        }
+
+        currentCinematicShot = OceanCinematicShotKind.FishFocus;
+        cinematicShotStartedAt = Time.time;
+        cinematicShotDuration = Mathf.Max(4f, cinematicShotSeconds.x);
+        hasCinematicShot = true;
+    }
+
+    private bool TryEvaluateCinematicShot(
+        OceanCinematicShotKind shot,
+        float normalizedTime,
+        OceanEnvironment environment,
+        out Vector3 position,
+        out Vector3 lookTarget)
+    {
+        float t = SmoothStep01(normalizedTime);
+        Vector2 size = environment != null ? environment.OceanSize : new Vector2(Mathf.Max(1f, orbitSize.x * 4f), Mathf.Max(1f, orbitSize.z * 4f));
+        float waterY = environment != null ? environment.WaterSurfaceY : center.y + orbitSize.y;
+        Vector3 oceanCenter = OceanLocalToWorld(environment, new Vector3(0f, Mathf.Lerp(center.y, waterY - 3.5f, 0.45f), 0f));
+        Vector3 reef = FeatureOrFallback(environment, OceanFeatureKind.Reef, new Vector3(size.x * 0.18f, waterY - 3f, size.y * 0.13f));
+        Vector3 beach = FeatureOrFallback(environment, OceanFeatureKind.Beach, new Vector3(size.x * 0.38f, waterY - 0.6f, -size.y * 0.16f));
+        Vector3 trench = FeatureOrFallback(environment, OceanFeatureKind.Trench, new Vector3(-size.x * 0.04f, waterY - 14f, size.y * 0.02f));
+        Vector3 rock = FeatureOrFallback(environment, OceanFeatureKind.RockMountain, new Vector3(-size.x * 0.31f, waterY + 8f, -size.y * 0.17f));
+
+        switch (shot)
+        {
+            case OceanCinematicShotKind.DroneOverview:
+            {
+                float height = waterY + Mathf.Max(size.x, size.y) * cinematicDroneHeightScale;
+                Vector3 start = OceanLocalToWorld(environment, new Vector3(-size.x * 0.46f, height, -size.y * 0.48f));
+                Vector3 end = OceanLocalToWorld(environment, new Vector3(size.x * 0.43f, height * 0.88f, size.y * 0.36f));
+                position = Vector3.Lerp(start, end, t) + Vector3.up * Mathf.Sin(t * Mathf.PI) * 4.5f;
+                lookTarget = Vector3.Lerp(rock, Vector3.Lerp(reef, trench, 0.45f), t);
+                break;
+            }
+            case OceanCinematicShotKind.SurfaceSkim:
+            {
+                Vector3 start = beach + new Vector3(-size.x * 0.08f, cinematicSurfaceHeight, -size.y * 0.16f);
+                Vector3 end = reef + new Vector3(-size.x * 0.18f, cinematicSurfaceHeight * 0.65f, size.y * 0.1f);
+                position = Vector3.Lerp(start, end, t);
+                position.y = waterY + cinematicSurfaceHeight + Mathf.Sin(t * Mathf.PI * 2f) * 0.28f;
+                lookTarget = Vector3.Lerp(reef, oceanCenter, 0.25f + t * 0.25f);
+                lookTarget.y = waterY - 1.2f;
+                break;
+            }
+            case OceanCinematicShotKind.ReefDive:
+            {
+                Vector3 start = reef + new Vector3(size.x * 0.1f, waterY + 5.5f - reef.y, -size.y * 0.18f);
+                Vector3 end = reef + new Vector3(-size.x * 0.08f, 3.4f, size.y * 0.08f);
+                position = Vector3.Lerp(start, end, t);
+                lookTarget = Vector3.Lerp(reef + Vector3.up * 1.8f, trench + Vector3.up * 3f, t * 0.35f);
+                break;
+            }
+            case OceanCinematicShotKind.TrenchRun:
+            {
+                Vector3 start = SampleOceanFloorWorld(environment, new Vector2(-size.x * 0.35f, size.y * 0.27f), waterY - 12f) + Vector3.up * 3.6f;
+                Vector3 end = SampleOceanFloorWorld(environment, new Vector2(size.x * 0.32f, -size.y * 0.22f), waterY - 12f) + Vector3.up * 3.2f;
+                position = Vector3.Lerp(start, end, t);
+                position.y = Mathf.Min(position.y, waterY - 5.5f);
+                Vector3 lookAheadPoint = Vector3.Lerp(start, end, Mathf.Clamp01(t + 0.16f));
+                lookTarget = Vector3.Lerp(lookAheadPoint, trench + Vector3.up * 1.7f, 0.35f);
+                break;
+            }
+            case OceanCinematicShotKind.RockMountainReveal:
+            {
+                Vector3 start = rock + new Vector3(-size.x * 0.12f, waterY - rock.y - 2.2f, -size.y * 0.24f);
+                Vector3 end = rock + new Vector3(size.x * 0.16f, 8.5f, -size.y * 0.2f);
+                position = Vector3.Lerp(start, end, t) + Vector3.up * Mathf.Sin(t * Mathf.PI) * 3.5f;
+                lookTarget = rock + Vector3.up * Mathf.Lerp(-4.8f, 1.4f, t);
+                break;
+            }
+            case OceanCinematicShotKind.FishFocus:
+                position = transform.position;
+                lookTarget = transform.position + transform.forward * Mathf.Max(1f, lookAhead);
+                break;
+            default:
+                position = transform.position;
+                lookTarget = oceanCenter;
+                return false;
+        }
+
+        return IsFinite(position) && IsFinite(lookTarget);
+    }
+
+    private OceanEnvironment ResolveOceanEnvironment()
+    {
+        if (oceanEnvironment == null)
+        {
+            oceanEnvironment = FindAnyObjectByType<OceanEnvironment>();
+        }
+
+        return oceanEnvironment;
+    }
+
+    private Vector3 FeatureOrFallback(OceanEnvironment environment, OceanFeatureKind feature, Vector3 fallbackLocal)
+    {
+        if (environment != null && environment.TryGetFeaturePoint(feature, out Vector3 point))
+        {
+            return point;
+        }
+
+        return OceanLocalToWorld(environment, fallbackLocal);
+    }
+
+    private Vector3 SampleOceanFloorWorld(OceanEnvironment environment, Vector2 localXZ, float fallbackY)
+    {
+        if (environment == null)
+        {
+            return new Vector3(center.x + localXZ.x, fallbackY, center.z + localXZ.y);
+        }
+
+        float y = environment.SampleSeabedHeight(localXZ.x, localXZ.y);
+        return environment.transform.TransformPoint(new Vector3(localXZ.x, y, localXZ.y));
+    }
+
+    private Vector3 OceanLocalToWorld(OceanEnvironment environment, Vector3 local)
+    {
+        return environment != null ? environment.transform.TransformPoint(local) : center + local;
+    }
+
+    private bool HasAnyActiveFish()
+    {
+        IReadOnlyList<FishActor> fishes = FishActor.AllActiveFishes;
+        return fishes != null && fishes.Count > 0;
+    }
+
+    private static float SmoothStep01(float value)
+    {
+        float t = Mathf.Clamp01(value);
+        return t * t * (3f - 2f * t);
+    }
+
+    private static bool IsFinite(Vector3 value)
+    {
+        return IsFinite(value.x) && IsFinite(value.y) && IsFinite(value.z);
+    }
+
+    private static bool IsFinite(float value)
+    {
+        return !float.IsNaN(value) && !float.IsInfinity(value);
     }
 
     private void UpdateDiverFollowCamera()

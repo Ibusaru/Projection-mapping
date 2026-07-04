@@ -18776,9 +18776,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanCameraRig
   target: {fileID: 0}
   center: {x: 0, y: -0.8, z: 0}
-  orbitSize: {x: 18, y: 2.8, z: 12}
+  orbitSize: {x: 34, y: 7, z: 24}
   orbitSeconds: 58
   lookAhead: 4.5
+  useCinematicShots: 1
+  oceanEnvironment: {fileID: 0}
+  cinematicShotSeconds: {x: 10, y: 17}
+  cinematicSmoothTime: 3.2
+  cinematicRotationSmooth: 1.35
+  cinematicMaxSpeed: 22
+  cinematicDroneHeightScale: 0.28
+  cinematicSurfaceHeight: 1.35
   focusFish: 1
   targetRefreshSeconds: 5
   prioritizeReleasedFish: 1
@@ -18793,10 +18801,10 @@ MonoBehaviour:
   rotationSmooth: 1.5
   driftAmplitude: 0.34
   driftSpeed: 0.24
-  maximumCameraSpeed: 5.2
+  maximumCameraSpeed: 8.5
   scanIntervalSeconds: 2.2
-  fishInterestDistance: 24
-  schoolInterestDistance: 34
+  fishInterestDistance: 46
+  schoolInterestDistance: 58
   schoolNeighborRadius: 6.5
   minimumSchoolSize: 5
   fishApproachDistance: 4.1
@@ -39174,18 +39182,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ef4a7f779346e4893b9733271df1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanEnvironment
-  oceanSize: {x: 96, y: 64}
-  seabedY: -4.8
-  waterSurfaceY: 3.2
-  seabedResolution: 72
+  oceanSize: {x: 140, y: 96}
+  seabedY: -8
+  waterSurfaceY: 4.5
+  seabedResolution: 128
   decorationSeed: 4217
+  seabedRelief: 3.6
+  basinCount: 5
+  reefMoundCount: 7
+  reefDecorationBias: 0.74
   waterColor: {r: 0.18, g: 0.86, b: 1, a: 0.42}
-  deepFogColor: {r: 0.035, g: 0.52, b: 0.76, a: 1}
-  fogDensity: 0.031
-  waterResolution: 56
-  waveAmplitude: 0.28
-  waveSpeed: 0.78
-  waveLength: 0.5
+  deepFogColor: {r: 0.024, g: 0.34, b: 0.56, a: 1}
+  fogDensity: 0.026
+  waterResolution: 96
+  waveAmplitude: 0.32
+  waveSpeed: 0.68
+  waveLength: 0.32
   tintCameras: 1
   useSuimonoWhenAvailable: 1
   keepFallbackWaterWithSuimono: 1
@@ -39196,11 +39208,11 @@ MonoBehaviour:
   suimonoSurfacePrefabHint: Suimono_Surface
   shallowWaterColor: {r: 0.28, g: 0.94, b: 1, a: 0.55}
   foamColor: {r: 0.92, g: 1, b: 1, a: 0.48}
-  rockCount: 28
-  simpleCoralCount: 42
-  branchCoralCount: 64
+  rockCount: 52
+  simpleCoralCount: 72
+  branchCoralCount: 96
   bubbleColumnCount: 0
-  causticLineCount: 72
+  causticLineCount: 96
 --- !u!4 &695204833
 Transform:
   m_ObjectHideFlags: 0
@@ -53564,20 +53576,20 @@ MonoBehaviour:
   - {fileID: 5440476660054940829, guid: 7c609d199e833e64e80264c75b43688d, type: 3}
   - {fileID: 3793146743532390487, guid: 89c7d56787878bd45a97b081a69b5b43, type: 3}
   fishParent: {fileID: 0}
-  center: {x: 0, y: -0.9, z: 0}
-  size: {x: 58, y: 7.2, z: 38}
+  center: {x: 0, y: -1.4, z: 0}
+  size: {x: 100, y: 10.2, z: 68}
   releasedFishTargetLength: 0.55
-  releasedFishSpawnSpread: {x: 11, y: 4, z: 7}
-  minimumReleasedFishSpawnDistanceFromCamera: 7
+  releasedFishSpawnSpread: {x: 24, y: 6, z: 16}
+  minimumReleasedFishSpawnDistanceFromCamera: 9
   spawnPositionAttempts: 18
   spawnDefaultFishOnStart: 1
   defaultFishCount: 150
   defaultFishTargetLengthRange: {x: 0.18, y: 0.38}
-  defaultSchoolSpread: {x: 44, y: 4.4, z: 28}
+  defaultSchoolSpread: {x: 84, y: 6.2, z: 54}
   defaultSchoolYawJitter: 62
-  defaultSchoolClusterCount: 14
-  defaultSchoolClusterRadiusRange: {x: 2, y: 4.2}
-  defaultSchoolEdgeMargin: 4.8
+  defaultSchoolClusterCount: 18
+  defaultSchoolClusterRadiusRange: {x: 2.4, y: 5.6}
+  defaultSchoolEdgeMargin: 8
   mediumSchoolChance: 0.28
   autoFindFishAlivePrefabs: 1
   disableImportedFishMotion: 1
