@@ -11,7 +11,8 @@ public static class ProjectionMappingRegressionValidator
         valid &= ValidateReleasedDrawingFlipDefault();
         valid &= ValidateProjectionFrameIsFlipped();
         valid &= ValidateTransparentFishMaskKeepsProjectionScale();
-        valid &= ValidateFallbackMeshUvIsFlipped();
+        valid &= ValidateFallbackMeshUvPreservesWebOrientation();
+        valid &= ValidateReleasedDrawingUsesFlatVisual();
         valid &= ValidateNicknameLabelStaysCameraParallel();
 
         EditorApplication.Exit(valid ? 0 : 2);
@@ -22,6 +23,15 @@ public static class ProjectionMappingRegressionValidator
         bool valid = true;
         valid &= ValidateDrawingUvShaderLoads();
         valid &= ValidateGeneratedDrawingUvsAreFlipped();
+
+        EditorApplication.Exit(valid ? 0 : 2);
+    }
+
+    public static void RunReleasedDrawingFlatVisual()
+    {
+        bool valid = true;
+        valid &= ValidateFallbackMeshUvPreservesWebOrientation();
+        valid &= ValidateReleasedDrawingUsesFlatVisual();
 
         EditorApplication.Exit(valid ? 0 : 2);
     }
@@ -198,7 +208,7 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
-    private static bool ValidateFallbackMeshUvIsFlipped()
+    private static bool ValidateFallbackMeshUvPreservesWebOrientation()
     {
         GameObject owner = new GameObject("Projection Mapping Fallback Owner");
         owner.hideFlags = HideFlags.HideAndDontSave;
@@ -229,16 +239,64 @@ public static class ProjectionMappingRegressionValidator
                 }
             }
 
-            valid = uvAtHeadSide > 0.85f;
+            valid = uvAtHeadSide < 0.15f;
         }
 
         if (!valid)
         {
-            Debug.LogError("ProjectionMappingRegressionValidator: fallback drawing mesh UVs are not horizontally flipped.");
+            Debug.LogError("ProjectionMappingRegressionValidator: fallback drawing mesh UVs do not preserve the web drawing orientation.");
         }
 
         Object.DestroyImmediate(texture);
         Object.DestroyImmediate(owner);
+        return valid;
+    }
+
+    private static bool ValidateReleasedDrawingUsesFlatVisual()
+    {
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "Projection Mapping Released Fish Model");
+        fishObject.hideFlags = HideFlags.HideAndDontSave;
+        FishActor actor = fishObject.AddComponent<FishActor>();
+        Renderer originalRenderer = fishObject.GetComponent<Renderer>();
+        Texture2D texture = new Texture2D(8, 4, TextureFormat.RGBA32, false);
+
+        MethodInfo method = typeof(FishActor).GetMethod("ApplyReleasedDrawingTexture", BindingFlags.Instance | BindingFlags.NonPublic);
+        if (method == null)
+        {
+            Debug.LogError("ProjectionMappingRegressionValidator: ApplyReleasedDrawingTexture was not found.");
+            Object.DestroyImmediate(texture);
+            Object.DestroyImmediate(fishObject);
+            return false;
+        }
+
+        method.Invoke(actor, new object[] { texture });
+
+        DrawingFishVisual visual = fishObject.GetComponentInChildren<DrawingFishVisual>(true);
+        Renderer drawingRenderer = visual != null ? visual.Renderer : null;
+        Material drawingMaterial = drawingRenderer != null ? drawingRenderer.sharedMaterial : null;
+        MeshFilter meshFilter = visual != null ? visual.GetComponent<MeshFilter>() : null;
+        Mesh mesh = meshFilter != null ? meshFilter.sharedMesh : null;
+
+        bool valid = originalRenderer != null
+            && !originalRenderer.enabled
+            && visual != null
+            && visual.gameObject.activeSelf
+            && drawingRenderer != null
+            && drawingRenderer.enabled
+            && drawingMaterial != null
+            && drawingMaterial.mainTexture == texture
+            && mesh != null
+            && mesh.vertexCount > 0;
+
+        if (!valid)
+        {
+            Debug.LogError(
+                $"ProjectionMappingRegressionValidator: released drawing did not switch to the flat visual. originalEnabled={originalRenderer?.enabled}, visual={visual != null}, drawingEnabled={drawingRenderer?.enabled}, hasTexture={drawingMaterial != null && drawingMaterial.mainTexture == texture}, vertices={mesh?.vertexCount ?? 0}"
+            );
+        }
+
+        Object.DestroyImmediate(texture);
+        Object.DestroyImmediate(fishObject);
         return valid;
     }
 

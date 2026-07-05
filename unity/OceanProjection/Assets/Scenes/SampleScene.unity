@@ -507,9 +507,9 @@ MonoBehaviour:
   basinCount: 5
   reefMoundCount: 7
   reefDecorationBias: 0.74
-  waterColor: {r: 0.08, g: 0.68, b: 0.86, a: 0.42}
-  deepFogColor: {r: 0.04, g: 0.28, b: 0.36, a: 1}
-  fogDensity: 0.021
+  waterColor: {r: 0.025, g: 0.34, b: 0.46, a: 0.58}
+  deepFogColor: {r: 0.006, g: 0.075, b: 0.12, a: 1}
+  fogDensity: 0.052
   waterResolution: 96
   waveAmplitude: 0.32
   waveSpeed: 0.68
@@ -522,8 +522,8 @@ MonoBehaviour:
   disableAllEnvironmentParticles: 1
   suimonoModulePrefabHint: Suimono_Module
   suimonoSurfacePrefabHint: Suimono_Surface
-  shallowWaterColor: {r: 0.28, g: 0.94, b: 1, a: 0.55}
-  foamColor: {r: 0.92, g: 1, b: 1, a: 0.48}
+  shallowWaterColor: {r: 0.12, g: 0.56, b: 0.66, a: 0.48}
+  foamColor: {r: 0.72, g: 0.92, b: 0.94, a: 0.28}
   rockCount: 68
   simpleCoralCount: 72
   branchCoralCount: 96
