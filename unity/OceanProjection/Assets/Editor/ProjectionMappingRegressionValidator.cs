@@ -10,9 +10,10 @@ public static class ProjectionMappingRegressionValidator
         bool valid = true;
         valid &= ValidateReleasedDrawingFlipDefault();
         valid &= ValidateProjectionFrameIsFlipped();
+        valid &= ValidateProjectionFrameIgnoresUpAxisForLength();
         valid &= ValidateTransparentFishMaskKeepsProjectionScale();
         valid &= ValidateFallbackMeshUvPreservesWebOrientation();
-        valid &= ValidateReleasedDrawingUsesFlatVisual();
+        valid &= ValidateReleasedDrawingUsesModelVisual();
         valid &= ValidateNicknameLabelStaysCameraParallel();
 
         EditorApplication.Exit(valid ? 0 : 2);
@@ -23,15 +24,23 @@ public static class ProjectionMappingRegressionValidator
         bool valid = true;
         valid &= ValidateDrawingUvShaderLoads();
         valid &= ValidateGeneratedDrawingUvsAreFlipped();
+        valid &= ValidateGeneratedDrawingUvsIgnoreUpAxisForLength();
 
         EditorApplication.Exit(valid ? 0 : 2);
     }
 
     public static void RunReleasedDrawingFlatVisual()
     {
+        RunReleasedDrawingModelVisual();
+    }
+
+    public static void RunReleasedDrawingModelVisual()
+    {
         bool valid = true;
         valid &= ValidateFallbackMeshUvPreservesWebOrientation();
-        valid &= ValidateReleasedDrawingUsesFlatVisual();
+        valid &= ValidateProjectionFrameIgnoresUpAxisForLength();
+        valid &= ValidateGeneratedDrawingUvsIgnoreUpAxisForLength();
+        valid &= ValidateReleasedDrawingUsesModelVisual();
 
         EditorApplication.Exit(valid ? 0 : 2);
     }
@@ -155,6 +164,42 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
+    private static bool ValidateProjectionFrameIgnoresUpAxisForLength()
+    {
+        MethodInfo method = typeof(FishActor).GetMethod("CreateProjectionFrame", BindingFlags.Static | BindingFlags.NonPublic);
+        if (method == null)
+        {
+            Debug.LogError("ProjectionMappingRegressionValidator: CreateProjectionFrame was not found.");
+            return false;
+        }
+
+        object[] args =
+        {
+            new Bounds(Vector3.zero, new Vector3(2f, 8f, 1f)),
+            true,
+            null,
+            null,
+            null
+        };
+        method.Invoke(null, args);
+
+        Vector3 origin = (Vector3)args[2];
+        Vector3 uVector = (Vector3)args[3];
+        Vector3 vVector = (Vector3)args[4];
+        bool valid = Mathf.Abs(origin.x - 1f) <= 0.0001f
+            && Vector3.Distance(uVector, Vector3.left * 2f) <= 0.0001f
+            && Vector3.Distance(vVector, Vector3.up * 8f) <= 0.0001f;
+
+        if (!valid)
+        {
+            Debug.LogError(
+                $"ProjectionMappingRegressionValidator: projection frame used the up axis as drawing length. origin={origin}, u={uVector}, v={vVector}"
+            );
+        }
+
+        return valid;
+    }
+
     private static bool ValidateTransparentFishMaskKeepsProjectionScale()
     {
         Texture2D source = new Texture2D(16, 8, TextureFormat.RGBA32, false);
@@ -252,46 +297,100 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
-    private static bool ValidateReleasedDrawingUsesFlatVisual()
+    private static bool ValidateGeneratedDrawingUvsIgnoreUpAxisForLength()
+    {
+        GameObject owner = new GameObject("Projection Mapping Tall Generated UV Owner");
+        owner.hideFlags = HideFlags.HideAndDontSave;
+        GameObject visualObject = new GameObject("Projection Mapping Tall Generated UV Visual");
+        visualObject.hideFlags = HideFlags.HideAndDontSave;
+        visualObject.transform.SetParent(owner.transform, false);
+
+        Mesh mesh = new Mesh
+        {
+            name = "ProjectionMappingTallGeneratedUvMesh"
+        };
+        mesh.vertices = new[]
+        {
+            new Vector3(-1f, -4f, 0f),
+            new Vector3(1f, -4f, 0f),
+            new Vector3(-1f, 4f, 0f),
+            new Vector3(1f, 4f, 0f)
+        };
+        mesh.triangles = new[] { 0, 2, 1, 2, 3, 1 };
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+
+        MeshFilter meshFilter = visualObject.AddComponent<MeshFilter>();
+        meshFilter.sharedMesh = mesh;
+        MeshRenderer renderer = visualObject.AddComponent<MeshRenderer>();
+
+        bool applied = DrawingTextureMapper.ApplyGeneratedUvs(new Renderer[] { renderer }, owner.transform, true);
+        Mesh mappedMesh = meshFilter.sharedMesh;
+        Vector2[] uvs = mappedMesh != null ? mappedMesh.uv : null;
+        bool valid = applied
+            && uvs != null
+            && uvs.Length == 4
+            && uvs[0].x > 0.95f
+            && uvs[1].x < 0.05f
+            && Mathf.Abs(uvs[0].x - uvs[2].x) <= 0.001f
+            && uvs[2].y > 0.95f;
+
+        if (!valid)
+        {
+            string uvSummary = uvs == null ? "missing" : string.Join(", ", uvs);
+            Debug.LogError($"ProjectionMappingRegressionValidator: tall generated drawing UVs used the up axis as length. applied={applied}, uvs={uvSummary}");
+        }
+
+        Object.DestroyImmediate(owner);
+        Object.DestroyImmediate(mesh);
+        return valid;
+    }
+
+    private static bool ValidateReleasedDrawingUsesModelVisual()
     {
         GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "Projection Mapping Released Fish Model");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
         FishActor actor = fishObject.AddComponent<FishActor>();
+        actor.SetReleasedFish(true);
         Renderer originalRenderer = fishObject.GetComponent<Renderer>();
         Texture2D texture = new Texture2D(8, 4, TextureFormat.RGBA32, false);
+        Color32[] pixels = new Color32[8 * 4];
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = new Color32(255, 220, 32, 255);
+        }
 
-        MethodInfo method = typeof(FishActor).GetMethod("ApplyReleasedDrawingTexture", BindingFlags.Instance | BindingFlags.NonPublic);
+        texture.SetPixels32(pixels);
+        texture.Apply(false, false);
+
+        MethodInfo method = typeof(FishActor).GetMethod("ApplyGeneratedUvDrawingTexture", BindingFlags.Instance | BindingFlags.NonPublic);
         if (method == null)
         {
-            Debug.LogError("ProjectionMappingRegressionValidator: ApplyReleasedDrawingTexture was not found.");
+            Debug.LogError("ProjectionMappingRegressionValidator: ApplyGeneratedUvDrawingTexture was not found.");
             Object.DestroyImmediate(texture);
             Object.DestroyImmediate(fishObject);
             return false;
         }
 
-        method.Invoke(actor, new object[] { texture });
+        bool applied = (bool)method.Invoke(actor, new object[] { texture });
 
         DrawingFishVisual visual = fishObject.GetComponentInChildren<DrawingFishVisual>(true);
-        Renderer drawingRenderer = visual != null ? visual.Renderer : null;
-        Material drawingMaterial = drawingRenderer != null ? drawingRenderer.sharedMaterial : null;
-        MeshFilter meshFilter = visual != null ? visual.GetComponent<MeshFilter>() : null;
-        Mesh mesh = meshFilter != null ? meshFilter.sharedMesh : null;
+        Material modelMaterial = originalRenderer != null ? originalRenderer.sharedMaterial : null;
+        bool flatVisualActive = visual != null && visual.gameObject.activeSelf && visual.Renderer != null && visual.Renderer.enabled;
+        bool hasDrawingMaterial = modelMaterial != null
+            && modelMaterial.shader != null
+            && modelMaterial.shader.name.Contains("Drawing Fish");
 
-        bool valid = originalRenderer != null
-            && !originalRenderer.enabled
-            && visual != null
-            && visual.gameObject.activeSelf
-            && drawingRenderer != null
-            && drawingRenderer.enabled
-            && drawingMaterial != null
-            && drawingMaterial.mainTexture == texture
-            && mesh != null
-            && mesh.vertexCount > 0;
+        bool valid = applied
+            && originalRenderer != null
+            && originalRenderer.enabled
+            && hasDrawingMaterial
+            && !flatVisualActive;
 
         if (!valid)
         {
             Debug.LogError(
-                $"ProjectionMappingRegressionValidator: released drawing did not switch to the flat visual. originalEnabled={originalRenderer?.enabled}, visual={visual != null}, drawingEnabled={drawingRenderer?.enabled}, hasTexture={drawingMaterial != null && drawingMaterial.mainTexture == texture}, vertices={mesh?.vertexCount ?? 0}"
+                $"ProjectionMappingRegressionValidator: released drawing did not stay on the 3D model. applied={applied}, originalEnabled={originalRenderer?.enabled}, shader={modelMaterial?.shader?.name}, flatVisualActive={flatVisualActive}"
             );
         }
 

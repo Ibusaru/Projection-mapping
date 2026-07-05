@@ -593,9 +593,10 @@ public static class DrawingTextureMapper
     )
     {
         Vector3 size = bounds.size;
-        int lengthAxis = LargestAxis(size, -1);
-        int heightAxis = lengthAxis != 1 && size.y >= AxisValue(size, lengthAxis) * 0.08f
-            ? 1
+        int upAxis = 1;
+        int lengthAxis = LargestAxis(size, upAxis);
+        int heightAxis = AxisValue(size, upAxis) >= AxisValue(size, lengthAxis) * 0.08f
+            ? upAxis
             : LargestAxis(size, lengthAxis);
         float length = Mathf.Max(AxisValue(size, lengthAxis), 0.001f);
         float height = Mathf.Max(AxisValue(size, heightAxis), 0.001f);

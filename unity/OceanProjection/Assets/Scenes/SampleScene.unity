@@ -157,7 +157,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.024, g: 0.34, b: 0.56, a: 1}
+  m_BackGroundColor: {r: 0.045, g: 0.27, b: 0.35, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -321,16 +321,16 @@ MonoBehaviour:
   minimumSchoolSize: 5
   fishApproachDistance: 4.1
   schoolApproachDistance: 7.4
-  fishObserveSeconds: {x: 5, y: 8}
-  goodAngleFishObserveSeconds: {x: 5, y: 8}
+  fishObserveSeconds: {x: 9, y: 14}
+  goodAngleFishObserveSeconds: {x: 12, y: 18}
   schoolObserveSeconds: {x: 5.5, y: 9}
-  focusObserveWaitForTagSeconds: 9
+  focusObserveWaitForTagSeconds: 18
   cruiseSeconds: {x: 4, y: 8}
   diverLookAhead: 1.8
   schoolRadiusPadding: 1.35
   relaxedCameraSpeed: 2.7
   approachCameraSpeed: 4.4
-  maxContinuousFishFocusSeconds: 38
+  maxContinuousFishFocusSeconds: 56
   recentFishFocusStackSize: 6
   recentFishFocusPenalty: 10
   currentFishRepeatPenalty: 18
@@ -507,9 +507,9 @@ MonoBehaviour:
   basinCount: 5
   reefMoundCount: 7
   reefDecorationBias: 0.74
-  waterColor: {r: 0.025, g: 0.34, b: 0.46, a: 0.58}
-  deepFogColor: {r: 0.006, g: 0.075, b: 0.12, a: 1}
-  fogDensity: 0.052
+  waterColor: {r: 0.045, g: 0.45, b: 0.58, a: 0.54}
+  deepFogColor: {r: 0.014, g: 0.13, b: 0.19, a: 1}
+  fogDensity: 0.04
   waterResolution: 96
   waveAmplitude: 0.32
   waveSpeed: 0.68
@@ -522,8 +522,8 @@ MonoBehaviour:
   disableAllEnvironmentParticles: 1
   suimonoModulePrefabHint: Suimono_Module
   suimonoSurfacePrefabHint: Suimono_Surface
-  shallowWaterColor: {r: 0.12, g: 0.56, b: 0.66, a: 0.48}
-  foamColor: {r: 0.72, g: 0.92, b: 0.94, a: 0.28}
+  shallowWaterColor: {r: 0.18, g: 0.66, b: 0.74, a: 0.5}
+  foamColor: {r: 0.78, g: 0.95, b: 0.96, a: 0.32}
   rockCount: 68
   simpleCoralCount: 72
   branchCoralCount: 96

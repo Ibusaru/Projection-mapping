@@ -159,6 +159,20 @@ public partial class FishActor
         Texture2D texture = DownloadHandlerTexture.GetContent(request);
         if (releasedFish)
         {
+            if (ApplyGeneratedUvDrawingTexture(texture))
+            {
+                appliedTextureUrl = textureUrl;
+                textureCoroutine = null;
+                yield break;
+            }
+
+            if (useProjectedDrawingTextureForReleasedFish && ApplyProjectedDrawingTexture(texture))
+            {
+                appliedTextureUrl = textureUrl;
+                textureCoroutine = null;
+                yield break;
+            }
+
             ApplyReleasedDrawingTexture(texture);
             appliedTextureUrl = textureUrl;
             textureCoroutine = null;
@@ -184,6 +198,20 @@ public partial class FishActor
 
     private void ApplyReleasedDrawingTexture(Texture2D texture)
     {
+        Renderer[] visualTextureRenderers = FishRendererUtility.GetVisualRenderers(gameObject, true);
+        if (visualTextureRenderers.Length > 0)
+        {
+            Texture2D modelTexture = remapDrawingTextureForModel
+                ? DrawingTextureMapper.CreateModelTexture(texture, remappedDrawingTextureSize, drawingAlphaThreshold)
+                : texture;
+            textureRenderers = visualTextureRenderers;
+            colorRenderers = visualTextureRenderers;
+            subColorRenderers = visualTextureRenderers;
+            ApplyTexture(textureRenderers, modelTexture);
+            HideDrawingFishVisual();
+            return;
+        }
+
         Bounds visualBounds = TryGetVisualBounds(out Bounds bounds)
             ? bounds
             : new Bounds(transform.position, new Vector3(1.8f, 0.9f, 0.1f));

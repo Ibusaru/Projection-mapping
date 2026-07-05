@@ -76,16 +76,16 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private int minimumSchoolSize = 5;
     [SerializeField] private float fishApproachDistance = 4.1f;
     [SerializeField] private float schoolApproachDistance = 7.4f;
-    [SerializeField] private Vector2 fishObserveSeconds = new Vector2(5f, 8f);
-    [SerializeField] private Vector2 goodAngleFishObserveSeconds = new Vector2(5f, 8f);
+    [SerializeField] private Vector2 fishObserveSeconds = new Vector2(9f, 14f);
+    [SerializeField] private Vector2 goodAngleFishObserveSeconds = new Vector2(12f, 18f);
     [SerializeField] private Vector2 schoolObserveSeconds = new Vector2(5.5f, 9f);
-    [SerializeField] private float focusObserveWaitForTagSeconds = 9f;
+    [SerializeField] private float focusObserveWaitForTagSeconds = 18f;
     [SerializeField] private Vector2 cruiseSeconds = new Vector2(4f, 8f);
     [SerializeField] private float diverLookAhead = 1.8f;
     [SerializeField] private float schoolRadiusPadding = 1.35f;
     [SerializeField] private float relaxedCameraSpeed = 2.7f;
     [SerializeField] private float approachCameraSpeed = 4.4f;
-    [SerializeField] private float maxContinuousFishFocusSeconds = 38f;
+    [SerializeField] private float maxContinuousFishFocusSeconds = 56f;
     [SerializeField] private int recentFishFocusStackSize = 6;
     [SerializeField] private float recentFishFocusPenalty = 10f;
     [SerializeField] private float currentFishRepeatPenalty = 18f;
@@ -952,6 +952,7 @@ public class OceanCameraRig : MonoBehaviour
         pendingFishObserveSeconds = Mathf.Max(1f, observeSeconds);
         focusedFishSelectionStartedAt = Time.time;
         waitingForFocusedFishTag = focusedFish != null;
+        focusedFishSinceTime = waitingForFocusedFishTag ? 0f : Time.time;
         intentUntilTime = Time.time
             + Mathf.Max(
                 pendingFishObserveSeconds,
@@ -972,6 +973,7 @@ public class OceanCameraRig : MonoBehaviour
         bool waitExpired = Time.time >= focusedFishSelectionStartedAt + Mathf.Max(0.5f, focusObserveWaitForTagSeconds);
         if (!tagVisible && !waitExpired)
         {
+            intentUntilTime = Mathf.Max(intentUntilTime, Time.time + 0.5f);
             return;
         }
 
