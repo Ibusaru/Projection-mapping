@@ -12,6 +12,7 @@ public static class ProjectionMappingRegressionValidator
         valid &= ValidateProjectionFrameIsFlipped();
         valid &= ValidateProjectionFrameIgnoresUpAxisForLength();
         valid &= ValidateTransparentFishMaskKeepsProjectionScale();
+        valid &= ValidateModelTextureFillsTransparentFishMask();
         valid &= ValidateFallbackMeshUvPreservesWebOrientation();
         valid &= ValidateReleasedDrawingUsesModelVisual();
         valid &= ValidateNicknameLabelStaysCameraParallel();
@@ -25,6 +26,7 @@ public static class ProjectionMappingRegressionValidator
         valid &= ValidateDrawingUvShaderLoads();
         valid &= ValidateGeneratedDrawingUvsAreFlipped();
         valid &= ValidateGeneratedDrawingUvsIgnoreUpAxisForLength();
+        valid &= ValidateModelTextureFillsTransparentFishMask();
 
         EditorApplication.Exit(valid ? 0 : 2);
     }
@@ -40,6 +42,7 @@ public static class ProjectionMappingRegressionValidator
         valid &= ValidateFallbackMeshUvPreservesWebOrientation();
         valid &= ValidateProjectionFrameIgnoresUpAxisForLength();
         valid &= ValidateGeneratedDrawingUvsIgnoreUpAxisForLength();
+        valid &= ValidateModelTextureFillsTransparentFishMask();
         valid &= ValidateReleasedDrawingUsesModelVisual();
 
         EditorApplication.Exit(valid ? 0 : 2);
@@ -253,6 +256,78 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
+    private static bool ValidateModelTextureFillsTransparentFishMask()
+    {
+        Texture2D source = new Texture2D(16, 8, TextureFormat.RGBA32, false);
+        Color32[] pixels = new Color32[16 * 8];
+        Color32 transparent = new Color32(0, 0, 0, 0);
+        Color32 yellow = new Color32(250, 210, 32, 255);
+        Color32 blue = new Color32(32, 92, 220, 255);
+        Color32 white = new Color32(255, 255, 255, 255);
+
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = transparent;
+        }
+
+        for (int y = 2; y <= 5; y++)
+        {
+            for (int x = 2; x <= 13; x++)
+            {
+                pixels[y * 16 + x] = x == 7 || x == 8 ? white : x < 8 ? yellow : blue;
+            }
+        }
+
+        source.SetPixels32(pixels);
+        source.Apply(false, false);
+
+        const int expectedSize = 64;
+        Texture2D modelTexture = DrawingTextureMapper.CreateModelTexture(source, expectedSize, 0.05f);
+        Color32[] modelPixels = modelTexture != null ? modelTexture.GetPixels32() : null;
+        int transparentCount = 0;
+        int colorCount = 0;
+        int whiteCount = 0;
+        if (modelPixels != null)
+        {
+            for (int i = 0; i < modelPixels.Length; i++)
+            {
+                Color32 color = modelPixels[i];
+                if (color.a < 240)
+                {
+                    transparentCount++;
+                }
+
+                if (color.r > 180 || color.b > 180)
+                {
+                    colorCount++;
+                }
+
+                if (color.r > 245 && color.g > 245 && color.b > 245)
+                {
+                    whiteCount++;
+                }
+            }
+        }
+
+        bool valid = modelTexture != null
+            && modelPixels != null
+            && modelPixels.Length == expectedSize * expectedSize
+            && transparentCount == 0
+            && colorCount > modelPixels.Length * 0.8f
+            && whiteCount > 0;
+
+        if (!valid)
+        {
+            Debug.LogError(
+                $"ProjectionMappingRegressionValidator: model texture kept transparent fish-mask holes or dropped white paint. transparent={transparentCount}, color={colorCount}, white={whiteCount}, pixels={modelPixels?.Length ?? 0}"
+            );
+        }
+
+        Object.DestroyImmediate(source);
+        Object.DestroyImmediate(modelTexture);
+        return valid;
+    }
+
     private static bool ValidateFallbackMeshUvPreservesWebOrientation()
     {
         GameObject owner = new GameObject("Projection Mapping Fallback Owner");
@@ -376,21 +451,26 @@ public static class ProjectionMappingRegressionValidator
 
         DrawingFishVisual visual = fishObject.GetComponentInChildren<DrawingFishVisual>(true);
         Material modelMaterial = originalRenderer != null ? originalRenderer.sharedMaterial : null;
+        Texture modelTexture = modelMaterial != null && modelMaterial.HasProperty("_BaseMap")
+            ? modelMaterial.GetTexture("_BaseMap")
+            : null;
         bool flatVisualActive = visual != null && visual.gameObject.activeSelf && visual.Renderer != null && visual.Renderer.enabled;
         bool hasDrawingMaterial = modelMaterial != null
             && modelMaterial.shader != null
             && modelMaterial.shader.name.Contains("Drawing Fish");
+        bool hasModelMappedTexture = modelTexture != null && modelTexture.name.Contains("ModelMapped");
 
         bool valid = applied
             && originalRenderer != null
             && originalRenderer.enabled
             && hasDrawingMaterial
+            && hasModelMappedTexture
             && !flatVisualActive;
 
         if (!valid)
         {
             Debug.LogError(
-                $"ProjectionMappingRegressionValidator: released drawing did not stay on the 3D model. applied={applied}, originalEnabled={originalRenderer?.enabled}, shader={modelMaterial?.shader?.name}, flatVisualActive={flatVisualActive}"
+                $"ProjectionMappingRegressionValidator: released drawing did not stay on the 3D model. applied={applied}, originalEnabled={originalRenderer?.enabled}, shader={modelMaterial?.shader?.name}, texture={modelTexture?.name}, flatVisualActive={flatVisualActive}"
             );
         }
 

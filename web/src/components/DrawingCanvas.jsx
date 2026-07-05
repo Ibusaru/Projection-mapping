@@ -36,22 +36,7 @@ function addTailPath(path) {
   path.closePath();
 }
 
-function createPaintableFishPath(context) {
-  const path = new Path2D();
-
-  addBodyPath(path);
-  addTailPath(path);
-
-  if (context) {
-    context.fill(path);
-  }
-
-  return path;
-}
-
-function createFishPath(context) {
-  const path = createPaintableFishPath();
-
+function addFinPaths(path) {
   path.moveTo(228, 360);
   path.bezierCurveTo(260, 424, 342, 416, 374, 348);
   path.lineTo(314, 360);
@@ -69,6 +54,24 @@ function createFishPath(context) {
   path.bezierCurveTo(496, 505, 519, 486, 518, 448);
   path.bezierCurveTo(516, 404, 504, 370, 476, 346);
   path.closePath();
+}
+
+function createPaintableFishPath(context) {
+  const path = new Path2D();
+
+  addBodyPath(path);
+  addTailPath(path);
+  addFinPaths(path);
+
+  if (context) {
+    context.fill(path);
+  }
+
+  return path;
+}
+
+function createFishPath(context) {
+  const path = createPaintableFishPath();
 
   if (context) {
     context.fill(path);

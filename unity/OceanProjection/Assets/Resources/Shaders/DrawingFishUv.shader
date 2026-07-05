@@ -72,11 +72,7 @@ Shader "OceanProjection/Drawing Fish UV"
             half4 Frag(Varyings input) : SV_Target
             {
                 half4 drawing = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, saturate(input.uv)) * _Tint;
-                float drawingMax = max(drawing.r, max(drawing.g, drawing.b));
-                float drawingMin = min(drawing.r, min(drawing.g, drawing.b));
-                float saturation = drawingMax - drawingMin;
-                float whiteBacking = saturate((drawingMax - 0.965) * 28.0) * saturate((0.04 - saturation) * 25.0);
-                float paintAlpha = saturate((drawing.a - _AlphaClip) / max(1.0 - _AlphaClip, 0.0001)) * (1.0 - whiteBacking);
+                float paintAlpha = saturate((drawing.a - _AlphaClip) / max(1.0 - _AlphaClip, 0.0001));
 
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - input.positionWS);
                 float edgeLight = saturate(abs(dot(normalize(input.normalWS), viewDirection)));

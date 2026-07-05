@@ -38,7 +38,7 @@ public partial class FishActor
             return false;
         }
 
-        Texture2D uvTexture = DrawingTextureMapper.CreateProjectionTexture(texture, drawingAlphaThreshold, Vector2.zero);
+        Texture2D uvTexture = DrawingTextureMapper.CreateModelTexture(texture, remappedDrawingTextureSize, drawingAlphaThreshold);
         if (uvTexture == null)
         {
             return false;
@@ -116,11 +116,7 @@ public partial class FishActor
             return false;
         }
 
-        Texture2D projectionTexture = DrawingTextureMapper.CreateProjectionTexture(
-            texture,
-            drawingAlphaThreshold,
-            drawingProjectionPaddingRatio
-        );
+        Texture2D projectionTexture = DrawingTextureMapper.CreateModelTexture(texture, remappedDrawingTextureSize, drawingAlphaThreshold);
         if (projectionTexture == null)
         {
             return false;

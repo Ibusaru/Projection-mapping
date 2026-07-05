@@ -381,17 +381,7 @@ public static class DrawingTextureMapper
 
     private static bool IsPaintedPixel(Color32 color, byte alphaByteThreshold)
     {
-        return color.a >= alphaByteThreshold && !LooksLikeCanvasBackground(color);
-    }
-
-    private static bool LooksLikeCanvasBackground(Color32 color)
-    {
-        int max = System.Math.Max(color.r, System.Math.Max(color.g, color.b));
-        int min = System.Math.Min(color.r, System.Math.Min(color.g, color.b));
-        int range = max - min;
-        float luma = (0.2126f * color.r + 0.7152f * color.g + 0.0722f * color.b) / 255f;
-
-        return (max >= 235 && range <= 46) || (luma >= 0.86f && range <= 32);
+        return color.a >= alphaByteThreshold;
     }
 
     private static Texture2D CreateSolidTexture(string sourceName, int width, int height, Color32 color, string suffix)
