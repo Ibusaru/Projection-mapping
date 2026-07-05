@@ -395,13 +395,13 @@ public partial class FishActor : MonoBehaviour
     private void Update()
     {
         Swim();
-        UpdateDrawingProjectionMatrix();
         UpdateLabel();
     }
 
     private void LateUpdate()
     {
         ApplyProceduralSwimPose();
+        UpdateDrawingProjectionMatrix();
     }
 
     private void Swim()

@@ -17,6 +17,82 @@ public static class ProjectionMappingRegressionValidator
         EditorApplication.Exit(valid ? 0 : 2);
     }
 
+    public static void RunDrawingUv()
+    {
+        bool valid = true;
+        valid &= ValidateDrawingUvShaderLoads();
+        valid &= ValidateGeneratedDrawingUvsAreFlipped();
+
+        EditorApplication.Exit(valid ? 0 : 2);
+    }
+
+    private static bool ValidateDrawingUvShaderLoads()
+    {
+        Shader shader = Shader.Find("OceanProjection/Drawing Fish UV");
+        if (shader == null)
+        {
+            shader = Resources.Load<Shader>("Shaders/DrawingFishUv");
+        }
+
+        bool valid = shader != null && shader.isSupported && shader.name != "Hidden/InternalErrorShader";
+        if (!valid)
+        {
+            Debug.LogError("ProjectionMappingRegressionValidator: Drawing Fish UV shader could not be loaded.");
+        }
+
+        return valid;
+    }
+
+    private static bool ValidateGeneratedDrawingUvsAreFlipped()
+    {
+        GameObject owner = new GameObject("Projection Mapping Generated UV Owner");
+        owner.hideFlags = HideFlags.HideAndDontSave;
+        GameObject visualObject = new GameObject("Projection Mapping Generated UV Visual");
+        visualObject.hideFlags = HideFlags.HideAndDontSave;
+        visualObject.transform.SetParent(owner.transform, false);
+
+        Mesh mesh = new Mesh
+        {
+            name = "ProjectionMappingGeneratedUvMesh"
+        };
+        mesh.vertices = new[]
+        {
+            new Vector3(-1f, -0.5f, 0f),
+            new Vector3(1f, -0.5f, 0f),
+            new Vector3(-1f, 0.5f, 0f),
+            new Vector3(1f, 0.5f, 0f)
+        };
+        mesh.triangles = new[] { 0, 2, 1, 2, 3, 1 };
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+
+        MeshFilter meshFilter = visualObject.AddComponent<MeshFilter>();
+        meshFilter.sharedMesh = mesh;
+        MeshRenderer renderer = visualObject.AddComponent<MeshRenderer>();
+
+        bool applied = DrawingTextureMapper.ApplyGeneratedUvs(new Renderer[] { renderer }, owner.transform, true);
+        Mesh mappedMesh = meshFilter.sharedMesh;
+        Vector2[] uvs = mappedMesh != null ? mappedMesh.uv : null;
+        bool valid = applied
+            && mappedMesh != null
+            && mappedMesh != mesh
+            && uvs != null
+            && uvs.Length == 4
+            && uvs[0].x > 0.95f
+            && uvs[1].x < 0.05f
+            && uvs[2].y > 0.95f;
+
+        if (!valid)
+        {
+            string uvSummary = uvs == null ? "missing" : string.Join(", ", uvs);
+            Debug.LogError($"ProjectionMappingRegressionValidator: generated drawing UVs are wrong. applied={applied}, uvs={uvSummary}");
+        }
+
+        Object.DestroyImmediate(owner);
+        Object.DestroyImmediate(mesh);
+        return valid;
+    }
+
     private static bool ValidateReleasedDrawingFlipDefault()
     {
         GameObject instance = new GameObject("Projection Mapping Flip Default Validation");

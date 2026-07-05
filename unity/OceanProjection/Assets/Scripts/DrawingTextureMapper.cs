@@ -412,4 +412,258 @@ public static class DrawingTextureMapper
         texture.Apply(true, false);
         return texture;
     }
+
+    public static bool ApplyGeneratedUvs(Renderer[] renderers, Transform projector, bool flipHorizontal)
+    {
+        if (renderers == null || projector == null || !TryCalculateProjectionBounds(renderers, projector, out Bounds bounds))
+        {
+            return false;
+        }
+
+        CreateProjectionFrame(bounds, flipHorizontal, out Vector3 origin, out Vector3 uVector, out Vector3 vVector);
+        float uLengthSq = Mathf.Max(Vector3.Dot(uVector, uVector), 0.000001f);
+        float vLengthSq = Mathf.Max(Vector3.Dot(vVector, vVector), 0.000001f);
+        bool applied = false;
+
+        for (int rendererIndex = 0; rendererIndex < renderers.Length; rendererIndex++)
+        {
+            Renderer renderer = renderers[rendererIndex];
+            Mesh mesh = CreateWritableMeshInstance(renderer);
+            if (mesh == null)
+            {
+                continue;
+            }
+
+            Vector3[] vertices;
+            try
+            {
+                vertices = mesh.vertices;
+            }
+            catch (UnityException exception)
+            {
+                Debug.LogWarning($"DrawingTextureMapper: mesh '{mesh.name}' is not readable, so generated drawing UVs could not be applied. {exception.Message}");
+                continue;
+            }
+
+            Vector2[] uvs = new Vector2[vertices.Length];
+            for (int vertexIndex = 0; vertexIndex < vertices.Length; vertexIndex++)
+            {
+                Vector3 worldPoint = renderer.transform.TransformPoint(vertices[vertexIndex]);
+                Vector3 projectorPoint = projector.InverseTransformPoint(worldPoint);
+                Vector3 relative = projectorPoint - origin;
+                float u = Vector3.Dot(relative, uVector) / uLengthSq;
+                float v = Vector3.Dot(relative, vVector) / vLengthSq;
+                uvs[vertexIndex] = new Vector2(Mathf.Clamp01(u), Mathf.Clamp01(v));
+            }
+
+            mesh.uv = uvs;
+            applied = true;
+        }
+
+        return applied;
+    }
+
+    private static Mesh CreateWritableMeshInstance(Renderer renderer)
+    {
+        if (renderer is SkinnedMeshRenderer skinned)
+        {
+            Mesh source = skinned.sharedMesh;
+            if (!IsReadableSourceMesh(source))
+            {
+                return null;
+            }
+
+            if (source.name.EndsWith("_DrawingUV"))
+            {
+                return source;
+            }
+
+            Mesh copy = UnityEngine.Object.Instantiate(source);
+            copy.name = $"{source.name}_DrawingUV";
+            skinned.sharedMesh = copy;
+            return copy;
+        }
+
+        MeshFilter meshFilter = renderer != null ? renderer.GetComponent<MeshFilter>() : null;
+        if (meshFilter == null)
+        {
+            return null;
+        }
+
+        Mesh mesh = meshFilter.sharedMesh;
+        if (!IsReadableSourceMesh(mesh))
+        {
+            return null;
+        }
+
+        if (mesh.name.EndsWith("_DrawingUV"))
+        {
+            return mesh;
+        }
+
+        Mesh meshCopy = UnityEngine.Object.Instantiate(mesh);
+        meshCopy.name = $"{mesh.name}_DrawingUV";
+        meshFilter.sharedMesh = meshCopy;
+        return meshCopy;
+    }
+
+    private static bool IsReadableSourceMesh(Mesh mesh)
+    {
+        if (mesh == null)
+        {
+            return false;
+        }
+
+        if (mesh.name.EndsWith("_DrawingUV"))
+        {
+            return true;
+        }
+
+        if (mesh.isReadable)
+        {
+            return true;
+        }
+
+        Debug.LogWarning($"DrawingTextureMapper: mesh '{mesh.name}' is not readable. Enable Read/Write on the model import settings to use generated drawing UVs.");
+        return false;
+    }
+
+    private static bool TryCalculateProjectionBounds(Renderer[] renderers, Transform projector, out Bounds bounds)
+    {
+        bounds = new Bounds(Vector3.zero, Vector3.zero);
+        bool hasBounds = false;
+        if (renderers == null || projector == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer renderer = renderers[i];
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            Bounds localBounds = renderer.localBounds;
+            if (localBounds.size.sqrMagnitude <= 0.000001f)
+            {
+                continue;
+            }
+
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, localBounds.min);
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.min.x, localBounds.min.y, localBounds.max.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.min.x, localBounds.max.y, localBounds.min.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.min.x, localBounds.max.y, localBounds.max.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.max.x, localBounds.min.y, localBounds.min.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.max.x, localBounds.min.y, localBounds.max.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.max.x, localBounds.max.y, localBounds.min.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, localBounds.max);
+        }
+
+        return hasBounds;
+    }
+
+    private static void EncapsulateRendererLocalCorner(
+        ref Bounds bounds,
+        ref bool hasBounds,
+        Transform projector,
+        Renderer renderer,
+        Vector3 rendererLocalPoint
+    )
+    {
+        Vector3 worldPoint = renderer.transform.TransformPoint(rendererLocalPoint);
+        Vector3 localPoint = projector.InverseTransformPoint(worldPoint);
+        if (!hasBounds)
+        {
+            bounds = new Bounds(localPoint, Vector3.zero);
+            hasBounds = true;
+            return;
+        }
+
+        bounds.Encapsulate(localPoint);
+    }
+
+    private static void CreateProjectionFrame(
+        Bounds bounds,
+        bool flipHorizontal,
+        out Vector3 origin,
+        out Vector3 uVector,
+        out Vector3 vVector
+    )
+    {
+        Vector3 size = bounds.size;
+        int lengthAxis = LargestAxis(size, -1);
+        int heightAxis = lengthAxis != 1 && size.y >= AxisValue(size, lengthAxis) * 0.08f
+            ? 1
+            : LargestAxis(size, lengthAxis);
+        float length = Mathf.Max(AxisValue(size, lengthAxis), 0.001f);
+        float height = Mathf.Max(AxisValue(size, heightAxis), 0.001f);
+
+        Vector3 min = bounds.min;
+        Vector3 max = bounds.max;
+        origin = bounds.min;
+        SetAxisValue(ref origin, lengthAxis, flipHorizontal ? AxisValue(max, lengthAxis) : AxisValue(min, lengthAxis));
+        SetAxisValue(ref origin, heightAxis, AxisValue(min, heightAxis));
+        uVector = AxisVector(lengthAxis, flipHorizontal ? -length : length);
+        vVector = AxisVector(heightAxis, height);
+    }
+
+    private static int LargestAxis(Vector3 value, int ignoredAxis)
+    {
+        int bestAxis = ignoredAxis == 0 ? 1 : 0;
+        float bestValue = AxisValue(value, bestAxis);
+        for (int axis = 0; axis < 3; axis++)
+        {
+            if (axis == ignoredAxis)
+            {
+                continue;
+            }
+
+            float candidate = AxisValue(value, axis);
+            if (candidate > bestValue)
+            {
+                bestAxis = axis;
+                bestValue = candidate;
+            }
+        }
+
+        return bestAxis;
+    }
+
+    private static float AxisValue(Vector3 value, int axis)
+    {
+        return axis switch
+        {
+            0 => value.x,
+            1 => value.y,
+            _ => value.z
+        };
+    }
+
+    private static void SetAxisValue(ref Vector3 value, int axis, float axisValue)
+    {
+        if (axis == 0)
+        {
+            value.x = axisValue;
+        }
+        else if (axis == 1)
+        {
+            value.y = axisValue;
+        }
+        else
+        {
+            value.z = axisValue;
+        }
+    }
+
+    private static Vector3 AxisVector(int axis, float magnitude)
+    {
+        return axis switch
+        {
+            0 => Vector3.right * magnitude,
+            1 => Vector3.up * magnitude,
+            _ => Vector3.forward * magnitude
+        };
+    }
 }

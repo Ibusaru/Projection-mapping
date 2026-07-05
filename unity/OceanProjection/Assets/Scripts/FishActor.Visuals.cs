@@ -159,6 +159,13 @@ public partial class FishActor
         Texture2D texture = DownloadHandlerTexture.GetContent(request);
         if (releasedFish)
         {
+            if (ApplyGeneratedUvDrawingTexture(texture))
+            {
+                appliedTextureUrl = textureUrl;
+                textureCoroutine = null;
+                yield break;
+            }
+
             if (useProjectedDrawingTextureForReleasedFish && ApplyProjectedDrawingTexture(texture))
             {
                 appliedTextureUrl = textureUrl;

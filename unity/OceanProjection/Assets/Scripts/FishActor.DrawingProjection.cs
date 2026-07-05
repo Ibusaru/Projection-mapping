@@ -4,7 +4,84 @@ using UnityEngine;
 public partial class FishActor
 {
     private const string DrawingProjectionShaderName = "OceanProjection/Drawing Fish Projection";
+    private const string DrawingUvShaderName = "OceanProjection/Drawing Fish UV";
     private static readonly Color DrawingProjectionFallbackBaseColor = new Color(0.52f, 0.68f, 0.72f, 1f);
+
+    private bool ApplyGeneratedUvDrawingTexture(Texture2D texture)
+    {
+        if (texture == null)
+        {
+            return false;
+        }
+
+        Shader shader = Shader.Find(DrawingUvShaderName);
+        if (shader == null)
+        {
+            shader = Resources.Load<Shader>("Shaders/DrawingFishUv");
+        }
+
+        if (!IsUsableProjectionShader(shader))
+        {
+            Debug.LogWarning($"FishActor: shader '{DrawingUvShaderName}' was not found or is unsupported; falling back to projected texture mapping.");
+            return false;
+        }
+
+        Renderer[] visualTextureRenderers = FishRendererUtility.GetVisualRenderers(gameObject, true);
+        if (visualTextureRenderers.Length == 0)
+        {
+            return false;
+        }
+
+        Transform projector = modelRoot != null ? modelRoot : transform;
+        if (!DrawingTextureMapper.ApplyGeneratedUvs(visualTextureRenderers, projector, flipReleasedDrawingHorizontally))
+        {
+            return false;
+        }
+
+        Texture2D uvTexture = DrawingTextureMapper.CreateProjectionTexture(texture, drawingAlphaThreshold, Vector2.zero);
+        if (uvTexture == null)
+        {
+            return false;
+        }
+
+        uvTexture.wrapMode = TextureWrapMode.Clamp;
+        uvTexture.filterMode = FilterMode.Bilinear;
+        textureRenderers = visualTextureRenderers;
+        drawingProjectionRoot = null;
+        projectedDrawingMaterials = new Material[0];
+
+        for (int i = 0; i < visualTextureRenderers.Length; i++)
+        {
+            Renderer item = visualTextureRenderers[i];
+            if (item == null)
+            {
+                continue;
+            }
+
+            EnsureHierarchyActive(item.transform);
+            item.enabled = true;
+            Material[] currentMaterials = item.sharedMaterials;
+            int materialCount = currentMaterials != null && currentMaterials.Length > 0 ? currentMaterials.Length : 1;
+            Material[] nextMaterials = new Material[materialCount];
+            for (int materialIndex = 0; materialIndex < materialCount; materialIndex++)
+            {
+                Material sourceMaterial = currentMaterials != null && materialIndex < currentMaterials.Length
+                    ? currentMaterials[materialIndex]
+                    : null;
+                Material material = new Material(shader)
+                {
+                    name = "Released Fish Drawing UV"
+                };
+                ConfigureUvDrawingMaterial(material, sourceMaterial, uvTexture);
+                nextMaterials[materialIndex] = material;
+            }
+
+            item.materials = nextMaterials;
+        }
+
+        HideDrawingFishVisual();
+        return true;
+    }
 
     private bool ApplyProjectedDrawingTexture(Texture2D texture)
     {
@@ -99,6 +176,15 @@ public partial class FishActor
         }
 
         return projectedDrawingMaterials.Length > 0;
+    }
+
+    private void ConfigureUvDrawingMaterial(Material material, Material sourceMaterial, Texture2D texture)
+    {
+        material.SetTexture("_BaseMap", texture);
+        material.SetTexture("_DrawingTex", texture);
+        material.SetColor("_Tint", Color.white);
+        material.SetColor("_BaseColor", ReadProjectionBaseColor(sourceMaterial, texture));
+        material.SetFloat("_AlphaClip", Mathf.Clamp01(drawingAlphaThreshold));
     }
 
     private void UpdateDrawingProjectionMatrix()
