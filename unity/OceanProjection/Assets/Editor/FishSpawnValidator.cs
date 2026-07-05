@@ -193,9 +193,8 @@ public static class FishSpawnValidator
 
     private static bool ValidateModelRootDoesNotOverwriteActorRotation()
     {
-        GameObject instance = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        GameObject instance = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "FishSpawnValidator Root Rotation Fish");
         instance.hideFlags = HideFlags.HideAndDontSave;
-        instance.name = "FishSpawnValidator Root Rotation Fish";
         FishActor actor = instance.AddComponent<FishActor>();
         InvokePrivate(actor, "Awake");
 
@@ -233,9 +232,8 @@ public static class FishSpawnValidator
             ? cameraTransform.forward.normalized
             : Vector3.forward;
 
-        GameObject fishObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "FishSpawnValidator Nickname Fish");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
-        fishObject.name = "FishSpawnValidator Nickname Fish";
         fishObject.transform.position = cameraTransform.position + cameraForward * 88f;
         fishObject.transform.localScale = Vector3.one * 0.5f;
 
@@ -322,9 +320,8 @@ public static class FishSpawnValidator
             ? cameraTransform.forward.normalized
             : Vector3.forward;
 
-        GameObject fishObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Sphere, "FishSpawnValidator Focused Default Fish");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
-        fishObject.name = "FishSpawnValidator Focused Default Fish";
         fishObject.transform.position = cameraTransform.position + cameraForward * 12f;
         fishObject.transform.localScale = Vector3.one * 0.4f;
 
@@ -418,9 +415,8 @@ public static class FishSpawnValidator
             ? cameraTransform.forward.normalized
             : Vector3.forward;
 
-        GameObject fishObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Sphere, $"FishSpawnValidator {scenario} Default Hidden Fish");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
-        fishObject.name = $"FishSpawnValidator {scenario} Default Hidden Fish";
         fishObject.transform.position = cameraTransform.position + cameraForward * 8f;
         fishObject.transform.localScale = Vector3.one * 0.4f;
 
@@ -517,9 +513,8 @@ public static class FishSpawnValidator
             ? cameraTransform.forward.normalized
             : Vector3.forward;
 
-        GameObject fishObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Sphere, "FishSpawnValidator Nearby Default Fish");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
-        fishObject.name = "FishSpawnValidator Nearby Default Fish";
         fishObject.transform.position = cameraTransform.position + cameraForward * 9f;
         fishObject.transform.localScale = Vector3.one * 0.4f;
 
@@ -686,9 +681,8 @@ public static class FishSpawnValidator
         Vector3 center = serializedSpawner.FindProperty("center").vector3Value;
         Vector3 size = serializedSpawner.FindProperty("size").vector3Value;
 
-        GameObject fishObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "FishSpawnValidator Boundary Fish");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
-        fishObject.name = "FishSpawnValidator Boundary Fish";
         fishObject.transform.position = new Vector3(center.x + size.x * 0.5f - 0.08f, center.y, center.z);
         fishObject.transform.rotation = Quaternion.LookRotation(Vector3.right, Vector3.up);
 

@@ -1,0 +1,1233 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/pg3ex0nu",
+    "id": "pg3ex0nu",
+    "slide": 2,
+    "layoutId": "/ppt/slideLayouts/slideLayout5.xml",
+    "layoutName": "TITLE_AND_TWO_COLUMNS",
+    "layoutType": "twoColTx",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "simple-light",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 960,
+      "height": 540
+    }
+  },
+  "theme": {
+    "colorSchemeName": "Custom 347",
+    "colors": {
+      "accent1": "#B2EEF8",
+      "accent2": "#14ABCA",
+      "accent3": "#129CC0",
+      "accent4": "#035381",
+      "accent5": "#001B40",
+      "accent6": "#FFAD00",
+      "dk1": "#001B40",
+      "lt1": "#FFFFFF",
+      "dk2": "#6C7786",
+      "lt2": "#EAF7FA",
+      "hlink": "#001B40",
+      "folHlink": "#6611CC"
+    },
+    "fontScheme": {
+      "name": "Office",
+      "majorFont": {
+        "latinTypeface": "Arial"
+      },
+      "minorFont": {
+        "latinTypeface": "Arial"
+      }
+    },
+    "typefaces": [
+      "Arial",
+      "Averia Libre",
+      "Work Sans Regular"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout5.xml",
+      "name": "TITLE_AND_TWO_COLUMNS",
+      "type": "twoColTx",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/63",
+          "id": "63",
+          "name": "Google Shape;63;p6",
+          "bbox": [
+            98.39,
+            28.06,
+            763.21,
+            45.42
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 3,
+            "verticalAlignment": "bottom",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          }
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/64",
+          "id": "64",
+          "name": "Google Shape;64;p6",
+          "bbox": [
+            98.39,
+            106.89,
+            362.65,
+            293.42
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          }
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/65",
+          "id": "65",
+          "name": "Google Shape;65;p6",
+          "bbox": [
+            498.97,
+            106.89,
+            362.65,
+            293.42
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          }
+        },
+        {
+          "order": 4,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/66",
+          "id": "66",
+          "name": "Google Shape;66;p6",
+          "bbox": [
+            451.2,
+            0,
+            57.61,
+            32.06
+          ],
+          "geometry": "rect",
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›",
+                  "alignment": "center"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 5,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/68",
+          "id": "68",
+          "name": "Google Shape;68;p6",
+          "bbox": [
+            0,
+            377.43,
+            959.5,
+            162.13
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 6,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/69",
+          "id": "69",
+          "name": "Google Shape;69;p6",
+          "bbox": [
+            0,
+            392.51,
+            959.5,
+            64.14
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.098)",
+          "lineWidth": 0
+        },
+        {
+          "order": 7,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/70",
+          "id": "70",
+          "name": "Google Shape;70;p6",
+          "bbox": [
+            0,
+            375.21,
+            959.5,
+            33.96
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.098)",
+          "lineWidth": 0
+        },
+        {
+          "order": 8,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/71",
+          "id": "71",
+          "name": "Google Shape;71;p6",
+          "bbox": [
+            0.5,
+            319.64,
+            959.5,
+            51.13
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.098)",
+          "lineWidth": 0
+        },
+        {
+          "order": 9,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/72",
+          "id": "72",
+          "name": "Google Shape;72;p6",
+          "bbox": [
+            0,
+            382.8,
+            959.5,
+            157.76
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 10,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/73",
+          "id": "73",
+          "name": "Google Shape;73;p6",
+          "bbox": [
+            0,
+            354.59,
+            959.99,
+            185.43
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 11,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/74",
+          "id": "74",
+          "name": "Google Shape;74;p6",
+          "bbox": [
+            12.47,
+            297.44,
+            29.38,
+            85.36
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "lineWidth": 0
+        },
+        {
+          "order": 12,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/75",
+          "id": "75",
+          "name": "Google Shape;75;p6",
+          "bbox": [
+            405.49,
+            410.76,
+            16.53,
+            52.25
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "lineWidth": 0
+        },
+        {
+          "order": 13,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout5.xml/76",
+          "id": "76",
+          "name": "Google Shape;76;p6",
+          "bbox": [
+            922.53,
+            233.87,
+            33.43,
+            120.26
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "lineWidth": 0
+        }
+      ]
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "simple-light",
+      "type": "master",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "image",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/10",
+          "id": "10",
+          "name": "Google Shape;6;p1",
+          "bbox": [
+            0,
+            0,
+            960,
+            494.73
+          ],
+          "contentType": "image/png",
+          "imageCrop": {
+            "left": 0,
+            "top": 0.00238,
+            "right": 0,
+            "bottom": 0.00248
+          },
+          "asset": {
+            "assetId": "/ppt/media/image12.png",
+            "contentType": "image/png",
+            "byteLength": 396939
+          },
+          "fillImage": {
+            "assetId": "/ppt/media/image12.png",
+            "contentType": "image/png",
+            "byteLength": 396939
+          }
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/7",
+          "id": "7",
+          "name": "Google Shape;7;p1",
+          "bbox": [
+            98.39,
+            28.06,
+            763.21,
+            45.42
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 3,
+            "verticalAlignment": "bottom",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/8",
+          "id": "8",
+          "name": "Google Shape;8;p1",
+          "bbox": [
+            98.39,
+            106.89,
+            763.21,
+            295.4
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 4,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/9",
+          "id": "9",
+          "name": "Google Shape;9;p1",
+          "bbox": [
+            451.2,
+            0,
+            57.61,
+            32.06
+          ],
+          "geometry": "rect",
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›",
+                  "alignment": "center"
+                }
+              ]
+            }
+          ],
+          "lineWidth": 0
+        }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u54zidon",
+      "id": "157",
+      "name": "Google Shape;157;p14",
+      "bbox": [
+        98.39,
+        28.06,
+        763.21,
+        45.42
+      ],
+      "geometry": "rect",
+      "text": "Instructions for use",
+      "textPreview": "Instructions for use",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 3,
+        "fontSize": 24,
+        "typeface": "Averia Libre",
+        "color": "accent4",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "bottom",
+        "textTransform": "none",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "useParagraphSpacing": true
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Instructions for use"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Instructions for use",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 0,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Instructions for use",
+              "alignment": "center"
+            }
+          ],
+          "bulletCharacter": "",
+          "lineSpacingPercent": 90000
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5wjudg7a",
+      "id": "158",
+      "name": "Google Shape;158;p14",
+      "bbox": [
+        498.97,
+        106.89,
+        362.65,
+        293.42
+      ],
+      "geometry": "rect",
+      "text": "EDIT IN POWERPOINT®\nClick on the button under the presentation preview that says \"Download as PowerPoint template\". You will get a .pptx file that you can edit in PowerPoint. \nRemember to download and install the fonts used in this presentation (you’ll find the links to the font files needed in the Presentation design slide)\n",
+      "textPreview": "EDIT IN POWERPOINT® | Click on the button under the presentation preview that says \"Download as PowerPoint template\". You will get a .ppt...",
+      "resolvedFontSize": 26.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26.67,
+        "typeface": "Work Sans Regular",
+        "color": "dk1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "textTransform": "none",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "useParagraphSpacing": true
+      },
+      "textLayout": {
+        "lineCount": 12,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          },
+          {
+            "index": 2,
+            "text": "EDIT IN POWERPOINT®"
+          },
+          {
+            "index": 3,
+            "text": ""
+          },
+          {
+            "index": 4,
+            "text": "Click on the button under the presentation preview"
+          },
+          {
+            "index": 5,
+            "text": "that says \"Download as PowerPoint template\". You will"
+          },
+          {
+            "index": 6,
+            "text": "get a .pptx file that you can edit in PowerPoint."
+          },
+          {
+            "index": 7,
+            "text": ""
+          },
+          {
+            "index": 8,
+            "text": "Remember to download and install the fonts used in"
+          },
+          {
+            "index": 9,
+            "text": "this presentation (you’ll find the links to the font files"
+          },
+          {
+            "index": 10,
+            "text": "needed in the Presentation design slide)"
+          },
+          {
+            "index": 11,
+            "text": ""
+          },
+          {
+            "index": 12,
+            "text": ""
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "EDIT IN POWERPOINT®",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 600,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "EDIT IN POWERPOINT®",
+              "fontSize": 16,
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        },
+        {
+          "index": 2,
+          "text": "Click on the button under the presentation preview that says \"Download as PowerPoint template\". You will get a .pptx file that you can edit in PowerPoint. ",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 600,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Click on the button under the presentation preview that says ",
+              "fontSize": 16
+            },
+            {
+              "index": 2,
+              "text": "\"Download as PowerPoint template\"",
+              "fontSize": 16,
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": ". You will get a .pptx file that you can edit in PowerPoint. ",
+              "fontSize": 16
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        },
+        {
+          "index": 3,
+          "text": "Remember to download and install the fonts used in this presentation (you’ll find the links to the font files needed in the Presentation design slide)",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 600,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Remember to download and install the fonts used in this presentation (you’ll find the links to the font files needed in the ",
+              "fontSize": 16
+            },
+            {
+              "index": 2,
+              "text": "Presentation design slide",
+              "fontSize": 16,
+              "color": "hlink"
+            },
+            {
+              "index": 3,
+              "text": ")",
+              "fontSize": 16
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbq1oryt",
+      "id": "159",
+      "name": "Google Shape;159;p14",
+      "bbox": [
+        98.39,
+        106.89,
+        362.65,
+        293.42
+      ],
+      "geometry": "rect",
+      "text": "EDIT IN GOOGLE SLIDES\nClick on the button under the presentation preview that says \"Use as Google Slides Theme\".\nYou will get a copy of this document on your Google Drive and will be able to edit, add or delete slides.\nYou have to be signed in to your Google account.",
+      "textPreview": "EDIT IN GOOGLE SLIDES | Click on the button under the presentation preview that says \"Use as Google Slides Theme\". | You will get a copy ...",
+      "resolvedFontSize": 26.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26.67,
+        "typeface": "Work Sans Regular",
+        "color": "dk1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "textTransform": "none",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "useParagraphSpacing": true
+      },
+      "textLayout": {
+        "lineCount": 10,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          },
+          {
+            "index": 2,
+            "text": "EDIT IN GOOGLE SLIDES"
+          },
+          {
+            "index": 3,
+            "text": ""
+          },
+          {
+            "index": 4,
+            "text": "Click on the button under the presentation preview"
+          },
+          {
+            "index": 5,
+            "text": "that says \"Use as Google Slides Theme\"."
+          },
+          {
+            "index": 6,
+            "text": ""
+          },
+          {
+            "index": 7,
+            "text": "You will get a copy of this document on your Google"
+          },
+          {
+            "index": 8,
+            "text": "Drive and will be able to edit, add or delete slides."
+          },
+          {
+            "index": 9,
+            "text": ""
+          },
+          {
+            "index": 10,
+            "text": "You have to be signed in to your Google account."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "EDIT IN GOOGLE SLIDES",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 600,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "EDIT IN GOOGLE SLIDES",
+              "fontSize": 16,
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        },
+        {
+          "index": 2,
+          "text": "Click on the button under the presentation preview that says \"Use as Google Slides Theme\".",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 600,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Click on the button under the presentation preview that says ",
+              "fontSize": 16
+            },
+            {
+              "index": 2,
+              "text": "\"Use as Google Slides Theme\"",
+              "fontSize": 16,
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": ".",
+              "fontSize": 16
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        },
+        {
+          "index": 3,
+          "text": "You will get a copy of this document on your Google Drive and will be able to edit, add or delete slides.",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 600,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "You will get a copy of this document on your Google Drive and will be able to edit, add or delete slides.",
+              "fontSize": 16
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        },
+        {
+          "index": 4,
+          "text": "You have to be signed in to your Google account.",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 600,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "You have to be signed in to your Google account.",
+              "fontSize": 16,
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "160",
+      "name": "Google Shape;160;p14",
+      "bbox": [
+        98.39,
+        330.07,
+        763.21,
+        66.74
+      ],
+      "geometry": "rect",
+      "text": "More info on how to use this template at slidescarnival.com/help-use-presentation-template\nThis template is free to use under Creative Commons Attribution license. You can keep the Credits slide or mention SlidesCarnival and other resources used in a slide footer.\n\n",
+      "textPreview": "More info on how to use this template at slidescarnival.com/help-use-presentation-template | This template is free to use under Creative ...",
+      "resolvedFontSize": 26.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26.67,
+        "typeface": "Work Sans Regular",
+        "color": "dk1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "textTransform": "none",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "useParagraphSpacing": true
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "More info on how to use this template at slidescarnival.com/help-use-presentation-template"
+          },
+          {
+            "index": 2,
+            "text": "This template is free to use under Creative Commons Attribution license. You can keep the Credits slide or mention"
+          },
+          {
+            "index": 3,
+            "text": "SlidesCarnival and other resources used in a slide footer."
+          },
+          {
+            "index": 4,
+            "text": ""
+          },
+          {
+            "index": 5,
+            "text": ""
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "More info on how to use this template at slidescarnival.com/help-use-presentation-template",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 0,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "More info on how to use this template at ",
+              "fontSize": 16,
+              "color": "lt1",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "slidescarnival.com/help-use-presentation-template",
+              "fontSize": 16,
+              "color": "lt1",
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        },
+        {
+          "index": 2,
+          "text": "This template is free to use under Creative Commons Attribution license. You can keep the Credits slide or mention SlidesCarnival and other resources used in a slide footer.",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 0,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "This template is free to use under ",
+              "fontSize": 16,
+              "color": "lt1"
+            },
+            {
+              "index": 2,
+              "text": "Creative Commons Attribution license",
+              "fontSize": 16,
+              "color": "lt1"
+            },
+            {
+              "index": 3,
+              "text": ". You can keep the Credits slide or mention SlidesCarnival and other resources used in a slide footer.",
+              "fontSize": 16,
+              "color": "lt1"
+            }
+          ],
+          "bulletCharacter": "🐠",
+          "lineSpacingPercent": 100000
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zidony",
+      "id": "161",
+      "name": "Google Shape;161;p14",
+      "bbox": [
+        451.2,
+        0,
+        57.61,
+        32.06
+      ],
+      "geometry": "rect",
+      "text": "‹#›",
+      "textPreview": "‹#›",
+      "resolvedFontSize": 14.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 14.67,
+        "typeface": "Work Sans Regular",
+        "color": "accent3",
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "textTransform": "none",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "useParagraphSpacing": true
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "‹#›"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "‹#›",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 0,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "alignment": "center"
+            }
+          ],
+          "bulletCharacter": "",
+          "lineSpacingPercent": 100000
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

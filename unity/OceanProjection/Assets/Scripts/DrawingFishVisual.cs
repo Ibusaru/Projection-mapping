@@ -6,6 +6,10 @@ public sealed class DrawingFishVisual : MonoBehaviour
 {
     private const float CanvasWidth = 1024f;
     private const float CanvasHeight = 512f;
+    private const float VisualCanvasXMin = 91f;
+    private const float VisualCanvasYMin = 82f;
+    private const float VisualCanvasXMax = 990f;
+    private const float VisualCanvasYMax = 505f;
     private const int CurveSegments = 48;
 
     private MeshRenderer meshRenderer;
@@ -16,14 +20,23 @@ public sealed class DrawingFishVisual : MonoBehaviour
 
     public void Apply(Texture2D texture, Bounds worldBounds)
     {
+        Apply(texture, worldBounds, 0f);
+    }
+
+    public void Apply(Texture2D texture, Bounds worldBounds, float sideOffset)
+    {
         if (texture == null)
         {
             return;
         }
 
+        gameObject.SetActive(true);
         EnsureComponents();
         EnsureMaterial(texture);
-        meshFilter.sharedMesh = CreateFishMesh(WorldBoundsToLocal(transform.parent != null ? transform.parent : transform, worldBounds));
+        meshFilter.sharedMesh = CreateFishMesh(
+            WorldBoundsToLocal(transform.parent != null ? transform.parent : transform, worldBounds),
+            sideOffset
+        );
         meshRenderer.sharedMaterial = material;
         meshRenderer.enabled = true;
     }
@@ -115,9 +128,9 @@ public sealed class DrawingFishVisual : MonoBehaviour
         material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
     }
 
-    private static Mesh CreateFishMesh(Bounds localBounds)
+    private static Mesh CreateFishMesh(Bounds localBounds, float sideOffset)
     {
-        MeshBuilder builder = new MeshBuilder(localBounds);
+        MeshBuilder builder = new MeshBuilder(localBounds, sideOffset);
 
         List<Vector2> body = new List<Vector2> { new Vector2(92f, 252f) };
         AddCubic(body, new Vector2(92f, 252f), new Vector2(104f, 190f), new Vector2(178f, 145f), new Vector2(275f, 134f), CurveSegments);
@@ -197,15 +210,19 @@ public sealed class DrawingFishVisual : MonoBehaviour
     private sealed class MeshBuilder
     {
         private readonly Bounds bounds;
+        private readonly float sideOffset;
+        private readonly bool useZLength;
         private readonly List<Vector3> vertices = new List<Vector3>();
         private readonly List<Vector2> uvs = new List<Vector2>();
         private readonly List<int> triangles = new List<int>();
 
-        public MeshBuilder(Bounds localBounds)
+        public MeshBuilder(Bounds localBounds, float sideOffset)
         {
             bounds = localBounds.size.sqrMagnitude > 0.001f
                 ? localBounds
                 : new Bounds(Vector3.zero, new Vector3(1.8f, 0.9f, 0.1f));
+            this.sideOffset = sideOffset;
+            useZLength = bounds.size.z >= bounds.size.x;
         }
 
         public void AddEllipse(Vector2 center, float radiusX, float radiusY, int segments)
@@ -297,11 +314,13 @@ public sealed class DrawingFishVisual : MonoBehaviour
 
         private Vector3 CanvasToLocal(Vector2 canvasPoint)
         {
-            float normalizedX = 0.5f - canvasPoint.x / CanvasWidth;
-            float normalizedY = 0.5f - canvasPoint.y / CanvasHeight;
+            float normalizedX = 0.5f - Mathf.InverseLerp(VisualCanvasXMin, VisualCanvasXMax, canvasPoint.x);
+            float normalizedY = 0.5f - Mathf.InverseLerp(VisualCanvasYMin, VisualCanvasYMax, canvasPoint.y);
             float length = Mathf.Max(bounds.size.x, bounds.size.z);
             float height = Mathf.Max(0.1f, bounds.size.y);
-            return bounds.center + new Vector3(0f, normalizedY * height, normalizedX * length);
+            return useZLength
+                ? bounds.center + new Vector3(sideOffset, normalizedY * height, normalizedX * length)
+                : bounds.center + new Vector3(normalizedX * length, normalizedY * height, sideOffset);
         }
     }
 }

@@ -24,15 +24,17 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private Vector3 releasedFishSpawnSpread = new Vector3(11f, 4f, 7f);
     [SerializeField] private float minimumReleasedFishSpawnDistanceFromCamera = 7f;
     [SerializeField] private int spawnPositionAttempts = 18;
+    [SerializeField] private OceanEnvironment oceanEnvironment;
+    [SerializeField] private float spawnSeabedClearance = 1.1f;
 
     [Header("Default School")]
     [SerializeField] private bool spawnDefaultFishOnStart = true;
-    [SerializeField] private int defaultFishCount = 150;
+    [SerializeField] private int defaultFishCount = 230;
     [FormerlySerializedAs("defaultFishScaleRange")]
     [SerializeField] private Vector2 defaultFishTargetLengthRange = new Vector2(0.18f, 0.38f);
     [SerializeField] private Vector3 defaultSchoolSpread = new Vector3(44f, 4.4f, 28f);
     [SerializeField] private float defaultSchoolYawJitter = 62f;
-    [SerializeField] private int defaultSchoolClusterCount = 14;
+    [SerializeField] private int defaultSchoolClusterCount = 22;
     [SerializeField] private Vector2 defaultSchoolClusterRadiusRange = new Vector2(2.0f, 4.2f);
     [SerializeField] private float defaultSchoolEdgeMargin = 4.8f;
     [SerializeField] private float mediumSchoolChance = 0.28f;
@@ -40,8 +42,8 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private bool disableImportedFishMotion = true;
 
     [Header("Lifetime")]
-    [SerializeField] private int maxFishCount = 340;
-    [SerializeField] private int minimumFishCount = 125;
+    [SerializeField] private int maxFishCount = 520;
+    [SerializeField] private int minimumFishCount = 185;
     [SerializeField] private float lifetimeSeconds = 600f;
 
     private readonly Queue<FishActor> fishQueue = new Queue<FishActor>();
@@ -226,7 +228,8 @@ public class FishSpawner : MonoBehaviour
         for (int i = 0; i < attempts; i++)
         {
             position = RandomReleasedFishPoint();
-            if (mainCamera == null || IsFarEnoughFromCamera(position, mainCamera.transform))
+            if ((mainCamera == null || IsFarEnoughFromCamera(position, mainCamera.transform))
+                && IsSpawnPointAboveSeabed(position))
             {
                 break;
             }
@@ -289,11 +292,136 @@ public class FishSpawner : MonoBehaviour
         float yInset = Mathf.Clamp(verticalInset, 0f, Mathf.Max(0f, halfSize.y - 0.05f));
         float zInset = Mathf.Clamp(horizontalInset, 0f, Mathf.Max(0f, halfSize.z - 0.05f));
 
+        Vector3 clamped = new Vector3(
+            Mathf.Clamp(position.x, center.x - halfSize.x + xInset, center.x + halfSize.x - xInset),
+            Mathf.Clamp(position.y, center.y - halfSize.y + yInset, center.y + halfSize.y - yInset),
+            Mathf.Clamp(position.z, center.z - halfSize.z + zInset, center.z + halfSize.z - zInset)
+        );
+        return ClampSpawnAboveSeabed(clamped, inset);
+    }
+
+    private Vector3 ClampToSpawnBoundsOnly(Vector3 position, float inset)
+    {
+        Vector3 halfSize = new Vector3(
+            Mathf.Abs(size.x) * 0.5f,
+            Mathf.Abs(size.y) * 0.5f,
+            Mathf.Abs(size.z) * 0.5f
+        );
+        float horizontalInset = Mathf.Max(0f, inset);
+        float verticalInset = Mathf.Max(0f, inset * 0.35f);
+        float xInset = Mathf.Clamp(horizontalInset, 0f, Mathf.Max(0f, halfSize.x - 0.05f));
+        float yInset = Mathf.Clamp(verticalInset, 0f, Mathf.Max(0f, halfSize.y - 0.05f));
+        float zInset = Mathf.Clamp(horizontalInset, 0f, Mathf.Max(0f, halfSize.z - 0.05f));
+
         return new Vector3(
             Mathf.Clamp(position.x, center.x - halfSize.x + xInset, center.x + halfSize.x - xInset),
             Mathf.Clamp(position.y, center.y - halfSize.y + yInset, center.y + halfSize.y - yInset),
             Mathf.Clamp(position.z, center.z - halfSize.z + zInset, center.z + halfSize.z - zInset)
         );
+    }
+
+    private Vector3 ClampSpawnAboveSeabed(Vector3 position, float inset)
+    {
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        if (environment == null)
+        {
+            return position;
+        }
+
+        Vector3 safePosition = FindNearbySeabedSafePosition(position, environment, inset);
+        float floorY = SampleSeabedWorldY(environment, safePosition);
+        float waterY = environment.transform.TransformPoint(new Vector3(0f, environment.WaterSurfaceY, 0f)).y;
+        Vector3 halfSize = new Vector3(
+            Mathf.Abs(size.x) * 0.5f,
+            Mathf.Abs(size.y) * 0.5f,
+            Mathf.Abs(size.z) * 0.5f
+        );
+        float maxSwimY = Mathf.Min(center.y + halfSize.y - 0.2f, waterY - 0.48f);
+        float minSwimY = center.y - halfSize.y + Mathf.Max(0f, inset * 0.35f);
+        float desiredY = floorY + Mathf.Max(0.2f, spawnSeabedClearance);
+        if (desiredY <= maxSwimY)
+        {
+            safePosition.y = Mathf.Clamp(Mathf.Max(safePosition.y, desiredY), minSwimY, maxSwimY);
+        }
+        else
+        {
+            safePosition.y = Mathf.Clamp(safePosition.y, minSwimY, maxSwimY);
+        }
+
+        return safePosition;
+    }
+
+    private Vector3 FindNearbySeabedSafePosition(Vector3 position, OceanEnvironment environment, float inset)
+    {
+        float waterY = environment.transform.TransformPoint(new Vector3(0f, environment.WaterSurfaceY, 0f)).y;
+        Vector3 halfSize = new Vector3(
+            Mathf.Abs(size.x) * 0.5f,
+            Mathf.Abs(size.y) * 0.5f,
+            Mathf.Abs(size.z) * 0.5f
+        );
+        float maxSwimY = Mathf.Min(center.y + halfSize.y - 0.2f, waterY - 0.48f);
+        float clearance = Mathf.Max(0.2f, spawnSeabedClearance);
+        Vector3 best = position;
+        float bestFloorY = SampleSeabedWorldY(environment, position);
+        if (bestFloorY + clearance <= maxSwimY)
+        {
+            return best;
+        }
+
+        for (int radiusIndex = 0; radiusIndex < 3; radiusIndex++)
+        {
+            float radius = 3.5f + radiusIndex * 3.5f;
+            for (int i = 0; i < 10; i++)
+            {
+                float angle = (i / 10f) * Mathf.PI * 2f + radiusIndex * 0.37f;
+                Vector3 candidate = position + new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+                candidate = ClampToSpawnBoundsOnly(candidate, inset);
+                float floorY = SampleSeabedWorldY(environment, candidate);
+                if (floorY < bestFloorY)
+                {
+                    best = candidate;
+                    bestFloorY = floorY;
+                }
+
+                if (floorY + clearance <= maxSwimY)
+                {
+                    return candidate;
+                }
+            }
+        }
+
+        return best;
+    }
+
+    private bool IsSpawnPointAboveSeabed(Vector3 position)
+    {
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        if (environment == null)
+        {
+            return true;
+        }
+
+        float floorY = SampleSeabedWorldY(environment, position);
+        float waterY = environment.transform.TransformPoint(new Vector3(0f, environment.WaterSurfaceY, 0f)).y;
+        return position.y >= floorY + Mathf.Max(0.2f, spawnSeabedClearance)
+            && floorY <= waterY - 0.6f;
+    }
+
+    private float SampleSeabedWorldY(OceanEnvironment environment, Vector3 worldPosition)
+    {
+        Vector3 local = environment.transform.InverseTransformPoint(worldPosition);
+        float localY = environment.SampleSeabedHeight(local.x, local.z);
+        return environment.transform.TransformPoint(new Vector3(local.x, localY, local.z)).y;
+    }
+
+    private OceanEnvironment ResolveOceanEnvironment()
+    {
+        if (oceanEnvironment == null)
+        {
+            oceanEnvironment = FindAnyObjectByType<OceanEnvironment>();
+        }
+
+        return oceanEnvironment;
     }
 
     private Vector3 SafeSpawnHalfSize(float inset)

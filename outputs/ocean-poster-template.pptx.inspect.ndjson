@@ -1,0 +1,27 @@
+{"kind":"deck","id":"pr/21lunj","name":"Deck"}
+{"kind":"layout","layoutId":"aaf33493-450a-420f-b852-46ab7677cf30","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"9ca28aa0-0bcb-49f1-9625-7abdead2efed","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/43tt2n","slide":1,"title":"海洋環境の観察テーマ","textShapes":16}
+{"kind":"textbox","id":"sh/u54zidon","slide":1,"name":"poster-title","text":"海洋環境の観察テーマ","textPreview":"海洋環境の観察テーマ","textChars":10,"textLines":1,"bbox":[84,58,912,82]}
+{"kind":"textbox","id":"sh/nqxs72x4","slide":1,"name":"poster-subtitle","text":"研究タイトル・発表者名をここに入力","textPreview":"研究タイトル・発表者名をここに入力","textChars":17,"textLines":1,"bbox":[186,138,708,38]}
+{"kind":"textbox","id":"sh/czed8v6p","slide":1,"name":"sea-label","text":"海","textPreview":"海","textChars":1,"textLines":1,"bbox":[820,340,110,54]}
+{"kind":"textbox","id":"sh/5kb6xkf6","slide":1,"name":"bubble-label","text":"気泡","textPreview":"気泡","textChars":2,"textLines":1,"bbox":[905,442,116,42]}
+{"kind":"shape","id":"sh/ytsvu9kn","slide":1,"name":"background-box","bbox":[92,560,252,186]}
+{"kind":"textbox","id":"sh/neloj2t8","slide":1,"name":"background-heading","text":"背景","textPreview":"背景","textChars":2,"textLines":1,"bbox":[116,582,204,36]}
+{"kind":"textbox","id":"sh/gn29gr2p","slide":1,"name":"background-body","text":"この研究で注目する海の現象や課題を短く整理します。","textPreview":"この研究で注目する海の現象や課題を短く整理します。","textChars":25,"textLines":1,"bbox":[116,630,204,104]}
+{"kind":"shape","id":"sh/58z25kb6","slide":1,"name":"purpose-box","bbox":[394,560,252,186]}
+{"kind":"textbox","id":"sh/d8bat47y","slide":1,"name":"purpose-heading","text":"目的","textPreview":"目的","textChars":2,"textLines":1,"bbox":[418,582,204,36]}
+{"kind":"textbox","id":"sh/knih4byh","slide":1,"name":"purpose-body","text":"観察・比較・評価したい問いを1文で示します。","textPreview":"観察・比較・評価したい問いを1文で示します。","textChars":22,"textLines":1,"bbox":[418,630,204,104]}
+{"kind":"shape","id":"sh/v6psfil0","slide":1,"name":"method-box","bbox":[696,560,252,186]}
+{"kind":"textbox","id":"sh/2lszqtcj","slide":1,"name":"method-heading","text":"方法","textPreview":"方法","textChars":2,"textLines":1,"bbox":[720,582,204,36]}
+{"kind":"textbox","id":"sh/d0z61032","slide":1,"name":"method-body","text":"調査場所、測定方法、記録する項目を入れます。","textPreview":"調査場所、測定方法、記録する項目を入れます。","textChars":22,"textLines":1,"bbox":[720,630,204,104]}
+{"kind":"shape","id":"sh/kf6dcbul","slide":1,"name":"result-box","bbox":[170,830,360,176]}
+{"kind":"textbox","id":"sh/vu9knih4","slide":1,"name":"result-heading","text":"結果","textPreview":"結果","textChars":2,"textLines":1,"bbox":[194,852,312,36]}
+{"kind":"textbox","id":"sh/29gr2p8n","slide":1,"name":"result-body","text":"図表や写真を中央に置き、重要な発見を大きく示します。","textPreview":"図表や写真を中央に置き、重要な発見を大きく示します。","textChars":26,"textLines":1,"bbox":[194,900,312,86]}
+{"kind":"shape","id":"sh/donyd0z6","slide":1,"name":"discussion-box","bbox":[550,830,360,176]}
+{"kind":"textbox","id":"sh/k3q5o7qp","slide":1,"name":"discussion-heading","text":"考察","textPreview":"考察","textChars":2,"textLines":1,"bbox":[574,852,312,36]}
+{"kind":"textbox","id":"sh/kb6xkf6d","slide":1,"name":"discussion-body","text":"海面・海中・海底の関係から、結果の意味を説明します。","textPreview":"海面・海中・海底の関係から、結果の意味を説明します。","textChars":26,"textLines":1,"bbox":[574,900,312,86]}
+{"kind":"textbox","id":"sh/9w3m94fu","slide":1,"name":"seabed-label","text":"海底（サンゴ礁・砂・岩）","textPreview":"海底（サンゴ礁・砂・岩）","textChars":12,"textLines":1,"bbox":[320,1328,440,52]}
+{"kind":"textbox","id":"sh/25kb6xkf","slide":1,"name":"small-note","text":"写真・グラフ・調査地点図を中央の余白に追加できます","textPreview":"写真・グラフ・調査地点図を中央の余白に追加できます","textChars":25,"textLines":1,"bbox":[235,1060,610,44]}
+{"kind":"image","id":"im/g7adsji5","slide":1,"name":"","alt":"海面、海中、海底を縦構図で描いたポスター背景","bbox":[0,0,1080,1536]}
+{"kind":"notes","id":"nt/43tt2n","slide":1,"text":""}

@@ -74,19 +74,22 @@ Shader "OceanProjection/Drawing Fish Projection"
                 float3 relative = projectorPosition - _DrawingProjectorOrigin.xyz;
                 float uLengthSq = max(dot(_DrawingProjectorU.xyz, _DrawingProjectorU.xyz), 0.000001);
                 float vLengthSq = max(dot(_DrawingProjectorV.xyz, _DrawingProjectorV.xyz), 0.000001);
-                float2 uv = float2(
+                float2 rawUv = float2(
                     dot(relative, _DrawingProjectorU.xyz) / uLengthSq,
                     dot(relative, _DrawingProjectorV.xyz) / vLengthSq
                 );
 
-                uv = saturate(uv);
+                float insideProjection =
+                    step(0.0, rawUv.x) * step(rawUv.x, 1.0) *
+                    step(0.0, rawUv.y) * step(rawUv.y, 1.0);
+                float2 uv = saturate(rawUv);
 
                 half4 drawing = SAMPLE_TEXTURE2D(_DrawingTex, sampler_DrawingTex, uv) * _Tint;
                 float drawingMax = max(drawing.r, max(drawing.g, drawing.b));
                 float drawingMin = min(drawing.r, min(drawing.g, drawing.b));
                 float saturation = drawingMax - drawingMin;
-                float whiteBacking = saturate((drawingMax - 0.9) * 10.0) * saturate((0.08 - saturation) * 12.5);
-                float paintAlpha = saturate((drawing.a - _AlphaClip) / max(1.0 - _AlphaClip, 0.0001)) * (1.0 - whiteBacking);
+                float whiteBacking = saturate((drawingMax - 0.965) * 28.0) * saturate((0.04 - saturation) * 25.0);
+                float paintAlpha = saturate((drawing.a - _AlphaClip) / max(1.0 - _AlphaClip, 0.0001)) * (1.0 - whiteBacking) * insideProjection;
 
                 float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - input.positionWS);
                 float edgeLight = saturate(abs(dot(normalize(input.normalWS), viewDirection)));

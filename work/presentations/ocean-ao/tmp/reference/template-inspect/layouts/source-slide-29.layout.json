@@ -1,0 +1,3112 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/a1gvy90j",
+    "id": "a1gvy90j",
+    "slide": 29,
+    "layoutId": "/ppt/slideLayouts/slideLayout7.xml",
+    "layoutName": "TITLE_ONLY",
+    "layoutType": "titleOnly",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "simple-light",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 960,
+      "height": 540
+    }
+  },
+  "theme": {
+    "colorSchemeName": "Custom 347",
+    "colors": {
+      "accent1": "#B2EEF8",
+      "accent2": "#14ABCA",
+      "accent3": "#129CC0",
+      "accent4": "#035381",
+      "accent5": "#001B40",
+      "accent6": "#FFAD00",
+      "dk1": "#001B40",
+      "lt1": "#FFFFFF",
+      "dk2": "#6C7786",
+      "lt2": "#EAF7FA",
+      "hlink": "#001B40",
+      "folHlink": "#6611CC"
+    },
+    "fontScheme": {
+      "name": "Office",
+      "majorFont": {
+        "latinTypeface": "Arial"
+      },
+      "minorFont": {
+        "latinTypeface": "Arial"
+      }
+    },
+    "typefaces": [
+      "Arial",
+      "Averia Libre",
+      "Work Sans",
+      "Work Sans Regular"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout7.xml",
+      "name": "TITLE_ONLY",
+      "type": "titleOnly",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/94",
+          "id": "94",
+          "name": "Google Shape;94;p8",
+          "bbox": [
+            98.39,
+            28.06,
+            763.21,
+            45.42
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 3,
+            "verticalAlignment": "bottom",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          }
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/95",
+          "id": "95",
+          "name": "Google Shape;95;p8",
+          "bbox": [
+            451.2,
+            0,
+            57.61,
+            32.06
+          ],
+          "geometry": "rect",
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›",
+                  "alignment": "center"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/97",
+          "id": "97",
+          "name": "Google Shape;97;p8",
+          "bbox": [
+            0,
+            377.43,
+            959.5,
+            162.13
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 4,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/98",
+          "id": "98",
+          "name": "Google Shape;98;p8",
+          "bbox": [
+            0,
+            392.51,
+            959.5,
+            64.14
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.098)",
+          "lineWidth": 0
+        },
+        {
+          "order": 5,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/99",
+          "id": "99",
+          "name": "Google Shape;99;p8",
+          "bbox": [
+            0,
+            375.21,
+            959.5,
+            33.96
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.098)",
+          "lineWidth": 0
+        },
+        {
+          "order": 6,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/100",
+          "id": "100",
+          "name": "Google Shape;100;p8",
+          "bbox": [
+            0.5,
+            319.64,
+            959.5,
+            51.13
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.098)",
+          "lineWidth": 0
+        },
+        {
+          "order": 7,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/101",
+          "id": "101",
+          "name": "Google Shape;101;p8",
+          "bbox": [
+            0,
+            382.8,
+            959.5,
+            157.76
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 8,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/102",
+          "id": "102",
+          "name": "Google Shape;102;p8",
+          "bbox": [
+            0,
+            354.59,
+            959.99,
+            185.43
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 9,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/103",
+          "id": "103",
+          "name": "Google Shape;103;p8",
+          "bbox": [
+            12.47,
+            297.44,
+            29.38,
+            85.36
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "lineWidth": 0
+        },
+        {
+          "order": 10,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/104",
+          "id": "104",
+          "name": "Google Shape;104;p8",
+          "bbox": [
+            405.49,
+            410.76,
+            16.53,
+            52.25
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "lineWidth": 0
+        },
+        {
+          "order": 11,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/105",
+          "id": "105",
+          "name": "Google Shape;105;p8",
+          "bbox": [
+            922.53,
+            233.87,
+            33.43,
+            120.26
+          ],
+          "rotation": 0,
+          "geometry": "custom",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            },
+            "useParagraphSpacing": true
+          },
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "lineWidth": 0
+        }
+      ]
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "simple-light",
+      "type": "master",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "image",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/10",
+          "id": "10",
+          "name": "Google Shape;6;p1",
+          "bbox": [
+            0,
+            0,
+            960,
+            494.73
+          ],
+          "contentType": "image/png",
+          "imageCrop": {
+            "left": 0,
+            "top": 0.00238,
+            "right": 0,
+            "bottom": 0.00248
+          },
+          "asset": {
+            "assetId": "/ppt/media/image12.png",
+            "contentType": "image/png",
+            "byteLength": 396939
+          },
+          "fillImage": {
+            "assetId": "/ppt/media/image12.png",
+            "contentType": "image/png",
+            "byteLength": 396939
+          }
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/7",
+          "id": "7",
+          "name": "Google Shape;7;p1",
+          "bbox": [
+            98.39,
+            28.06,
+            763.21,
+            45.42
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 3,
+            "verticalAlignment": "bottom",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/8",
+          "id": "8",
+          "name": "Google Shape;8;p1",
+          "bbox": [
+            98.39,
+            106.89,
+            763.21,
+            295.4
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          },
+          "lineWidth": 0
+        },
+        {
+          "order": 4,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/9",
+          "id": "9",
+          "name": "Google Shape;9;p1",
+          "bbox": [
+            451.2,
+            0,
+            57.61,
+            32.06
+          ],
+          "geometry": "rect",
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "verticalAlignment": "middle",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            },
+            "useParagraphSpacing": true
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›",
+                  "alignment": "center"
+                }
+              ]
+            }
+          ],
+          "lineWidth": 0
+        }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wjudg7ad",
+      "id": "510",
+      "name": "Google Shape;510;p41",
+      "bbox": [
+        98.39,
+        28.06,
+        763.21,
+        45.42
+      ],
+      "geometry": "rect",
+      "text": "Gantt chart",
+      "textPreview": "Gantt chart",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 3,
+        "fontSize": 24,
+        "typeface": "Averia Libre",
+        "color": "accent4",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "bottom",
+        "textTransform": "none",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "useParagraphSpacing": true
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Gantt chart"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Gantt chart",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 0,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Gantt chart",
+              "alignment": "center"
+            }
+          ],
+          "bulletCharacter": "",
+          "lineSpacingPercent": 90000
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p4r65wju",
+      "id": "511",
+      "name": "Google Shape;511;p41",
+      "bbox": [
+        451.2,
+        0,
+        57.61,
+        32.06
+      ],
+      "geometry": "rect",
+      "text": "‹#›",
+      "textPreview": "‹#›",
+      "resolvedFontSize": 14.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 14.67,
+        "typeface": "Work Sans Regular",
+        "color": "accent3",
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "textTransform": "none",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "useParagraphSpacing": true
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "‹#›"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "‹#›",
+          "marginLeft": 0,
+          "indent": 0,
+          "spaceBefore": 0,
+          "spaceAfter": 0,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "alignment": "center"
+            }
+          ],
+          "bulletCharacter": "",
+          "lineSpacingPercent": 100000
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/jm1cfa9w",
+      "id": "512",
+      "name": "Google Shape;512;p41",
+      "bbox": [
+        41.21,
+        94.02,
+        880.07,
+        335.72
+      ],
+      "text": "Week 1 | Week 2\n1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14\nTask 1\nTask 2 | ◆\nTask 3\nTask 4 | ◆\nTask 5 | ◆\nTask 6\nTask 7\nTask 8",
+      "textPreview": "Week 1 | Week 2 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | Task 1 | Task 2 | ◆ | Task 3 | Task 4 | ◆ | Task 5 | ◆ | T...",
+      "rows": 10,
+      "cols": 15,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            41.21,
+            94.02,
+            151.55,
+            33.57
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "colSpan": 7,
+          "bbox": [
+            192.76,
+            94.02,
+            364.26,
+            33.57
+          ],
+          "text": "Week 1",
+          "textPreview": "Week 1",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Week 1",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Week 1",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1",
+                  "bold": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            244.8,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 4,
+          "bbox": [
+            296.83,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 5,
+          "row": 1,
+          "column": 5,
+          "bbox": [
+            348.87,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 6,
+          "row": 1,
+          "column": 6,
+          "bbox": [
+            400.91,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 7,
+          "row": 1,
+          "column": 7,
+          "bbox": [
+            452.94,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 8,
+          "row": 1,
+          "column": 8,
+          "bbox": [
+            504.98,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 9,
+          "row": 1,
+          "column": 9,
+          "colSpan": 7,
+          "bbox": [
+            557.02,
+            94.02,
+            364.26,
+            33.57
+          ],
+          "text": "Week 2",
+          "textPreview": "Week 2",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Week 2",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Week 2",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1",
+                  "bold": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 1,
+          "column": 10,
+          "bbox": [
+            609.05,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 11,
+          "row": 1,
+          "column": 11,
+          "bbox": [
+            661.09,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 12,
+          "row": 1,
+          "column": 12,
+          "bbox": [
+            713.13,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 13,
+          "row": 1,
+          "column": 13,
+          "bbox": [
+            765.16,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 14,
+          "row": 1,
+          "column": 14,
+          "bbox": [
+            817.2,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 15,
+          "row": 1,
+          "column": 15,
+          "bbox": [
+            869.24,
+            94.02,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 16,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            41.21,
+            127.6,
+            151.55,
+            33.57
+          ]
+        },
+        {
+          "index": 17,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            192.76,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "1",
+          "textPreview": "1",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 18,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            244.8,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "2",
+          "textPreview": "2",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "2",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "2",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 19,
+          "row": 2,
+          "column": 4,
+          "bbox": [
+            296.83,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "3",
+          "textPreview": "3",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 20,
+          "row": 2,
+          "column": 5,
+          "bbox": [
+            348.87,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "4",
+          "textPreview": "4",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "4",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "4",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 21,
+          "row": 2,
+          "column": 6,
+          "bbox": [
+            400.91,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "5",
+          "textPreview": "5",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "5",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "5",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 22,
+          "row": 2,
+          "column": 7,
+          "bbox": [
+            452.94,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "6",
+          "textPreview": "6",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "6",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "6",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 23,
+          "row": 2,
+          "column": 8,
+          "bbox": [
+            504.98,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "7",
+          "textPreview": "7",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "7",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "7",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 24,
+          "row": 2,
+          "column": 9,
+          "bbox": [
+            557.02,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "8",
+          "textPreview": "8",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "8",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "8",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 25,
+          "row": 2,
+          "column": 10,
+          "bbox": [
+            609.05,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "9",
+          "textPreview": "9",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "9",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "9",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 26,
+          "row": 2,
+          "column": 11,
+          "bbox": [
+            661.09,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "10",
+          "textPreview": "10",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "10",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "10",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 27,
+          "row": 2,
+          "column": 12,
+          "bbox": [
+            713.13,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "11",
+          "textPreview": "11",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "11",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "11",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 28,
+          "row": 2,
+          "column": 13,
+          "bbox": [
+            765.16,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "12",
+          "textPreview": "12",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "12",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "12",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 29,
+          "row": 2,
+          "column": 14,
+          "bbox": [
+            817.2,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "13",
+          "textPreview": "13",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "13",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "13",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 30,
+          "row": 2,
+          "column": 15,
+          "bbox": [
+            869.24,
+            127.6,
+            52.04,
+            33.57
+          ],
+          "text": "14",
+          "textPreview": "14",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "14",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "14",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 31,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            41.21,
+            161.17,
+            151.55,
+            33.57
+          ],
+          "text": "Task 1",
+          "textPreview": "Task 1",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Task 1",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "right"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Task 1",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 32,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            192.76,
+            161.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent6"
+        },
+        {
+          "index": 33,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            244.8,
+            161.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent6"
+        },
+        {
+          "index": 34,
+          "row": 3,
+          "column": 4,
+          "bbox": [
+            296.83,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 35,
+          "row": 3,
+          "column": 5,
+          "bbox": [
+            348.87,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 36,
+          "row": 3,
+          "column": 6,
+          "bbox": [
+            400.91,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 37,
+          "row": 3,
+          "column": 7,
+          "bbox": [
+            452.94,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 38,
+          "row": 3,
+          "column": 8,
+          "bbox": [
+            504.98,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 39,
+          "row": 3,
+          "column": 9,
+          "bbox": [
+            557.02,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 40,
+          "row": 3,
+          "column": 10,
+          "bbox": [
+            609.05,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 41,
+          "row": 3,
+          "column": 11,
+          "bbox": [
+            661.09,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 42,
+          "row": 3,
+          "column": 12,
+          "bbox": [
+            713.13,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 43,
+          "row": 3,
+          "column": 13,
+          "bbox": [
+            765.16,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 44,
+          "row": 3,
+          "column": 14,
+          "bbox": [
+            817.2,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 45,
+          "row": 3,
+          "column": 15,
+          "bbox": [
+            869.24,
+            161.17,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 46,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            41.21,
+            194.74,
+            151.55,
+            33.57
+          ],
+          "text": "Task 2",
+          "textPreview": "Task 2",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Task 2",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "right"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Task 2",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 47,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            192.76,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 48,
+          "row": 4,
+          "column": 3,
+          "bbox": [
+            244.8,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent2"
+        },
+        {
+          "index": 49,
+          "row": 4,
+          "column": 4,
+          "bbox": [
+            296.83,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent2"
+        },
+        {
+          "index": 50,
+          "row": 4,
+          "column": 5,
+          "bbox": [
+            348.87,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent2"
+        },
+        {
+          "index": 51,
+          "row": 4,
+          "column": 6,
+          "bbox": [
+            400.91,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent2"
+        },
+        {
+          "index": 52,
+          "row": 4,
+          "column": 7,
+          "bbox": [
+            452.94,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "text": "◆",
+          "textPreview": "◆",
+          "fillColor": "accent2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "◆",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "◆",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 53,
+          "row": 4,
+          "column": 8,
+          "bbox": [
+            504.98,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 54,
+          "row": 4,
+          "column": 9,
+          "bbox": [
+            557.02,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 55,
+          "row": 4,
+          "column": 10,
+          "bbox": [
+            609.05,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 56,
+          "row": 4,
+          "column": 11,
+          "bbox": [
+            661.09,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 57,
+          "row": 4,
+          "column": 12,
+          "bbox": [
+            713.13,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 58,
+          "row": 4,
+          "column": 13,
+          "bbox": [
+            765.16,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 59,
+          "row": 4,
+          "column": 14,
+          "bbox": [
+            817.2,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 60,
+          "row": 4,
+          "column": 15,
+          "bbox": [
+            869.24,
+            194.74,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 61,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            41.21,
+            228.31,
+            151.55,
+            33.57
+          ],
+          "text": "Task 3",
+          "textPreview": "Task 3",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Task 3",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "right"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Task 3",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 62,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            192.76,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 63,
+          "row": 5,
+          "column": 3,
+          "bbox": [
+            244.8,
+            228.31,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent5"
+        },
+        {
+          "index": 64,
+          "row": 5,
+          "column": 4,
+          "bbox": [
+            296.83,
+            228.31,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent5"
+        },
+        {
+          "index": 65,
+          "row": 5,
+          "column": 5,
+          "bbox": [
+            348.87,
+            228.31,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent5"
+        },
+        {
+          "index": 66,
+          "row": 5,
+          "column": 6,
+          "bbox": [
+            400.91,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 67,
+          "row": 5,
+          "column": 7,
+          "bbox": [
+            452.94,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 68,
+          "row": 5,
+          "column": 8,
+          "bbox": [
+            504.98,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 69,
+          "row": 5,
+          "column": 9,
+          "bbox": [
+            557.02,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 70,
+          "row": 5,
+          "column": 10,
+          "bbox": [
+            609.05,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 71,
+          "row": 5,
+          "column": 11,
+          "bbox": [
+            661.09,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 72,
+          "row": 5,
+          "column": 12,
+          "bbox": [
+            713.13,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 73,
+          "row": 5,
+          "column": 13,
+          "bbox": [
+            765.16,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 74,
+          "row": 5,
+          "column": 14,
+          "bbox": [
+            817.2,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 75,
+          "row": 5,
+          "column": 15,
+          "bbox": [
+            869.24,
+            228.31,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 76,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            41.21,
+            261.89,
+            151.55,
+            33.57
+          ],
+          "text": "Task 4",
+          "textPreview": "Task 4",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Task 4",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "right"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Task 4",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 77,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            192.76,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 78,
+          "row": 6,
+          "column": 3,
+          "bbox": [
+            244.8,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 79,
+          "row": 6,
+          "column": 4,
+          "bbox": [
+            296.83,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 80,
+          "row": 6,
+          "column": 5,
+          "bbox": [
+            348.87,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 81,
+          "row": 6,
+          "column": 6,
+          "bbox": [
+            400.91,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 82,
+          "row": 6,
+          "column": 7,
+          "bbox": [
+            452.94,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 83,
+          "row": 6,
+          "column": 8,
+          "bbox": [
+            504.98,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent6"
+        },
+        {
+          "index": 84,
+          "row": 6,
+          "column": 9,
+          "bbox": [
+            557.02,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent6"
+        },
+        {
+          "index": 85,
+          "row": 6,
+          "column": 10,
+          "bbox": [
+            609.05,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent6"
+        },
+        {
+          "index": 86,
+          "row": 6,
+          "column": 11,
+          "bbox": [
+            661.09,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent6"
+        },
+        {
+          "index": 87,
+          "row": 6,
+          "column": 12,
+          "bbox": [
+            713.13,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "text": "◆",
+          "textPreview": "◆",
+          "fillColor": "accent6",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "◆",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "◆",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 88,
+          "row": 6,
+          "column": 13,
+          "bbox": [
+            765.16,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 89,
+          "row": 6,
+          "column": 14,
+          "bbox": [
+            817.2,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 90,
+          "row": 6,
+          "column": 15,
+          "bbox": [
+            869.24,
+            261.89,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 91,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            41.21,
+            295.46,
+            151.55,
+            33.57
+          ],
+          "text": "Task 5",
+          "textPreview": "Task 5",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Task 5",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "right"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Task 5",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 92,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            192.76,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 93,
+          "row": 7,
+          "column": 3,
+          "bbox": [
+            244.8,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 94,
+          "row": 7,
+          "column": 4,
+          "bbox": [
+            296.83,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 95,
+          "row": 7,
+          "column": 5,
+          "bbox": [
+            348.87,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 96,
+          "row": 7,
+          "column": 6,
+          "bbox": [
+            400.91,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 97,
+          "row": 7,
+          "column": 7,
+          "bbox": [
+            452.94,
+            295.46,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent2"
+        },
+        {
+          "index": 98,
+          "row": 7,
+          "column": 8,
+          "bbox": [
+            504.98,
+            295.46,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent2"
+        },
+        {
+          "index": 99,
+          "row": 7,
+          "column": 9,
+          "bbox": [
+            557.02,
+            295.46,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent2"
+        },
+        {
+          "index": 100,
+          "row": 7,
+          "column": 10,
+          "bbox": [
+            609.05,
+            295.46,
+            52.04,
+            33.57
+          ],
+          "text": "◆",
+          "textPreview": "◆",
+          "fillColor": "accent2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "◆",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "center"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "◆",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 101,
+          "row": 7,
+          "column": 11,
+          "bbox": [
+            661.09,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 102,
+          "row": 7,
+          "column": 12,
+          "bbox": [
+            713.13,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 103,
+          "row": 7,
+          "column": 13,
+          "bbox": [
+            765.16,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 104,
+          "row": 7,
+          "column": 14,
+          "bbox": [
+            817.2,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 105,
+          "row": 7,
+          "column": 15,
+          "bbox": [
+            869.24,
+            295.46,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 106,
+          "row": 8,
+          "column": 1,
+          "bbox": [
+            41.21,
+            329.03,
+            151.55,
+            33.57
+          ],
+          "text": "Task 6",
+          "textPreview": "Task 6",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Task 6",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "right"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Task 6",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 107,
+          "row": 8,
+          "column": 2,
+          "bbox": [
+            192.76,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 108,
+          "row": 8,
+          "column": 3,
+          "bbox": [
+            244.8,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 109,
+          "row": 8,
+          "column": 4,
+          "bbox": [
+            296.83,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 110,
+          "row": 8,
+          "column": 5,
+          "bbox": [
+            348.87,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 111,
+          "row": 8,
+          "column": 6,
+          "bbox": [
+            400.91,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 112,
+          "row": 8,
+          "column": 7,
+          "bbox": [
+            452.94,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 113,
+          "row": 8,
+          "column": 8,
+          "bbox": [
+            504.98,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 114,
+          "row": 8,
+          "column": 9,
+          "bbox": [
+            557.02,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 115,
+          "row": 8,
+          "column": 10,
+          "bbox": [
+            609.05,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 116,
+          "row": 8,
+          "column": 11,
+          "bbox": [
+            661.09,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 117,
+          "row": 8,
+          "column": 12,
+          "bbox": [
+            713.13,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent5"
+        },
+        {
+          "index": 118,
+          "row": 8,
+          "column": 13,
+          "bbox": [
+            765.16,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent5"
+        },
+        {
+          "index": 119,
+          "row": 8,
+          "column": 14,
+          "bbox": [
+            817.2,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent5"
+        },
+        {
+          "index": 120,
+          "row": 8,
+          "column": 15,
+          "bbox": [
+            869.24,
+            329.03,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 121,
+          "row": 9,
+          "column": 1,
+          "bbox": [
+            41.21,
+            362.6,
+            151.55,
+            33.57
+          ],
+          "text": "Task 7",
+          "textPreview": "Task 7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Task 7",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "right"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Task 7",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 122,
+          "row": 9,
+          "column": 2,
+          "bbox": [
+            192.76,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 123,
+          "row": 9,
+          "column": 3,
+          "bbox": [
+            244.8,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 124,
+          "row": 9,
+          "column": 4,
+          "bbox": [
+            296.83,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 125,
+          "row": 9,
+          "column": 5,
+          "bbox": [
+            348.87,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 126,
+          "row": 9,
+          "column": 6,
+          "bbox": [
+            400.91,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 127,
+          "row": 9,
+          "column": 7,
+          "bbox": [
+            452.94,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 128,
+          "row": 9,
+          "column": 8,
+          "bbox": [
+            504.98,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 129,
+          "row": 9,
+          "column": 9,
+          "bbox": [
+            557.02,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 130,
+          "row": 9,
+          "column": 10,
+          "bbox": [
+            609.05,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 131,
+          "row": 9,
+          "column": 11,
+          "bbox": [
+            661.09,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 132,
+          "row": 9,
+          "column": 12,
+          "bbox": [
+            713.13,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 133,
+          "row": 9,
+          "column": 13,
+          "bbox": [
+            765.16,
+            362.6,
+            52.04,
+            33.57
+          ]
+        },
+        {
+          "index": 134,
+          "row": 9,
+          "column": 14,
+          "bbox": [
+            817.2,
+            362.6,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent6"
+        },
+        {
+          "index": 135,
+          "row": 9,
+          "column": 15,
+          "bbox": [
+            869.24,
+            362.6,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent6"
+        },
+        {
+          "index": 136,
+          "row": 10,
+          "column": 1,
+          "bbox": [
+            41.21,
+            396.17,
+            151.55,
+            33.57
+          ],
+          "text": "Task 8",
+          "textPreview": "Task 8",
+          "fillColor": "rgba(255, 255, 255, 0.3855)",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Task 8",
+              "marginLeft": 0,
+              "indent": 0,
+              "spaceBefore": 0,
+              "spaceAfter": 0,
+              "resolvedTextStyle": {
+                "alignment": "right"
+              },
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Task 8",
+                  "fontSize": 10.67,
+                  "typeface": "Work Sans",
+                  "color": "dk1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 137,
+          "row": 10,
+          "column": 2,
+          "bbox": [
+            192.76,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 138,
+          "row": 10,
+          "column": 3,
+          "bbox": [
+            244.8,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 139,
+          "row": 10,
+          "column": 4,
+          "bbox": [
+            296.83,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 140,
+          "row": 10,
+          "column": 5,
+          "bbox": [
+            348.87,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 141,
+          "row": 10,
+          "column": 6,
+          "bbox": [
+            400.91,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 142,
+          "row": 10,
+          "column": 7,
+          "bbox": [
+            452.94,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 143,
+          "row": 10,
+          "column": 8,
+          "bbox": [
+            504.98,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 144,
+          "row": 10,
+          "column": 9,
+          "bbox": [
+            557.02,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 145,
+          "row": 10,
+          "column": 10,
+          "bbox": [
+            609.05,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 146,
+          "row": 10,
+          "column": 11,
+          "bbox": [
+            661.09,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 147,
+          "row": 10,
+          "column": 12,
+          "bbox": [
+            713.13,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 148,
+          "row": 10,
+          "column": 13,
+          "bbox": [
+            765.16,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 149,
+          "row": 10,
+          "column": 14,
+          "bbox": [
+            817.2,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "rgba(255, 255, 255, 0.3855)"
+        },
+        {
+          "index": 150,
+          "row": 10,
+          "column": 15,
+          "bbox": [
+            869.24,
+            396.17,
+            52.04,
+            33.57
+          ],
+          "fillColor": "accent2"
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

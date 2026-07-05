@@ -34,6 +34,78 @@ public partial class FishActor
         }
     }
 
+    private void CacheProceduralAnimationBones()
+    {
+        Transform searchRoot = modelRoot != null ? modelRoot : transform;
+        proceduralTailRoot = FindChildByNamePart(searchRoot, "tail");
+        proceduralSpineRoot = FindChildByNamePart(searchRoot, "spine_back");
+        if (proceduralSpineRoot == null)
+        {
+            proceduralSpineRoot = FindChildByNamePart(searchRoot, "spine");
+        }
+
+        proceduralTailBaseLocalRotation = proceduralTailRoot != null
+            ? proceduralTailRoot.localRotation
+            : Quaternion.identity;
+        proceduralSpineBaseLocalRotation = proceduralSpineRoot != null
+            ? proceduralSpineRoot.localRotation
+            : Quaternion.identity;
+    }
+
+    private void ApplyProceduralSwimPose()
+    {
+        float swimAnimationRate = Mathf.Lerp(0.86f, 1.18f, currentSwimEffort);
+        float tailAmplitude = Mathf.Lerp(slowTailSwayDegrees, fastTailSwayDegrees, currentSwimEffort);
+        float wave = Mathf.Sin((Time.time + schoolingNoiseSeed) * tailSwayFrequency * swimAnimationRate);
+        float curiousYaw = Time.time < curiousLookUntil ? Mathf.Sin(Time.time * 5.2f) * 7f : 0f;
+        float bodySway = wave * tailAmplitude + curiousYaw;
+
+        if (modelRoot != null && modelRoot != transform)
+        {
+            modelRoot.localRotation = baseModelLocalRotation * Quaternion.Euler(0f, bodySway, 0f);
+        }
+
+        if (proceduralSpineRoot != null && proceduralSpineRoot != modelRoot)
+        {
+            proceduralSpineRoot.localRotation = proceduralSpineBaseLocalRotation
+                * Quaternion.Euler(0f, -bodySway * Mathf.Max(0f, proceduralSpineSwayMultiplier), 0f);
+        }
+
+        if (proceduralTailRoot != null && proceduralTailRoot != modelRoot)
+        {
+            float tailYaw = wave * tailAmplitude * Mathf.Max(0f, proceduralTailSwayMultiplier);
+            proceduralTailRoot.localRotation = proceduralTailBaseLocalRotation
+                * Quaternion.Euler(0f, tailYaw, tailYaw * 0.18f);
+        }
+    }
+
+    private static Transform FindChildByNamePart(Transform root, string namePart)
+    {
+        if (root == null || string.IsNullOrEmpty(namePart))
+        {
+            return null;
+        }
+
+        string needle = namePart.ToLowerInvariant();
+        Queue<Transform> queue = new Queue<Transform>();
+        queue.Enqueue(root);
+        while (queue.Count > 0)
+        {
+            Transform current = queue.Dequeue();
+            if (current != root && current.name.ToLowerInvariant().Contains(needle))
+            {
+                return current;
+            }
+
+            for (int i = 0; i < current.childCount; i++)
+            {
+                queue.Enqueue(current.GetChild(i));
+            }
+        }
+
+        return null;
+    }
+
     private Vector3 BlendSchoolingDirection(Vector3 direction)
     {
         if (!enableSchooling)

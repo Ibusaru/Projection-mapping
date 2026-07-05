@@ -1,0 +1,273 @@
+{
+  "sourcePptx": "C:\\Users\\scrat\\Downloads\\創造工学発表ポスター.pptx",
+  "workspace": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect",
+  "outDir": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect",
+  "generatedAt": "2026-07-05T08:53:26.597Z",
+  "slideCount": 5,
+  "slideArtifacts": [
+    {
+      "slide": 1,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\source-slides\\source-slide-01.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-01.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\layouts\\source-slide-01.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-01.layout.json"
+    },
+    {
+      "slide": 2,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\source-slides\\source-slide-02.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-02.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\layouts\\source-slide-02.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-02.layout.json"
+    },
+    {
+      "slide": 3,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\source-slides\\source-slide-03.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-03.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\layouts\\source-slide-03.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-03.layout.json"
+    },
+    {
+      "slide": 4,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\source-slides\\source-slide-04.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-04.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\layouts\\source-slide-04.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-04.layout.json"
+    },
+    {
+      "slide": 5,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\source-slides\\source-slide-05.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-05.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\layouts\\source-slide-05.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-05.layout.json"
+    }
+  ],
+  "inspectPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\template-inspect.ndjson",
+  "inspectRelativePath": "template-inspect/template-inspect.ndjson",
+  "inspectTruncated": true,
+  "inspectMetadata": {
+    "revision": "8wnrwt",
+    "target": {
+      "id": "pr/o64ko7"
+    },
+    "kind": {
+      "requested": "slide,textbox,shape,image,table,chart",
+      "tokens": [
+        "slide",
+        "textbox",
+        "shape",
+        "image",
+        "table",
+        "chart"
+      ]
+    },
+    "include": {
+      "tokens": []
+    },
+    "exclude": {
+      "tokens": []
+    },
+    "notices": []
+  },
+  "extractedMedia": [
+    {
+      "entry": "ppt/media/image12.jpeg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image12.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image12.jpeg",
+      "bytes": 20447
+    },
+    {
+      "entry": "ppt/media/image10.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image10.png",
+      "relativePath": "template-inspect/assets/ppt/media/image10.png",
+      "bytes": 122747
+    },
+    {
+      "entry": "ppt/media/image13.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image13.png",
+      "relativePath": "template-inspect/assets/ppt/media/image13.png",
+      "bytes": 30620
+    },
+    {
+      "entry": "ppt/media/image14.svg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image14.svg",
+      "relativePath": "template-inspect/assets/ppt/media/image14.svg",
+      "bytes": 3879
+    },
+    {
+      "entry": "ppt/media/image15.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image15.png",
+      "relativePath": "template-inspect/assets/ppt/media/image15.png",
+      "bytes": 43301
+    },
+    {
+      "entry": "ppt/media/image16.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image16.png",
+      "relativePath": "template-inspect/assets/ppt/media/image16.png",
+      "bytes": 645924
+    },
+    {
+      "entry": "ppt/media/image17.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image17.png",
+      "relativePath": "template-inspect/assets/ppt/media/image17.png",
+      "bytes": 210391
+    },
+    {
+      "entry": "ppt/media/image18.svg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image18.svg",
+      "relativePath": "template-inspect/assets/ppt/media/image18.svg",
+      "bytes": 17666
+    },
+    {
+      "entry": "ppt/media/image1.svg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image1.svg",
+      "relativePath": "template-inspect/assets/ppt/media/image1.svg",
+      "bytes": 1445870
+    },
+    {
+      "entry": "ppt/media/image23.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image23.png",
+      "relativePath": "template-inspect/assets/ppt/media/image23.png",
+      "bytes": 13097
+    },
+    {
+      "entry": "ppt/media/image9.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image9.png",
+      "relativePath": "template-inspect/assets/ppt/media/image9.png",
+      "bytes": 126501
+    },
+    {
+      "entry": "ppt/media/image19.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image19.png",
+      "relativePath": "template-inspect/assets/ppt/media/image19.png",
+      "bytes": 339167
+    },
+    {
+      "entry": "ppt/media/image20.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image20.png",
+      "relativePath": "template-inspect/assets/ppt/media/image20.png",
+      "bytes": 1118465
+    },
+    {
+      "entry": "ppt/media/image21.jpeg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image21.jpeg",
+      "relativePath": "template-inspect/assets/ppt/media/image21.jpeg",
+      "bytes": 20447
+    },
+    {
+      "entry": "ppt/media/image22.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image22.png",
+      "relativePath": "template-inspect/assets/ppt/media/image22.png",
+      "bytes": 7043331
+    },
+    {
+      "entry": "ppt/media/image6.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image6.png",
+      "relativePath": "template-inspect/assets/ppt/media/image6.png",
+      "bytes": 50571
+    },
+    {
+      "entry": "ppt/media/image8.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image8.png",
+      "relativePath": "template-inspect/assets/ppt/media/image8.png",
+      "bytes": 153257
+    },
+    {
+      "entry": "ppt/media/image7.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image7.png",
+      "relativePath": "template-inspect/assets/ppt/media/image7.png",
+      "bytes": 56910
+    },
+    {
+      "entry": "ppt/media/image11.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image11.png",
+      "relativePath": "template-inspect/assets/ppt/media/image11.png",
+      "bytes": 24955
+    },
+    {
+      "entry": "ppt/media/image5.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image5.png",
+      "relativePath": "template-inspect/assets/ppt/media/image5.png",
+      "bytes": 47668
+    },
+    {
+      "entry": "ppt/media/image4.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image4.png",
+      "relativePath": "template-inspect/assets/ppt/media/image4.png",
+      "bytes": 31954
+    },
+    {
+      "entry": "ppt/media/image3.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image3.png",
+      "relativePath": "template-inspect/assets/ppt/media/image3.png",
+      "bytes": 26072
+    },
+    {
+      "entry": "ppt/media/image2.svg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\poster-advice\\inspect\\template-inspect\\assets\\ppt\\media\\image2.svg",
+      "relativePath": "template-inspect/assets/ppt/media/image2.svg",
+      "bytes": 3825
+    }
+  ],
+  "fonts": [
+    "+mj-cs",
+    "+mj-ea",
+    "+mj-lt",
+    "+mn-cs",
+    "+mn-ea",
+    "+mn-lt",
+    "Angsana New",
+    "Arial",
+    "Calibri",
+    "Calibri Light",
+    "Cordia New",
+    "DaunPenh",
+    "DokChampa",
+    "Ebrima",
+    "Estrangelo Edessa",
+    "Euphemia",
+    "Fredoka",
+    "Gautami",
+    "HG丸ｺﾞｼｯｸM-PRO",
+    "Iskoola Pota",
+    "Javanese Text",
+    "Kalinga",
+    "Kartika",
+    "Latha",
+    "Leelawadee UI",
+    "MV Boli",
+    "Mangal",
+    "Microsoft Himalaya",
+    "Microsoft JhengHei",
+    "Microsoft New Tai Lue",
+    "Microsoft Tai Le",
+    "Microsoft Uighur",
+    "Microsoft Yi Baiti",
+    "Mongolian Baiti",
+    "MoolBoran",
+    "Myanmar Text",
+    "Nirmala UI",
+    "Nyala",
+    "Phagspa",
+    "Plantagenet Cherokee",
+    "Raavi",
+    "Segoe UI",
+    "Shruti",
+    "Source Sans Pro",
+    "Sylfaen",
+    "Times New Roman",
+    "Tunga",
+    "Vrinda",
+    "新細明體",
+    "游ゴシック",
+    "游ゴシック Light",
+    "等线",
+    "等线 Light",
+    "맑은 고딕"
+  ],
+  "packageParts": {
+    "mediaCount": 23,
+    "slideXmlCount": 5,
+    "chartCount": 0,
+    "tableSlideCount": 0
+  }
+}

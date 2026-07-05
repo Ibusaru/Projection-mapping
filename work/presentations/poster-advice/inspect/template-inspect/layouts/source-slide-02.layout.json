@@ -1,0 +1,3799 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/pg3ex0nu",
+    "id": "pg3ex0nu",
+    "slide": 2,
+    "layoutId": "/ppt/slideLayouts/slideLayout7.xml",
+    "layoutName": "白紙",
+    "layoutType": "blank",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "backgroundColor": {
+      "type": "theme",
+      "value": "accent1",
+      "transform": {
+        "lighten": 0.8
+      }
+    },
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1586.67,
+      "height": 2244
+    }
+  },
+  "theme": {
+    "colorSchemeName": "Office 2013 - 2022 テーマ",
+    "colors": {
+      "accent1": "#4472C4",
+      "accent2": "#ED7D31",
+      "accent3": "#A5A5A5",
+      "accent4": "#FFC000",
+      "accent5": "#5B9BD5",
+      "accent6": "#70AD47",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#44546A",
+      "lt2": "#E7E6E6",
+      "hlink": "#0563C1",
+      "folHlink": "#954F72"
+    },
+    "fontScheme": {
+      "name": "Office 2013 - 2022 テーマ",
+      "majorFont": {
+        "latinTypeface": "Calibri Light"
+      },
+      "minorFont": {
+        "latinTypeface": "Calibri"
+      }
+    },
+    "typefaces": [
+      "+mn-ea",
+      "Calibri",
+      "Calibri Light",
+      "HG丸ｺﾞｼｯｸM-PRO"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout7.xml",
+      "name": "白紙",
+      "type": "blank",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/2",
+          "id": "2",
+          "name": "Date Placeholder 1",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "text": "7/5/2026",
+          "textPreview": "7/5/2026",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "7/5/2026",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "7/5/2026"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/3",
+          "id": "3",
+          "name": "Footer Placeholder 2",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/4",
+          "id": "4",
+          "name": "Slide Number Placeholder 3",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "type": "master",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/2",
+          "id": "2",
+          "name": "Title Placeholder 1",
+          "bbox": [
+            109.08,
+            119.47,
+            1368.5,
+            433.74
+          ],
+          "geometry": "rect",
+          "text": "マスター タイトルの書式設定",
+          "textPreview": "マスター タイトルの書式設定",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "autoFit": "shrinkText",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "マスター タイトルの書式設定",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "マスター タイトルの書式設定"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/3",
+          "id": "3",
+          "name": "Text Placeholder 2",
+          "bbox": [
+            109.08,
+            597.36,
+            1368.5,
+            1423.8
+          ],
+          "geometry": "rect",
+          "text": "マスター テキストの書式設定\n第 2 レベル\n第 3 レベル\n第 4 レベル\n第 5 レベル",
+          "textPreview": "マスター テキストの書式設定 | 第 2 レベル | 第 3 レベル | 第 4 レベル | 第 5 レベル",
+          "resolvedTextStyle": {
+            "vertical": 1,
+            "autoFit": "shrinkText",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "マスター テキストの書式設定",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "マスター テキストの書式設定"
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "text": "第 2 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "2 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "text": "第 3 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "3 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "text": "第 4 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "4 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "text": "第 5 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "5 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/4",
+          "id": "4",
+          "name": "Date Placeholder 3",
+          "bbox": [
+            109.08,
+            2079.86,
+            357,
+            119.47
+          ],
+          "geometry": "rect",
+          "text": "7/5/2026",
+          "textPreview": "7/5/2026",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "7/5/2026",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "7/5/2026"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 4,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/5",
+          "id": "5",
+          "name": "Footer Placeholder 4",
+          "bbox": [
+            525.58,
+            2079.86,
+            535.5,
+            119.47
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          }
+        },
+        {
+          "order": 5,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/6",
+          "id": "6",
+          "name": "Slide Number Placeholder 5",
+          "bbox": [
+            1120.58,
+            2079.86,
+            357,
+            119.47
+          ],
+          "geometry": "rect",
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "90",
+      "name": "Freeform 14",
+      "bbox": [
+        1701.86,
+        536.5,
+        1432.69,
+        417.56
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "91",
+      "name": "TextBox 15",
+      "bbox": [
+        1694.55,
+        479.87,
+        1432.69,
+        451.25
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "3",
+      "name": "Freeform 3",
+      "bbox": [
+        80.64,
+        1281.44,
+        1447.36,
+        407.51
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "text": "\n\t\n・魚の種類を増やし、より多彩な水族館を表現できるようにする。 \n・背景演出を追加し、より臨場感のある空間を実現する。 \n・餌やりなどの機能を追加し、来場者がより楽しめる体験型コンテンツに発展させる。 \n・システムを改良し、より多くの人が同時に参加できるようにする。 \n\n\t",
+      "textPreview": "| \t | ・魚の種類を増やし、より多彩な水族館を表現できるようにする。  | ・背景演出を追加し、より臨場感のある空間を実現する。  | ・餌やりなどの機能を追加し、来場者がより楽しめる体験型コンテンツに発展させる。  | ・システムを改良し、より多くの人が同時に参加でき...",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 10,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          },
+          {
+            "index": 2,
+            "text": ""
+          },
+          {
+            "index": 3,
+            "text": "・魚の種類を増やし、より多彩な水族館を表現できるようにする。"
+          },
+          {
+            "index": 4,
+            "text": "・背景演出を追加し、より臨場感のある空間を実現する。"
+          },
+          {
+            "index": 5,
+            "text": "・"
+          },
+          {
+            "index": 6,
+            "text": "餌やりなどの機能を追加し、来場者がより楽しめる体験型コンテンツに発展させる"
+          },
+          {
+            "index": 7,
+            "text": "。"
+          },
+          {
+            "index": 8,
+            "text": "・システムを改良し、より多くの人が同時に参加できるようにする。"
+          },
+          {
+            "index": 9,
+            "text": ""
+          },
+          {
+            "index": 10,
+            "text": ""
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 2,
+          "runs": [
+            {
+              "index": 1,
+              "text": "\t",
+              "typeface": "+mn-ea"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "・魚の種類を増やし、より多彩な水族館を表現できるようにする。 ",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "・",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "魚の種類を増やし、より多彩な水族館を表現できるようにする。 ",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "・背景演出を追加し、より臨場感のある空間を実現する。 ",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "・",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "背景演出を追加し、より臨場感のある空間を実現する。 ",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 5,
+          "text": "・餌やりなどの機能を追加し、来場者がより楽しめる体験型コンテンツに発展させる。 ",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "・",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "餌やりなどの機能を追加し、来場者がより楽しめる体験型コンテンツに発展させる。 ",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 6,
+          "text": "・システムを改良し、より多くの人が同時に参加できるようにする。 ",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "・",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "システムを改良し、より多くの人が同時に参加できるようにする。",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": " ",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 7,
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "\n"
+            },
+            {
+              "index": 2,
+              "text": "\t",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "4",
+      "name": "TextBox 4",
+      "bbox": [
+        80.64,
+        1248.42,
+        1425.39,
+        415.17
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "6",
+      "name": "Freeform 6",
+      "bbox": [
+        161.55,
+        1242.67,
+        411.75,
+        77
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "7",
+      "name": "TextBox 7",
+      "bbox": [
+        161.55,
+        1199.29,
+        411.75,
+        120.37
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "14",
+      "name": "Freeform 14",
+      "bbox": [
+        80.64,
+        1730.76,
+        1425.39,
+        459.05
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "15",
+      "name": "TextBox 15",
+      "bbox": [
+        80.64,
+        1693.71,
+        1425.39,
+        496.09
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "17",
+      "name": "Freeform 17",
+      "bbox": [
+        158.72,
+        1695.49,
+        293.07,
+        69.71
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/szqtcj6t",
+      "id": "18",
+      "name": "TextBox 18",
+      "bbox": [
+        158.72,
+        1656.22,
+        293.07,
+        108.99
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3q5o7q",
+      "id": "37",
+      "name": "Freeform 37",
+      "bbox": [
+        1266.93,
+        -228.38,
+        241.92,
+        643.15
+      ],
+      "rotation": 90,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image14.svg",
+        "contentType": "image/svg+xml",
+        "byteLength": 3879
+      }
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q1orytsv",
+      "id": "49",
+      "name": "TextBox 49",
+      "bbox": [
+        195.71,
+        1248.42,
+        337.78,
+        62.43
+      ],
+      "geometry": "rect",
+      "text": "今後の展望",
+      "textPreview": "今後の展望",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "今後の展望"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "今後の展望",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "今後の展望",
+              "fontSize": 48,
+              "typeface": "+mn-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kjm1cfa9",
+      "id": "50",
+      "name": "TextBox 50",
+      "bbox": [
+        132.57,
+        1697.9,
+        337.78,
+        62.54
+      ],
+      "geometry": "rect",
+      "text": "まとめ",
+      "textPreview": "まとめ",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "まとめ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "まとめ",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "まとめ",
+              "fontSize": 48,
+              "typeface": "+mn-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r2p8nqxs",
+      "id": "53",
+      "name": "TextBox 53",
+      "bbox": [
+        158.72,
+        1804.25,
+        874.13,
+        204.68
+      ],
+      "geometry": "rect",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non elit mauris. Cras euismod, metus ac finibus finibus, felis dui suscipit purus, a maximus leo ligula at dolor. Morbi et malesuada purus. Phasellus a lacus sit amet urna tempor sollicitudin. Cras pretium tempor elit blandit egestas. Donec sed dignissim augue. Suspendisse ac vulputate leo. Cras aliquet nunc ac velit cursus viverra. In hac habitasse platea dictumst. Nam tortor urna, semper ac nulla id, porttitor semper felis. Phasellus blandit eros viverra, ultricies nibh nec, viverra ipsum. Ut nec gravida massa, eu convallis est.",
+      "textPreview": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non elit mauris. Cras euismod, metus ac finibus finibus, felis dui susci...",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non elit mauris. Cras euismod, metus"
+          },
+          {
+            "index": 2,
+            "text": "ac finibus finibus, felis dui suscipit purus, a maximus leo ligula at dolor. Morbi et malesuada purus."
+          },
+          {
+            "index": 3,
+            "text": "Phasellus a lacus sit amet urna tempor sollicitudin. Cras pretium tempor elit blandit egestas. Donec sed"
+          },
+          {
+            "index": 4,
+            "text": "dignissim augue. Suspendisse ac vulputate leo. Cras aliquet nunc ac velit cursus viverra. In hac habitasse"
+          },
+          {
+            "index": 5,
+            "text": "platea dictumst. Nam tortor urna, semper ac nulla id, porttitor semper felis. Phasellus blandit eros"
+          },
+          {
+            "index": 6,
+            "text": "viverra, ultricies nibh nec, viverra ipsum. Ut nec gravida massa, eu convallis est."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non elit mauris. Cras euismod, metus ac finibus finibus, felis dui suscipit purus, a maximus leo ligula at dolor. Morbi et malesuada purus. Phasellus a lacus sit amet urna tempor sollicitudin. Cras pretium tempor elit blandit egestas. Donec sed dignissim augue. Suspendisse ac vulputate leo. Cras aliquet nunc ac velit cursus viverra. In hac habitasse platea dictumst. Nam tortor urna, semper ac nulla id, porttitor semper felis. Phasellus blandit eros viverra, ultricies nibh nec, viverra ipsum. Ut nec gravida massa, eu convallis est.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Lorem ipsum dolor sit ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 2,
+              "text": "amet",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 3,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 4,
+              "text": "consectetur",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 5,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 6,
+              "text": "adipiscing",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 7,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 8,
+              "text": "elit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 9,
+              "text": ". ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 10,
+              "text": "Quisque",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 11,
+              "text": " non ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 12,
+              "text": "elit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 13,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 14,
+              "text": "mauris",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 15,
+              "text": ". Cras ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 16,
+              "text": "euismod",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 17,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 18,
+              "text": "metus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 19,
+              "text": " ac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 20,
+              "text": "finibus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 21,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 22,
+              "text": "finibus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 23,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 24,
+              "text": "felis",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 25,
+              "text": " dui ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 26,
+              "text": "suscipit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 27,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 28,
+              "text": "purus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 29,
+              "text": ", a maximus ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 30,
+              "text": "leo",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 31,
+              "text": " ligula at dolor. Morbi et ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 32,
+              "text": "malesuada",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 33,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 34,
+              "text": "purus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 35,
+              "text": ". ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 36,
+              "text": "Phasellus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 37,
+              "text": " a ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 38,
+              "text": "lacus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 39,
+              "text": " sit ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 40,
+              "text": "amet",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 41,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 42,
+              "text": "urna",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 43,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 44,
+              "text": "tempor",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 45,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 46,
+              "text": "sollicitudin",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 47,
+              "text": ". Cras ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 48,
+              "text": "pretium",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 49,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 50,
+              "text": "tempor",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 51,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 52,
+              "text": "elit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 53,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 54,
+              "text": "blandit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 55,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 56,
+              "text": "egestas",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 57,
+              "text": ". Donec sed ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 58,
+              "text": "dignissim",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 59,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 60,
+              "text": "augue",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 61,
+              "text": ". ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 62,
+              "text": "Suspendisse",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 63,
+              "text": " ac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 64,
+              "text": "vulputate",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 65,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 66,
+              "text": "leo",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 67,
+              "text": ". Cras ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 68,
+              "text": "aliquet",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 69,
+              "text": " nunc ac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 70,
+              "text": "velit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 71,
+              "text": " cursus ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 72,
+              "text": "viverra",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 73,
+              "text": ". In hac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 74,
+              "text": "habitasse",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 75,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 76,
+              "text": "platea",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 77,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 78,
+              "text": "dictumst",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 79,
+              "text": ". Nam ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 80,
+              "text": "tortor",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 81,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 82,
+              "text": "urna",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 83,
+              "text": ", semper ac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 84,
+              "text": "nulla",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 85,
+              "text": " id, ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 86,
+              "text": "porttitor",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 87,
+              "text": " semper ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 88,
+              "text": "felis",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 89,
+              "text": ". ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 90,
+              "text": "Phasellus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 91,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 92,
+              "text": "blandit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 93,
+              "text": " eros ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 94,
+              "text": "viverra",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 95,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 96,
+              "text": "ultricies",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 97,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 98,
+              "text": "nibh",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 99,
+              "text": " nec, ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 100,
+              "text": "viverra",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 101,
+              "text": " ipsum. Ut nec gravida ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 102,
+              "text": "massa",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 103,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 104,
+              "text": "eu",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 105,
+              "text": " convallis est.",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gfmlkjm1",
+      "id": "76",
+      "name": "Freeform 14",
+      "bbox": [
+        80.64,
+        90.25,
+        1425.39,
+        1118.36
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/90je9cvi",
+      "id": "77",
+      "name": "TextBox 15",
+      "bbox": [
+        80.64,
+        0,
+        1425.39,
+        1208.61
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yd0z6103",
+      "id": "74",
+      "name": "Freeform 17",
+      "bbox": [
+        132.85,
+        52.08,
+        399.89,
+        79.4
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rytsvu9k",
+      "id": "75",
+      "name": "TextBox 18",
+      "bbox": [
+        132.85,
+        7.35,
+        399.89,
+        124.14
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmhk3q5o",
+      "id": "71",
+      "name": "TextBox 50",
+      "bbox": [
+        158.72,
+        64.9,
+        337.78,
+        62.54
+      ],
+      "geometry": "rect",
+      "text": "体験の流れ",
+      "textPreview": "体験の流れ",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "体験の流れ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "体験の流れ",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "体験の流れ",
+              "fontSize": 48,
+              "typeface": "+mn-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7adsji5",
+      "id": "72",
+      "name": "TextBox 53",
+      "bbox": [
+        -399.02,
+        552.16,
+        360.62,
+        500.88
+      ],
+      "geometry": "rect",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non elit mauris. Cras euismod, metus ac finibus finibus, felis dui suscipit purus, a maximus leo ligula at dolor. Morbi et malesuada purus. Phasellus a lacus sit amet urna tempor sollicitudin. Cras pretium tempor elit blandit egestas. Donec sed dignissim augue. Suspendisse ac vulputate leo. Cras aliquet nunc ac velit cursus viverra. In hac habitasse platea dictumst. Nam tortor urna, semper ac nulla id, porttitor semper felis. Phasellus blandit eros viverra, ultricies nibh nec, viverra ipsum. Ut nec gravida massa, eu convallis est.",
+      "textPreview": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non elit mauris. Cras euismod, metus ac finibus finibus, felis dui susci...",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 15,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Lorem ipsum dolor sit amet, consectetur"
+          },
+          {
+            "index": 2,
+            "text": "adipiscing elit. Quisque non elit mauris."
+          },
+          {
+            "index": 3,
+            "text": "Cras euismod, metus ac finibus finibus,"
+          },
+          {
+            "index": 4,
+            "text": "felis dui suscipit purus, a maximus leo"
+          },
+          {
+            "index": 5,
+            "text": "ligula at dolor. Morbi et malesuada purus."
+          },
+          {
+            "index": 6,
+            "text": "Phasellus a lacus sit amet urna tempor"
+          },
+          {
+            "index": 7,
+            "text": "sollicitudin. Cras pretium tempor elit"
+          },
+          {
+            "index": 8,
+            "text": "blandit egestas. Donec sed dignissim"
+          },
+          {
+            "index": 9,
+            "text": "augue. Suspendisse ac vulputate leo. Cras"
+          },
+          {
+            "index": 10,
+            "text": "aliquet nunc ac velit cursus viverra. In hac"
+          },
+          {
+            "index": 11,
+            "text": "habitasse platea dictumst. Nam tortor"
+          },
+          {
+            "index": 12,
+            "text": "urna, semper ac nulla id, porttitor semper"
+          },
+          {
+            "index": 13,
+            "text": "felis. Phasellus blandit eros viverra,"
+          },
+          {
+            "index": 14,
+            "text": "ultricies nibh nec, viverra ipsum. Ut nec"
+          },
+          {
+            "index": 15,
+            "text": "gravida massa, eu convallis est."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non elit mauris. Cras euismod, metus ac finibus finibus, felis dui suscipit purus, a maximus leo ligula at dolor. Morbi et malesuada purus. Phasellus a lacus sit amet urna tempor sollicitudin. Cras pretium tempor elit blandit egestas. Donec sed dignissim augue. Suspendisse ac vulputate leo. Cras aliquet nunc ac velit cursus viverra. In hac habitasse platea dictumst. Nam tortor urna, semper ac nulla id, porttitor semper felis. Phasellus blandit eros viverra, ultricies nibh nec, viverra ipsum. Ut nec gravida massa, eu convallis est.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Lorem ipsum dolor sit ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 2,
+              "text": "amet",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 3,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 4,
+              "text": "consectetur",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 5,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 6,
+              "text": "adipiscing",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 7,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 8,
+              "text": "elit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 9,
+              "text": ". ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 10,
+              "text": "Quisque",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 11,
+              "text": " non ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 12,
+              "text": "elit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 13,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 14,
+              "text": "mauris",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 15,
+              "text": ". Cras ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 16,
+              "text": "euismod",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 17,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 18,
+              "text": "metus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 19,
+              "text": " ac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 20,
+              "text": "finibus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 21,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 22,
+              "text": "finibus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 23,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 24,
+              "text": "felis",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 25,
+              "text": " dui ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 26,
+              "text": "suscipit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 27,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 28,
+              "text": "purus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 29,
+              "text": ", a maximus ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 30,
+              "text": "leo",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 31,
+              "text": " ligula at dolor. Morbi et ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 32,
+              "text": "malesuada",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 33,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 34,
+              "text": "purus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 35,
+              "text": ". ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 36,
+              "text": "Phasellus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 37,
+              "text": " a ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 38,
+              "text": "lacus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 39,
+              "text": " sit ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 40,
+              "text": "amet",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 41,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 42,
+              "text": "urna",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 43,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 44,
+              "text": "tempor",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 45,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 46,
+              "text": "sollicitudin",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 47,
+              "text": ". Cras ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 48,
+              "text": "pretium",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 49,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 50,
+              "text": "tempor",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 51,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 52,
+              "text": "elit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 53,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 54,
+              "text": "blandit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 55,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 56,
+              "text": "egestas",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 57,
+              "text": ". Donec sed ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 58,
+              "text": "dignissim",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 59,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 60,
+              "text": "augue",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 61,
+              "text": ". ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 62,
+              "text": "Suspendisse",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 63,
+              "text": " ac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 64,
+              "text": "vulputate",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 65,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 66,
+              "text": "leo",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 67,
+              "text": ". Cras ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 68,
+              "text": "aliquet",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 69,
+              "text": " nunc ac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 70,
+              "text": "velit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 71,
+              "text": " cursus ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 72,
+              "text": "viverra",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 73,
+              "text": ". In hac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 74,
+              "text": "habitasse",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 75,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 76,
+              "text": "platea",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 77,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 78,
+              "text": "dictumst",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 79,
+              "text": ". Nam ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 80,
+              "text": "tortor",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 81,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 82,
+              "text": "urna",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 83,
+              "text": ", semper ac ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 84,
+              "text": "nulla",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 85,
+              "text": " id, ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 86,
+              "text": "porttitor",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 87,
+              "text": " semper ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 88,
+              "text": "felis",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 89,
+              "text": ". ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 90,
+              "text": "Phasellus",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 91,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 92,
+              "text": "blandit",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 93,
+              "text": " eros ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 94,
+              "text": "viverra",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 95,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 96,
+              "text": "ultricies",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 97,
+              "text": " ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 98,
+              "text": "nibh",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 99,
+              "text": " nec, ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 100,
+              "text": "viverra",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 101,
+              "text": " ipsum. Ut nec gravida ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 102,
+              "text": "massa",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 103,
+              "text": ", ",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 104,
+              "text": "eu",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 105,
+              "text": " convallis est.",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "98",
+      "name": "TextBox 53",
+      "bbox": [
+        1828.53,
+        643.35,
+        874.13,
+        27.99
+      ],
+      "geometry": "rect",
+      "text": "ブレンダーで作ったオブジェクト・背景.",
+      "textPreview": "ブレンダーで作ったオブジェクト・背景.",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ブレンダーで作ったオブジェクト・背景."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ブレンダーで作ったオブジェクト・背景.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "ブレンダーで作ったオブジェクト・背景",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            },
+            {
+              "index": 2,
+              "text": ".",
+              "fontSize": 20.64,
+              "typeface": "+mn-ea"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oza1gvy9",
+      "id": "94",
+      "name": "TextBox 18",
+      "bbox": [
+        1782.77,
+        451.22,
+        337.78,
+        121.97
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "93",
+      "name": "Freeform 17",
+      "bbox": [
+        1782.77,
+        495.17,
+        337.78,
+        78.02
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "97",
+      "name": "TextBox 50",
+      "bbox": [
+        1776.29,
+        504.56,
+        337.78,
+        62.43
+      ],
+      "geometry": "rect",
+      "text": "制作物",
+      "textPreview": "制作物",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "制作物"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "制作物",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "制作物",
+              "fontSize": 48,
+              "typeface": "+mn-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yd0z6103",
+      "id": "9",
+      "name": "テキスト ボックス 8",
+      "bbox": [
+        80.64,
+        452.78,
+        307.43,
+        100.17
+      ],
+      "geometry": "rect",
+      "text": "QRコードを\n読み取る",
+      "textPreview": "QRコードを | 読み取る",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "QRコードを"
+          },
+          {
+            "index": 2,
+            "text": "読み取る"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "QRコードを",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "QR",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "コードを",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "読み取る",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "読み取る",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "10",
+      "name": "テキスト ボックス 9",
+      "bbox": [
+        594.1,
+        453.44,
+        219.2,
+        100.17
+      ],
+      "geometry": "rect",
+      "text": "Webサイトにアクセス",
+      "textPreview": "Webサイトにアクセス",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Web"
+          },
+          {
+            "index": 2,
+            "text": "サイトにア"
+          },
+          {
+            "index": 3,
+            "text": "クセス"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Webサイトにアクセス",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Web",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "サイトにアクセス",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "11",
+      "name": "テキスト ボックス 10",
+      "bbox": [
+        128.46,
+        1049.74,
+        324.18,
+        100.17
+      ],
+      "geometry": "rect",
+      "text": "オリジナルの魚をカスタマイズ",
+      "textPreview": "オリジナルの魚をカスタマイズ",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "オリジナルの魚を"
+          },
+          {
+            "index": 2,
+            "text": "カスタマイズ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "オリジナルの魚をカスタマイズ",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "オリジナルの魚をカスタマイズ",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/yxobm58z",
+      "id": "99",
+      "name": "図 11",
+      "bbox": [
+        112.98,
+        200.85,
+        251.94,
+        251.94
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image15.png",
+        "contentType": "image/png",
+        "byteLength": 43301
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image15.png",
+        "contentType": "image/png",
+        "byteLength": 43301
+      }
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wfyxobm5",
+      "id": "25",
+      "name": "Freeform 2",
+      "bbox": [
+        609.05,
+        136.32,
+        195.56,
+        325.05
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image16.png",
+        "contentType": "image/png",
+        "byteLength": 645924
+      }
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8bat47",
+      "id": "27",
+      "name": "Freeform 3",
+      "bbox": [
+        131.92,
+        928.96,
+        160.59,
+        117.9
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image17.png",
+        "contentType": "image/png",
+        "byteLength": 210391
+      }
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7mp0bi9",
+      "id": "29",
+      "name": "Freeform 4",
+      "bbox": [
+        142.63,
+        741.01,
+        214.43,
+        127.67
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image18.svg",
+        "contentType": "image/svg+xml",
+        "byteLength": 17666
+      }
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "31",
+      "name": "Freeform 5",
+      "bbox": [
+        277.16,
+        855.36,
+        178.26,
+        127.67
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image19.png",
+        "contentType": "image/png",
+        "byteLength": 339167
+      }
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "33",
+      "name": "テキスト ボックス 32",
+      "bbox": [
+        945.75,
+        1049.56,
+        528.63,
+        100.17
+      ],
+      "geometry": "rect",
+      "text": "プロジェクター上に\n放流した魚が反映される",
+      "textPreview": "プロジェクター上に | 放流した魚が反映される",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "プロジェクター上に"
+          },
+          {
+            "index": 2,
+            "text": "放流した魚が反映される"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "プロジェクター上に",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "プロジェクター上に",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "放流した魚が反映される",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "放流した魚が反映される",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "35",
+      "name": "Freeform 6",
+      "bbox": [
+        945.75,
+        722.3,
+        514.88,
+        323.53
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image20.png",
+        "contentType": "image/png",
+        "byteLength": 1118465
+      }
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "38",
+      "name": "Freeform 3",
+      "bbox": [
+        995.81,
+        766.7,
+        112.08,
+        72.82
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image17.png",
+        "contentType": "image/png",
+        "byteLength": 210391
+      }
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "40",
+      "name": "Freeform 4",
+      "bbox": [
+        1252.62,
+        791.13,
+        176.37,
+        95.15
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image18.svg",
+        "contentType": "image/svg+xml",
+        "byteLength": 17666
+      }
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "42",
+      "name": "Freeform 5",
+      "bbox": [
+        1125.57,
+        875.75,
+        135.07,
+        95.15
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image19.png",
+        "contentType": "image/png",
+        "byteLength": 339167
+      }
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "44",
+      "name": "テキスト ボックス 43",
+      "bbox": [
+        985.16,
+        476.67,
+        367.47,
+        54.93
+      ],
+      "geometry": "rect",
+      "text": "ニックネームを入力",
+      "textPreview": "ニックネームを入力",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ニックネームを入力"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ニックネームを入力",
+          "runs": [
+            {
+              "index": 1,
+              "text": "ニックネームを入力",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "46",
+      "name": "テキスト ボックス 45",
+      "bbox": [
+        541.75,
+        1049.56,
+        324.18,
+        54.93
+      ],
+      "geometry": "rect",
+      "text": "放流",
+      "textPreview": "放流",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "放流"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "放流",
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "放流",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

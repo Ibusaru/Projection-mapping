@@ -36,7 +36,6 @@ public partial class FishActor
             return false;
         }
 
-        ExpandProjectionBounds(ref projectionBounds, drawingProjectionPaddingRatio);
         Texture2D projectionTexture = DrawingTextureMapper.CreateProjectionTexture(
             texture,
             drawingAlphaThreshold,
@@ -180,24 +179,6 @@ public partial class FishActor
 
         origin.x = flipHorizontal ? bounds.max.x : bounds.min.x;
         uVector = (flipHorizontal ? Vector3.left : Vector3.right) * length;
-    }
-
-    private static void ExpandProjectionBounds(ref Bounds bounds, Vector2 paddingRatio)
-    {
-        Vector3 size = bounds.size;
-        bool useZLength = size.z >= size.x;
-        float horizontalPadding = Mathf.Max(useZLength ? size.z : size.x, 0.001f)
-            * Mathf.Clamp(paddingRatio.x, 0f, 0.45f);
-        float verticalPadding = Mathf.Max(size.y, 0.001f)
-            * Mathf.Clamp(paddingRatio.y, 0f, 0.45f);
-
-        if (useZLength)
-        {
-            bounds.Expand(new Vector3(0f, verticalPadding * 2f, horizontalPadding * 2f));
-            return;
-        }
-
-        bounds.Expand(new Vector3(horizontalPadding * 2f, verticalPadding * 2f, 0f));
     }
 
     private static bool TryCalculateProjectionBounds(Renderer[] renderers, Transform projector, out Bounds bounds)

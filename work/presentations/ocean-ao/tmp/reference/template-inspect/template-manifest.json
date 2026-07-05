@@ -1,0 +1,427 @@
+{
+  "sourcePptx": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference-template.pptx",
+  "workspace": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference",
+  "outDir": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect",
+  "generatedAt": "2026-07-04T08:15:00.915Z",
+  "slideCount": 39,
+  "slideArtifacts": [
+    {
+      "slide": 1,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-01.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-01.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-01.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-01.layout.json"
+    },
+    {
+      "slide": 2,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-02.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-02.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-02.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-02.layout.json"
+    },
+    {
+      "slide": 3,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-03.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-03.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-03.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-03.layout.json"
+    },
+    {
+      "slide": 4,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-04.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-04.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-04.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-04.layout.json"
+    },
+    {
+      "slide": 5,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-05.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-05.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-05.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-05.layout.json"
+    },
+    {
+      "slide": 6,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-06.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-06.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-06.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-06.layout.json"
+    },
+    {
+      "slide": 7,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-07.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-07.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-07.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-07.layout.json"
+    },
+    {
+      "slide": 8,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-08.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-08.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-08.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-08.layout.json"
+    },
+    {
+      "slide": 9,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-09.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-09.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-09.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-09.layout.json"
+    },
+    {
+      "slide": 10,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-10.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-10.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-10.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-10.layout.json"
+    },
+    {
+      "slide": 11,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-11.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-11.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-11.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-11.layout.json"
+    },
+    {
+      "slide": 12,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-12.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-12.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-12.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-12.layout.json"
+    },
+    {
+      "slide": 13,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-13.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-13.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-13.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-13.layout.json"
+    },
+    {
+      "slide": 14,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-14.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-14.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-14.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-14.layout.json"
+    },
+    {
+      "slide": 15,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-15.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-15.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-15.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-15.layout.json"
+    },
+    {
+      "slide": 16,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-16.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-16.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-16.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-16.layout.json"
+    },
+    {
+      "slide": 17,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-17.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-17.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-17.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-17.layout.json"
+    },
+    {
+      "slide": 18,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-18.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-18.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-18.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-18.layout.json"
+    },
+    {
+      "slide": 19,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-19.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-19.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-19.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-19.layout.json"
+    },
+    {
+      "slide": 20,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-20.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-20.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-20.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-20.layout.json"
+    },
+    {
+      "slide": 21,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-21.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-21.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-21.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-21.layout.json"
+    },
+    {
+      "slide": 22,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-22.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-22.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-22.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-22.layout.json"
+    },
+    {
+      "slide": 23,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-23.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-23.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-23.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-23.layout.json"
+    },
+    {
+      "slide": 24,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-24.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-24.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-24.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-24.layout.json"
+    },
+    {
+      "slide": 25,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-25.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-25.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-25.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-25.layout.json"
+    },
+    {
+      "slide": 26,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-26.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-26.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-26.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-26.layout.json"
+    },
+    {
+      "slide": 27,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-27.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-27.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-27.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-27.layout.json"
+    },
+    {
+      "slide": 28,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-28.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-28.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-28.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-28.layout.json"
+    },
+    {
+      "slide": 29,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-29.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-29.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-29.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-29.layout.json"
+    },
+    {
+      "slide": 30,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-30.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-30.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-30.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-30.layout.json"
+    },
+    {
+      "slide": 31,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-31.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-31.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-31.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-31.layout.json"
+    },
+    {
+      "slide": 32,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-32.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-32.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-32.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-32.layout.json"
+    },
+    {
+      "slide": 33,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-33.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-33.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-33.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-33.layout.json"
+    },
+    {
+      "slide": 34,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-34.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-34.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-34.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-34.layout.json"
+    },
+    {
+      "slide": 35,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-35.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-35.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-35.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-35.layout.json"
+    },
+    {
+      "slide": 36,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-36.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-36.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-36.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-36.layout.json"
+    },
+    {
+      "slide": 37,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-37.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-37.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-37.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-37.layout.json"
+    },
+    {
+      "slide": 38,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-38.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-38.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-38.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-38.layout.json"
+    },
+    {
+      "slide": 39,
+      "previewPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\source-slides\\source-slide-39.png",
+      "previewRelativePath": "template-inspect/source-slides/source-slide-39.png",
+      "layoutPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\layouts\\source-slide-39.layout.json",
+      "layoutRelativePath": "template-inspect/layouts/source-slide-39.layout.json"
+    }
+  ],
+  "inspectPath": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\template-inspect.ndjson",
+  "inspectRelativePath": "template-inspect/template-inspect.ndjson",
+  "inspectTruncated": true,
+  "inspectMetadata": {
+    "revision": "b7enaz",
+    "target": {
+      "id": "pr/4aqhlc"
+    },
+    "kind": {
+      "requested": "slide,textbox,shape,image,table,chart",
+      "tokens": [
+        "slide",
+        "textbox",
+        "shape",
+        "image",
+        "table",
+        "chart"
+      ]
+    },
+    "include": {
+      "tokens": []
+    },
+    "exclude": {
+      "tokens": []
+    },
+    "notices": []
+  },
+  "extractedMedia": [
+    {
+      "entry": "ppt/media/image3.jpg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image3.jpg",
+      "relativePath": "template-inspect/assets/ppt/media/image3.jpg",
+      "bytes": 20238
+    },
+    {
+      "entry": "ppt/media/image4.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image4.png",
+      "relativePath": "template-inspect/assets/ppt/media/image4.png",
+      "bytes": 5802
+    },
+    {
+      "entry": "ppt/media/image8.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image8.png",
+      "relativePath": "template-inspect/assets/ppt/media/image8.png",
+      "bytes": 574248
+    },
+    {
+      "entry": "ppt/media/image2.jpg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image2.jpg",
+      "relativePath": "template-inspect/assets/ppt/media/image2.jpg",
+      "bytes": 71180
+    },
+    {
+      "entry": "ppt/media/image7.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image7.png",
+      "relativePath": "template-inspect/assets/ppt/media/image7.png",
+      "bytes": 178532
+    },
+    {
+      "entry": "ppt/media/image12.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image12.png",
+      "relativePath": "template-inspect/assets/ppt/media/image12.png",
+      "bytes": 396939
+    },
+    {
+      "entry": "ppt/media/image6.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image6.png",
+      "relativePath": "template-inspect/assets/ppt/media/image6.png",
+      "bytes": 331053
+    },
+    {
+      "entry": "ppt/media/image10.jpg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image10.jpg",
+      "relativePath": "template-inspect/assets/ppt/media/image10.jpg",
+      "bytes": 27223
+    },
+    {
+      "entry": "ppt/media/image11.png",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image11.png",
+      "relativePath": "template-inspect/assets/ppt/media/image11.png",
+      "bytes": 253721
+    },
+    {
+      "entry": "ppt/media/image9.jpg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image9.jpg",
+      "relativePath": "template-inspect/assets/ppt/media/image9.jpg",
+      "bytes": 31029
+    },
+    {
+      "entry": "ppt/media/image1.jpg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image1.jpg",
+      "relativePath": "template-inspect/assets/ppt/media/image1.jpg",
+      "bytes": 143937
+    },
+    {
+      "entry": "ppt/media/image5.jpg",
+      "path": "C:\\Users\\scrat\\Documents\\創造工学\\work\\presentations\\ocean-ao\\tmp\\reference\\template-inspect\\assets\\ppt\\media\\image5.jpg",
+      "relativePath": "template-inspect/assets/ppt/media/image5.jpg",
+      "bytes": 31584
+    }
+  ],
+  "fonts": [
+    "Angsana New",
+    "Arial",
+    "Averia Libre",
+    "Calibri",
+    "Cordia New",
+    "DaunPenh",
+    "DokChampa",
+    "Estrangelo Edessa",
+    "Euphemia",
+    "Gautami",
+    "Iskoola Pota",
+    "Kalinga",
+    "Kartika",
+    "Latha",
+    "MV Boli",
+    "Mangal",
+    "Microsoft Himalaya",
+    "Microsoft Uighur",
+    "Microsoft Yi Baiti",
+    "Mongolian Baiti",
+    "Montserrat",
+    "MoolBoran",
+    "Nyala",
+    "Plantagenet Cherokee",
+    "Raavi",
+    "Shruti",
+    "Sylfaen",
+    "Times New Roman",
+    "Tunga",
+    "Vrinda",
+    "Work Sans",
+    "Work Sans Regular",
+    "宋体",
+    "新細明體",
+    "맑은 고딕",
+    "ＭＳ Ｐゴシック"
+  ],
+  "packageParts": {
+    "mediaCount": 12,
+    "slideXmlCount": 39,
+    "chartCount": 0,
+    "tableSlideCount": 3
+  }
+}

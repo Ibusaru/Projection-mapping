@@ -1,0 +1,137 @@
+{"kind":"deck","id":"pr/ydxvmh","name":"Deck"}
+{"kind":"layout","layoutId":"4e72eca3-3950-4bf0-8065-679d283b6c90","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"4f4f62b9-019a-4fcd-918d-292e950ac495","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/phqbcd","slide":1,"title":"デジタル水族館","textShapes":19}
+{"kind":"shape","id":"sh/cfa9w3m9","slide":1,"bbox":[0,0,1586.67,2244]}
+{"kind":"shape","id":"sh/u18jqh0f","slide":1,"bbox":[0,0,1586.67,620]}
+{"kind":"textbox","id":"sh/1orytsvu","slide":1,"text":"デジタル水族館","textPreview":"デジタル水族館","textChars":7,"textLines":1,"bbox":[96,134,980,112]}
+{"kind":"textbox","id":"sh/c7u54zid","slide":1,"text":"来場者がつくった魚が、海中空間に泳ぎ出す参加型プロジェクション","textPreview":"来場者がつくった魚が、海中空間に泳ぎ出す参加型プロジェクション","textChars":31,"textLines":1,"bbox":[102,264,1140,72]}
+{"kind":"shape","id":"sh/nap4r65w","slide":1,"bbox":[1260,146,130,48]}
+{"kind":"textbox","id":"sh/upwb2hwf","slide":1,"text":"C1","textPreview":"C1","textChars":2,"textLines":1,"bbox":[1278,153,94,36]}
+{"kind":"textbox","id":"sh/orytsvu9","slide":1,"text":"俵伊吹 / 長谷川煌輔 / 中嶋華鈴 / 三木快和","textPreview":"俵伊吹 / 長谷川煌輔 / 中嶋華鈴 / 三木快和","textChars":25,"textLines":1,"bbox":[103,350,1000,52]}
+{"kind":"shape","id":"sh/hcrmhk3q","slide":1,"bbox":[86,610,1414,390]}
+{"kind":"textbox","id":"sh/al87ed8b","slide":1,"text":"目的","textPreview":"目的","textChars":2,"textLines":1,"bbox":[126,654,380,44]}
+{"kind":"shape","id":"sh/z61032ls","slide":1,"bbox":[126,702,120,5]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":1,"text":"オープンキャンパスで来場した中学生に、舞鶴高専の魅力や、ものづくり・プログラミングの楽しさを体験してもらう。入学後の学生生活や将来のイメージまで持ってもらえる展示を目指した。","textPreview":"オープンキャンパスで来場した中学生に、舞鶴高専の魅力や、ものづくり・プログラミングの楽しさを体験してもらう。入学後の学生生活や将来のイメージまで持ってもらえる展示を目指した。","textChars":87,"textLines":1,"bbox":[126,728,1320,180]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":1,"bbox":[86,1060,690,540]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":1,"text":"プロジェクトの核","textPreview":"プロジェクトの核","textChars":8,"textLines":1,"bbox":[126,1106,380,44]}
+{"kind":"shape","id":"sh/zupwb2hw","slide":1,"bbox":[126,1154,120,5]}
+{"kind":"textbox","id":"sh/obm58z25","slide":1,"text":"・海中をテーマにした来場者参加型のプロジェクションマッピング\n・Webアプリで魚を選び、色や柄を自由にカスタマイズ\n・制作した作品を来場者自身に体験してもらう","textPreview":"・海中をテーマにした来場者参加型のプロジェクションマッピング | ・Webアプリで魚を選び、色や柄を自由にカスタマイズ | ・制作した作品を来場者自身に体験してもらう","textChars":79,"textLines":3,"bbox":[126,1190,600,250]}
+{"kind":"shape","id":"sh/8nqxs72x","slide":1,"bbox":[810,1060,690,540]}
+{"kind":"textbox","id":"sh/j2t83itg","slide":1,"text":"開発環境","textPreview":"開発環境","textChars":4,"textLines":1,"bbox":[850,1106,380,44]}
+{"kind":"shape","id":"sh/qh0fepkz","slide":1,"bbox":[850,1154,120,5]}
+{"kind":"shape","id":"sh/1w7mp0bi","slide":1,"bbox":[862,1200,154,154]}
+{"kind":"shape","id":"sh/jqh0fepk","slide":1,"bbox":[1078,1200,154,154]}
+{"kind":"shape","id":"sh/1kre1w7m","slide":1,"bbox":[1294,1200,154,154]}
+{"kind":"shape","id":"sh/m1cfa9w3","slide":1,"bbox":[862,1416,154,154]}
+{"kind":"shape","id":"sh/47y1kre1","slide":1,"bbox":[1078,1416,154,154]}
+{"kind":"shape","id":"sh/mp0bi9s3","slide":1,"bbox":[1294,1416,154,154]}
+{"kind":"shape","id":"sh/4vmtwra5","slide":1,"bbox":[86,1660,1414,360]}
+{"kind":"textbox","id":"sh/tgfmlkjm","slide":1,"text":"システム構成","textPreview":"システム構成","textChars":6,"textLines":1,"bbox":[126,1706,380,44]}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":1,"bbox":[126,1754,120,5]}
+{"kind":"shape","id":"sh/b2hwfyxo","slide":1,"bbox":[126,1808,210,138]}
+{"kind":"textbox","id":"sh/2lszqtcj","slide":1,"text":"Webサイト\nReact","textPreview":"Webサイト | React","textChars":12,"textLines":2,"bbox":[212,1820,112,90]}
+{"kind":"textbox","id":"sh/d8bat47y","slide":1,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[352,1838,54,60]}
+{"kind":"shape","id":"sh/knih4byh","slide":1,"bbox":[394,1808,210,138]}
+{"kind":"textbox","id":"sh/29gr2p8n","slide":1,"text":"データ保存\nSupabase","textPreview":"データ保存 | Supabase","textChars":14,"textLines":2,"bbox":[480,1820,112,90]}
+{"kind":"textbox","id":"sh/d0z61032","slide":1,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[620,1838,54,60]}
+{"kind":"shape","id":"sh/kf6dcbul","slide":1,"bbox":[662,1808,210,138]}
+{"kind":"textbox","id":"sh/2x4nap4r","slide":1,"text":"海中表示\nUnity / Blender","textPreview":"海中表示 | Unity / Blender","textChars":20,"textLines":2,"bbox":[748,1820,112,90]}
+{"kind":"textbox","id":"sh/czed8v6p","slide":1,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[888,1838,54,60]}
+{"kind":"shape","id":"sh/5kb6xkf6","slide":1,"bbox":[930,1808,210,138]}
+{"kind":"textbox","id":"sh/neloj2t8","slide":1,"text":"映像調整\nOBS / Resolume","textPreview":"映像調整 | OBS / Resolume","textChars":19,"textLines":2,"bbox":[1016,1820,112,90]}
+{"kind":"textbox","id":"sh/cbulwval","slide":1,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[1156,1838,54,60]}
+{"kind":"shape","id":"sh/5sneloj2","slide":1,"bbox":[1198,1808,210,138]}
+{"kind":"textbox","id":"sh/nqxs72x4","slide":1,"text":"教室へ投影\nプロジェクター","textPreview":"教室へ投影 | プロジェクター","textChars":13,"textLines":2,"bbox":[1284,1820,112,90]}
+{"kind":"image","id":"im/zupwb2hw","slide":1,"name":"","alt":"water light rays","bbox":[0,0,1586.67,940]}
+{"kind":"image","id":"im/sfil0rqd","slide":1,"name":"","alt":"illustrated sea floor","bbox":[0,1524,1586.67,720]}
+{"kind":"image","id":"im/al87ed8b","slide":1,"name":"","alt":"ocean surface with reef","bbox":[0,0,1586.67,520]}
+{"kind":"image","id":"im/u54zidon","slide":1,"name":"","alt":"custom fish","bbox":[452,1380,250,150]}
+{"kind":"image","id":"im/29gr2p8n","slide":1,"name":"","alt":"custom fish","bbox":[180,1380,260,150]}
+{"kind":"image","id":"im/v6psfil0","slide":1,"name":"","alt":"React","bbox":[879,1217,120,120]}
+{"kind":"image","id":"im/d8bat47y","slide":1,"name":"","alt":"Supabase","bbox":[1095,1217,120,120]}
+{"kind":"image","id":"im/val87ed8","slide":1,"name":"","alt":"Unity","bbox":[1311,1217,120,120]}
+{"kind":"image","id":"im/svu9knih","slide":1,"name":"","alt":"Blender","bbox":[879,1433,120,120]}
+{"kind":"image","id":"im/ap4r65wj","slide":1,"name":"","alt":"OBS Studio","bbox":[1095,1433,120,120]}
+{"kind":"image","id":"im/s36hcrmh","slide":1,"name":"","alt":"Resolume","bbox":[1311,1433,120,120]}
+{"kind":"image","id":"im/g3ex0nux","slide":1,"name":"","alt":"Webサイト\nReact","bbox":[144,1824,60,60]}
+{"kind":"image","id":"im/gr2p8nqx","slide":1,"name":"","alt":"データ保存\nSupabase","bbox":[412,1824,60,60]}
+{"kind":"image","id":"im/gfmlkjm1","slide":1,"name":"","alt":"海中表示\nUnity / Blender","bbox":[680,1824,60,60]}
+{"kind":"image","id":"im/h0fepkzu","slide":1,"name":"","alt":"映像調整\nOBS / Resolume","bbox":[948,1824,60,60]}
+{"kind":"image","id":"im/hcrmhk3q","slide":1,"name":"","alt":"教室へ投影\nプロジェクター","bbox":[1216,1824,60,60]}
+{"kind":"notes","id":"nt/phqbcd","slide":1,"text":""}
+{"kind":"slide","id":"sl/1nnv11","slide":2,"title":"体験の流れ","textShapes":23}
+{"kind":"shape","id":"sh/n29gr2p8","slide":2,"bbox":[0,0,1586.67,2244]}
+{"kind":"textbox","id":"sh/gbq1oryt","slide":2,"text":"体験の流れ","textPreview":"体験の流れ","textChars":5,"textLines":1,"bbox":[92,92,980,78]}
+{"kind":"textbox","id":"sh/5wjudg7a","slide":2,"text":"QRから参加し、自分の魚をつくって、投影された水族館へ放流する。","textPreview":"QRから参加し、自分の魚をつくって、投影された水族館へ放流する。","textChars":32,"textLines":1,"bbox":[96,184,1130,58]}
+{"kind":"shape","id":"sh/y90je9cv","slide":2,"bbox":[82,318,1422,650]}
+{"kind":"shape","id":"sh/nuxc3ylc","slide":2,"bbox":[122,372,426,220]}
+{"kind":"textbox","id":"sh/cbulwval","slide":2,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[146,394,80,46]}
+{"kind":"textbox","id":"sh/tcj6tova","slide":2,"text":"QRコードを\n読み取る","textPreview":"QRコードを | 読み取る","textChars":11,"textLines":2,"bbox":[282,434,236,118]}
+{"kind":"shape","id":"sh/0rqd4vmt","slide":2,"bbox":[580,372,426,220]}
+{"kind":"textbox","id":"sh/b6xkf6dc","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[604,394,80,46]}
+{"kind":"textbox","id":"sh/t47y1kre","slide":2,"text":"Webサイトに\nアクセス","textPreview":"Webサイトに | アクセス","textChars":12,"textLines":2,"bbox":[740,434,236,118]}
+{"kind":"shape","id":"sh/0je9cvix","slide":2,"bbox":[1038,372,426,220]}
+{"kind":"textbox","id":"sh/byhgn29g","slide":2,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1062,394,80,46]}
+{"kind":"textbox","id":"sh/p0bi9s36","slide":2,"text":"ニックネームを\n入力","textPreview":"ニックネームを | 入力","textChars":10,"textLines":2,"bbox":[1198,434,236,118]}
+{"kind":"shape","id":"sh/0fepkzup","slide":2,"bbox":[122,642,426,220]}
+{"kind":"textbox","id":"sh/cbulwval","slide":2,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[146,664,80,46]}
+{"kind":"textbox","id":"sh/u54zidon","slide":2,"text":"魚を選び\nカスタマイズ","textPreview":"魚を選び | カスタマイズ","textChars":11,"textLines":2,"bbox":[282,704,236,118]}
+{"kind":"shape","id":"sh/nqxs72x4","slide":2,"bbox":[580,642,426,220]}
+{"kind":"textbox","id":"sh/czed8v6p","slide":2,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[604,664,80,46]}
+{"kind":"textbox","id":"sh/ytsvu9kn","slide":2,"text":"放流","textPreview":"放流","textChars":2,"textLines":1,"bbox":[740,704,236,118]}
+{"kind":"shape","id":"sh/neloj2t8","slide":2,"bbox":[1038,642,426,220]}
+{"kind":"textbox","id":"sh/gn29gr2p","slide":2,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1062,664,80,46]}
+{"kind":"textbox","id":"sh/z25kb6xk","slide":2,"text":"投影空間に\n反映","textPreview":"投影空間に | 反映","textChars":8,"textLines":2,"bbox":[1198,704,236,118]}
+{"kind":"shape","id":"sh/6hcrmhk3","slide":2,"bbox":[82,1038,660,480]}
+{"kind":"textbox","id":"sh/d8v6psfi","slide":2,"text":"制作物","textPreview":"制作物","textChars":3,"textLines":1,"bbox":[122,1084,380,44]}
+{"kind":"shape","id":"sh/onyd0z61","slide":2,"bbox":[122,1132,120,5]}
+{"kind":"textbox","id":"sh/vahoza1g","slide":2,"text":"・Blenderで作った魚・海底オブジェクト\n・背景と投影用の映像演出\n・Webで魚を編集する参加画面","textPreview":"・Blenderで作った魚・海底オブジェクト | ・背景と投影用の映像演出 | ・Webで魚を編集する参加画面","textChars":51,"textLines":3,"bbox":[122,1166,560,160]}
+{"kind":"shape","id":"sh/ovahoza1","slide":2,"bbox":[782,1038,722,480]}
+{"kind":"textbox","id":"sh/vmtwra5g","slide":2,"text":"今後の展望","textPreview":"今後の展望","textChars":5,"textLines":1,"bbox":[822,1084,380,44]}
+{"kind":"shape","id":"sh/61032lsz","slide":2,"bbox":[822,1132,120,5]}
+{"kind":"textbox","id":"sh/2hwfyxob","slide":2,"text":"・魚の種類を増やし、より多彩な水族館を表現する\n・背景演出を追加し、臨場感のある空間にする\n・餌やりなどの機能で、体験型コンテンツに発展させる\n・同時参加しやすいシステムへ改良する","textPreview":"・魚の種類を増やし、より多彩な水族館を表現する | ・背景演出を追加し、臨場感のある空間にする | ・餌やりなどの機能で、体験型コンテンツに発展させる | ・同時参加しやすいシステムへ改良する","textChars":90,"textLines":4,"bbox":[822,1166,620,260]}
+{"kind":"shape","id":"sh/r2p8nqxs","slide":2,"bbox":[82,1588,1422,340]}
+{"kind":"textbox","id":"sh/kjm1cfa9","slide":2,"text":"役割分担","textPreview":"役割分担","textChars":4,"textLines":1,"bbox":[122,1632,380,44]}
+{"kind":"shape","id":"sh/94fu18jq","slide":2,"bbox":[122,1680,120,5]}
+{"kind":"textbox","id":"sh/2p8nqxs7","slide":2,"text":"俵：プログラム、Webアプリ作成","textPreview":"俵：プログラム、Webアプリ作成","textChars":16,"textLines":1,"bbox":[122,1718,610,48]}
+{"kind":"textbox","id":"sh/ra5gbq1o","slide":2,"text":"中嶋：海底オブジェクト、映像投影","textPreview":"中嶋：海底オブジェクト、映像投影","textChars":16,"textLines":1,"bbox":[792,1718,610,48]}
+{"kind":"textbox","id":"sh/gvy90je9","slide":2,"text":"長谷川：装飾オブジェクト","textPreview":"長谷川：装飾オブジェクト","textChars":12,"textLines":1,"bbox":[122,1808,610,48]}
+{"kind":"textbox","id":"sh/9gr2p8nq","slide":2,"text":"三木：魚オブジェクト","textPreview":"三木：魚オブジェクト","textChars":10,"textLines":1,"bbox":[792,1808,610,48]}
+{"kind":"image","id":"im/8jqh0fep","slide":2,"name":"","alt":"water light rays","bbox":[0,0,1586.67,940]}
+{"kind":"image","id":"im/fyxobm58","slide":2,"name":"","alt":"illustrated sea floor","bbox":[0,1524,1586.67,720]}
+{"kind":"image","id":"im/8z25kb6x","slide":2,"name":"","alt":"QRコードを\n読み取る","bbox":[150,450,106,106]}
+{"kind":"image","id":"im/h0fepkzu","slide":2,"name":"","alt":"Webサイトに\nアクセス","bbox":[608,450,106,106]}
+{"kind":"image","id":"im/hcrmhk3q","slide":2,"name":"","alt":"ニックネームを\n入力","bbox":[1066,450,106,106]}
+{"kind":"image","id":"im/yxobm58z","slide":2,"name":"","alt":"魚を選び\nカスタマイズ","bbox":[150,720,106,106]}
+{"kind":"image","id":"im/ylc7u54z","slide":2,"name":"","alt":"放流","bbox":[608,720,106,106]}
+{"kind":"image","id":"im/yd0z6103","slide":2,"name":"","alt":"投影空間に\n反映","bbox":[1066,720,106,106]}
+{"kind":"image","id":"im/hoza1gvy","slide":2,"name":"","alt":"pink fish","bbox":[182,1348,220,130]}
+{"kind":"image","id":"im/a1gvy90j","slide":2,"name":"","alt":"green fish","bbox":[420,1340,230,140]}
+{"kind":"notes","id":"nt/1nnv11","slide":2,"text":""}
+{"kind":"slide","id":"sl/trdxkj","slide":3,"title":"海の中に、","textShapes":11}
+{"kind":"shape","id":"sh/5kb6xkf6","slide":3,"bbox":[0,0,1586.67,2244]}
+{"kind":"textbox","id":"sh/nqxs72x4","slide":3,"text":"海の中に、\n自分の魚が泳ぎ出す","textPreview":"海の中に、 | 自分の魚が泳ぎ出す","textChars":15,"textLines":2,"bbox":[96,150,880,240]}
+{"kind":"textbox","id":"sh/cbulwval","slide":3,"text":"デジタル水族館は、ものづくりとプログラミングを「見て終わり」ではなく、自分の手で変化させる体験として届ける展示。","textPreview":"デジタル水族館は、ものづくりとプログラミングを「見て終わり」ではなく、自分の手で変化させる体験として届ける展示。","textChars":56,"textLines":1,"bbox":[102,438,880,150]}
+{"kind":"shape","id":"sh/5sneloj2","slide":3,"bbox":[110,810,1366,560]}
+{"kind":"textbox","id":"sh/y90je9cv","slide":3,"text":"伝えたいこと","textPreview":"伝えたいこと","textChars":6,"textLines":1,"bbox":[166,872,520,58]}
+{"kind":"textbox","id":"sh/nuxc3ylc","slide":3,"text":"・高専で学ぶ技術は、身近な体験を自分たちでつくる力になる\n・Web・データベース・3D・投影をつなげることで、教室が水族館になる\n・来場者の操作がすぐ映像に反映されることで、参加する楽しさが生まれる","textPreview":"・高専で学ぶ技術は、身近な体験を自分たちでつくる力になる | ・Web・データベース・3D・投影をつなげることで、教室が水族館になる | ・来場者の操作がすぐ映像に反映されることで、参加する楽しさが生まれる","textChars":99,"textLines":3,"bbox":[166,962,1240,240]}
+{"kind":"shape","id":"sh/36hcrmhk","slide":3,"bbox":[160,1250,1190,2]}
+{"kind":"shape","id":"sh/eloj2t83","slide":3,"bbox":[180,1280,188,52]}
+{"kind":"textbox","id":"sh/lc7u54zi","slide":3,"text":"Webアプリ","textPreview":"Webアプリ","textChars":6,"textLines":1,"bbox":[188,1290,172,32]}
+{"kind":"shape","id":"sh/wra5gbq1","slide":3,"bbox":[415,1280,188,52]}
+{"kind":"textbox","id":"sh/7u54zido","slide":3,"text":"データ保存","textPreview":"データ保存","textChars":5,"textLines":1,"bbox":[423,1290,172,32]}
+{"kind":"shape","id":"sh/ed8bat47","slide":3,"bbox":[650,1280,188,52]}
+{"kind":"textbox","id":"sh/l0rqd4vm","slide":3,"text":"3D表示","textPreview":"3D表示","textChars":4,"textLines":1,"bbox":[658,1290,172,32]}
+{"kind":"shape","id":"sh/wfyxobm5","slide":3,"bbox":[885,1280,188,52]}
+{"kind":"textbox","id":"sh/7mp0bi9s","slide":3,"text":"映像投影","textPreview":"映像投影","textChars":4,"textLines":1,"bbox":[893,1290,172,32]}
+{"kind":"shape","id":"sh/e1w7mp0b","slide":3,"bbox":[1120,1280,188,52]}
+{"kind":"textbox","id":"sh/qxs72x4n","slide":3,"text":"参加体験","textPreview":"参加体験","textChars":4,"textLines":1,"bbox":[1128,1290,172,32]}
+{"kind":"textbox","id":"sh/fil0rqd4","slide":3,"text":"ご覧いただきありがとうございました","textPreview":"ご覧いただきありがとうございました","textChars":17,"textLines":1,"bbox":[116,1530,1050,76]}
+{"kind":"textbox","id":"sh/83itgfml","slide":3,"text":"C1 デジタル水族館","textPreview":"C1 デジタル水族館","textChars":10,"textLines":1,"bbox":[120,1616,600,46]}
+{"kind":"image","id":"im/qd4vmtwr","slide":3,"name":"","alt":"water light rays","bbox":[0,0,1586.67,940]}
+{"kind":"image","id":"im/x4nap4r6","slide":3,"name":"","alt":"illustrated sea floor","bbox":[0,1524,1586.67,720]}
+{"kind":"image","id":"im/fa9w3m94","slide":3,"name":"","geometry":"roundRect","alt":"diver underwater","bbox":[1020,120,390,590]}
+{"kind":"image","id":"im/epkzupwb","slide":3,"name":"","alt":"pink fish","bbox":[988,1530,250,150]}
+{"kind":"image","id":"im/psfil0rq","slide":3,"name":"","alt":"green fish","bbox":[1196,1600,260,160]}
+{"kind":"notes","id":"nt/trdxkj","slide":3,"text":""}

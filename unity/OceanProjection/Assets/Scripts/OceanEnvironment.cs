@@ -20,9 +20,9 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float reefDecorationBias = 0.74f;
 
     [Header("Water")]
-    [SerializeField] private Color waterColor = new Color(0.16f, 0.78f, 0.96f, 0.36f);
-    [SerializeField] private Color deepFogColor = new Color(0.04f, 0.58f, 0.82f, 1f);
-    [SerializeField] private float fogDensity = 0.035f;
+    [SerializeField] private Color waterColor = new Color(0.04f, 0.48f, 0.62f, 0.5f);
+    [SerializeField] private Color deepFogColor = new Color(0.012f, 0.12f, 0.18f, 1f);
+    [SerializeField] private float fogDensity = 0.046f;
     [SerializeField, Range(16, 128)] private int waterResolution = 96;
     [SerializeField] private float waveAmplitude = 0.32f;
     [SerializeField] private float waveSpeed = 0.68f;
@@ -30,7 +30,7 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private bool tintCameras = true;
 
     [Header("Suimono Water System")]
-    [SerializeField] private bool useSuimonoWhenAvailable = true;
+    [SerializeField] private bool useSuimonoWhenAvailable;
     [SerializeField] private bool keepFallbackWaterWithSuimono = true;
     [SerializeField] private bool renderSuimonoSurfaceInUrp;
     [SerializeField] private bool disableSuimonoUnderwaterParticles = true;
@@ -46,6 +46,11 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private int branchCoralCount = 96;
     [SerializeField] private int bubbleColumnCount = 5;
     [SerializeField] private int causticLineCount = 96;
+
+    [Header("Pandazole Nature Pack")]
+    [SerializeField] private bool usePandazoleNaturePackWhenAvailable = true;
+    [SerializeField, Range(0f, 1f)] private float pandazoleRockShare = 0.72f;
+    [SerializeField, Range(0f, 1f)] private float pandazoleCoralShare = 0.78f;
 
     private const string GeneratedRootName = "_GeneratedOceanEnvironment";
     private Transform generatedRoot;
@@ -90,6 +95,7 @@ public partial class OceanEnvironment : MonoBehaviour
         }
 
         AnimateWater();
+        ApplyDepthAwareFog();
 
         if (disableAllEnvironmentParticles)
         {
@@ -101,11 +107,13 @@ public partial class OceanEnvironment : MonoBehaviour
     {
         ClearGenerated();
         CreateMaterials();
+        PreparePandazoleAssets();
         Random.InitState(decorationSeed);
         seabedTerrain = OceanSeabedTerrain.Create(oceanSize, seabedY, waterSurfaceY, decorationSeed, seabedRelief, basinCount, reefMoundCount);
 
         generatedRoot = new GameObject(GeneratedRootName).transform;
         generatedRoot.SetParent(transform, false);
+        MarkGeneratedObject(generatedRoot.gameObject);
 
         CreateSeabed();
         bool suimonoActive = useSuimonoWhenAvailable && CreateSuimonoWater();
@@ -119,6 +127,7 @@ public partial class OceanEnvironment : MonoBehaviour
         CreateSurfaceHighlights();
         CreateDecorations();
         CreateBubbleColumns();
+        FinalizeGeneratedRoot();
     }
 
     private void ApplyRenderSettings()
@@ -128,10 +137,10 @@ public partial class OceanEnvironment : MonoBehaviour
         RenderSettings.fogColor = deepFogColor;
         RenderSettings.fogDensity = fogDensity;
         RenderSettings.skybox = null;
-        RenderSettings.ambientSkyColor = new Color(0.42f, 0.86f, 0.98f);
-        RenderSettings.ambientEquatorColor = new Color(0.22f, 0.68f, 0.84f);
-        RenderSettings.ambientGroundColor = new Color(0.18f, 0.44f, 0.52f);
-        RenderSettings.ambientIntensity = 1.25f;
+        RenderSettings.ambientSkyColor = new Color(0.26f, 0.54f, 0.62f);
+        RenderSettings.ambientEquatorColor = new Color(0.12f, 0.36f, 0.45f);
+        RenderSettings.ambientGroundColor = new Color(0.04f, 0.16f, 0.22f);
+        RenderSettings.ambientIntensity = 0.78f;
 
         if (!tintCameras)
         {
@@ -141,86 +150,46 @@ public partial class OceanEnvironment : MonoBehaviour
         foreach (Camera camera in Camera.allCameras)
         {
             camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.backgroundColor = deepFogColor;
+            camera.backgroundColor = new Color(0.1f, 0.42f, 0.52f, 1f);
+        }
+
+        ApplyDepthAwareFog();
+    }
+
+    private void ApplyDepthAwareFog()
+    {
+        Camera camera = Camera.main != null ? Camera.main : FindAnyObjectByType<Camera>();
+        float localCameraY = camera != null
+            ? transform.InverseTransformPoint(camera.transform.position).y
+            : waterSurfaceY;
+        float depth = Mathf.Max(0f, waterSurfaceY - localCameraY);
+        float depthBlend = Smooth01(Mathf.InverseLerp(0.4f, 14f, depth));
+        float aboveWaterBlend = Smooth01(Mathf.InverseLerp(waterSurfaceY + 0.5f, waterSurfaceY + 8f, localCameraY));
+        float densityMultiplier = Mathf.Lerp(0.95f, 3.25f, depthBlend);
+        densityMultiplier = Mathf.Lerp(densityMultiplier, 0.55f, aboveWaterBlend);
+
+        RenderSettings.fog = true;
+        RenderSettings.fogMode = FogMode.ExponentialSquared;
+        RenderSettings.fogDensity = Mathf.Max(0f, fogDensity * densityMultiplier);
+        RenderSettings.fogColor = Color.Lerp(new Color(0.1f, 0.42f, 0.52f, 1f), deepFogColor, Mathf.Lerp(0.35f, 1f, depthBlend));
+
+        if (!tintCameras)
+        {
+            return;
+        }
+
+        Color cameraColor = Color.Lerp(new Color(0.1f, 0.42f, 0.52f, 1f), deepFogColor, depthBlend * 0.9f);
+        foreach (Camera item in Camera.allCameras)
+        {
+            item.clearFlags = CameraClearFlags.SolidColor;
+            item.backgroundColor = cameraColor;
         }
     }
 
-    private void CreateMaterials()
+    private static float Smooth01(float value)
     {
-        seabedMaterial = MakeMaterial("Reef White Sand", new Color(0.86f, 0.82f, 0.66f, 1f), 0f);
-        waterMaterial = MakeMaterial("Bright Reef Water Surface", waterColor, 0.72f);
-        rockMaterial = MakeMaterial("Reef Rock", new Color(0.42f, 0.52f, 0.43f, 1f), 0f);
-        coralMaterial = MakeMaterial("Warm Reef Coral", new Color(0.96f, 0.58f, 0.44f, 1f), 0f);
-        whiteCoralMaterial = MakeMaterial("Pale Branch Coral", new Color(0.88f, 0.84f, 0.7f, 1f), 0f);
-        causticLineMaterial = MakeUnlitMaterial("Thin Reef Caustics", new Color(0.92f, 1f, 1f, 0.23f));
-        foamMaterial = MakeUnlitMaterial("Soft Reef Surface Sparkle", foamColor);
-    }
-
-    private Material MakeMaterial(string materialName, Color color, float transparent)
-    {
-        Shader shader = Shader.Find("Universal Render Pipeline/Lit");
-        if (shader == null)
-        {
-            shader = Shader.Find("Standard");
-        }
-
-        Material material = new Material(shader)
-        {
-            name = materialName,
-            color = color
-        };
-
-        if (transparent > 0f)
-        {
-            material.SetFloat("_Surface", 1f);
-            material.SetFloat("_Blend", 0f);
-            material.SetFloat("_AlphaClip", 0f);
-            material.SetFloat("_Cull", 0f);
-            material.SetOverrideTag("RenderType", "Transparent");
-            material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-            material.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-            material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-        }
-
-        if (material.HasProperty("_Smoothness"))
-        {
-            material.SetFloat("_Smoothness", transparent > 0f ? 0.92f : 0.28f);
-        }
-
-        if (material.HasProperty("_Metallic"))
-        {
-            material.SetFloat("_Metallic", 0f);
-        }
-
-        if (transparent > 0f && material.HasProperty("_BaseColor"))
-        {
-            material.SetColor("_BaseColor", color);
-        }
-
-        return material;
-    }
-
-    private Material MakeUnlitMaterial(string materialName, Color color)
-    {
-        Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
-        if (shader == null)
-        {
-            shader = Shader.Find("Unlit/Color");
-        }
-
-        Material material = new Material(shader)
-        {
-            name = materialName,
-            color = color
-        };
-        material.SetFloat("_Surface", 1f);
-        material.SetFloat("_Blend", 0f);
-        material.SetFloat("_Cull", 0f);
-        material.SetOverrideTag("RenderType", "Transparent");
-        material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-        material.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-        material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-        return material;
+        float t = Mathf.Clamp01(value);
+        return t * t * (3f - 2f * t);
     }
 
     private bool CreateSuimonoWater()
@@ -264,12 +233,10 @@ public partial class OceanEnvironment : MonoBehaviour
             return false;
         }
 
-        GameObject waterObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        waterObject.name = "Suimono Reef Water";
+        GameObject waterObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Plane, "Suimono Reef Water", waterMaterial);
         waterObject.transform.SetParent(generatedRoot, false);
         waterObject.transform.localPosition = new Vector3(0f, waterSurfaceY, 0f);
         waterObject.transform.localScale = new Vector3(oceanSize.x * 0.1f, 1f, oceanSize.y * 0.1f);
-        DestroyCollider(waterObject);
 
         Component suimono = waterObject.AddComponent(suimonoSurfaceType);
         ConfigureSuimonoComponent(suimono.gameObject);
@@ -445,16 +412,16 @@ public partial class OceanEnvironment : MonoBehaviour
             SetMember(component, "turbulenceFactor", 0.18f);
             SetMember(component, "oceanScale", Mathf.Max(oceanSize.x, oceanSize.y) / 8.5f);
 
-            SetMember(component, "overallBright", 1.12f);
-            SetMember(component, "overallTransparency", 0.78f);
-            SetMember(component, "depthAmt", 0.09f);
-            SetMember(component, "shallowAmt", 0.18f);
+            SetMember(component, "overallBright", 0.72f);
+            SetMember(component, "overallTransparency", 0.62f);
+            SetMember(component, "depthAmt", 0.26f);
+            SetMember(component, "shallowAmt", 0.1f);
             SetMember(component, "edgeAmt", 0.08f);
             SetMember(component, "depthColor", deepFogColor);
             SetMember(component, "shallowColor", shallowWaterColor);
-            SetMember(component, "blendColor", new Color(0.5f, 1f, 0.92f, 0.28f));
-            SetMember(component, "specularColor", new Color(0.82f, 0.98f, 1f, 0.42f));
-            SetMember(component, "sssColor", new Color(0.12f, 0.72f, 0.62f, 0.26f));
+            SetMember(component, "blendColor", new Color(0.08f, 0.5f, 0.58f, 0.3f));
+            SetMember(component, "specularColor", new Color(0.56f, 0.82f, 0.9f, 0.28f));
+            SetMember(component, "sssColor", new Color(0.05f, 0.34f, 0.38f, 0.24f));
 
             SetMember(component, "enableFoam", true);
             SetMember(component, "foamColor", foamColor);
@@ -467,10 +434,10 @@ public partial class OceanEnvironment : MonoBehaviour
             SetMember(component, "hFoamSpread", 0.24f);
 
             SetMember(component, "enableCausticFX", true);
-            SetMember(component, "causticsColor", new Color(0.86f, 1f, 1f, 1f));
-            SetMember(component, "causticsFade", 0.18f);
-            SetMember(component, "causticTint", new Color(0.86f, 1f, 1f, 1f));
-            SetMember(component, "causticIntensity", 1.6f);
+            SetMember(component, "causticsColor", new Color(0.54f, 0.86f, 0.9f, 0.78f));
+            SetMember(component, "causticsFade", 0.36f);
+            SetMember(component, "causticTint", new Color(0.54f, 0.86f, 0.9f, 0.78f));
+            SetMember(component, "causticIntensity", 0.82f);
             SetMember(component, "causticScale", 7f);
 
             SetMember(component, "enableReflections", true);
@@ -478,15 +445,15 @@ public partial class OceanEnvironment : MonoBehaviour
             SetMember(component, "useReflections", true);
             SetMember(component, "useDynReflections", true);
             SetMember(component, "reflectResolution", 2);
-            SetMember(component, "reflectionDistance", 90f);
-            SetMember(component, "reflectBlur", 0.18f);
-            SetMember(component, "reflectionColor", new Color(1f, 1f, 1f, 0.32f));
+            SetMember(component, "reflectionDistance", 42f);
+            SetMember(component, "reflectBlur", 0.32f);
+            SetMember(component, "reflectionColor", new Color(0.56f, 0.78f, 0.86f, 0.2f));
 
             SetMember(component, "enableUnderwater", true);
             SetMember(component, "enableUnderDebris", false);
-            SetMember(component, "underwaterColor", new Color(deepFogColor.r, deepFogColor.g, deepFogColor.b, 0.42f));
-            SetMember(component, "underwaterFogDist", 28f);
-            SetMember(component, "underwaterFogSpread", 0.18f);
+            SetMember(component, "underwaterColor", new Color(deepFogColor.r, deepFogColor.g, deepFogColor.b, 0.68f));
+            SetMember(component, "underwaterFogDist", 13f);
+            SetMember(component, "underwaterFogSpread", 0.34f);
             SetMember(component, "underRefractionAmount", 0.012f);
             SetMember(component, "underRefractionScale", 0.72f);
             SetMember(component, "underBlurAmount", 0.42f);
@@ -600,23 +567,44 @@ public partial class OceanEnvironment : MonoBehaviour
         seabed.transform.SetParent(generatedRoot, false);
         seabed.AddComponent<MeshFilter>().sharedMesh = seabedMesh;
         seabed.AddComponent<MeshRenderer>().sharedMaterial = seabedMaterial;
+        seabed.AddComponent<MeshCollider>().sharedMesh = seabedMesh;
     }
 
     private void ClearGenerated()
     {
-        Transform existing = transform.Find(GeneratedRootName);
-        if (existing == null)
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = transform.GetChild(i);
+            if (child == null || child.name != GeneratedRootName)
+            {
+                continue;
+            }
+
+            DestroyGeneratedObject(child.gameObject);
+        }
+
+        generatedRoot = null;
+        seabedMesh = null;
+        waterMesh = null;
+        waterBaseVertices = null;
+        causticLines = null;
+        foamLines = null;
+    }
+
+    private static void DestroyGeneratedObject(GameObject target)
+    {
+        if (target == null)
         {
             return;
         }
 
         if (Application.isPlaying)
         {
-            Destroy(existing.gameObject);
+            Destroy(target);
         }
         else
         {
-            DestroyImmediate(existing.gameObject);
+            DestroyImmediate(target);
         }
     }
 

@@ -130,17 +130,17 @@ MonoBehaviour:
   modelRoot: {fileID: 0}
   nicknameLabel: {fileID: 0}
   createNicknameLabelWhenMissing: 1
-  baseSpeed: 0.9
+  baseSpeed: 1.18
   turnSpeed: 3.2
   labelVisibleDistance: 72
   boundsPadding: 0.7
-  acceleration: 2.1
+  acceleration: 2.65
   turnSlowdown: 0.58
   autoWireRenderers: 1
   targetReachDistance: 2.05
-  slowSwimMultiplier: 0.82
-  fastSwimMultiplier: 1.55
-  fastSwimChance: 0.24
+  slowSwimMultiplier: 0.92
+  fastSwimMultiplier: 1.72
+  fastSwimChance: 0.28
   slowSwimSecondsRange: {x: 3.5, y: 7}
   fastSwimSecondsRange: {x: 0.9, y: 2.2}
   waypointForwardBias: 0.18

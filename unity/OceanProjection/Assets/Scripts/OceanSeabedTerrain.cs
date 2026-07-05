@@ -77,10 +77,10 @@ internal sealed class OceanSeabedTerrain
         Vector2 safeSize = new Vector2(Mathf.Max(12f, oceanSize.x), Mathf.Max(12f, oceanSize.y));
         float noiseOffsetX = Range(random, -1000f, 1000f);
         float noiseOffsetZ = Range(random, -1000f, 1000f);
-        Vector2 rockMountainCenter = new Vector2(-safeSize.x * 0.31f, -safeSize.y * 0.17f);
-        Vector2 reefCenter = new Vector2(safeSize.x * 0.18f, safeSize.y * 0.13f);
-        Vector2 beachCenter = new Vector2(safeSize.x * 0.38f, -safeSize.y * 0.16f);
-        Vector2 trenchCenter = new Vector2(-safeSize.x * 0.04f, safeSize.y * 0.02f);
+        Vector2 rockMountainCenter = new Vector2(-safeSize.x * 0.28f, -safeSize.y * 0.28f);
+        Vector2 reefCenter = new Vector2(safeSize.x * 0.18f, safeSize.y * 0.16f);
+        Vector2 beachCenter = new Vector2(safeSize.x * 0.39f, -safeSize.y * 0.2f);
+        Vector2 trenchCenter = new Vector2(-safeSize.x * 0.32f, safeSize.y * 0.27f);
         TerrainFeature[] basins = BuildFeatures(safeSize, random, BasinAnchors, basinCount, relief, false);
         TerrainFeature[] reefMounds = BuildFeatures(safeSize, random, ReefAnchors, reefMoundCount, relief, true);
 
@@ -102,7 +102,9 @@ internal sealed class OceanSeabedTerrain
 
     public static float SampleBaseHeight(float x, float z, float seabedY)
     {
-        return seabedY + Mathf.Sin(x * 0.8f + z * 0.35f) * 0.18f + Mathf.Cos(z * 0.9f) * 0.11f;
+        float broad = Mathf.PerlinNoise(x * 0.018f + 31.7f, z * 0.018f - 19.2f) - 0.5f;
+        float fine = Mathf.PerlinNoise(x * 0.085f - 12.4f, z * 0.085f + 44.6f) - 0.5f;
+        return seabedY + broad * 0.8f + fine * 0.18f;
     }
 
     public Vector3 SamplePosition(float x, float z)
@@ -127,11 +129,16 @@ internal sealed class OceanSeabedTerrain
         }
 
         float maximumRelief = Mathf.Max(0.2f, relief);
-        height += Mathf.Clamp(shapedRelief, -maximumRelief * 1.9f, maximumRelief * 1.85f);
+        height += Mathf.Clamp(shapedRelief, -maximumRelief * 1.55f, maximumRelief * 1.45f);
         height += SampleBarrierReef(x, z);
         height += SampleBeachShelf(x, z);
         height += SampleTrench(x, z);
-        height += SampleRockMountain(x, z);
+        float rockyLift = SampleRockyField(x, z);
+        if (rockyLift > 0f)
+        {
+            height += Mathf.Max(0f, Mathf.Min(rockyLift, waterSurfaceY - 1.35f - height));
+        }
+
         return height;
     }
 
@@ -180,69 +187,78 @@ internal sealed class OceanSeabedTerrain
 
     private float SampleBroadOceanTilt(float x, float z)
     {
-        float west = Mathf.InverseLerp(oceanSize.x * 0.42f, -oceanSize.x * 0.46f, x);
-        float south = Mathf.InverseLerp(oceanSize.y * 0.42f, -oceanSize.y * 0.48f, z);
-        return -SmootherStep(west) * 1.35f - SmootherStep(south) * 0.55f;
+        float west = SmootherStep(Mathf.InverseLerp(oceanSize.x * 0.22f, -oceanSize.x * 0.5f, x));
+        float south = SmootherStep(Mathf.InverseLerp(oceanSize.y * 0.34f, -oceanSize.y * 0.5f, z));
+        float basinDrift = FbmSigned(x, z, 0.0085f, 4, 2.04f, 0.5f) * 0.65f;
+        return -west * 0.95f - south * 0.48f + basinDrift;
     }
 
     private float SampleBeachShelf(float x, float z)
     {
-        float wave = Mathf.Sin(z * 0.055f + noiseOffsetX * 0.01f) * 2.8f + Mathf.Sin(z * 0.13f) * 1.1f;
-        float shorelineX = oceanSize.x * 0.26f + wave;
-        float shelf = SmootherStep(Mathf.InverseLerp(shorelineX - oceanSize.x * 0.33f, shorelineX + oceanSize.x * 0.08f, x));
-        float drySand = SmootherStep(Mathf.InverseLerp(shorelineX + oceanSize.x * 0.06f, shorelineX + oceanSize.x * 0.22f, x));
-        float lagoonCut = Mathf.Sin((z - beachCenter.y) * 0.11f) * 0.28f + Mathf.PerlinNoise(x * 0.025f + 12f, z * 0.025f) * 0.35f;
-        float shallowTargetLift = (waterSurfaceY - 0.9f - seabedY) * shelf;
-        return shallowTargetLift + drySand * 1.65f + lagoonCut * shelf;
+        float coastNoise = FbmSigned(0f, z, 0.018f, 4, 2.08f, 0.53f);
+        float shorelineX = oceanSize.x * 0.34f + coastNoise * oceanSize.x * 0.035f;
+        float shelf = SmootherStep(Mathf.InverseLerp(shorelineX - oceanSize.x * 0.42f, shorelineX + oceanSize.x * 0.035f, x));
+        float lagoon = SmootherStep(Mathf.InverseLerp(shorelineX - oceanSize.x * 0.27f, shorelineX + oceanSize.x * 0.015f, x));
+        float drySand = SmootherStep(Mathf.InverseLerp(shorelineX + oceanSize.x * 0.035f, shorelineX + oceanSize.x * 0.15f, x));
+        float cove = 1f - SmootherStep(EllipticalDistance(new Vector2(x, z), beachCenter, new Vector2(oceanSize.x * 0.24f, oceanSize.y * 0.34f), -7f));
+        float beachGrain = FbmSigned(x, z, 0.055f, 3, 2.2f, 0.48f) * 0.16f;
+        float shallowTargetLift = (waterSurfaceY - 1.55f - seabedY) * shelf;
+        return shallowTargetLift + lagoon * 0.55f + drySand * 0.72f + cove * 0.22f + beachGrain * shelf;
     }
 
     private float SampleBarrierReef(float x, float z)
     {
-        Vector2 position = new Vector2(x, z);
+        Vector2 position = DomainWarp(x, z, 0.016f, 3.8f);
         float distance = EllipticalDistance(position, reefCenter, new Vector2(oceanSize.x * 0.24f, oceanSize.y * 0.18f), -18f);
-        float ring = Ring(distance, 0.55f, 1.08f);
-        float innerMound = 1f - SmootherStep(Mathf.Clamp01(distance / 0.72f));
-        float ridgeNoise = 0.75f + Mathf.PerlinNoise(x * 0.07f + noiseOffsetX, z * 0.07f + noiseOffsetZ) * 0.5f;
-        return (ring * 2.55f + innerMound * 1.55f) * ridgeNoise;
+        distance += FbmSigned(x, z, 0.04f, 3, 2.15f, 0.5f) * 0.14f;
+        float ring = Ring(distance, 0.5f, 1.05f);
+        float innerMound = 1f - SmootherStep(Mathf.Clamp01(distance / 0.76f));
+        float brokenEdges = Mathf.Lerp(0.55f, 1.12f, Mathf.Clamp01(FbmSigned(x, z, 0.03f, 4, 2.03f, 0.54f) * 0.5f + 0.5f));
+        float ridgeTexture = 0.82f + RidgedFbm(x, z, 0.07f, 3, 2.1f, 0.48f) * 0.42f;
+        return (ring * 2.18f * brokenEdges + innerMound * 1.22f) * ridgeTexture;
     }
 
     private float SampleTrench(float x, float z)
     {
         Vector2 local = Rotate(new Vector2(x - trenchCenter.x, z - trenchCenter.y), 32f);
-        float halfLength = oceanSize.x * 0.46f;
-        float halfWidth = oceanSize.y * 0.095f;
+        local.y += FbmSigned(x, z, 0.013f, 4, 2.08f, 0.52f) * oceanSize.y * 0.052f;
+        float halfLength = oceanSize.x * 0.38f;
+        float halfWidth = oceanSize.y * 0.13f;
         float alongMask = 1f - SmootherStep(Mathf.Clamp01(Mathf.Abs(local.x) / halfLength));
         float across = Mathf.Abs(local.y) / Mathf.Max(0.001f, halfWidth);
-        float core = 1f - SmootherStep(Mathf.Clamp01(across));
-        float wall = Ring(across, 1.0f, 1.85f);
-        float fracture = Mathf.PerlinNoise(x * 0.055f - noiseOffsetZ, z * 0.055f + noiseOffsetX) * 0.7f;
-        return alongMask * (-9.6f * core - fracture * core + wall * 1.55f);
+        float core = 1f - SmootherStep(Mathf.Clamp01((across - 0.04f) / 1.22f));
+        float wall = Ring(across, 1.18f, 2.35f);
+        float fracture = RidgedFbm(x, z, 0.052f, 4, 2.05f, 0.5f) * 1.05f;
+        float beachGap = SmootherStep(Mathf.InverseLerp(oceanSize.x * 0.32f, oceanSize.x * 0.48f, Vector2.Distance(new Vector2(x, z), beachCenter)));
+        return alongMask * beachGap * (-6.25f * core - fracture * core * 0.52f + wall * 0.42f);
     }
 
-    private float SampleRockMountain(float x, float z)
+    private float SampleRockyField(float x, float z)
     {
-        Vector2 position = new Vector2(x, z);
-        float distance = EllipticalDistance(position, rockMountainCenter, new Vector2(oceanSize.x * 0.115f, oceanSize.y * 0.16f), 19f);
-        if (distance >= 1.55f)
+        Vector2 position = DomainWarp(x, z, 0.014f, 3.2f);
+        float distance = EllipticalDistance(position, rockMountainCenter, new Vector2(oceanSize.x * 0.22f, oceanSize.y * 0.18f), -12f);
+        distance += FbmSigned(x, z, 0.04f, 3, 2.12f, 0.48f) * 0.14f;
+        if (distance >= 1.62f)
         {
             return 0f;
         }
 
-        float summit = 1f - SmootherStep(Mathf.Clamp01(distance / 0.54f));
-        float upperCliff = 1f - SmootherStep(Mathf.Clamp01((distance - 0.24f) / 0.72f));
-        float scree = Ring(distance, 0.72f, 1.42f);
-        float crags = (Mathf.PerlinNoise(x * 0.13f + noiseOffsetX, z * 0.13f + noiseOffsetZ) - 0.5f) * 1.4f * upperCliff;
-        float targetLift = waterSurfaceY - seabedY + 9.2f;
-        return summit * targetLift + upperCliff * 4.8f + scree * 2.2f + crags;
+        float field = 1f - SmootherStep(Mathf.Clamp01((distance - 0.12f) / 1.32f));
+        float core = 1f - SmootherStep(Mathf.Clamp01(distance / 0.78f));
+        float brokenRim = Ring(distance, 0.58f, 1.46f);
+        float ridges = RidgedFbm(x, z, 0.082f, 4, 2.05f, 0.52f);
+        float boulders = RidgedFbm(x + 17.3f, z - 9.1f, 0.15f, 3, 2.15f, 0.46f);
+        return field * 1.15f + core * 2.55f + brokenRim * 0.86f + ridges * field * 1.35f + boulders * field * 0.62f;
     }
 
     private float SampleSandRipple(float x, float z)
     {
-        float longRipple = Mathf.Sin(x * 0.42f + z * 0.26f) * 0.18f + Mathf.Cos(z * 0.52f) * 0.1f;
-        float currentRidge = Mathf.Sin((x - z) * 0.18f + noiseOffsetX * 0.04f) * 0.11f;
-        float lowNoise = (Mathf.PerlinNoise(x * 0.028f + noiseOffsetX, z * 0.028f + noiseOffsetZ) - 0.5f) * 0.55f;
-        float fineNoise = (Mathf.PerlinNoise(x * 0.13f - noiseOffsetZ, z * 0.13f + noiseOffsetX) - 0.5f) * 0.12f;
-        return longRipple + currentRidge + lowNoise + fineNoise;
+        Vector2 warped = DomainWarp(x, z, 0.017f, 7.5f);
+        float broad = FbmSigned(warped.x, warped.y, 0.012f, 5, 2.02f, 0.54f) * relief * 0.72f;
+        float medium = FbmSigned(warped.x, warped.y, 0.034f, 4, 2.1f, 0.5f) * relief * 0.26f;
+        float ridges = (RidgedFbm(x, z, 0.058f, 3, 2.15f, 0.48f) - 0.48f) * 0.72f;
+        float fine = FbmSigned(x, z, 0.13f, 2, 2.4f, 0.42f) * 0.12f;
+        return broad + medium + ridges + fine;
     }
 
     private static TerrainFeature[] BuildFeatures(
@@ -261,14 +277,14 @@ internal sealed class OceanSeabedTerrain
         for (int i = 0; i < safeCount; i++)
         {
             Vector2 anchor = i < anchors.Length ? anchors[i] : SpiralAnchor(i, safeCount);
-            float radiusX = oceanSize.x * Range(random, reef ? 0.045f : 0.075f, reef ? 0.095f : 0.145f);
-            float radiusZ = oceanSize.y * Range(random, reef ? 0.055f : 0.075f, reef ? 0.13f : 0.15f);
+            float radiusX = oceanSize.x * Range(random, reef ? 0.045f : 0.11f, reef ? 0.095f : 0.2f);
+            float radiusZ = oceanSize.y * Range(random, reef ? 0.055f : 0.1f, reef ? 0.13f : 0.19f);
             float x = anchor.x * halfX + oceanSize.x * Range(random, -0.028f, 0.028f);
             float z = anchor.y * halfZ + oceanSize.y * Range(random, -0.038f, 0.038f);
             x = Mathf.Clamp(x, -halfX + radiusX * 0.8f, halfX - radiusX * 0.8f);
             z = Mathf.Clamp(z, -halfZ + radiusZ * 0.8f, halfZ - radiusZ * 0.8f);
 
-            float featureRelief = Mathf.Max(0f, relief) * Range(random, reef ? 0.72f : 0.86f, reef ? 1.22f : 1.38f);
+            float featureRelief = Mathf.Max(0f, relief) * Range(random, reef ? 0.72f : 0.66f, reef ? 1.22f : 1.05f);
             float rotation = Range(random, -48f, 48f) * Mathf.Deg2Rad;
             features[i] = new TerrainFeature(new Vector2(x, z), new Vector2(radiusX, radiusZ), rotation, featureRelief, reef);
         }
@@ -298,6 +314,52 @@ internal sealed class OceanSeabedTerrain
         float nx = local.x / Mathf.Max(0.001f, radius.x);
         float nz = local.y / Mathf.Max(0.001f, radius.y);
         return Mathf.Sqrt(nx * nx + nz * nz);
+    }
+
+    private Vector2 DomainWarp(float x, float z, float scale, float amount)
+    {
+        float warpX = FbmSigned(x + noiseOffsetX, z - noiseOffsetZ, scale, 3, 2.04f, 0.52f);
+        float warpZ = FbmSigned(x - noiseOffsetZ, z + noiseOffsetX, scale, 3, 2.08f, 0.5f);
+        return new Vector2(x + warpX * amount, z + warpZ * amount);
+    }
+
+    private float FbmSigned(float x, float z, float scale, int octaves, float lacunarity, float gain)
+    {
+        float amplitude = 1f;
+        float frequency = Mathf.Max(0.0001f, scale);
+        float sum = 0f;
+        float normalizer = 0f;
+
+        for (int i = 0; i < octaves; i++)
+        {
+            float sample = Mathf.PerlinNoise(x * frequency + noiseOffsetX + i * 37.17f, z * frequency + noiseOffsetZ - i * 19.63f);
+            sum += (sample * 2f - 1f) * amplitude;
+            normalizer += amplitude;
+            amplitude *= gain;
+            frequency *= lacunarity;
+        }
+
+        return normalizer > 0f ? sum / normalizer : 0f;
+    }
+
+    private float RidgedFbm(float x, float z, float scale, int octaves, float lacunarity, float gain)
+    {
+        float amplitude = 1f;
+        float frequency = Mathf.Max(0.0001f, scale);
+        float sum = 0f;
+        float normalizer = 0f;
+
+        for (int i = 0; i < octaves; i++)
+        {
+            float sample = Mathf.PerlinNoise(x * frequency - noiseOffsetZ + i * 13.31f, z * frequency + noiseOffsetX + i * 29.73f);
+            float ridge = 1f - Mathf.Abs(sample * 2f - 1f);
+            sum += ridge * amplitude;
+            normalizer += amplitude;
+            amplitude *= gain;
+            frequency *= lacunarity;
+        }
+
+        return normalizer > 0f ? sum / normalizer : 0f;
     }
 
     private static float Range(System.Random random, float minimum, float maximum)
@@ -341,21 +403,24 @@ internal sealed class OceanSeabedTerrain
         public float Sample(float x, float z)
         {
             float distance = NormalizedDistance(x, z);
-            if (distance >= 1.24f)
+            distance += (Mathf.PerlinNoise(x * 0.037f + center.x * 0.02f, z * 0.037f - center.y * 0.02f) - 0.5f) * 0.18f;
+            if (distance >= (reef ? 1.24f : 1.55f))
             {
                 return 0f;
             }
 
             if (reef)
             {
-                float mound = 1f - SmootherStep(Mathf.Clamp01((distance - 0.05f) / 0.9f));
-                float shoulder = Ring(distance, 0.48f, 1.18f);
-                return height * (mound * 0.95f + shoulder * 0.3f);
+                float mound = 1f - SmootherStep(Mathf.Clamp01((distance - 0.08f) / 0.92f));
+                float shoulder = Ring(distance, 0.5f, 1.16f);
+                float chip = Mathf.Lerp(0.72f, 1.08f, Mathf.PerlinNoise(x * 0.082f + 8.3f, z * 0.082f - 4.7f));
+                return height * (mound * 0.78f + shoulder * 0.28f) * chip;
             }
 
-            float bowl = 1f - SmootherStep(Mathf.Clamp01(distance));
-            float raisedRim = Ring(distance, 0.72f, 1.16f);
-            return height * (-bowl + raisedRim * 0.24f);
+            float innerBowl = 1f - SmootherStep(Mathf.Clamp01(distance / 1.08f));
+            float softShelf = 1f - SmootherStep(Mathf.Clamp01((distance - 0.38f) / 1.12f));
+            float raisedRim = Ring(distance, 1.02f, 1.48f);
+            return height * (-innerBowl * 0.46f - softShelf * 0.3f + raisedRim * 0.06f);
         }
 
         public bool Contains(float x, float z, float normalizedRadius)

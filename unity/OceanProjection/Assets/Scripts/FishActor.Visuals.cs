@@ -201,6 +201,8 @@ public partial class FishActor
             colorRenderers = visualTextureRenderers;
             subColorRenderers = visualTextureRenderers;
             ApplyTexture(textureRenderers, modelTexture);
+            HideDrawingFishVisual();
+
             Debug.LogWarning($"FishActor: projection was unavailable for '{Nickname}', applied drawing to the 3D model instead of using a flat fallback.");
             return;
         }
@@ -227,6 +229,27 @@ public partial class FishActor
         subColorRenderers = colorRenderers;
         textureRenderers = colorRenderers;
         Debug.LogWarning($"FishActor: no 3D renderers were found for '{Nickname}', so the emergency flat drawing fallback was used.");
+    }
+
+    private void HideDrawingFishVisual()
+    {
+        if (drawingFishVisual == null)
+        {
+            drawingFishVisual = GetComponentInChildren<DrawingFishVisual>(true);
+        }
+
+        if (drawingFishVisual == null)
+        {
+            return;
+        }
+
+        Renderer renderer = drawingFishVisual.Renderer;
+        if (renderer != null)
+        {
+            renderer.enabled = false;
+        }
+
+        drawingFishVisual.gameObject.SetActive(false);
     }
 
     private DrawingFishVisual EnsureDrawingFishVisual()

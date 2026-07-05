@@ -15,6 +15,15 @@ public partial class FishActor
     private static bool attemptedNicknameJapaneseFontAsset;
     private static bool warnedNicknameJapaneseFontFallback;
 
+    public bool IsNicknameTagVisibleForCamera =>
+        cameraFocused
+        && nicknameTagRevealProgress >= 0.98f
+        && (
+            (nicknameTagLine != null && nicknameTagLine.enabled)
+            || (nicknameLabel != null && nicknameLabel.gameObject.activeInHierarchy)
+            || (nicknameFallbackLabel != null && nicknameFallbackLabel.gameObject.activeInHierarchy)
+        );
+
     private void UpdateLabel()
     {
         if (!ShouldUseNicknameTag())

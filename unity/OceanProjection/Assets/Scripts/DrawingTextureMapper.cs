@@ -2,25 +2,19 @@ using UnityEngine;
 
 public static class DrawingTextureMapper
 {
-    private const float ProjectionContentInsetExtra = 0.035f;
+    private const float CanvasWidth = 1024f;
+    private const float CanvasHeight = 512f;
+    private const float VisualCanvasXMin = 91f;
+    private const float VisualCanvasYMin = 82f;
+    private const float VisualCanvasXMax = 990f;
+    private const float VisualCanvasYMax = 505f;
 
     public static Texture2D CreateProjectionTexture(Texture2D source, float alphaThreshold)
     {
-        return CreateProjectionTexture(source, alphaThreshold, Vector2.zero, 0f);
+        return CreateProjectionTexture(source, alphaThreshold, Vector2.zero);
     }
 
     public static Texture2D CreateProjectionTexture(Texture2D source, float alphaThreshold, Vector2 projectionPaddingRatio)
-    {
-        Vector2 contentInset = ProjectionContentInset(projectionPaddingRatio);
-        return CreateProjectionTexture(source, alphaThreshold, contentInset, ProjectionContentInsetExtra);
-    }
-
-    private static Texture2D CreateProjectionTexture(
-        Texture2D source,
-        float alphaThreshold,
-        Vector2 contentInset,
-        float extraInset
-    )
     {
         if (source == null)
         {
@@ -29,25 +23,22 @@ public static class DrawingTextureMapper
 
         Color32[] sourcePixels = source.GetPixels32();
         Color32[] outputPixels = new Color32[sourcePixels.Length];
-        RectInt contentRect = CalculateContentRect(source.width, source.height, contentInset, extraInset);
+        Rect sourceRect = TryFindPaintedBounds(sourcePixels, source.width, source.height, alphaThreshold, out RectInt paintedBounds)
+            ? ExpandPaintedBounds(paintedBounds, source.width, source.height, projectionPaddingRatio)
+            : CalculateProjectionSourceRect(source.width, source.height, projectionPaddingRatio);
 
         for (int y = 0; y < source.height; y++)
         {
+            float v = source.height <= 1 ? 0f : y / (float)(source.height - 1);
+            int sourceY = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(sourceRect.yMin, sourceRect.yMax, v)), 0, source.height - 1);
+
             for (int x = 0; x < source.width; x++)
             {
                 int outputIndex = y * source.width + x;
-                if (!contentRect.Contains(new Vector2Int(x, y)))
-                {
-                    outputPixels[outputIndex] = Transparent;
-                    continue;
-                }
-
-                float u = contentRect.width <= 1 ? 0f : (x - contentRect.xMin) / (float)(contentRect.width - 1);
-                float v = contentRect.height <= 1 ? 0f : (y - contentRect.yMin) / (float)(contentRect.height - 1);
-                int sourceX = Mathf.Clamp(Mathf.RoundToInt(u * (source.width - 1)), 0, source.width - 1);
-                int sourceY = Mathf.Clamp(Mathf.RoundToInt(v * (source.height - 1)), 0, source.height - 1);
+                float u = source.width <= 1 ? 0f : x / (float)(source.width - 1);
+                int sourceX = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(sourceRect.xMin, sourceRect.xMax, u)), 0, source.width - 1);
                 Color32 color = sourcePixels[sourceY * source.width + sourceX];
-                outputPixels[outputIndex] = color.a / 255f < alphaThreshold ? Transparent : color;
+                outputPixels[outputIndex] = IsPaintedPixel(color, alphaThreshold) ? color : Transparent;
             }
         }
 
@@ -64,40 +55,39 @@ public static class DrawingTextureMapper
 
     private static readonly Color32 Transparent = new Color32(0, 0, 0, 0);
 
-    private static Vector2 ProjectionContentInset(Vector2 paddingRatio)
+    private static Rect CalculateProjectionSourceRect(int width, int height, Vector2 paddingRatio)
     {
-        return new Vector2(
-            PaddingRatioToTextureInset(paddingRatio.x),
-            PaddingRatioToTextureInset(paddingRatio.y)
-        );
+        float safePaddingX = Mathf.Clamp(paddingRatio.x, 0f, 0.45f);
+        float safePaddingY = Mathf.Clamp(paddingRatio.y, 0f, 0.45f);
+        float canvasPaddingX = (VisualCanvasXMax - VisualCanvasXMin) * safePaddingX;
+        float canvasPaddingY = (VisualCanvasYMax - VisualCanvasYMin) * safePaddingY;
+
+        float canvasXMin = Mathf.Max(0f, VisualCanvasXMin - canvasPaddingX);
+        float canvasXMax = Mathf.Min(CanvasWidth, VisualCanvasXMax + canvasPaddingX);
+        float canvasYMin = Mathf.Max(0f, VisualCanvasYMin - canvasPaddingY);
+        float canvasYMax = Mathf.Min(CanvasHeight, VisualCanvasYMax + canvasPaddingY);
+
+        float sourceXMin = canvasXMin / CanvasWidth * width;
+        float sourceXMax = canvasXMax / CanvasWidth * width;
+        float sourceYMin = (CanvasHeight - canvasYMax) / CanvasHeight * height;
+        float sourceYMax = (CanvasHeight - canvasYMin) / CanvasHeight * height;
+
+        return Rect.MinMaxRect(sourceXMin, sourceYMin, sourceXMax, sourceYMax);
     }
 
-    private static float PaddingRatioToTextureInset(float paddingRatio)
+    private static Rect ExpandPaintedBounds(RectInt paintedBounds, int width, int height, Vector2 paddingRatio)
     {
-        float safePadding = Mathf.Clamp(paddingRatio, 0f, 0.45f);
-        return safePadding / (1f + safePadding * 2f);
-    }
+        float safePaddingX = Mathf.Clamp(paddingRatio.x, 0f, 0.45f);
+        float safePaddingY = Mathf.Clamp(paddingRatio.y, 0f, 0.45f);
+        float paddingX = Mathf.Max(1f, paintedBounds.width * safePaddingX);
+        float paddingY = Mathf.Max(1f, paintedBounds.height * safePaddingY);
 
-    private static RectInt CalculateContentRect(int width, int height, Vector2 contentInset, float extraInset)
-    {
-        float safeExtraInset = Mathf.Clamp(extraInset, 0f, 0.12f);
-        int insetX = Mathf.Clamp(
-            Mathf.RoundToInt(width * Mathf.Clamp(contentInset.x + safeExtraInset, 0f, 0.45f)),
-            0,
-            Mathf.Max(0, width / 2 - 1)
-        );
-        int insetY = Mathf.Clamp(
-            Mathf.RoundToInt(height * Mathf.Clamp(contentInset.y + safeExtraInset, 0f, 0.45f)),
-            0,
-            Mathf.Max(0, height / 2 - 1)
-        );
+        float sourceXMin = Mathf.Max(0f, paintedBounds.xMin - paddingX);
+        float sourceXMax = Mathf.Min(width - 1f, paintedBounds.xMax - 1f + paddingX);
+        float sourceYMin = Mathf.Max(0f, paintedBounds.yMin - paddingY);
+        float sourceYMax = Mathf.Min(height - 1f, paintedBounds.yMax - 1f + paddingY);
 
-        return new RectInt(
-            insetX,
-            insetY,
-            Mathf.Max(1, width - insetX * 2),
-            Mathf.Max(1, height - insetY * 2)
-        );
+        return Rect.MinMaxRect(sourceXMin, sourceYMin, sourceXMax, sourceYMax);
     }
 
     public static Texture2D CreateModelTexture(Texture2D source, int textureSize, float alphaThreshold)
@@ -168,7 +158,7 @@ public static class DrawingTextureMapper
     )
     {
         Color32 color = pixels[y * width + x];
-        if (color.a / 255f < alphaThreshold)
+        if (!IsPaintedPixel(color, alphaThreshold))
         {
             color = fallbackColor;
         }
@@ -176,6 +166,48 @@ public static class DrawingTextureMapper
     }
 
     private static bool TryFindPaintedBounds(Color32[] pixels, int width, int height, float alphaThreshold, out RectInt bounds)
+    {
+        if (TryFindAlphaBounds(pixels, width, height, alphaThreshold, out RectInt alphaBounds)
+            && (alphaBounds.width < width || alphaBounds.height < height))
+        {
+            bounds = alphaBounds;
+            return true;
+        }
+
+        int minX = width;
+        int minY = height;
+        int maxX = -1;
+        int maxY = -1;
+        byte alphaByteThreshold = AlphaByteThreshold(alphaThreshold);
+
+        for (int y = 0; y < height; y++)
+        {
+            int row = y * width;
+            for (int x = 0; x < width; x++)
+            {
+                if (!IsPaintedPixel(pixels[row + x], alphaByteThreshold))
+                {
+                    continue;
+                }
+
+                minX = Mathf.Min(minX, x);
+                minY = Mathf.Min(minY, y);
+                maxX = Mathf.Max(maxX, x);
+                maxY = Mathf.Max(maxY, y);
+            }
+        }
+
+        if (maxX < minX || maxY < minY)
+        {
+            bounds = new RectInt(0, 0, width, height);
+            return false;
+        }
+
+        bounds = new RectInt(minX, minY, maxX - minX + 1, maxY - minY + 1);
+        return true;
+    }
+
+    private static bool TryFindAlphaBounds(Color32[] pixels, int width, int height, float alphaThreshold, out RectInt bounds)
     {
         int minX = width;
         int minY = height;
@@ -221,7 +253,7 @@ public static class DrawingTextureMapper
         for (int i = 0; i < pixels.Length; i++)
         {
             Color32 color = pixels[i];
-            if (color.a < alphaByteThreshold)
+            if (!IsPaintedPixel(color, alphaByteThreshold))
             {
                 continue;
             }
@@ -261,7 +293,7 @@ public static class DrawingTextureMapper
             for (int y = bounds.yMin; y < bounds.yMax; y++)
             {
                 Color32 color = pixels[y * width + x];
-                if (color.a < alphaByteThreshold)
+                if (!IsPaintedPixel(color, alphaByteThreshold))
                 {
                     continue;
                 }
@@ -340,6 +372,26 @@ public static class DrawingTextureMapper
     private static byte AlphaByteThreshold(float alphaThreshold)
     {
         return (byte)Mathf.Clamp(Mathf.RoundToInt(alphaThreshold * 255f), 1, 255);
+    }
+
+    private static bool IsPaintedPixel(Color32 color, float alphaThreshold)
+    {
+        return IsPaintedPixel(color, AlphaByteThreshold(alphaThreshold));
+    }
+
+    private static bool IsPaintedPixel(Color32 color, byte alphaByteThreshold)
+    {
+        return color.a >= alphaByteThreshold && !LooksLikeCanvasBackground(color);
+    }
+
+    private static bool LooksLikeCanvasBackground(Color32 color)
+    {
+        int max = System.Math.Max(color.r, System.Math.Max(color.g, color.b));
+        int min = System.Math.Min(color.r, System.Math.Min(color.g, color.b));
+        int range = max - min;
+        float luma = (0.2126f * color.r + 0.7152f * color.g + 0.0722f * color.b) / 255f;
+
+        return (max >= 235 && range <= 46) || (luma >= 0.86f && range <= 32);
     }
 
     private static Texture2D CreateSolidTexture(string sourceName, int width, int height, Color32 color, string suffix)

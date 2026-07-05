@@ -1,0 +1,2289 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/phqbcd",
+    "id": "phqbcd",
+    "slide": 1,
+    "layoutId": "4f4f62b9-019a-4fcd-918d-292e950ac495",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4e72eca3-3950-4bf0-8065-679d283b6c90",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1586.67,
+      "height": 2244
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Yu Gothic"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "4f4f62b9-019a-4fcd-918d-292e950ac495",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4e72eca3-3950-4bf0-8065-679d283b6c90",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4e72eca3-3950-4bf0-8065-679d283b6c90",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/zupwb2hw",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1586.67,
+        940
+      ],
+      "alt": "water light rays",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "b6fd8acf-8d9b-48b7-acd9-1246753a2164",
+        "contentType": "image/png",
+        "byteLength": 396939
+      }
+    },
+    {
+      "order": 2,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/sfil0rqd",
+      "id": "2",
+      "bbox": [
+        0,
+        1524,
+        1586.67,
+        720
+      ],
+      "alt": "illustrated sea floor",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "6671d84d-d668-4794-813b-04db9d0749f0",
+        "contentType": "image/png",
+        "byteLength": 1118465
+      }
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cfa9w3m9",
+      "id": "3",
+      "bbox": [
+        0,
+        0,
+        1586.67,
+        2244
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(255, 255, 255, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/al87ed8b",
+      "id": "4",
+      "bbox": [
+        0,
+        0,
+        1586.67,
+        520
+      ],
+      "alt": "ocean surface with reef",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "45d626f2-0010-4d83-912b-68aa71a40c89",
+        "contentType": "image/jpeg",
+        "byteLength": 143937
+      }
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u18jqh0f",
+      "id": "5",
+      "bbox": [
+        0,
+        0,
+        1586.67,
+        620
+      ],
+      "geometry": "rect",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "6",
+      "bbox": [
+        96,
+        134,
+        980,
+        112
+      ],
+      "geometry": "rect",
+      "text": "デジタル水族館",
+      "textPreview": "デジタル水族館",
+      "resolvedFontSize": 86,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 86,
+        "typeface": "Yu Gothic",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "デジタル水族館"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "デジタル水族館",
+          "resolvedTextStyle": {
+            "fontSize": 86,
+            "typeface": "Yu Gothic",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "デジタル水族館",
+              "fontSize": 86,
+              "typeface": "Yu Gothic",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "7",
+      "bbox": [
+        102,
+        264,
+        1140,
+        72
+      ],
+      "geometry": "rect",
+      "text": "来場者がつくった魚が、海中空間に泳ぎ出す参加型プロジェクション",
+      "textPreview": "来場者がつくった魚が、海中空間に泳ぎ出す参加型プロジェクション",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 34,
+        "typeface": "Yu Gothic",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "来場者がつくった魚が、海中空間に泳ぎ出す参加型プロジェクション"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "来場者がつくった魚が、海中空間に泳ぎ出す参加型プロジェクション",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "typeface": "Yu Gothic",
+            "color": "#FFFFFF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "来場者がつくった魚が、海中空間に泳ぎ出す参加型プロジェクション",
+              "fontSize": 34,
+              "typeface": "Yu Gothic",
+              "color": "#FFFFFF",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "8",
+      "bbox": [
+        1260,
+        146,
+        130,
+        48
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FF7A7A",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "9",
+      "bbox": [
+        1278,
+        153,
+        94,
+        36
+      ],
+      "geometry": "rect",
+      "text": "C1",
+      "textPreview": "C1",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 23,
+        "typeface": "Yu Gothic",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "C1"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "C1",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Yu Gothic",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "C1",
+              "fontSize": 23,
+              "typeface": "Yu Gothic",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "10",
+      "bbox": [
+        103,
+        350,
+        1000,
+        52
+      ],
+      "geometry": "rect",
+      "text": "俵伊吹 / 長谷川煌輔 / 中嶋華鈴 / 三木快和",
+      "textPreview": "俵伊吹 / 長谷川煌輔 / 中嶋華鈴 / 三木快和",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 28,
+        "typeface": "Yu Gothic",
+        "color": "#FFFFFF",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "俵伊吹 / 長谷川煌輔 / 中嶋華鈴 / 三木快和"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "俵伊吹 / 長谷川煌輔 / 中嶋華鈴 / 三木快和",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "typeface": "Yu Gothic",
+            "color": "#FFFFFF",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "俵伊吹 / 長谷川煌輔 / 中嶋華鈴 / 三木快和",
+              "fontSize": 28,
+              "typeface": "Yu Gothic",
+              "color": "#FFFFFF",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcrmhk3q",
+      "id": "11",
+      "bbox": [
+        86,
+        610,
+        1414,
+        390
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.88)",
+      "lineColor": "rgba(125, 220, 232, 0.8)",
+      "lineWidth": 2
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "12",
+      "bbox": [
+        126,
+        654,
+        380,
+        44
+      ],
+      "geometry": "rect",
+      "text": "目的",
+      "textPreview": "目的",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26,
+        "typeface": "Yu Gothic",
+        "color": "#0E9BB5",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "目的"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "目的",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "typeface": "Yu Gothic",
+            "color": "#0E9BB5",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "目的",
+              "fontSize": 26,
+              "typeface": "Yu Gothic",
+              "color": "#0E9BB5",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z61032ls",
+      "id": "13",
+      "bbox": [
+        126,
+        702,
+        120,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF7A7A",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "14",
+      "bbox": [
+        126,
+        728,
+        1320,
+        180
+      ],
+      "geometry": "rect",
+      "text": "オープンキャンパスで来場した中学生に、舞鶴高専の魅力や、ものづくり・プログラミングの楽しさを体験してもらう。入学後の学生生活や将来のイメージまで持ってもらえる展示を目指した。",
+      "textPreview": "オープンキャンパスで来場した中学生に、舞鶴高専の魅力や、ものづくり・プログラミングの楽しさを体験してもらう。入学後の学生生活や将来のイメージまで持ってもらえる展示を目指した。",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 36,
+        "typeface": "Yu Gothic",
+        "color": "#043047",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "オープンキャンパスで来場した中学生に、舞鶴高専の魅力や、ものづくり・プロ"
+          },
+          {
+            "index": 2,
+            "text": "グラミングの楽しさを体験してもらう。入学後の学生生活や将来のイメージまで"
+          },
+          {
+            "index": 3,
+            "text": "持ってもらえる展示を目指した。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "オープンキャンパスで来場した中学生に、舞鶴高専の魅力や、ものづくり・プログラミングの楽しさを体験してもらう。入学後の学生生活や将来のイメージまで持ってもらえる展示を目指した。",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "オープンキャンパスで来場した中学生に、舞鶴高専の魅力や、ものづくり・プログラミングの楽しさを体験してもらう。入学後の学生生活や将来のイメージまで持ってもらえる展示を目指した。",
+              "fontSize": 36,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "15",
+      "bbox": [
+        86,
+        1060,
+        690,
+        540
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.88)",
+      "lineColor": "rgba(125, 220, 232, 0.8)",
+      "lineWidth": 2
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "16",
+      "bbox": [
+        126,
+        1106,
+        380,
+        44
+      ],
+      "geometry": "rect",
+      "text": "プロジェクトの核",
+      "textPreview": "プロジェクトの核",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26,
+        "typeface": "Yu Gothic",
+        "color": "#0E9BB5",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "プロジェクトの核"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "プロジェクトの核",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "typeface": "Yu Gothic",
+            "color": "#0E9BB5",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "プロジェクトの核",
+              "fontSize": 26,
+              "typeface": "Yu Gothic",
+              "color": "#0E9BB5",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "17",
+      "bbox": [
+        126,
+        1154,
+        120,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF7A7A",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "18",
+      "bbox": [
+        126,
+        1190,
+        600,
+        250
+      ],
+      "geometry": "rect",
+      "text": "・海中をテーマにした来場者参加型のプロジェクションマッピング\n・Webアプリで魚を選び、色や柄を自由にカスタマイズ\n・制作した作品を来場者自身に体験してもらう",
+      "textPreview": "・海中をテーマにした来場者参加型のプロジェクションマッピング | ・Webアプリで魚を選び、色や柄を自由にカスタマイズ | ・制作した作品を来場者自身に体験してもらう",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 31,
+        "typeface": "Yu Gothic",
+        "color": "#043047",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "・海中をテーマにした来場者参加型のプロ"
+          },
+          {
+            "index": 2,
+            "text": "ジェクションマッピング"
+          },
+          {
+            "index": 3,
+            "text": "・Webアプリで魚を選び、色や柄を自由に"
+          },
+          {
+            "index": 4,
+            "text": "カスタマイズ"
+          },
+          {
+            "index": 5,
+            "text": "・制作した作品を来場者自身に体験しても"
+          },
+          {
+            "index": 6,
+            "text": "らう"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "・海中をテーマにした来場者参加型のプロジェクションマッピング",
+          "resolvedTextStyle": {
+            "fontSize": 31,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "・海中をテーマにした来場者参加型のプロジェクションマッピング",
+              "fontSize": 31,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "・Webアプリで魚を選び、色や柄を自由にカスタマイズ",
+          "resolvedTextStyle": {
+            "fontSize": 31,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "・Webアプリで魚を選び、色や柄を自由にカスタマイズ",
+              "fontSize": 31,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "・制作した作品を来場者自身に体験してもらう",
+          "resolvedTextStyle": {
+            "fontSize": 31,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "・制作した作品を来場者自身に体験してもらう",
+              "fontSize": 31,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/u54zidon",
+      "id": "19",
+      "bbox": [
+        452,
+        1380,
+        250,
+        150
+      ],
+      "alt": "custom fish",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "e8fe490a-7a36-480a-9236-90f163535f2e",
+        "contentType": "image/png",
+        "byteLength": 210391
+      }
+    },
+    {
+      "order": 20,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/29gr2p8n",
+      "id": "20",
+      "bbox": [
+        180,
+        1380,
+        260,
+        150
+      ],
+      "alt": "custom fish",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "6af49353-a8dc-49f2-921d-8a80edbeef4b",
+        "contentType": "image/png",
+        "byteLength": 339167
+      }
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "21",
+      "bbox": [
+        810,
+        1060,
+        690,
+        540
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.88)",
+      "lineColor": "rgba(125, 220, 232, 0.8)",
+      "lineWidth": 2
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "22",
+      "bbox": [
+        850,
+        1106,
+        380,
+        44
+      ],
+      "geometry": "rect",
+      "text": "開発環境",
+      "textPreview": "開発環境",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26,
+        "typeface": "Yu Gothic",
+        "color": "#0E9BB5",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "開発環境"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "開発環境",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "typeface": "Yu Gothic",
+            "color": "#0E9BB5",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "開発環境",
+              "fontSize": 26,
+              "typeface": "Yu Gothic",
+              "color": "#0E9BB5",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0fepkz",
+      "id": "23",
+      "bbox": [
+        850,
+        1154,
+        120,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF7A7A",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "24",
+      "bbox": [
+        862,
+        1200,
+        154,
+        154
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#B8E8F0",
+      "lineWidth": 2
+    },
+    {
+      "order": 25,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/v6psfil0",
+      "id": "25",
+      "bbox": [
+        879,
+        1217,
+        120,
+        120
+      ],
+      "alt": "React",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "764be92b-1604-42b2-96b0-4483cfa6a13f",
+        "contentType": "image/png",
+        "byteLength": 47668
+      }
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jqh0fepk",
+      "id": "26",
+      "bbox": [
+        1078,
+        1200,
+        154,
+        154
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#B8E8F0",
+      "lineWidth": 2
+    },
+    {
+      "order": 27,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/d8bat47y",
+      "id": "27",
+      "bbox": [
+        1095,
+        1217,
+        120,
+        120
+      ],
+      "alt": "Supabase",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "7a89b771-e03b-4ace-9fb6-942703c92bb6",
+        "contentType": "image/png",
+        "byteLength": 153257
+      }
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kre1w7m",
+      "id": "28",
+      "bbox": [
+        1294,
+        1200,
+        154,
+        154
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#B8E8F0",
+      "lineWidth": 2
+    },
+    {
+      "order": 29,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/val87ed8",
+      "id": "29",
+      "bbox": [
+        1311,
+        1217,
+        120,
+        120
+      ],
+      "alt": "Unity",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "425e7794-97f1-409f-b21b-fd239740534a",
+        "contentType": "image/png",
+        "byteLength": 126501
+      }
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1cfa9w3",
+      "id": "30",
+      "bbox": [
+        862,
+        1416,
+        154,
+        154
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#B8E8F0",
+      "lineWidth": 2
+    },
+    {
+      "order": 31,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/svu9knih",
+      "id": "31",
+      "bbox": [
+        879,
+        1433,
+        120,
+        120
+      ],
+      "alt": "Blender",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "e885b141-126c-4c7b-a327-a4e71645105e",
+        "contentType": "image/png",
+        "byteLength": 122747
+      }
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/47y1kre1",
+      "id": "32",
+      "bbox": [
+        1078,
+        1416,
+        154,
+        154
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#B8E8F0",
+      "lineWidth": 2
+    },
+    {
+      "order": 33,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/ap4r65wj",
+      "id": "33",
+      "bbox": [
+        1095,
+        1433,
+        120,
+        120
+      ],
+      "alt": "OBS Studio",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "8ff45ef9-cce2-4f31-a2b9-f44b28687b8c",
+        "contentType": "image/png",
+        "byteLength": 24955
+      }
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp0bi9s3",
+      "id": "34",
+      "bbox": [
+        1294,
+        1416,
+        154,
+        154
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#B8E8F0",
+      "lineWidth": 2
+    },
+    {
+      "order": 35,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/s36hcrmh",
+      "id": "35",
+      "bbox": [
+        1311,
+        1433,
+        120,
+        120
+      ],
+      "alt": "Resolume",
+      "contentType": "image/jpeg",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "1e00bab8-0898-4013-adb4-9d2e1c4edf1a",
+        "contentType": "image/jpeg",
+        "byteLength": 20447
+      }
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vmtwra5",
+      "id": "36",
+      "bbox": [
+        86,
+        1660,
+        1414,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(233, 251, 255, 0.92)",
+      "lineColor": "rgba(125, 220, 232, 0.8)",
+      "lineWidth": 2
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tgfmlkjm",
+      "id": "37",
+      "bbox": [
+        126,
+        1706,
+        380,
+        44
+      ],
+      "geometry": "rect",
+      "text": "システム構成",
+      "textPreview": "システム構成",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26,
+        "typeface": "Yu Gothic",
+        "color": "#0E9BB5",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "システム構成"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "システム構成",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "typeface": "Yu Gothic",
+            "color": "#0E9BB5",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "システム構成",
+              "fontSize": 26,
+              "typeface": "Yu Gothic",
+              "color": "#0E9BB5",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "38",
+      "bbox": [
+        126,
+        1754,
+        120,
+        5
+      ],
+      "geometry": "rect",
+      "fillColor": "#FF7A7A",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "39",
+      "bbox": [
+        126,
+        1808,
+        210,
+        138
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.92)",
+      "lineColor": "#6BD7E3",
+      "lineWidth": 2
+    },
+    {
+      "order": 40,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/g3ex0nux",
+      "id": "40",
+      "bbox": [
+        144,
+        1824,
+        60,
+        60
+      ],
+      "alt": "Webサイト\nReact",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "20bf859a-7eee-4acc-97d9-46e4dede3a6a",
+        "contentType": "image/png",
+        "byteLength": 47668
+      }
+    },
+    {
+      "order": 41,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2lszqtcj",
+      "id": "41",
+      "bbox": [
+        212,
+        1820,
+        112,
+        90
+      ],
+      "geometry": "rect",
+      "text": "Webサイト\nReact",
+      "textPreview": "Webサイト | React",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Yu Gothic",
+        "color": "#043047",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Webサイト"
+          },
+          {
+            "index": 2,
+            "text": "React"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Webサイト",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Webサイト",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "React",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "React",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 42,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8bat47y",
+      "id": "42",
+      "bbox": [
+        352,
+        1838,
+        54,
+        60
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 44,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 44,
+        "typeface": "Yu Gothic",
+        "color": "#0E9BB5",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 44,
+            "typeface": "Yu Gothic",
+            "color": "#0E9BB5",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 44,
+              "typeface": "Yu Gothic",
+              "color": "#0E9BB5",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 43,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/knih4byh",
+      "id": "43",
+      "bbox": [
+        394,
+        1808,
+        210,
+        138
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.92)",
+      "lineColor": "#6BD7E3",
+      "lineWidth": 2
+    },
+    {
+      "order": 44,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/gr2p8nqx",
+      "id": "44",
+      "bbox": [
+        412,
+        1824,
+        60,
+        60
+      ],
+      "alt": "データ保存\nSupabase",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "1eed3e57-d515-4ade-abec-6f95ef26fe0d",
+        "contentType": "image/png",
+        "byteLength": 153257
+      }
+    },
+    {
+      "order": 45,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/29gr2p8n",
+      "id": "45",
+      "bbox": [
+        480,
+        1820,
+        112,
+        90
+      ],
+      "geometry": "rect",
+      "text": "データ保存\nSupabase",
+      "textPreview": "データ保存 | Supabase",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Yu Gothic",
+        "color": "#043047",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "データ保存"
+          },
+          {
+            "index": 2,
+            "text": "Supabase"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "データ保存",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "データ保存",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Supabase",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Supabase",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 46,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d0z61032",
+      "id": "46",
+      "bbox": [
+        620,
+        1838,
+        54,
+        60
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 44,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 44,
+        "typeface": "Yu Gothic",
+        "color": "#0E9BB5",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 44,
+            "typeface": "Yu Gothic",
+            "color": "#0E9BB5",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 44,
+              "typeface": "Yu Gothic",
+              "color": "#0E9BB5",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 47,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kf6dcbul",
+      "id": "47",
+      "bbox": [
+        662,
+        1808,
+        210,
+        138
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.92)",
+      "lineColor": "#6BD7E3",
+      "lineWidth": 2
+    },
+    {
+      "order": 48,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/gfmlkjm1",
+      "id": "48",
+      "bbox": [
+        680,
+        1824,
+        60,
+        60
+      ],
+      "alt": "海中表示\nUnity / Blender",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "3f58d4a6-819b-415b-9f81-e21e7f77c1c3",
+        "contentType": "image/png",
+        "byteLength": 126501
+      }
+    },
+    {
+      "order": 49,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2x4nap4r",
+      "id": "49",
+      "bbox": [
+        748,
+        1820,
+        112,
+        90
+      ],
+      "geometry": "rect",
+      "text": "海中表示\nUnity / Blender",
+      "textPreview": "海中表示 | Unity / Blender",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Yu Gothic",
+        "color": "#043047",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海中表示"
+          },
+          {
+            "index": 2,
+            "text": "Unity /"
+          },
+          {
+            "index": 3,
+            "text": "Blender"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海中表示",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海中表示",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Unity / Blender",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Unity / Blender",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 50,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "50",
+      "bbox": [
+        888,
+        1838,
+        54,
+        60
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 44,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 44,
+        "typeface": "Yu Gothic",
+        "color": "#0E9BB5",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 44,
+            "typeface": "Yu Gothic",
+            "color": "#0E9BB5",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 44,
+              "typeface": "Yu Gothic",
+              "color": "#0E9BB5",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 51,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "51",
+      "bbox": [
+        930,
+        1808,
+        210,
+        138
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.92)",
+      "lineColor": "#6BD7E3",
+      "lineWidth": 2
+    },
+    {
+      "order": 52,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/h0fepkzu",
+      "id": "52",
+      "bbox": [
+        948,
+        1824,
+        60,
+        60
+      ],
+      "alt": "映像調整\nOBS / Resolume",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "5f8501b0-683e-4e0a-a8d3-13ad1ccb8483",
+        "contentType": "image/png",
+        "byteLength": 30620
+      }
+    },
+    {
+      "order": 53,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "53",
+      "bbox": [
+        1016,
+        1820,
+        112,
+        90
+      ],
+      "geometry": "rect",
+      "text": "映像調整\nOBS / Resolume",
+      "textPreview": "映像調整 | OBS / Resolume",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Yu Gothic",
+        "color": "#043047",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "映像調整"
+          },
+          {
+            "index": 2,
+            "text": "OBS /"
+          },
+          {
+            "index": 3,
+            "text": "Resolume"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "映像調整",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "映像調整",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "OBS / Resolume",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "OBS / Resolume",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 54,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cbulwval",
+      "id": "54",
+      "bbox": [
+        1156,
+        1838,
+        54,
+        60
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 44,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 44,
+        "typeface": "Yu Gothic",
+        "color": "#0E9BB5",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "resolvedTextStyle": {
+            "fontSize": 44,
+            "typeface": "Yu Gothic",
+            "color": "#0E9BB5",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 44,
+              "typeface": "Yu Gothic",
+              "color": "#0E9BB5",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 55,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5sneloj2",
+      "id": "55",
+      "bbox": [
+        1198,
+        1808,
+        210,
+        138
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.92)",
+      "lineColor": "#6BD7E3",
+      "lineWidth": 2
+    },
+    {
+      "order": 56,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/hcrmhk3q",
+      "id": "56",
+      "bbox": [
+        1216,
+        1824,
+        60,
+        60
+      ],
+      "alt": "教室へ投影\nプロジェクター",
+      "contentType": "image/png",
+      "imageFit": "contain",
+      "asset": {
+        "assetId": "433c588b-89f6-47a6-b8a4-083cfa02cd81",
+        "contentType": "image/png",
+        "byteLength": 30620
+      }
+    },
+    {
+      "order": 57,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqxs72x4",
+      "id": "57",
+      "bbox": [
+        1284,
+        1820,
+        112,
+        90
+      ],
+      "geometry": "rect",
+      "text": "教室へ投影\nプロジェクター",
+      "textPreview": "教室へ投影 | プロジェクター",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 22,
+        "typeface": "Yu Gothic",
+        "color": "#043047",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "教室へ投影"
+          },
+          {
+            "index": 2,
+            "text": "プロジェク"
+          },
+          {
+            "index": 3,
+            "text": "ター"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "教室へ投影",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "教室へ投影",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "プロジェクター",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "typeface": "Yu Gothic",
+            "color": "#043047",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "プロジェクター",
+              "fontSize": 22,
+              "typeface": "Yu Gothic",
+              "color": "#043047",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

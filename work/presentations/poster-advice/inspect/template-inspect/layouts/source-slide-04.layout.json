@@ -1,0 +1,1213 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/val87ed8",
+    "id": "val87ed8",
+    "slide": 4,
+    "layoutId": "/ppt/slideLayouts/slideLayout7.xml",
+    "layoutName": "白紙",
+    "layoutType": "blank",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "backgroundColor": {
+      "type": "theme",
+      "value": "bg1",
+      "transform": {
+        "opacity": 0.5
+      }
+    },
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1586.67,
+      "height": 2244
+    }
+  },
+  "theme": {
+    "colorSchemeName": "Office 2013 - 2022 テーマ",
+    "colors": {
+      "accent1": "#4472C4",
+      "accent2": "#ED7D31",
+      "accent3": "#A5A5A5",
+      "accent4": "#FFC000",
+      "accent5": "#5B9BD5",
+      "accent6": "#70AD47",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#44546A",
+      "lt2": "#E7E6E6",
+      "hlink": "#0563C1",
+      "folHlink": "#954F72"
+    },
+    "fontScheme": {
+      "name": "Office 2013 - 2022 テーマ",
+      "majorFont": {
+        "latinTypeface": "Calibri Light"
+      },
+      "minorFont": {
+        "latinTypeface": "Calibri"
+      }
+    },
+    "typefaces": [
+      "Calibri",
+      "Calibri Light",
+      "HG丸ｺﾞｼｯｸM-PRO"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout7.xml",
+      "name": "白紙",
+      "type": "blank",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/2",
+          "id": "2",
+          "name": "Date Placeholder 1",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "text": "7/5/2026",
+          "textPreview": "7/5/2026",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "7/5/2026",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "7/5/2026"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/3",
+          "id": "3",
+          "name": "Footer Placeholder 2",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/4",
+          "id": "4",
+          "name": "Slide Number Placeholder 3",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "type": "master",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/2",
+          "id": "2",
+          "name": "Title Placeholder 1",
+          "bbox": [
+            109.08,
+            119.47,
+            1368.5,
+            433.74
+          ],
+          "geometry": "rect",
+          "text": "マスター タイトルの書式設定",
+          "textPreview": "マスター タイトルの書式設定",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "autoFit": "shrinkText",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "マスター タイトルの書式設定",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "マスター タイトルの書式設定"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/3",
+          "id": "3",
+          "name": "Text Placeholder 2",
+          "bbox": [
+            109.08,
+            597.36,
+            1368.5,
+            1423.8
+          ],
+          "geometry": "rect",
+          "text": "マスター テキストの書式設定\n第 2 レベル\n第 3 レベル\n第 4 レベル\n第 5 レベル",
+          "textPreview": "マスター テキストの書式設定 | 第 2 レベル | 第 3 レベル | 第 4 レベル | 第 5 レベル",
+          "resolvedTextStyle": {
+            "vertical": 1,
+            "autoFit": "shrinkText",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "マスター テキストの書式設定",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "マスター テキストの書式設定"
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "text": "第 2 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "2 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "text": "第 3 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "3 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "text": "第 4 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "4 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "text": "第 5 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "5 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/4",
+          "id": "4",
+          "name": "Date Placeholder 3",
+          "bbox": [
+            109.08,
+            2079.86,
+            357,
+            119.47
+          ],
+          "geometry": "rect",
+          "text": "7/5/2026",
+          "textPreview": "7/5/2026",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "7/5/2026",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "7/5/2026"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 4,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/5",
+          "id": "5",
+          "name": "Footer Placeholder 4",
+          "bbox": [
+            525.58,
+            2079.86,
+            535.5,
+            119.47
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          }
+        },
+        {
+          "order": 5,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/6",
+          "id": "6",
+          "name": "Slide Number Placeholder 5",
+          "bbox": [
+            1120.58,
+            2079.86,
+            357,
+            119.47
+          ],
+          "geometry": "rect",
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/18jqh0fe",
+      "id": "44",
+      "name": "図 4",
+      "bbox": [
+        0,
+        0,
+        1586.67,
+        2244.14
+      ],
+      "contentType": "image/png",
+      "imageCrop": {
+        "left": 0,
+        "top": 0,
+        "right": 0.5,
+        "bottom": 0
+      },
+      "asset": {
+        "assetId": "/ppt/media/image22.png",
+        "contentType": "image/png",
+        "byteLength": 7043331
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image22.png",
+        "contentType": "image/png",
+        "byteLength": 7043331
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtcj6tov",
+      "id": "2",
+      "name": "正方形/長方形 1",
+      "bbox": [
+        0,
+        0,
+        1089.88,
+        291.1
+      ],
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "lt1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "tx1",
+        "transform": {
+          "opacity": 0.1
+        }
+      },
+      "lineColor": {
+        "type": "theme",
+        "value": "bg1",
+        "transform": {
+          "darken": 0.15
+        }
+      },
+      "lineWidth": 4
+    },
+    {
+      "order": 3,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/8nqxs72x",
+      "id": "45",
+      "name": "図 11",
+      "bbox": [
+        15.24,
+        18.97,
+        984.77,
+        217.19
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image23.png",
+        "contentType": "image/png",
+        "byteLength": 13097
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image23.png",
+        "contentType": "image/png",
+        "byteLength": 13097
+      }
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmlkjm1c",
+      "id": "7",
+      "name": "テキスト ボックス 6",
+      "bbox": [
+        56.52,
+        208.7,
+        968.74,
+        54.93
+      ],
+      "geometry": "rect",
+      "text": "創造工学C1班 俵伊吹　中島華凛　三木海斗　長谷川兄 ",
+      "textPreview": "創造工学C1班 俵伊吹　中島華凛　三木海斗　長谷川兄",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "none",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "創造工学C1班 俵伊吹　中島華凛　三木海斗　長谷川兄"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "創造工学C1班 俵伊吹　中島華凛　三木海斗　長谷川兄 ",
+          "runs": [
+            {
+              "index": 1,
+              "text": "創造工学",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO"
+            },
+            {
+              "index": 2,
+              "text": "C1",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO"
+            },
+            {
+              "index": 3,
+              "text": "班 俵伊吹　中島華凛　三木海斗　長谷川兄",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO"
+            },
+            {
+              "index": 4,
+              "text": " ",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "10",
+      "name": "テキスト ボックス 9",
+      "bbox": [
+        166.56,
+        696.5,
+        116.33,
+        67.86
+      ],
+      "geometry": "rect",
+      "text": "概要",
+      "textPreview": "概要",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "none",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "概要"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "概要",
+          "runs": [
+            {
+              "index": 1,
+              "text": "概要",
+              "fontSize": 48,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3q5o7q",
+      "id": "29",
+      "name": "正方形/長方形 28",
+      "bbox": [
+        37.96,
+        1021.1,
+        731.37,
+        1063.77
+      ],
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "lt1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "tx1",
+        "transform": {
+          "opacity": 0.1
+        }
+      },
+      "lineColor": {
+        "type": "theme",
+        "value": "bg1",
+        "transform": {
+          "darken": 0.15
+        }
+      },
+      "lineWidth": 4
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "8",
+      "name": "正方形/長方形 7",
+      "bbox": [
+        154.82,
+        357.93,
+        1266.15,
+        291.1
+      ],
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "lt1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "tx1",
+        "transform": {
+          "opacity": 0.1
+        }
+      },
+      "lineColor": {
+        "type": "theme",
+        "value": "bg1",
+        "transform": {
+          "darken": 0.15
+        }
+      },
+      "lineWidth": 4
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7adsji5s",
+      "id": "34",
+      "name": "テキスト ボックス 33",
+      "bbox": [
+        166.22,
+        367.82,
+        116.66,
+        67.86
+      ],
+      "geometry": "rect",
+      "text": "目的",
+      "textPreview": "目的",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "none",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "目的"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "目的",
+          "runs": [
+            {
+              "index": 1,
+              "text": "目的",
+              "fontSize": 48,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wval87ed",
+      "id": "37",
+      "name": "テキスト ボックス 36",
+      "bbox": [
+        178.93,
+        435.68,
+        1180.81,
+        202.66
+      ],
+      "geometry": "rect",
+      "text": "オープンキャンパスで来場した中学生に舞鶴高専の魅力や、\n高専で学ぶものづくりやプログラミングの楽しさを体験してもらい、入学後の学生生活や将来のイメージを持ってもらうこと。",
+      "textPreview": "オープンキャンパスで来場した中学生に舞鶴高専の魅力や、 | 高専で学ぶものづくりやプログラミングの楽しさを体験してもらい、入学後の学生生活や将来のイメージを持ってもらうこと。",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "オープンキャンパスで来場した中学生に舞鶴高専の魅力や、"
+          },
+          {
+            "index": 2,
+            "text": "高専で学ぶものづくりやプログラミングの楽しさを体験してもらい"
+          },
+          {
+            "index": 3,
+            "text": "、入学後の学生生活や将来のイメージを持ってもらうこと。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "オープンキャンパスで来場した中学生に舞鶴高専の魅力や、",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "オープンキャンパスで来場した中学生に",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "舞鶴高専の魅力",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": "や、",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "高専で学ぶものづくりやプログラミングの楽しさを体験してもらい、入学後の学生生活や将来のイメージを持ってもらうこと。",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "高専で学ぶものづくりやプログラミングの楽しさを体験してもらい、",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "入学後の学生生活や将来のイメージを持っても",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": "らうこと。",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/36hcrmhk",
+      "id": "38",
+      "name": "正方形/長方形 37",
+      "bbox": [
+        154.82,
+        685.98,
+        1266.15,
+        291.1
+      ],
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "lt1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "tx1",
+        "transform": {
+          "opacity": 0.1
+        }
+      },
+      "lineColor": {
+        "type": "theme",
+        "value": "bg1",
+        "transform": {
+          "darken": 0.15
+        }
+      },
+      "lineWidth": 4
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yhgn29gr",
+      "id": "40",
+      "name": "TextBox 52",
+      "bbox": [
+        178.93,
+        760.28,
+        1180.81,
+        260.82
+      ],
+      "geometry": "rect",
+      "text": "海中をテーマにした来場者参加型のプロジェクションマッピング。\nQRコードからWebアプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズできる。\n",
+      "textPreview": "海中をテーマにした来場者参加型のプロジェクションマッピング。 | QRコードからWebアプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズできる。 |",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海中をテーマにした来場者参加型のプロジェクションマッピング。"
+          },
+          {
+            "index": 2,
+            "text": "QRコードからWeb"
+          },
+          {
+            "index": 3,
+            "text": "アプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズ"
+          },
+          {
+            "index": 4,
+            "text": "できる。"
+          },
+          {
+            "index": 5,
+            "text": ""
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海中をテーマにした来場者参加型のプロジェクションマッピング。",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "海中をテーマにした来場者参加型のプロジェクションマッピング。",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "QRコードからWebアプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズできる。",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "QR",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "コードから",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": "Web",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 4,
+              "text": "アプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズできる。",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n29gr2p8",
+      "id": "41",
+      "name": "Freeform 3",
+      "bbox": [
+        1694.92,
+        1260.61,
+        160.59,
+        117.9
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image17.png",
+        "contentType": "image/png",
+        "byteLength": 210391
+      }
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gn29gr2p",
+      "id": "42",
+      "name": "Freeform 4",
+      "bbox": [
+        2119.17,
+        1255.73,
+        214.43,
+        127.67
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image18.svg",
+        "contentType": "image/svg+xml",
+        "byteLength": 17666
+      }
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/58z25kb6",
+      "id": "43",
+      "name": "Freeform 5",
+      "bbox": [
+        1898.21,
+        1255.73,
+        178.26,
+        127.67
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image19.png",
+        "contentType": "image/png",
+        "byteLength": 339167
+      }
+    }
+  ],
+  "composeRuns": []
+}

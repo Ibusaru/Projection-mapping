@@ -10,6 +10,7 @@ public static class ProjectionMappingRegressionValidator
         bool valid = true;
         valid &= ValidateReleasedDrawingFlipDefault();
         valid &= ValidateProjectionFrameIsFlipped();
+        valid &= ValidateTransparentFishMaskKeepsProjectionScale();
         valid &= ValidateFallbackMeshUvIsFlipped();
         valid &= ValidateNicknameLabelStaysCameraParallel();
 
@@ -68,6 +69,59 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
+    private static bool ValidateTransparentFishMaskKeepsProjectionScale()
+    {
+        Texture2D source = new Texture2D(16, 8, TextureFormat.RGBA32, false);
+        Color32[] pixels = new Color32[16 * 8];
+        Color32 transparent = new Color32(0, 0, 0, 0);
+        Color32 whiteMask = new Color32(255, 255, 255, 245);
+        Color32 redMark = new Color32(255, 64, 32, 255);
+
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = transparent;
+        }
+
+        for (int y = 2; y <= 5; y++)
+        {
+            for (int x = 2; x <= 13; x++)
+            {
+                pixels[y * 16 + x] = whiteMask;
+            }
+        }
+
+        pixels[4 * 16 + 12] = redMark;
+        source.SetPixels32(pixels);
+        source.Apply(false, false);
+
+        Texture2D projection = DrawingTextureMapper.CreateProjectionTexture(source, 0.05f, Vector2.zero);
+        Color32[] projectedPixels = projection != null ? projection.GetPixels32() : null;
+        int redCount = 0;
+        if (projectedPixels != null)
+        {
+            for (int i = 0; i < projectedPixels.Length; i++)
+            {
+                Color32 color = projectedPixels[i];
+                if (color.a > 0 && color.r > 220 && color.g < 120 && color.b < 90)
+                {
+                    redCount++;
+                }
+            }
+        }
+
+        bool valid = projection != null && redCount > 0 && redCount < projectedPixels.Length / 4;
+        if (!valid)
+        {
+            Debug.LogError(
+                $"ProjectionMappingRegressionValidator: transparent fish-mask projection scale is wrong. redPixels={redCount}"
+            );
+        }
+
+        Object.DestroyImmediate(source);
+        Object.DestroyImmediate(projection);
+        return valid;
+    }
+
     private static bool ValidateFallbackMeshUvIsFlipped()
     {
         GameObject owner = new GameObject("Projection Mapping Fallback Owner");
@@ -121,9 +175,8 @@ public static class ProjectionMappingRegressionValidator
         cameraObject.transform.position = new Vector3(0f, 1.4f, -7f);
         cameraObject.transform.rotation = Quaternion.Euler(11f, -18f, 0f);
 
-        GameObject fishObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "Projection Mapping Label Fish");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
-        fishObject.name = "Projection Mapping Label Fish";
         fishObject.transform.position = cameraObject.transform.position
             + cameraObject.transform.forward * 3f
             + cameraObject.transform.right * 0.8f;

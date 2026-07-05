@@ -7,11 +7,10 @@ const MAX_HISTORY_STEPS = 30;
 const EMPTY_ALPHA_THRESHOLD = 24;
 const SEAM_ALPHA_THRESHOLD = 180;
 const SEAM_GROW_STEPS = 2;
-let fishMaskPixels = null;
+const FISH_SILHOUETTE_FILL = "rgba(9, 31, 42, 0.86)";
+let paintMaskPixels = null;
 
-function createFishPath(context) {
-  const path = new Path2D();
-
+function addBodyPath(path) {
   path.moveTo(92, 252);
   path.bezierCurveTo(104, 190, 178, 145, 275, 134);
   path.bezierCurveTo(304, 102, 348, 82, 406, 84);
@@ -25,7 +24,9 @@ function createFishPath(context) {
   path.bezierCurveTo(340, 393, 200, 372, 130, 316);
   path.bezierCurveTo(104, 294, 91, 273, 92, 252);
   path.closePath();
+}
 
+function addTailPath(path) {
   path.moveTo(780, 220);
   path.bezierCurveTo(820, 198, 870, 178, 935, 181);
   path.bezierCurveTo(972, 184, 991, 205, 988, 244);
@@ -33,6 +34,23 @@ function createFishPath(context) {
   path.bezierCurveTo(952, 341, 900, 335, 850, 313);
   path.bezierCurveTo(820, 300, 796, 288, 780, 286);
   path.closePath();
+}
+
+function createPaintableFishPath(context) {
+  const path = new Path2D();
+
+  addBodyPath(path);
+  addTailPath(path);
+
+  if (context) {
+    context.fill(path);
+  }
+
+  return path;
+}
+
+function createFishPath(context) {
+  const path = createPaintableFishPath();
 
   path.moveTo(228, 360);
   path.bezierCurveTo(260, 424, 342, 416, 374, 348);
@@ -59,7 +77,7 @@ function createFishPath(context) {
   return path;
 }
 
-function drawSilhouette(context, fillStyle = "rgba(9, 31, 42, 0.86)") {
+function drawSilhouette(context, fillStyle = FISH_SILHOUETTE_FILL) {
   context.save();
   context.fillStyle = fillStyle;
   createFishPath(context);
@@ -175,9 +193,9 @@ function closeSoftSeams(data, mask, filled, filledPixels) {
   }
 }
 
-function getFishMaskPixels() {
-  if (fishMaskPixels) {
-    return fishMaskPixels;
+function getPaintMaskPixels() {
+  if (paintMaskPixels) {
+    return paintMaskPixels;
   }
 
   const maskCanvas = document.createElement("canvas");
@@ -185,14 +203,14 @@ function getFishMaskPixels() {
   maskCanvas.height = CANVAS_HEIGHT;
   const context = maskCanvas.getContext("2d");
   context.fillStyle = "#fff";
-  createFishPath(context);
-  fishMaskPixels = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT).data;
-  return fishMaskPixels;
+  createPaintableFishPath(context);
+  paintMaskPixels = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT).data;
+  return paintMaskPixels;
 }
 
 function floodFill(canvas, point, fillColor, tolerance) {
   const context = canvas.getContext("2d", { willReadFrequently: true });
-  const path = createFishPath();
+  const path = createPaintableFishPath();
   const startX = Math.max(0, Math.min(CANVAS_WIDTH - 1, Math.floor(point.x)));
   const startY = Math.max(0, Math.min(CANVAS_HEIGHT - 1, Math.floor(point.y)));
   if (!context.isPointInPath(path, startX, startY)) {
@@ -201,7 +219,7 @@ function floodFill(canvas, point, fillColor, tolerance) {
 
   const image = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   const data = image.data;
-  const mask = getFishMaskPixels();
+  const mask = getPaintMaskPixels();
   const startOffset = (startY * CANVAS_WIDTH + startX) * 4;
   const target = {
     r: data[startOffset],
@@ -356,8 +374,8 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
         const context = output.getContext("2d");
 
         context.save();
-        const mask = createFishPath();
-        drawSilhouette(context, "rgba(255, 255, 255, 0.96)");
+        const mask = createPaintableFishPath();
+        drawSilhouette(context, FISH_SILHOUETTE_FILL);
         context.clip(mask);
         context.drawImage(source, 0, 0);
         context.restore();
@@ -373,7 +391,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     const previous = lastPointRef.current ?? point;
 
     context.save();
-    context.clip(createFishPath());
+    context.clip(createPaintableFishPath());
     context.lineWidth = brushSize;
     context.globalCompositeOperation = tool === "eraser" ? "destination-out" : "source-over";
     context.strokeStyle = brushColor;

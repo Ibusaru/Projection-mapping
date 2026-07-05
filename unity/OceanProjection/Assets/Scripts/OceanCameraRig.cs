@@ -6,6 +6,7 @@ public class OceanCameraRig : MonoBehaviour
     private const float ReleasedFishFocusDistanceFloor = 3f;
     private const float ReleasedFishApproachDistanceFloor = 3.15f;
     private const float ReleasedFishRadiusMultiplierFloor = 0.95f;
+    private const float MinimumUnderwaterSurfaceDepth = 1.25f;
 
     private enum DiverIntent
     {
@@ -25,9 +26,13 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private bool useCinematicShots = true;
     [SerializeField] private OceanEnvironment oceanEnvironment;
     [SerializeField] private Vector2 cinematicShotSeconds = new Vector2(10f, 17f);
+    [SerializeField] private Vector2 cinematicDroneShotSeconds = new Vector2(7f, 12f);
+    [SerializeField] private Vector2 cinematicUnderwaterShotSeconds = new Vector2(18f, 28f);
+    [SerializeField] private Vector2 cinematicFishFocusShotSeconds = new Vector2(24f, 38f);
     [SerializeField] private float cinematicSmoothTime = 3.2f;
     [SerializeField] private float cinematicRotationSmooth = 1.35f;
     [SerializeField] private float cinematicMaxSpeed = 22f;
+    [SerializeField] private float cinematicUnderwaterMaxSpeed = 5.2f;
     [SerializeField] private float cinematicDroneHeightScale = 0.28f;
     [SerializeField] private float cinematicSurfaceHeight = 1.35f;
 
@@ -45,28 +50,42 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float releasedFishApproachDistance = 3.15f;
     [SerializeField] private float releasedFishFocusRadiusMultiplier = 0.95f;
     [SerializeField] private float minReleasedFishFocusDistance = 3f;
-    [SerializeField] private float positionSmoothTime = 2.4f;
-    [SerializeField] private float rotationSmooth = 1.55f;
-    [SerializeField] private float driftAmplitude = 0.42f;
-    [SerializeField] private float driftSpeed = 0.28f;
-    [SerializeField] private float maximumCameraSpeed = 5.5f;
+    [SerializeField] private float positionSmoothTime = 2.8f;
+    [SerializeField] private float rotationSmooth = 1.45f;
+    [SerializeField] private float driftAmplitude = 0.34f;
+    [SerializeField] private float driftSpeed = 0.24f;
+    [SerializeField] private float maximumCameraSpeed = 5.8f;
+    [SerializeField] private float focusTransitionSeconds = 1.45f;
+    [SerializeField] private float focusTransitionMaxSpeedMultiplier = 1.35f;
+    [SerializeField] private float surfaceDiveSmoothTime = 0.75f;
+    [SerializeField] private float surfaceDiveMaxSpeed = 14f;
+    [SerializeField] private float surfaceDiveDiagonalOffset = 5.5f;
+    [SerializeField] private float surfaceDiveDepthTrigger = 0.9f;
+
+    [Header("Diver Terrain Avoidance")]
+    [SerializeField] private bool avoidSeabed = true;
+    [SerializeField] private float cameraSeabedClearance = 2.25f;
+    [SerializeField] private float cameraSeabedProbeDistance = 2.6f;
+    [SerializeField] private float cameraSeabedSideStep = 0.9f;
+
     [Header("Diver Behavior")]
     [SerializeField] private float scanIntervalSeconds = 2.2f;
-    [SerializeField] private float fishInterestDistance = 24f;
-    [SerializeField] private float schoolInterestDistance = 34f;
+    [SerializeField] private float fishInterestDistance = 64f;
+    [SerializeField] private float schoolInterestDistance = 72f;
     [SerializeField] private float schoolNeighborRadius = 6.5f;
     [SerializeField] private int minimumSchoolSize = 5;
     [SerializeField] private float fishApproachDistance = 4.1f;
     [SerializeField] private float schoolApproachDistance = 7.4f;
-    [SerializeField] private Vector2 fishObserveSeconds = new Vector2(5f, 9f);
-    [SerializeField] private Vector2 goodAngleFishObserveSeconds = new Vector2(8f, 22f);
+    [SerializeField] private Vector2 fishObserveSeconds = new Vector2(5f, 8f);
+    [SerializeField] private Vector2 goodAngleFishObserveSeconds = new Vector2(5f, 8f);
     [SerializeField] private Vector2 schoolObserveSeconds = new Vector2(5.5f, 9f);
+    [SerializeField] private float focusObserveWaitForTagSeconds = 9f;
     [SerializeField] private Vector2 cruiseSeconds = new Vector2(4f, 8f);
     [SerializeField] private float diverLookAhead = 1.8f;
     [SerializeField] private float schoolRadiusPadding = 1.35f;
-    [SerializeField] private float relaxedCameraSpeed = 2.8f;
-    [SerializeField] private float approachCameraSpeed = 4.8f;
-    [SerializeField] private float maxContinuousFishFocusSeconds = 28f;
+    [SerializeField] private float relaxedCameraSpeed = 2.7f;
+    [SerializeField] private float approachCameraSpeed = 4.4f;
+    [SerializeField] private float maxContinuousFishFocusSeconds = 38f;
     [SerializeField] private int recentFishFocusStackSize = 6;
     [SerializeField] private float recentFishFocusPenalty = 10f;
     [SerializeField] private float currentFishRepeatPenalty = 18f;
@@ -95,6 +114,16 @@ public class OceanCameraRig : MonoBehaviour
     private float intentUntilTime;
     private bool hasObservationAngle;
     private bool hasPlacedInitialCamera;
+    private bool focusTransitionActive;
+    private bool hasLastLookTarget;
+    private Vector3 focusTransitionStartPosition;
+    private Vector3 focusTransitionStartLookTarget;
+    private Vector3 lastLookTarget;
+    private float focusTransitionStartedAt;
+    private float focusTransitionDuration;
+    private bool waitingForFocusedFishTag;
+    private float pendingFishObserveSeconds;
+    private float focusedFishSelectionStartedAt;
     private readonly List<FishActor> recentFishFocusStack = new List<FishActor>();
     private readonly Queue<FishActor> newFishFocusQueue = new Queue<FishActor>();
     private readonly Queue<FishActor> releasedFishFocusQueue = new Queue<FishActor>();
@@ -105,15 +134,13 @@ public class OceanCameraRig : MonoBehaviour
     private float focusedFishSinceTime;
     private static readonly OceanCinematicShotKind[] CinematicSequence =
     {
-        OceanCinematicShotKind.DroneOverview,
-        OceanCinematicShotKind.SurfaceSkim,
-        OceanCinematicShotKind.ReefDive,
         OceanCinematicShotKind.FishFocus,
-        OceanCinematicShotKind.TrenchRun,
-        OceanCinematicShotKind.RockMountainReveal,
-        OceanCinematicShotKind.FishFocus
+        OceanCinematicShotKind.FishFocus,
+        OceanCinematicShotKind.FishFocus,
+        OceanCinematicShotKind.FishFocus,
+        OceanCinematicShotKind.DroneOverview
     };
-    private OceanCinematicShotKind currentCinematicShot = OceanCinematicShotKind.DroneOverview;
+    private OceanCinematicShotKind currentCinematicShot = OceanCinematicShotKind.FishFocus;
     private float cinematicShotStartedAt;
     private float cinematicShotDuration = 12f;
     private int cinematicShotIndex = -1;
@@ -183,13 +210,30 @@ public class OceanCameraRig : MonoBehaviour
             return;
         }
 
+        bool droneStyleShot = IsDroneStyleShot(currentCinematicShot);
+        bool underwaterScenicShot = IsUnderwaterScenicShot(currentCinematicShot);
+        float cinematicPositionSmoothTime = droneStyleShot
+            ? cinematicSmoothTime * 0.56f
+            : underwaterScenicShot
+                ? Mathf.Max(positionSmoothTime * 1.18f, cinematicSmoothTime * 0.92f)
+                : cinematicSmoothTime;
+        float maximumSpeed = droneStyleShot
+            ? cinematicMaxSpeed * 1.25f
+            : underwaterScenicShot
+                ? Mathf.Min(cinematicMaxSpeed, Mathf.Max(0.5f, cinematicUnderwaterMaxSpeed))
+                : cinematicMaxSpeed;
         bool snapped = MoveCamera(
             desiredPosition,
-            lookTarget,
-            Mathf.Max(0.1f, cinematicSmoothTime),
-            Mathf.Max(0.1f, cinematicMaxSpeed)
+            Mathf.Max(0.1f, cinematicPositionSmoothTime),
+            Mathf.Max(0.1f, maximumSpeed)
         );
-        LookAtTarget(lookTarget, cinematicRotationSmooth, snapped);
+
+        float rotationSmooth = droneStyleShot
+            ? cinematicRotationSmooth * 1.45f
+            : underwaterScenicShot
+                ? this.rotationSmooth * 0.9f
+                : cinematicRotationSmooth;
+        LookAtTarget(lookTarget, rotationSmooth, snapped);
     }
 
     private void BeginNextCinematicShot()
@@ -212,9 +256,7 @@ public class OceanCameraRig : MonoBehaviour
 
             currentCinematicShot = candidate;
             cinematicShotStartedAt = Time.time;
-            float min = Mathf.Max(2f, Mathf.Min(cinematicShotSeconds.x, cinematicShotSeconds.y));
-            float max = Mathf.Max(min, Mathf.Max(cinematicShotSeconds.x, cinematicShotSeconds.y));
-            cinematicShotDuration = Random.Range(min, max);
+            cinematicShotDuration = RandomDurationForShot(candidate);
             hasCinematicShot = true;
             if (candidate != OceanCinematicShotKind.FishFocus)
             {
@@ -225,7 +267,7 @@ public class OceanCameraRig : MonoBehaviour
 
         currentCinematicShot = OceanCinematicShotKind.FishFocus;
         cinematicShotStartedAt = Time.time;
-        cinematicShotDuration = Mathf.Max(4f, cinematicShotSeconds.x);
+        cinematicShotDuration = RandomDuration(cinematicFishFocusShotSeconds, Mathf.Max(8f, cinematicShotSeconds.x));
         hasCinematicShot = true;
     }
 
@@ -237,59 +279,78 @@ public class OceanCameraRig : MonoBehaviour
         out Vector3 lookTarget)
     {
         float t = SmoothStep01(normalizedTime);
+        float droneT = SmootherStep01(normalizedTime);
         Vector2 size = environment != null ? environment.OceanSize : new Vector2(Mathf.Max(1f, orbitSize.x * 4f), Mathf.Max(1f, orbitSize.z * 4f));
         float waterY = environment != null ? environment.WaterSurfaceY : center.y + orbitSize.y;
         Vector3 oceanCenter = OceanLocalToWorld(environment, new Vector3(0f, Mathf.Lerp(center.y, waterY - 3.5f, 0.45f), 0f));
         Vector3 reef = FeatureOrFallback(environment, OceanFeatureKind.Reef, new Vector3(size.x * 0.18f, waterY - 3f, size.y * 0.13f));
         Vector3 beach = FeatureOrFallback(environment, OceanFeatureKind.Beach, new Vector3(size.x * 0.38f, waterY - 0.6f, -size.y * 0.16f));
-        Vector3 trench = FeatureOrFallback(environment, OceanFeatureKind.Trench, new Vector3(-size.x * 0.04f, waterY - 14f, size.y * 0.02f));
-        Vector3 rock = FeatureOrFallback(environment, OceanFeatureKind.RockMountain, new Vector3(-size.x * 0.31f, waterY + 8f, -size.y * 0.17f));
+        Vector3 trench = FeatureOrFallback(environment, OceanFeatureKind.Trench, new Vector3(-size.x * 0.32f, waterY - 14f, size.y * 0.27f));
+        Vector3 rock = FeatureOrFallback(environment, OceanFeatureKind.RockMountain, new Vector3(-size.x * 0.28f, waterY - 3f, -size.y * 0.28f));
 
         switch (shot)
         {
             case OceanCinematicShotKind.DroneOverview:
             {
-                float height = waterY + Mathf.Max(size.x, size.y) * cinematicDroneHeightScale;
-                Vector3 start = OceanLocalToWorld(environment, new Vector3(-size.x * 0.46f, height, -size.y * 0.48f));
-                Vector3 end = OceanLocalToWorld(environment, new Vector3(size.x * 0.43f, height * 0.88f, size.y * 0.36f));
-                position = Vector3.Lerp(start, end, t) + Vector3.up * Mathf.Sin(t * Mathf.PI) * 4.5f;
-                lookTarget = Vector3.Lerp(rock, Vector3.Lerp(reef, trench, 0.45f), t);
+                float maxSize = Mathf.Max(size.x, size.y);
+                float height = waterY + maxSize * cinematicDroneHeightScale;
+                Vector3 p0 = OceanLocalToWorld(environment, new Vector3(-size.x * 0.58f, height * 0.96f, -size.y * 0.54f));
+                Vector3 p1 = OceanLocalToWorld(environment, new Vector3(-size.x * 0.45f, height, -size.y * 0.42f));
+                Vector3 p2 = OceanLocalToWorld(environment, new Vector3(size.x * 0.2f, waterY + maxSize * cinematicDroneHeightScale * 0.78f, size.y * 0.18f));
+                Vector3 p3 = OceanLocalToWorld(environment, new Vector3(size.x * 0.48f, waterY + maxSize * cinematicDroneHeightScale * 0.62f, size.y * 0.42f));
+                position = CatmullRom(p0, p1, p2, p3, droneT);
+
+                Vector3 lead = CatmullRom(p0, p1, p2, p3, Mathf.Clamp01(droneT + 0.12f));
+                Vector3 featureSweep = Vector3.Lerp(rock, Vector3.Lerp(reef, trench, 0.45f), droneT);
+                lookTarget = Vector3.Lerp(featureSweep, lead + Vector3.down * maxSize * 0.18f, 0.36f);
+                lookTarget.y = Mathf.Lerp(waterY + 0.8f, waterY - 3.8f, Mathf.Clamp01(droneT + 0.08f));
                 break;
             }
             case OceanCinematicShotKind.SurfaceSkim:
             {
-                Vector3 start = beach + new Vector3(-size.x * 0.08f, cinematicSurfaceHeight, -size.y * 0.16f);
-                Vector3 end = reef + new Vector3(-size.x * 0.18f, cinematicSurfaceHeight * 0.65f, size.y * 0.1f);
-                position = Vector3.Lerp(start, end, t);
-                position.y = waterY + cinematicSurfaceHeight + Mathf.Sin(t * Mathf.PI * 2f) * 0.28f;
-                lookTarget = Vector3.Lerp(reef, oceanCenter, 0.25f + t * 0.25f);
-                lookTarget.y = waterY - 1.2f;
+                Vector3 p0 = beach + new Vector3(-size.x * 0.24f, waterY - 0.35f - beach.y, -size.y * 0.24f);
+                Vector3 p1 = beach + new Vector3(-size.x * 0.1f, waterY - 0.65f - beach.y, -size.y * 0.16f);
+                Vector3 p2 = reef + new Vector3(-size.x * 0.16f, waterY - 1.1f - reef.y, size.y * 0.08f);
+                Vector3 p3 = reef + new Vector3(size.x * 0.05f, waterY - 1.35f - reef.y, size.y * 0.22f);
+                position = CatmullRom(p0, p1, p2, p3, droneT);
+                position.y = waterY - Mathf.Lerp(0.45f, Mathf.Max(0.75f, cinematicSurfaceHeight), droneT)
+                    + Mathf.Sin(droneT * Mathf.PI * 2f) * 0.08f;
+
+                Vector3 lead = CatmullRom(p0, p1, p2, p3, Mathf.Clamp01(droneT + 0.1f));
+                lookTarget = Vector3.Lerp(lead, Vector3.Lerp(reef, oceanCenter, 0.42f), 0.34f);
+                lookTarget.y = waterY - Mathf.Lerp(1.0f, 2.2f, droneT);
                 break;
             }
             case OceanCinematicShotKind.ReefDive:
             {
-                Vector3 start = reef + new Vector3(size.x * 0.1f, waterY + 5.5f - reef.y, -size.y * 0.18f);
-                Vector3 end = reef + new Vector3(-size.x * 0.08f, 3.4f, size.y * 0.08f);
-                position = Vector3.Lerp(start, end, t);
-                lookTarget = Vector3.Lerp(reef + Vector3.up * 1.8f, trench + Vector3.up * 3f, t * 0.35f);
+                Vector3 p0 = SampleSwimPointWorld(environment, new Vector2(size.x * 0.04f, -size.y * 0.16f), waterY - 6.4f, 3.5f, 1.7f);
+                Vector3 p1 = SampleSwimPointWorld(environment, new Vector2(size.x * 0.09f, -size.y * 0.08f), waterY - 6.8f, 3.4f, 2.0f);
+                Vector3 p2 = SampleSwimPointWorld(environment, new Vector2(size.x * 0.12f, size.y * 0.02f), waterY - 7.4f, 3.2f, 2.4f);
+                Vector3 p3 = SampleSwimPointWorld(environment, new Vector2(size.x * 0.07f, size.y * 0.1f), waterY - 7.8f, 3.1f, 2.8f);
+                position = CatmullRom(p0, p1, p2, p3, t) + DiverDrift(Time.time * driftSpeed, 1f) * 0.28f;
+                lookTarget = Vector3.Lerp(reef + Vector3.up * 1.2f, trench + Vector3.up * 2.8f, t * 0.28f);
                 break;
             }
             case OceanCinematicShotKind.TrenchRun:
             {
-                Vector3 start = SampleOceanFloorWorld(environment, new Vector2(-size.x * 0.35f, size.y * 0.27f), waterY - 12f) + Vector3.up * 3.6f;
-                Vector3 end = SampleOceanFloorWorld(environment, new Vector2(size.x * 0.32f, -size.y * 0.22f), waterY - 12f) + Vector3.up * 3.2f;
-                position = Vector3.Lerp(start, end, t);
+                Vector3 start = SampleOceanFloorWorld(environment, new Vector2(-size.x * 0.44f, size.y * 0.36f), waterY - 12f) + Vector3.up * 3.5f;
+                Vector3 midA = SampleOceanFloorWorld(environment, new Vector2(-size.x * 0.34f, size.y * 0.26f), waterY - 12f) + Vector3.up * 3.1f;
+                Vector3 midB = SampleOceanFloorWorld(environment, new Vector2(-size.x * 0.22f, size.y * 0.16f), waterY - 12f) + Vector3.up * 3.2f;
+                Vector3 end = SampleOceanFloorWorld(environment, new Vector2(-size.x * 0.1f, size.y * 0.06f), waterY - 12f) + Vector3.up * 3.4f;
+                position = CatmullRom(start, midA, midB, end, t) + DiverDrift(Time.time * driftSpeed + 1.7f, 1f) * 0.18f;
                 position.y = Mathf.Min(position.y, waterY - 5.5f);
-                Vector3 lookAheadPoint = Vector3.Lerp(start, end, Mathf.Clamp01(t + 0.16f));
+                Vector3 lookAheadPoint = CatmullRom(start, midA, midB, end, Mathf.Clamp01(t + 0.16f));
                 lookTarget = Vector3.Lerp(lookAheadPoint, trench + Vector3.up * 1.7f, 0.35f);
                 break;
             }
             case OceanCinematicShotKind.RockMountainReveal:
             {
-                Vector3 start = rock + new Vector3(-size.x * 0.12f, waterY - rock.y - 2.2f, -size.y * 0.24f);
-                Vector3 end = rock + new Vector3(size.x * 0.16f, 8.5f, -size.y * 0.2f);
-                position = Vector3.Lerp(start, end, t) + Vector3.up * Mathf.Sin(t * Mathf.PI) * 3.5f;
-                lookTarget = rock + Vector3.up * Mathf.Lerp(-4.8f, 1.4f, t);
+                Vector3 p0 = rock + new Vector3(-size.x * 0.18f, waterY - 4.8f - rock.y, -size.y * 0.18f);
+                Vector3 p1 = rock + new Vector3(-size.x * 0.1f, waterY - 4.2f - rock.y, -size.y * 0.1f);
+                Vector3 p2 = rock + new Vector3(size.x * 0.02f, waterY - 2.3f - rock.y, size.y * 0.02f);
+                Vector3 p3 = rock + new Vector3(size.x * 0.14f, waterY - 3.2f - rock.y, size.y * 0.12f);
+                position = CatmullRom(p0, p1, p2, p3, droneT) + DiverDrift(Time.time * driftSpeed + 2.3f, 1f) * 0.22f;
+                lookTarget = rock + Vector3.up * Mathf.Lerp(0.7f, 2.2f, droneT);
                 break;
             }
             case OceanCinematicShotKind.FishFocus:
@@ -336,6 +397,31 @@ public class OceanCameraRig : MonoBehaviour
         return environment.transform.TransformPoint(new Vector3(localXZ.x, y, localXZ.y));
     }
 
+    private Vector3 SampleSwimPointWorld(OceanEnvironment environment, Vector2 localXZ, float fallbackY, float floorClearance, float surfaceDepth)
+    {
+        Vector3 point = SampleOceanFloorWorld(environment, localXZ, fallbackY);
+        point.y += Mathf.Max(0.5f, floorClearance);
+        if (environment == null)
+        {
+            return point;
+        }
+
+        float waterY = SampleWaterSurfaceWorldY(environment);
+        float underwaterY = waterY - Mathf.Max(0.4f, surfaceDepth);
+        float floorY = SampleSeabedWorldY(environment, point);
+        float minimumY = floorY + Mathf.Max(0.5f, Mathf.Min(floorClearance, cameraSeabedClearance + 0.4f));
+        if (minimumY <= underwaterY)
+        {
+            point.y = Mathf.Clamp(point.y, minimumY, underwaterY);
+        }
+        else
+        {
+            point.y = minimumY;
+        }
+
+        return point;
+    }
+
     private Vector3 OceanLocalToWorld(OceanEnvironment environment, Vector3 local)
     {
         return environment != null ? environment.transform.TransformPoint(local) : center + local;
@@ -347,10 +433,77 @@ public class OceanCameraRig : MonoBehaviour
         return fishes != null && fishes.Count > 0;
     }
 
+    private float RandomDurationForShot(OceanCinematicShotKind shot)
+    {
+        if (shot == OceanCinematicShotKind.FishFocus)
+        {
+            return RandomDuration(cinematicFishFocusShotSeconds, Mathf.Max(8f, cinematicShotSeconds.x));
+        }
+
+        if (shot == OceanCinematicShotKind.DroneOverview)
+        {
+            return RandomDuration(cinematicDroneShotSeconds, Mathf.Max(5f, cinematicShotSeconds.x * 0.65f));
+        }
+
+        if (IsUnderwaterScenicShot(shot))
+        {
+            return RandomDuration(cinematicUnderwaterShotSeconds, Mathf.Max(12f, cinematicShotSeconds.y));
+        }
+
+        return RandomDuration(cinematicShotSeconds, 8f);
+    }
+
+    private static float RandomDuration(Vector2 range, float fallback)
+    {
+        float min = Mathf.Min(range.x, range.y);
+        float max = Mathf.Max(range.x, range.y);
+        if (max <= 0f)
+        {
+            min = fallback;
+            max = fallback;
+        }
+
+        min = Mathf.Max(2f, min);
+        max = Mathf.Max(min, max);
+        return Random.Range(min, max);
+    }
+
     private static float SmoothStep01(float value)
     {
         float t = Mathf.Clamp01(value);
         return t * t * (3f - 2f * t);
+    }
+
+    private static float SmootherStep01(float value)
+    {
+        float t = Mathf.Clamp01(value);
+        return t * t * t * (t * (t * 6f - 15f) + 10f);
+    }
+
+    private static Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float value)
+    {
+        float t = Mathf.Clamp01(value);
+        float t2 = t * t;
+        float t3 = t2 * t;
+        return 0.5f * (
+            2f * p1
+            + (-p0 + p2) * t
+            + (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2
+            + (-p0 + 3f * p1 - 3f * p2 + p3) * t3
+        );
+    }
+
+    private static bool IsDroneStyleShot(OceanCinematicShotKind shot)
+    {
+        return shot == OceanCinematicShotKind.DroneOverview;
+    }
+
+    private static bool IsUnderwaterScenicShot(OceanCinematicShotKind shot)
+    {
+        return shot == OceanCinematicShotKind.ReefDive
+            || shot == OceanCinematicShotKind.TrenchRun
+            || shot == OceanCinematicShotKind.RockMountainReveal
+            || shot == OceanCinematicShotKind.SurfaceSkim;
     }
 
     private static bool IsFinite(Vector3 value)
@@ -410,8 +563,78 @@ public class OceanCameraRig : MonoBehaviour
             + focusForward * observationLead
             + Vector3.up * Mathf.Sin(driftTime) * 0.18f;
 
-        bool snapped = MoveCamera(desiredPosition, lookTarget, positionSmoothTime, speed);
+        bool surfaceDive = TryShapeSurfaceDive(ref desiredPosition, focusForward);
+        ApplyFocusTransition(ref desiredPosition, ref lookTarget);
+
+        float moveSmoothTime = positionSmoothTime;
+        if (surfaceDive)
+        {
+            moveSmoothTime = Mathf.Min(moveSmoothTime, Mathf.Max(0.05f, surfaceDiveSmoothTime));
+            speed = Mathf.Max(speed, surfaceDiveMaxSpeed);
+        }
+
+        if (focusTransitionActive)
+        {
+            moveSmoothTime = Mathf.Min(moveSmoothTime, Mathf.Max(0.05f, focusTransitionDuration * 0.7f));
+            speed *= Mathf.Max(1f, focusTransitionMaxSpeedMultiplier);
+        }
+
+        bool snapped = MoveCamera(desiredPosition, moveSmoothTime, speed);
         LookAtTarget(lookTarget, rotationSmooth, snapped);
+        UpdateFocusedFishObservationTimer();
+    }
+
+    private void ApplyFocusTransition(ref Vector3 desiredPosition, ref Vector3 lookTarget)
+    {
+        if (!focusTransitionActive)
+        {
+            return;
+        }
+
+        float duration = Mathf.Max(0.05f, focusTransitionDuration);
+        float normalizedTime = (Time.time - focusTransitionStartedAt) / duration;
+        float eased = SmootherStep01(normalizedTime);
+        desiredPosition = Vector3.Lerp(focusTransitionStartPosition, desiredPosition, eased);
+        lookTarget = Vector3.Lerp(focusTransitionStartLookTarget, lookTarget, eased);
+
+        if (normalizedTime >= 1f)
+        {
+            focusTransitionActive = false;
+        }
+    }
+
+    private bool TryShapeSurfaceDive(ref Vector3 desiredPosition, Vector3 focusForward)
+    {
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        if (environment == null)
+        {
+            return false;
+        }
+
+        float waterY = SampleWaterSurfaceWorldY(environment);
+        bool startsAtSurfaceOrAbove = transform.position.y > waterY - 0.15f;
+        bool targetIsUnderwater = desiredPosition.y < waterY - Mathf.Max(0.2f, surfaceDiveDepthTrigger);
+        if (!startsAtSurfaceOrAbove || !targetIsUnderwater)
+        {
+            return false;
+        }
+
+        Vector3 diagonalDirection = new Vector3(
+            transform.position.x - desiredPosition.x,
+            0f,
+            transform.position.z - desiredPosition.z
+        );
+        if (diagonalDirection.sqrMagnitude < 0.001f)
+        {
+            diagonalDirection = -FlattenDirection(focusForward);
+        }
+        else
+        {
+            diagonalDirection.Normalize();
+        }
+
+        desiredPosition += diagonalDirection * Mathf.Max(0f, surfaceDiveDiagonalOffset);
+        return true;
     }
 
     private void UpdateCurrentFocus()
@@ -602,7 +825,6 @@ public class OceanCameraRig : MonoBehaviour
 
         bool snapped = MoveCamera(
             desiredPosition,
-            center,
             positionSmoothTime * 1.1f,
             Mathf.Min(relaxedCameraSpeed, Mathf.Max(0.1f, maximumCameraSpeed))
         );
@@ -622,7 +844,32 @@ public class OceanCameraRig : MonoBehaviour
             Mathf.Sin(t * 0.37f + Random.Range(-0.4f, 0.4f)) * orbitSize.y * 0.55f,
             Mathf.Cos(t * 0.82f + Random.Range(-0.65f, 0.65f)) * orbitSize.z * 0.75f
         );
+        cruiseDestination = ResolveCruiseDestination(cruiseDestination);
         intentUntilTime = Time.time + Random.Range(cruiseSeconds.x, cruiseSeconds.y);
+    }
+
+    private Vector3 ResolveCruiseDestination(Vector3 destination)
+    {
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        if (environment == null)
+        {
+            return destination;
+        }
+
+        float clearance = Mathf.Max(0.25f, cameraSeabedClearance);
+        float floorY = SampleSeabedWorldY(environment, destination);
+        float minimumY = floorY + clearance + 0.35f;
+        float underwaterY = SampleWaterSurfaceWorldY(environment) - MinimumUnderwaterSurfaceDepth;
+        if (minimumY <= underwaterY)
+        {
+            destination.y = Mathf.Clamp(destination.y, minimumY, underwaterY);
+        }
+        else
+        {
+            destination.y = minimumY;
+        }
+
+        return destination;
     }
 
     private void RefreshDiverIntentIfNeeded()
@@ -687,7 +934,7 @@ public class OceanCameraRig : MonoBehaviour
             currentFocusForward = fish.transform.forward;
             currentFocusRadius = fish.CameraFocusRadius;
             ChooseObservationAngle(currentFocusPoint, currentFocusForward);
-            intentUntilTime = Time.time + FishObserveDurationForCurrentAngle();
+            BeginFocusedFishObservationAfterTag(FishObserveDurationForCurrentAngle());
         }
         else
         {
@@ -698,6 +945,39 @@ public class OceanCameraRig : MonoBehaviour
         }
 
         nextTargetRefreshTime = Time.time + ScanDelay();
+    }
+
+    private void BeginFocusedFishObservationAfterTag(float observeSeconds)
+    {
+        pendingFishObserveSeconds = Mathf.Max(1f, observeSeconds);
+        focusedFishSelectionStartedAt = Time.time;
+        waitingForFocusedFishTag = focusedFish != null;
+        intentUntilTime = Time.time
+            + Mathf.Max(
+                pendingFishObserveSeconds,
+                pendingFishObserveSeconds + Mathf.Max(0.5f, focusObserveWaitForTagSeconds)
+            );
+    }
+
+    private void UpdateFocusedFishObservationTimer()
+    {
+        if (!waitingForFocusedFishTag
+            || focusedFish == null
+            || (intent != DiverIntent.ApproachFish && intent != DiverIntent.DriftPast))
+        {
+            return;
+        }
+
+        bool tagVisible = focusedFish.IsNicknameTagVisibleForCamera;
+        bool waitExpired = Time.time >= focusedFishSelectionStartedAt + Mathf.Max(0.5f, focusObserveWaitForTagSeconds);
+        if (!tagVisible && !waitExpired)
+        {
+            return;
+        }
+
+        waitingForFocusedFishTag = false;
+        focusedFishSinceTime = Time.time;
+        intentUntilTime = Time.time + Mathf.Max(1f, pendingFishObserveSeconds);
     }
 
     private bool ShouldHoldCurrentIntent()
@@ -859,12 +1139,12 @@ public class OceanCameraRig : MonoBehaviour
             if (focusedFish != null)
             {
                 focusedFish.SetCameraFocused(true);
-                focusedFishSinceTime = Time.time;
-                PushRecentFishFocus(focusedFish);
             }
 
             return;
         }
+
+        BeginFocusTransition();
 
         if (focusedFish != null)
         {
@@ -872,6 +1152,9 @@ public class OceanCameraRig : MonoBehaviour
         }
 
         focusedFish = fish;
+        waitingForFocusedFishTag = false;
+        pendingFishObserveSeconds = 0f;
+        focusedFishSelectionStartedAt = Time.time;
 
         if (focusedFish != null)
         {
@@ -883,6 +1166,23 @@ public class OceanCameraRig : MonoBehaviour
         {
             focusedFishSinceTime = 0f;
         }
+    }
+
+    private void BeginFocusTransition()
+    {
+        if (!hasPlacedInitialCamera)
+        {
+            return;
+        }
+
+        focusTransitionActive = true;
+        focusTransitionStartedAt = Time.time;
+        focusTransitionDuration = Mathf.Max(0.05f, focusTransitionSeconds);
+        focusTransitionStartPosition = transform.position;
+        focusTransitionStartLookTarget = hasLastLookTarget
+            ? lastLookTarget
+            : transform.position + transform.forward * Mathf.Max(1f, lookAhead);
+        positionVelocity = Vector3.zero;
     }
 
     private bool TryFindSchool(IReadOnlyList<FishActor> fishes, out Vector3 schoolCenter, out Vector3 schoolForward, out float schoolRadius, out int schoolSize)
@@ -1016,11 +1316,6 @@ public class OceanCameraRig : MonoBehaviour
 
             Vector3 toFish = fish.transform.position - transform.position;
             float distance = toFish.magnitude;
-            if (!releasedOnly && distance > fishInterestDistance)
-            {
-                continue;
-            }
-
             if (shouldAvoidCurrentFish && fish == focusedFish)
             {
                 continue;
@@ -1031,7 +1326,8 @@ public class OceanCameraRig : MonoBehaviour
             float distanceScore = -Mathf.Abs(distance - idealDistance);
             float centerScore = -Vector3.Distance(fish.transform.position, center) * 0.08f;
             float releasedScore = fish.IsReleasedFish ? 60f : 0f;
-            float score = releasedScore + forwardScore * 3.5f + distanceScore + centerScore + Random.Range(0f, 0.75f);
+            float farPenalty = releasedOnly ? 0f : Mathf.Max(0f, distance - fishInterestDistance) * 0.12f;
+            float score = releasedScore + forwardScore * 3.5f + distanceScore + centerScore + Random.Range(0f, 0.75f) - farPenalty;
             score -= RecentFishFocusPenalty(fish);
 
             if (fish == focusedFish && focusedFishSinceTime > 0f)
@@ -1141,8 +1437,10 @@ public class OceanCameraRig : MonoBehaviour
         return false;
     }
 
-    private bool MoveCamera(Vector3 desiredPosition, Vector3 lookTarget, float smoothTime, float maxSpeed)
+    private bool MoveCamera(Vector3 desiredPosition, float smoothTime, float maxSpeed)
     {
+        Vector3 desiredMoveDirection = desiredPosition - transform.position;
+        desiredPosition = ResolveSafeDiverPosition(desiredPosition, desiredMoveDirection, true);
         if (!hasPlacedInitialCamera)
         {
             transform.position = desiredPosition;
@@ -1158,13 +1456,107 @@ public class OceanCameraRig : MonoBehaviour
             smoothTime,
             maxSpeed
         );
+        Vector3 unclampedNextPosition = nextPosition;
+        nextPosition = ResolveSafeDiverPosition(nextPosition, desiredPosition - transform.position, false);
+        if (nextPosition.y > unclampedNextPosition.y + 0.001f && positionVelocity.y < 0f)
+        {
+            positionVelocity.y = 0f;
+        }
+
         transform.position = nextPosition;
 
         return false;
     }
 
+    private Vector3 ResolveSafeDiverPosition(Vector3 desiredPosition, Vector3 movementDirection, bool allowSideStep)
+    {
+        if (!avoidSeabed)
+        {
+            return desiredPosition;
+        }
+
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        if (environment == null)
+        {
+            return desiredPosition;
+        }
+
+        float clearance = Mathf.Max(0.25f, cameraSeabedClearance);
+        Vector3 safePosition = RaiseAboveSeabed(environment, desiredPosition, clearance);
+        if (!allowSideStep)
+        {
+            return safePosition;
+        }
+
+        Vector3 travelDirection = FlattenDirection(movementDirection);
+        if (travelDirection.sqrMagnitude < 0.001f)
+        {
+            return safePosition;
+        }
+
+        Vector3 aheadPosition = safePosition + travelDirection * Mathf.Max(0.5f, cameraSeabedProbeDistance);
+        float floorY = SampleSeabedWorldY(environment, safePosition);
+        float aheadFloorY = SampleSeabedWorldY(environment, aheadPosition);
+        if (aheadFloorY <= floorY + 0.08f)
+        {
+            return safePosition;
+        }
+
+        float aheadPressure = Mathf.InverseLerp(clearance * 1.4f, clearance * 0.55f, safePosition.y - aheadFloorY);
+        if (aheadPressure <= 0f)
+        {
+            return safePosition;
+        }
+
+        Vector3 sideDirection = LowerSeabedSide(environment, safePosition, travelDirection);
+        safePosition += sideDirection * Mathf.Max(0.25f, cameraSeabedSideStep) * aheadPressure * 0.55f;
+        return RaiseAboveSeabed(environment, safePosition, clearance);
+    }
+
+    private Vector3 RaiseAboveSeabed(OceanEnvironment environment, Vector3 position, float clearance)
+    {
+        float floorY = SampleSeabedWorldY(environment, position);
+        float minimumY = floorY + clearance;
+        if (position.y < minimumY)
+        {
+            position.y = minimumY;
+        }
+
+        return position;
+    }
+
+    private Vector3 LowerSeabedSide(OceanEnvironment environment, Vector3 position, Vector3 travelDirection)
+    {
+        Vector3 right = Vector3.Cross(Vector3.up, travelDirection);
+        if (right.sqrMagnitude < 0.001f)
+        {
+            right = transform.right;
+        }
+
+        right.Normalize();
+        float step = Mathf.Max(0.25f, cameraSeabedSideStep);
+        float leftFloorY = SampleSeabedWorldY(environment, position - right * step);
+        float rightFloorY = SampleSeabedWorldY(environment, position + right * step);
+        return rightFloorY < leftFloorY ? right : -right;
+    }
+
+    private static float SampleSeabedWorldY(OceanEnvironment environment, Vector3 worldPosition)
+    {
+        Vector3 local = environment.transform.InverseTransformPoint(worldPosition);
+        float localFloorY = environment.SampleSeabedHeight(local.x, local.z);
+        return environment.transform.TransformPoint(new Vector3(local.x, localFloorY, local.z)).y;
+    }
+
+    private static float SampleWaterSurfaceWorldY(OceanEnvironment environment)
+    {
+        return environment.transform.TransformPoint(new Vector3(0f, environment.WaterSurfaceY, 0f)).y;
+    }
+
     private void LookAtTarget(Vector3 lookTarget, float smooth, bool snap)
     {
+        lastLookTarget = lookTarget;
+        hasLastLookTarget = true;
+
         if (snap)
         {
             SnapLookAt(lookTarget);

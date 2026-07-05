@@ -1,0 +1,2213 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/3xzhmc",
+    "id": "3xzhmc",
+    "slide": 1,
+    "layoutId": "6b3ca098-4ac8-415c-9fa9-1291193f6d60",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "d5c19c23-e18d-4b67-ae51-a0542b3b9afd",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F8F5EA",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1080,
+      "height": 1536
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "6b3ca098-4ac8-415c-9fa9-1291193f6d60",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "d5c19c23-e18d-4b67-ae51-a0542b3b9afd",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "d5c19c23-e18d-4b67-ae51-a0542b3b9afd",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lszqtcj6",
+      "id": "1",
+      "name": "flat-water-field",
+      "bbox": [
+        0,
+        182,
+        1080,
+        1040
+      ],
+      "geometry": "rect",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a5gbq1or",
+      "id": "2",
+      "name": "sea-surface-main",
+      "bbox": [
+        0,
+        0,
+        1080,
+        1536
+      ],
+      "geometry": "custom",
+      "lineColor": "#1D8CA0",
+      "lineWidth": 2.6
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3m94fu18",
+      "id": "3",
+      "name": "sea-surface-second",
+      "bbox": [
+        0,
+        0,
+        1080,
+        1536
+      ],
+      "geometry": "custom",
+      "lineColor": "rgba(74, 174, 192, 0.8)",
+      "lineWidth": 1.6
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sji5snel",
+      "id": "4",
+      "name": "sea-surface-light",
+      "bbox": [
+        0,
+        0,
+        1080,
+        1536
+      ],
+      "geometry": "custom",
+      "lineColor": "rgba(139, 203, 211, 0.7)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h4byhgn2",
+      "id": "5",
+      "name": "water-pencil-line-0",
+      "bbox": [
+        120,
+        304,
+        86,
+        -20
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(156, 206, 211, 0.34)",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/adsji5sn",
+      "id": "6",
+      "name": "water-pencil-line-1",
+      "bbox": [
+        248,
+        320,
+        86,
+        -25
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(156, 206, 211, 0.34)",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ylc7u54",
+      "id": "7",
+      "name": "water-pencil-line-2",
+      "bbox": [
+        376,
+        304,
+        86,
+        2
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(156, 206, 211, 0.34)",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svu9knih",
+      "id": "8",
+      "name": "water-pencil-line-3",
+      "bbox": [
+        504,
+        320,
+        86,
+        -36
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(156, 206, 211, 0.34)",
+      "lineWidth": 1
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hgn29gr2",
+      "id": "9",
+      "name": "water-pencil-line-4",
+      "bbox": [
+        632,
+        304,
+        86,
+        -9
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(156, 206, 211, 0.34)",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tgfmlkjm",
+      "id": "10",
+      "name": "water-pencil-line-5",
+      "bbox": [
+        760,
+        320,
+        86,
+        -14
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(156, 206, 211, 0.34)",
+      "lineWidth": 1
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vmtwra5",
+      "id": "11",
+      "name": "water-pencil-line-6",
+      "bbox": [
+        888,
+        304,
+        86,
+        -20
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(156, 206, 211, 0.34)",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "12",
+      "name": "poster-title",
+      "bbox": [
+        86,
+        58,
+        908,
+        74
+      ],
+      "geometry": "rect",
+      "text": "海洋環境の観察テーマ",
+      "textPreview": "海洋環境の観察テーマ",
+      "resolvedFontSize": 54,
+      "resolvedTextStyle": {
+        "fontSize": 54,
+        "typeface": "+mn-lt",
+        "color": "#173C46",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海洋環境の観察テーマ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海洋環境の観察テーマ",
+          "resolvedTextStyle": {
+            "fontSize": 54,
+            "color": "#173C46",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海洋環境の観察テーマ",
+              "fontSize": 54,
+              "color": "#173C46",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp0bi9s3",
+      "id": "13",
+      "name": "poster-subtitle",
+      "bbox": [
+        206,
+        132,
+        668,
+        36
+      ],
+      "geometry": "rect",
+      "text": "研究タイトル・発表者名をここに入力",
+      "textPreview": "研究タイトル・発表者名をここに入力",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "color": "#55727A",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "研究タイトル・発表者名をここに入力"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "研究タイトル・発表者名をここに入力",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "color": "#55727A",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "研究タイトル・発表者名をここに入力",
+              "fontSize": 23,
+              "color": "#55727A",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsvu9kni",
+      "id": "14",
+      "name": "sea-label",
+      "bbox": [
+        815,
+        315,
+        88,
+        54
+      ],
+      "geometry": "rect",
+      "text": "海",
+      "textPreview": "海",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "fontSize": 40,
+        "typeface": "+mn-lt",
+        "color": "#163F4B",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "color": "#163F4B",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海",
+              "fontSize": 40,
+              "color": "#163F4B",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/47y1kre1",
+      "id": "15",
+      "name": "bubble-label",
+      "bbox": [
+        890,
+        410,
+        116,
+        42
+      ],
+      "geometry": "rect",
+      "text": "気泡",
+      "textPreview": "気泡",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "fontSize": 26,
+        "typeface": "+mn-lt",
+        "color": "#406B73",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "気泡"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "気泡",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "color": "#406B73",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "気泡",
+              "fontSize": 26,
+              "color": "#406B73",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bm58z25k",
+      "id": "16",
+      "name": "bubble-930-305",
+      "bbox": [
+        930,
+        305,
+        10,
+        10
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(248, 255, 255, 0.5)",
+      "lineColor": "rgba(107, 174, 186, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1cfa9w3",
+      "id": "17",
+      "name": "bubble-962-328",
+      "bbox": [
+        962,
+        328,
+        16,
+        16
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(248, 255, 255, 0.5)",
+      "lineColor": "rgba(107, 174, 186, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twra5gbq",
+      "id": "18",
+      "name": "bubble-912-365",
+      "bbox": [
+        912,
+        365,
+        7,
+        7
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(248, 255, 255, 0.5)",
+      "lineColor": "rgba(107, 174, 186, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4byhgn29",
+      "id": "19",
+      "name": "bubble-984-384",
+      "bbox": [
+        984,
+        384,
+        10,
+        10
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(248, 255, 255, 0.5)",
+      "lineColor": "rgba(107, 174, 186, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0je9cvix",
+      "id": "20",
+      "name": "bubble-938-430",
+      "bbox": [
+        938,
+        430,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(248, 255, 255, 0.5)",
+      "lineColor": "rgba(107, 174, 186, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t47y1kre",
+      "id": "21",
+      "name": "bubble-972-470",
+      "bbox": [
+        972,
+        470,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(248, 255, 255, 0.5)",
+      "lineColor": "rgba(107, 174, 186, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/idonyd0z",
+      "id": "22",
+      "name": "bubble-920-500",
+      "bbox": [
+        920,
+        500,
+        5,
+        5
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(248, 255, 255, 0.5)",
+      "lineColor": "rgba(107, 174, 186, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/byhgn29g",
+      "id": "23",
+      "name": "background-frame",
+      "bbox": [
+        86,
+        520,
+        280,
+        178
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(255, 253, 245, 0.78)",
+      "lineColor": "rgba(76, 119, 128, 0.7)",
+      "lineWidth": 1.3
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0rqd4vmt",
+      "id": "24",
+      "name": "background-label",
+      "bbox": [
+        108,
+        538,
+        236,
+        36
+      ],
+      "geometry": "rect",
+      "text": "背景",
+      "textPreview": "背景",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "color": "#183F4B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "背景"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "背景",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "color": "#183F4B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "背景",
+              "fontSize": 28,
+              "color": "#183F4B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tcj6tova",
+      "id": "25",
+      "name": "background-rule",
+      "bbox": [
+        108,
+        580,
+        236,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#83A6AC",
+      "lineWidth": 1
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/il0rqd4v",
+      "id": "26",
+      "name": "background-body",
+      "bbox": [
+        108,
+        594,
+        236,
+        86
+      ],
+      "geometry": "rect",
+      "text": "調べる海の現象や課題を短くまとめます。",
+      "textPreview": "調べる海の現象や課題を短くまとめます。",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#31535D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "調べる海の現象や課題を短く"
+          },
+          {
+            "index": 2,
+            "text": "まとめます。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "調べる海の現象や課題を短くまとめます。",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#31535D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "調べる海の現象や課題を短くまとめます。",
+              "fontSize": 18,
+              "color": "#31535D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b6xkf6dc",
+      "id": "27",
+      "name": "purpose-frame",
+      "bbox": [
+        400,
+        520,
+        280,
+        178
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(255, 253, 245, 0.78)",
+      "lineColor": "rgba(76, 119, 128, 0.7)",
+      "lineWidth": 1.3
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/032lszqt",
+      "id": "28",
+      "name": "purpose-label",
+      "bbox": [
+        422,
+        538,
+        236,
+        36
+      ],
+      "geometry": "rect",
+      "text": "目的",
+      "textPreview": "目的",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "color": "#183F4B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "目的"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "目的",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "color": "#183F4B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "目的",
+              "fontSize": 28,
+              "color": "#183F4B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tovahoza",
+      "id": "29",
+      "name": "purpose-rule",
+      "bbox": [
+        422,
+        580,
+        236,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#83A6AC",
+      "lineWidth": 1
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z61032ls",
+      "id": "30",
+      "name": "purpose-body",
+      "bbox": [
+        422,
+        594,
+        236,
+        86
+      ],
+      "geometry": "rect",
+      "text": "何を明らかにしたいのかを1文で示します。",
+      "textPreview": "何を明らかにしたいのかを1文で示します。",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#31535D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "何を明らかにしたいのかを1文"
+          },
+          {
+            "index": 2,
+            "text": "で示します。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "何を明らかにしたいのかを1文で示します。",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#31535D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "何を明らかにしたいのかを1文で示します。",
+              "fontSize": 18,
+              "color": "#31535D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/al87ed8b",
+      "id": "31",
+      "name": "method-frame",
+      "bbox": [
+        714,
+        520,
+        280,
+        178
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(255, 253, 245, 0.78)",
+      "lineColor": "rgba(76, 119, 128, 0.7)",
+      "lineWidth": 1.3
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hcrmhk3q",
+      "id": "32",
+      "name": "method-label",
+      "bbox": [
+        736,
+        538,
+        236,
+        36
+      ],
+      "geometry": "rect",
+      "text": "方法",
+      "textPreview": "方法",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "color": "#183F4B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "方法"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "方法",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "color": "#183F4B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "方法",
+              "fontSize": 28,
+              "color": "#183F4B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "33",
+      "name": "method-rule",
+      "bbox": [
+        736,
+        580,
+        236,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#83A6AC",
+      "lineWidth": 1
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "34",
+      "name": "method-body",
+      "bbox": [
+        736,
+        594,
+        236,
+        86
+      ],
+      "geometry": "rect",
+      "text": "観察場所、記録方法、比較する条件を入れます。",
+      "textPreview": "観察場所、記録方法、比較する条件を入れます。",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#31535D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "観察場所、記録方法、比較"
+          },
+          {
+            "index": 2,
+            "text": "する条件を入れます。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "観察場所、記録方法、比較する条件を入れます。",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#31535D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "観察場所、記録方法、比較する条件を入れます。",
+              "fontSize": 18,
+              "color": "#31535D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "35",
+      "name": "result-frame",
+      "bbox": [
+        150,
+        790,
+        366,
+        192
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(255, 253, 245, 0.78)",
+      "lineColor": "rgba(76, 119, 128, 0.7)",
+      "lineWidth": 1.3
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "36",
+      "name": "result-label",
+      "bbox": [
+        172,
+        808,
+        322,
+        36
+      ],
+      "geometry": "rect",
+      "text": "結果",
+      "textPreview": "結果",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "color": "#183F4B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "結果"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "結果",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "color": "#183F4B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "結果",
+              "fontSize": 28,
+              "color": "#183F4B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sfil0rqd",
+      "id": "37",
+      "name": "result-rule",
+      "bbox": [
+        172,
+        850,
+        322,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#83A6AC",
+      "lineWidth": 1
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "38",
+      "name": "result-body",
+      "bbox": [
+        172,
+        864,
+        322,
+        100
+      ],
+      "geometry": "rect",
+      "text": "写真・グラフ・観察記録を置き、重要な発見を大きく見せます。",
+      "textPreview": "写真・グラフ・観察記録を置き、重要な発見を大きく見せます。",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#31535D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "写真・グラフ・観察記録を置き、重要な発"
+          },
+          {
+            "index": 2,
+            "text": "見を大きく見せます。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "写真・グラフ・観察記録を置き、重要な発見を大きく見せます。",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#31535D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "写真・グラフ・観察記録を置き、重要な発見を大きく見せます。",
+              "fontSize": 18,
+              "color": "#31535D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 39,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "39",
+      "name": "discussion-frame",
+      "bbox": [
+        564,
+        790,
+        366,
+        192
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(255, 253, 245, 0.78)",
+      "lineColor": "rgba(76, 119, 128, 0.7)",
+      "lineWidth": 1.3
+    },
+    {
+      "order": 40,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q1orytsv",
+      "id": "40",
+      "name": "discussion-label",
+      "bbox": [
+        586,
+        808,
+        322,
+        36
+      ],
+      "geometry": "rect",
+      "text": "考察",
+      "textPreview": "考察",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "color": "#183F4B",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "考察"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "考察",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "color": "#183F4B",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "考察",
+              "fontSize": 28,
+              "color": "#183F4B",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 41,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmlkjm1c",
+      "id": "41",
+      "name": "discussion-rule",
+      "bbox": [
+        586,
+        850,
+        322,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#83A6AC",
+      "lineWidth": 1
+    },
+    {
+      "order": 42,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87ed8bat",
+      "id": "42",
+      "name": "discussion-body",
+      "bbox": [
+        586,
+        864,
+        322,
+        100
+      ],
+      "geometry": "rect",
+      "text": "海面、海中、海底の関係から結果の意味を説明します。",
+      "textPreview": "海面、海中、海底の関係から結果の意味を説明します。",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#31535D",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海面、海中、海底の関係から結果の意味"
+          },
+          {
+            "index": 2,
+            "text": "を説明します。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海面、海中、海底の関係から結果の意味を説明します。",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#31535D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海面、海中、海底の関係から結果の意味を説明します。",
+              "fontSize": 18,
+              "color": "#31535D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 43,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xs72x4na",
+      "id": "43",
+      "name": "center-placeholder",
+      "bbox": [
+        260,
+        1060,
+        560,
+        62
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(255, 253, 245, 0.54)",
+      "lineColor": "rgba(95, 140, 148, 0.7)",
+      "lineWidth": 1.1
+    },
+    {
+      "order": 44,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtcj6tov",
+      "id": "44",
+      "name": "center-placeholder-text",
+      "bbox": [
+        282,
+        1074,
+        516,
+        32
+      ],
+      "geometry": "rect",
+      "text": "写真・グラフ・調査地点図をここに追加",
+      "textPreview": "写真・グラフ・調査地点図をここに追加",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#4F747B",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "写真・グラフ・調査地点図をここに追加"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "写真・グラフ・調査地点図をここに追加",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#4F747B",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "写真・グラフ・調査地点図をここに追加",
+              "fontSize": 22,
+              "color": "#4F747B",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 45,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/je9cvixc",
+      "id": "45",
+      "name": "seabed-boundary",
+      "bbox": [
+        0,
+        0,
+        1080,
+        1536
+      ],
+      "geometry": "custom",
+      "lineColor": "#6D6257",
+      "lineWidth": 1.8
+    },
+    {
+      "order": 46,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8z25kb6x",
+      "id": "46",
+      "name": "sand-bed",
+      "bbox": [
+        0,
+        1220,
+        1080,
+        316
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(233, 223, 201, 0.82)",
+      "lineWidth": 0
+    },
+    {
+      "order": 47,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1gvy90je",
+      "id": "47",
+      "name": "seabed-hatch--1",
+      "bbox": [
+        -124,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 48,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "48",
+      "name": "seabed-hatch-0",
+      "bbox": [
+        0,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 49,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "49",
+      "name": "seabed-hatch-1",
+      "bbox": [
+        124,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 50,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/58z25kb6",
+      "id": "50",
+      "name": "seabed-hatch-2",
+      "bbox": [
+        248,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 51,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gn29gr2p",
+      "id": "51",
+      "name": "seabed-hatch-3",
+      "bbox": [
+        372,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 52,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n29gr2p8",
+      "id": "52",
+      "name": "seabed-hatch-4",
+      "bbox": [
+        496,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 53,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yhgn29gr",
+      "id": "53",
+      "name": "seabed-hatch-5",
+      "bbox": [
+        620,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 54,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5wjudg7a",
+      "id": "54",
+      "name": "seabed-hatch-6",
+      "bbox": [
+        744,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 55,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbq1oryt",
+      "id": "55",
+      "name": "seabed-hatch-7",
+      "bbox": [
+        868,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 56,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nuxc3ylc",
+      "id": "56",
+      "name": "seabed-hatch-8",
+      "bbox": [
+        992,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 57,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y90je9cv",
+      "id": "57",
+      "name": "seabed-hatch-9",
+      "bbox": [
+        1116,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 58,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5sneloj2",
+      "id": "58",
+      "name": "seabed-hatch-10",
+      "bbox": [
+        1240,
+        1496,
+        320,
+        -256
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(155, 140, 120, 0.58)",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 59,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cbulwval",
+      "id": "59",
+      "name": "rock-56",
+      "bbox": [
+        56,
+        1288,
+        110,
+        58
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(167, 170, 161, 0.72)",
+      "lineColor": "rgba(110, 117, 111, 0.8)",
+      "lineWidth": 1
+    },
+    {
+      "order": 60,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8nqxs72x",
+      "id": "60",
+      "name": "rock-172",
+      "bbox": [
+        172,
+        1318,
+        76,
+        42
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(167, 170, 161, 0.72)",
+      "lineColor": "rgba(110, 117, 111, 0.8)",
+      "lineWidth": 1
+    },
+    {
+      "order": 61,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/18jqh0fe",
+      "id": "61",
+      "name": "rock-796",
+      "bbox": [
+        796,
+        1294,
+        112,
+        60
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(167, 170, 161, 0.72)",
+      "lineColor": "rgba(110, 117, 111, 0.8)",
+      "lineWidth": 1
+    },
+    {
+      "order": 62,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0fepkz",
+      "id": "62",
+      "name": "rock-920",
+      "bbox": [
+        920,
+        1346,
+        70,
+        36
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(167, 170, 161, 0.72)",
+      "lineColor": "rgba(110, 117, 111, 0.8)",
+      "lineWidth": 1
+    },
+    {
+      "order": 63,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "63",
+      "name": "rock-402",
+      "bbox": [
+        402,
+        1392,
+        62,
+        30
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(167, 170, 161, 0.72)",
+      "lineColor": "rgba(110, 117, 111, 0.8)",
+      "lineWidth": 1
+    },
+    {
+      "order": 64,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8bat47y1",
+      "id": "64",
+      "name": "rock-544",
+      "bbox": [
+        544,
+        1328,
+        88,
+        42
+      ],
+      "geometry": "ellipse",
+      "fillColor": "rgba(167, 170, 161, 0.72)",
+      "lineColor": "rgba(110, 117, 111, 0.8)",
+      "lineWidth": 1
+    },
+    {
+      "order": 65,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "65",
+      "name": "coral-main-96",
+      "bbox": [
+        96,
+        1404,
+        0,
+        -82
+      ],
+      "geometry": "line",
+      "lineColor": "#667F76",
+      "lineWidth": 1.5
+    },
+    {
+      "order": 66,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q5o7qpg3",
+      "id": "66",
+      "name": "coral-left-96",
+      "bbox": [
+        96,
+        1362,
+        -30,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#667F76",
+      "lineWidth": 1.4
+    },
+    {
+      "order": 67,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jqh0fepk",
+      "id": "67",
+      "name": "coral-right-96",
+      "bbox": [
+        96,
+        1374,
+        28,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#667F76",
+      "lineWidth": 1.4
+    },
+    {
+      "order": 68,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3ylc7u5",
+      "id": "68",
+      "name": "coral-top-96",
+      "bbox": [
+        96,
+        1340,
+        18,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#667F76",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 69,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kre1w7m",
+      "id": "69",
+      "name": "coral-main-188",
+      "bbox": [
+        188,
+        1422,
+        0,
+        -82
+      ],
+      "geometry": "line",
+      "lineColor": "#A47C7F",
+      "lineWidth": 1.5
+    },
+    {
+      "order": 70,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/re1w7mp0",
+      "id": "70",
+      "name": "coral-left-188",
+      "bbox": [
+        188,
+        1380,
+        -30,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#A47C7F",
+      "lineWidth": 1.4
+    },
+    {
+      "order": 71,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2t83itgf",
+      "id": "71",
+      "name": "coral-right-188",
+      "bbox": [
+        188,
+        1392,
+        28,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#A47C7F",
+      "lineWidth": 1.4
+    },
+    {
+      "order": 72,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9knih4by",
+      "id": "72",
+      "name": "coral-top-188",
+      "bbox": [
+        188,
+        1358,
+        18,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#A47C7F",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 73,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kzupwb2h",
+      "id": "73",
+      "name": "coral-main-854",
+      "bbox": [
+        854,
+        1410,
+        0,
+        -82
+      ],
+      "geometry": "line",
+      "lineColor": "#B9868A",
+      "lineWidth": 1.5
+    },
+    {
+      "order": 74,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqd4vmtw",
+      "id": "74",
+      "name": "coral-left-854",
+      "bbox": [
+        854,
+        1368,
+        -30,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#B9868A",
+      "lineWidth": 1.4
+    },
+    {
+      "order": 75,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25kb6xkf",
+      "id": "75",
+      "name": "coral-right-854",
+      "bbox": [
+        854,
+        1380,
+        28,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#B9868A",
+      "lineWidth": 1.4
+    },
+    {
+      "order": 76,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9w3m94fu",
+      "id": "76",
+      "name": "coral-top-854",
+      "bbox": [
+        854,
+        1346,
+        18,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#B9868A",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 77,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kb6xkf6d",
+      "id": "77",
+      "name": "coral-main-944",
+      "bbox": [
+        944,
+        1392,
+        0,
+        -82
+      ],
+      "geometry": "line",
+      "lineColor": "#6F8F85",
+      "lineWidth": 1.5
+    },
+    {
+      "order": 78,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r2p8nqxs",
+      "id": "78",
+      "name": "coral-left-944",
+      "bbox": [
+        944,
+        1350,
+        -30,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#6F8F85",
+      "lineWidth": 1.4
+    },
+    {
+      "order": 79,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2hwfyxob",
+      "id": "79",
+      "name": "coral-right-944",
+      "bbox": [
+        944,
+        1362,
+        28,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#6F8F85",
+      "lineWidth": 1.4
+    },
+    {
+      "order": 80,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/idonyd0z",
+      "id": "80",
+      "name": "coral-top-944",
+      "bbox": [
+        944,
+        1328,
+        18,
+        -26
+      ],
+      "geometry": "line",
+      "lineColor": "#6F8F85",
+      "lineWidth": 1.2
+    },
+    {
+      "order": 81,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/byhgn29g",
+      "id": "81",
+      "name": "seabed-label",
+      "bbox": [
+        310,
+        1330,
+        460,
+        54
+      ],
+      "geometry": "rect",
+      "text": "海底（サンゴ礁・砂・岩）",
+      "textPreview": "海底（サンゴ礁・砂・岩）",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "color": "#544C42",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海底（サンゴ礁・砂・岩）"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海底（サンゴ礁・砂・岩）",
+          "resolvedTextStyle": {
+            "fontSize": 30,
+            "color": "#544C42",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海底（サンゴ礁・砂・岩）",
+              "fontSize": 30,
+              "color": "#544C42",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(255, 253, 245, 0.72)",
+      "lineColor": "rgba(156, 142, 123, 0.65)",
+      "lineWidth": 1
+    }
+  ],
+  "composeRuns": []
+}

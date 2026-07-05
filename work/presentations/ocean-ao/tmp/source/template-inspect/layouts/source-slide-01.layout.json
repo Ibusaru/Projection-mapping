@@ -1,0 +1,2922 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/2x4nap4r",
+    "id": "2x4nap4r",
+    "slide": 1,
+    "layoutId": "/ppt/slideLayouts/slideLayout7.xml",
+    "layoutName": "白紙",
+    "layoutType": "blank",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "backgroundColor": {
+      "type": "theme",
+      "value": "accent1",
+      "transform": {
+        "lighten": 0.8
+      }
+    },
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1586.67,
+      "height": 2244
+    }
+  },
+  "theme": {
+    "colorSchemeName": "Office 2013 - 2022 テーマ",
+    "colors": {
+      "accent1": "#4472C4",
+      "accent2": "#ED7D31",
+      "accent3": "#A5A5A5",
+      "accent4": "#FFC000",
+      "accent5": "#5B9BD5",
+      "accent6": "#70AD47",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#44546A",
+      "lt2": "#E7E6E6",
+      "hlink": "#0563C1",
+      "folHlink": "#954F72"
+    },
+    "fontScheme": {
+      "name": "Office 2013 - 2022 テーマ",
+      "majorFont": {
+        "latinTypeface": "Calibri Light"
+      },
+      "minorFont": {
+        "latinTypeface": "Calibri"
+      }
+    },
+    "typefaces": [
+      "+mj-ea",
+      "Calibri",
+      "Calibri Light",
+      "HG丸ｺﾞｼｯｸM-PRO"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout7.xml",
+      "name": "白紙",
+      "type": "blank",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/2",
+          "id": "2",
+          "name": "Date Placeholder 1",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "text": "7/4/2026",
+          "textPreview": "7/4/2026",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "7/4/2026",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "7/4/2026"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/3",
+          "id": "3",
+          "name": "Footer Placeholder 2",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "layout",
+          "aid": "template/layout//ppt/slideLayouts/slideLayout7.xml/4",
+          "id": "4",
+          "name": "Slide Number Placeholder 3",
+          "bbox": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "type": "master",
+      "elements": [
+        {
+          "order": 1,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/2",
+          "id": "2",
+          "name": "Title Placeholder 1",
+          "bbox": [
+            109.08,
+            119.47,
+            1368.5,
+            433.74
+          ],
+          "geometry": "rect",
+          "text": "マスター タイトルの書式設定",
+          "textPreview": "マスター タイトルの書式設定",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "autoFit": "shrinkText",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "マスター タイトルの書式設定",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "マスター タイトルの書式設定"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 2,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/3",
+          "id": "3",
+          "name": "Text Placeholder 2",
+          "bbox": [
+            109.08,
+            597.36,
+            1368.5,
+            1423.8
+          ],
+          "geometry": "rect",
+          "text": "マスター テキストの書式設定\n第 2 レベル\n第 3 レベル\n第 4 レベル\n第 5 レベル",
+          "textPreview": "マスター テキストの書式設定 | 第 2 レベル | 第 3 レベル | 第 4 レベル | 第 5 レベル",
+          "resolvedTextStyle": {
+            "vertical": 1,
+            "autoFit": "shrinkText",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "マスター テキストの書式設定",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "マスター テキストの書式設定"
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "text": "第 2 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "2 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "text": "第 3 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "3 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "text": "第 4 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "4 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "text": "第 5 レベル",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "第 "
+                },
+                {
+                  "index": 2,
+                  "text": "5 "
+                },
+                {
+                  "index": 3,
+                  "text": "レベル"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 3,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/4",
+          "id": "4",
+          "name": "Date Placeholder 3",
+          "bbox": [
+            109.08,
+            2079.86,
+            357,
+            119.47
+          ],
+          "geometry": "rect",
+          "text": "7/4/2026",
+          "textPreview": "7/4/2026",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "7/4/2026",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "7/4/2026"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "order": 4,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/5",
+          "id": "5",
+          "name": "Footer Placeholder 4",
+          "bbox": [
+            525.58,
+            2079.86,
+            535.5,
+            119.47
+          ],
+          "geometry": "rect",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          }
+        },
+        {
+          "order": 5,
+          "kind": "shape",
+          "scope": "master",
+          "aid": "template/master//ppt/slideMasters/slideMaster1.xml/6",
+          "id": "6",
+          "name": "Slide Number Placeholder 5",
+          "bbox": [
+            1120.58,
+            2079.86,
+            357,
+            119.47
+          ],
+          "geometry": "rect",
+          "text": "‹#›",
+          "textPreview": "‹#›",
+          "resolvedTextStyle": {
+            "anchor": 2,
+            "vertical": 1,
+            "verticalAlignment": "middle",
+            "insets": {
+              "top": 4.8,
+              "right": 9.6,
+              "bottom": 4.8,
+              "left": 9.6
+            }
+          },
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "‹#›",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "‹#›"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "3",
+      "name": "Freeform 3",
+      "bbox": [
+        746.9,
+        982.92,
+        766.44,
+        470.04
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "4",
+      "name": "TextBox 4",
+      "bbox": [
+        637.95,
+        952.2,
+        875.38,
+        500.77
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "6",
+      "name": "Freeform 6",
+      "bbox": [
+        810.51,
+        956.72,
+        332.23,
+        82.42
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zidony",
+      "id": "7",
+      "name": "TextBox 7",
+      "bbox": [
+        810.51,
+        910.29,
+        332.23,
+        128.85
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqd4vmtw",
+      "id": "21",
+      "name": "Freeform 21",
+      "bbox": [
+        810.51,
+        485.2,
+        709.52,
+        446.2
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kb6xkf6d",
+      "id": "22",
+      "name": "TextBox 22",
+      "bbox": [
+        810.51,
+        453.83,
+        709.52,
+        477.57
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2t83itgf",
+      "id": "24",
+      "name": "Freeform 24",
+      "bbox": [
+        870.41,
+        438.42,
+        181.15,
+        82.56
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "text": "概要",
+      "textPreview": "概要",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "概要"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "概要",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "概要",
+              "fontSize": 48,
+              "typeface": "+mj-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/re1w7mp0",
+      "id": "25",
+      "name": "TextBox 25",
+      "bbox": [
+        803.82,
+        363.01,
+        181.15,
+        154.9
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8nqxs7",
+      "id": "28",
+      "name": "Freeform 28",
+      "bbox": [
+        73.33,
+        485.2,
+        709.52,
+        446.2
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ra5gbq1o",
+      "id": "29",
+      "name": "TextBox 29",
+      "bbox": [
+        73.33,
+        421.7,
+        709.52,
+        509.7
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87ed8bat",
+      "id": "31",
+      "name": "Freeform 31",
+      "bbox": [
+        158.37,
+        438.42,
+        293.76,
+        79.68
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "text": "目的",
+      "textPreview": "目的",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "目的"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "目的",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "目的",
+              "fontSize": 48,
+              "typeface": "+mj-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmlkjm1c",
+      "id": "32",
+      "name": "TextBox 32",
+      "bbox": [
+        158.37,
+        397.64,
+        289.07,
+        113.28
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1gvy90je",
+      "id": "34",
+      "name": "Freeform 34",
+      "bbox": [
+        112.86,
+        177.43,
+        293.76,
+        235.54
+      ],
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image1.svg",
+        "contentType": "image/svg+xml",
+        "byteLength": 1445870
+      }
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtcj6tov",
+      "id": "37",
+      "name": "Freeform 37",
+      "bbox": [
+        1266.93,
+        -228.38,
+        241.92,
+        643.15
+      ],
+      "rotation": 90,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image2.svg",
+        "contentType": "image/svg+xml",
+        "byteLength": 3825
+      }
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "44",
+      "name": "TextBox 44",
+      "bbox": [
+        385.33,
+        110.17,
+        1134.69,
+        139.97
+      ],
+      "geometry": "rect",
+      "text": "デジタル水族館　・・・",
+      "textPreview": "デジタル水族館　・・・",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "デジタル水族館　・・・"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "デジタル水族館　・・・",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "デジタル水族館　・・・",
+              "fontSize": 85.75,
+              "typeface": "+mj-ea",
+              "color": "#00327D",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "45",
+      "name": "TextBox 45",
+      "bbox": [
+        560.13,
+        323.67,
+        970.28,
+        69.65
+      ],
+      "geometry": "rect",
+      "text": "C1班 ： 俵伊吹、長谷川煌輔、中嶋華鈴、三木快和",
+      "textPreview": "C1班 ： 俵伊吹、長谷川煌輔、中嶋華鈴、三木快和",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "C1班 ： 俵伊吹、長谷川煌輔、中嶋華鈴、三木快和"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "C1班 ： 俵伊吹、長谷川煌輔、中嶋華鈴、三木快和",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "C1",
+              "fontSize": 42.67,
+              "typeface": "+mj-ea",
+              "color": "#0C1031",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "班 ：",
+              "fontSize": 42.67,
+              "typeface": "+mj-ea",
+              "color": "#0C1031",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": " ",
+              "fontSize": 42.67,
+              "typeface": "+mj-ea",
+              "color": "#0C1031",
+              "bold": true
+            },
+            {
+              "index": 4,
+              "text": "俵伊吹、長谷川煌輔、中嶋華鈴、三木快和",
+              "fontSize": 42.67,
+              "typeface": "+mj-ea",
+              "color": "#0C1031",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87ed8ba",
+      "id": "49",
+      "name": "TextBox 49",
+      "bbox": [
+        804.96,
+        955.35,
+        337.78,
+        79.35
+      ],
+      "geometry": "rect",
+      "text": "開発環境",
+      "textPreview": "開発環境",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "開発環境"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "開発環境",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "開発環境",
+              "fontSize": 48,
+              "typeface": "+mj-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/il0rqd4v",
+      "id": "51",
+      "name": "TextBox 51",
+      "bbox": [
+        87.43,
+        555.1,
+        681.21,
+        328.68
+      ],
+      "geometry": "rect",
+      "text": "オープンキャンパスで来場した中学生に舞鶴高専の魅力や、高専で学ぶものづくりやプログラミングの楽しさを体験してもらい、入学後の学生生活や将来のイメージを持ってもらうこと",
+      "textPreview": "オープンキャンパスで来場した中学生に舞鶴高専の魅力や、高専で学ぶものづくりやプログラミングの楽しさを体験してもらい、入学後の学生生活や将来のイメージを持ってもらうこと",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 6,
+        "lines": [
+          {
+            "index": 1,
+            "text": "オープンキャンパスで来場した中学生"
+          },
+          {
+            "index": 2,
+            "text": "に舞鶴高専の魅力"
+          },
+          {
+            "index": 3,
+            "text": "や、高専で学ぶものづくりやプログラ"
+          },
+          {
+            "index": 4,
+            "text": "ミングの楽しさを体験してもらい、"
+          },
+          {
+            "index": 5,
+            "text": "入学後の学生生活や将来のイメージを"
+          },
+          {
+            "index": 6,
+            "text": "持ってもらうこと"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "オープンキャンパスで来場した中学生に舞鶴高専の魅力や、高専で学ぶものづくりやプログラミングの楽しさを体験してもらい、入学後の学生生活や将来のイメージを持ってもらうこと",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "オープンキャンパスで来場した中学生に",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "舞鶴高専の魅力",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": "や、高専で学ぶものづくりやプログラミングの楽しさを体験してもらい、",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 4,
+              "text": "入学後の学生生活や将来のイメージを持っても",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 5,
+              "text": "らうこと",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tcj6tova",
+      "id": "52",
+      "name": "TextBox 52",
+      "bbox": [
+        834.43,
+        537.59,
+        644.68,
+        396.54
+      ],
+      "geometry": "rect",
+      "text": "海中をテーマにした来場者参加型のプロジェクションマッピング\nQRコードからWebアプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズできる\n",
+      "textPreview": "海中をテーマにした来場者参加型のプロジェクションマッピング | QRコードからWebアプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズできる |",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 7,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海中をテーマにした来場者参加型の"
+          },
+          {
+            "index": 2,
+            "text": "プロジェクションマッピング"
+          },
+          {
+            "index": 3,
+            "text": "QRコードからWeb"
+          },
+          {
+            "index": 4,
+            "text": "アプリにアクセスし、好きな魚を選"
+          },
+          {
+            "index": 5,
+            "text": "んで色や柄を自由にカスタマイズで"
+          },
+          {
+            "index": 6,
+            "text": "きる"
+          },
+          {
+            "index": 7,
+            "text": ""
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海中をテーマにした来場者参加型のプロジェクションマッピング",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "海中をテーマにした来場者参加型のプロジェクションマッピング",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "QRコードからWebアプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズできる",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "QR",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "コードから",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": "Web",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 4,
+              "text": "アプリにアクセスし、好きな魚を選んで色や柄を自由にカスタマイズできる",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "69",
+      "name": "Freeform 14",
+      "bbox": [
+        50.24,
+        1526.61,
+        1439.26,
+        681.88
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l0rqd4vm",
+      "id": "70",
+      "name": "TextBox 15",
+      "bbox": [
+        50.24,
+        1471.58,
+        1439.26,
+        736.91
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "67",
+      "name": "Freeform 17",
+      "bbox": [
+        158.01,
+        1486.94,
+        471.47,
+        93.64
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "text": "システム構成",
+      "textPreview": "システム構成",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "システム構成"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "システム構成",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "システム構成",
+              "fontSize": 48,
+              "typeface": "+mj-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "68",
+      "name": "TextBox 18",
+      "bbox": [
+        158.01,
+        1460.2,
+        1269.92,
+        77.64
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "10",
+      "name": "Freeform 10",
+      "bbox": [
+        73.33,
+        987.5,
+        647.39,
+        476.33
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": {
+        "type": "theme",
+        "value": "accent1",
+        "transform": {
+          "lighten": 0.6
+        }
+      }
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "11",
+      "name": "TextBox 11",
+      "bbox": [
+        148.64,
+        1012.31,
+        588.19,
+        451.52
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0je9cvix",
+      "id": "57",
+      "name": "Freeform 6",
+      "bbox": [
+        156.09,
+        951.87,
+        293.76,
+        71.01
+      ],
+      "rotation": 0,
+      "geometry": "custom",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      },
+      "fillColor": "#E0DFD8"
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bulwval8",
+      "id": "58",
+      "name": "TextBox 7",
+      "bbox": [
+        156.09,
+        911.87,
+        293.76,
+        111.01
+      ],
+      "rotation": 0,
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 5.33,
+          "right": 5.33,
+          "bottom": 5.33,
+          "left": 5.33
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "8",
+      "name": "矢印: 折線 7",
+      "bbox": [
+        -124.35,
+        702.09,
+        104.81,
+        93.74
+      ],
+      "verticalFlip": true,
+      "geometry": "bentArrow",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "lt1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sneloj2t",
+      "id": "48",
+      "name": "TextBox 48",
+      "bbox": [
+        136.36,
+        944.44,
+        337.78,
+        164.6
+      ],
+      "geometry": "rect",
+      "text": "役割分担 \n",
+      "textPreview": "役割分担  |",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "役割分担"
+          },
+          {
+            "index": 2,
+            "text": ""
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "役割分担 ",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "役割分担",
+              "fontSize": 48,
+              "typeface": "+mj-ea",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": " ",
+              "fontSize": 48,
+              "typeface": "+mj-ea",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zidony",
+      "id": "12",
+      "name": "テキスト ボックス 11",
+      "bbox": [
+        -605.56,
+        944.91,
+        586.01,
+        134.8
+      ],
+      "geometry": "rect",
+      "text": "実際に制作した作品を来場者自身に体験してもらう",
+      "textPreview": "実際に制作した作品を来場者自身に体験してもらう",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "実際"
+          },
+          {
+            "index": 2,
+            "text": "に制作した作品を来場者自身に"
+          },
+          {
+            "index": 3,
+            "text": "体験してもらう"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "実際に制作した作品を来場者自身に体験してもらう",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "実際",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "に制作した作品を来場者自身に体験してもらう",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/0nuxc3yl",
+      "id": "94",
+      "name": "図 13",
+      "bbox": [
+        -483.23,
+        1164.29,
+        182.78,
+        182.78
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image3.png",
+        "contentType": "image/png",
+        "byteLength": 26072
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image3.png",
+        "contentType": "image/png",
+        "byteLength": 26072
+      }
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "16",
+      "name": "テキスト ボックス 15",
+      "bbox": [
+        70.97,
+        1108.6,
+        678.83,
+        270.52
+      ],
+      "geometry": "rect",
+      "text": "・俵：プログラム、Webアプリ作成\n・中嶋：海底オブジェクト、映像投影\n・長谷川：装飾オブジェクト\n・三木：魚オブジェクト",
+      "textPreview": "・俵：プログラム、Webアプリ作成 | ・中嶋：海底オブジェクト、映像投影 | ・長谷川：装飾オブジェクト | ・三木：魚オブジェクト",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "・俵：プログラム、Webアプリ作成"
+          },
+          {
+            "index": 2,
+            "text": "・中嶋：海底オブジェクト、映像投影"
+          },
+          {
+            "index": 3,
+            "text": "・長谷川：装飾オブジェクト"
+          },
+          {
+            "index": 4,
+            "text": "・三木：魚オブジェクト"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "・俵：プログラム、Webアプリ作成",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "・俵：プログラム、",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "Web",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": "アプリ作成",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "・中嶋：海底オブジェクト、映像投影",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "・中嶋：海底オブジェクト、映像投影",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "・長谷川：装飾オブジェクト",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "・長谷川：装飾オブジェクト",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "・三木：魚オブジェクト",
+          "lineSpacingPercent": 150000,
+          "runs": [
+            {
+              "index": 1,
+              "text": "・三木：魚オブジェクト",
+              "fontSize": 37.33,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 33,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/p8nqxs72",
+      "id": "95",
+      "name": "図 17",
+      "bbox": [
+        382.83,
+        1598.07,
+        206.88,
+        206.88
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image4.png",
+        "contentType": "image/png",
+        "byteLength": 31954
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image4.png",
+        "contentType": "image/png",
+        "byteLength": 31954
+      }
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8z25kb6x",
+      "id": "35",
+      "name": "テキスト ボックス 34",
+      "bbox": [
+        250.67,
+        1798.88,
+        471.47,
+        116.93
+      ],
+      "geometry": "rect",
+      "text": "Webサイト(React)\n魚を選択・カスタマイズ",
+      "textPreview": "Webサイト(React) | 魚を選択・カスタマイズ",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Webサイト(React)"
+          },
+          {
+            "index": 2,
+            "text": "魚を選択・カスタマイズ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Webサイト(React)",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Web",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 2,
+              "text": "サイト",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            },
+            {
+              "index": 3,
+              "text": "(React)",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "魚を選択・カスタマイズ",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "魚を選択・カスタマイズ",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 35,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/ih4byhgn",
+      "id": "96",
+      "name": "図 14",
+      "bbox": [
+        757.95,
+        1050.38,
+        152.65,
+        183.69
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image5.png",
+        "contentType": "image/png",
+        "byteLength": 47668
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image5.png",
+        "contentType": "image/png",
+        "byteLength": 47668
+      }
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q1orytsv",
+      "id": "33",
+      "name": "テキスト ボックス 32",
+      "bbox": [
+        -38.82,
+        1088.85,
+        1164.71,
+        38.78
+      ],
+      "geometry": "rect",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ""
+          }
+        ]
+      }
+    },
+    {
+      "order": 37,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/72x4nap4",
+      "id": "97",
+      "name": "図 60",
+      "bbox": [
+        762.19,
+        1624.08,
+        151.35,
+        154.87
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image6.png",
+        "contentType": "image/png",
+        "byteLength": 50571
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image6.png",
+        "contentType": "image/png",
+        "byteLength": 50571
+      }
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wfyxobm5",
+      "id": "71",
+      "name": "テキスト ボックス 70",
+      "bbox": [
+        601.65,
+        1798.88,
+        471.47,
+        116.93
+      ],
+      "geometry": "rect",
+      "text": "Supabase\nデータ保存・管理",
+      "textPreview": "Supabase | データ保存・管理",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Supabase"
+          },
+          {
+            "index": 2,
+            "text": "データ保存・管理"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Supabase",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Supabase",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "データ保存・管理",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "データ保存・管理",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 39,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/wjudg7ad",
+      "id": "98",
+      "name": "図 74",
+      "bbox": [
+        1002.04,
+        1613.75,
+        329.47,
+        185.33
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image7.png",
+        "contentType": "image/png",
+        "byteLength": 56910
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image7.png",
+        "contentType": "image/png",
+        "byteLength": 56910
+      }
+    },
+    {
+      "order": 40,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wval87ed",
+      "id": "79",
+      "name": "テキスト ボックス 78",
+      "bbox": [
+        949.17,
+        1798.88,
+        471.47,
+        116.93
+      ],
+      "geometry": "rect",
+      "text": "魚や装飾品を\n海中空間に表示",
+      "textPreview": "魚や装飾品を | 海中空間に表示",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "魚や装飾品を"
+          },
+          {
+            "index": 2,
+            "text": "海中空間に表示"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "魚や装飾品を",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "魚や装飾品を",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "海中空間に表示",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海中空間に表示",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 41,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/p4r65wju",
+      "id": "99",
+      "name": "図 16",
+      "bbox": [
+        931.77,
+        1050.38,
+        210.98,
+        181.72
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image8.png",
+        "contentType": "image/png",
+        "byteLength": 153257
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image8.png",
+        "contentType": "image/png",
+        "byteLength": 153257
+      }
+    },
+    {
+      "order": 42,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/m1cfa9w3",
+      "id": "100",
+      "name": "図 37",
+      "bbox": [
+        1161.87,
+        1049.9,
+        128.54,
+        181.72
+      ],
+      "contentType": "image/png",
+      "imageCrop": {
+        "left": 0.0929,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "asset": {
+        "assetId": "/ppt/media/image9.png",
+        "contentType": "image/png",
+        "byteLength": 126501
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image9.png",
+        "contentType": "image/png",
+        "byteLength": 126501
+      }
+    },
+    {
+      "order": 43,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/bm58z25k",
+      "id": "101",
+      "name": "図 39",
+      "bbox": [
+        1302.32,
+        1049.9,
+        191.64,
+        183.69
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image10.png",
+        "contentType": "image/png",
+        "byteLength": 122747
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image10.png",
+        "contentType": "image/png",
+        "byteLength": 122747
+      }
+    },
+    {
+      "order": 44,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/47y1kre1",
+      "id": "102",
+      "name": "図 82",
+      "bbox": [
+        23.83,
+        1923.87,
+        320.23,
+        200.15
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image11.png",
+        "contentType": "image/png",
+        "byteLength": 24955
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image11.png",
+        "contentType": "image/png",
+        "byteLength": 24955
+      }
+    },
+    {
+      "order": 45,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h0fepkzu",
+      "id": "85",
+      "name": "テキスト ボックス 84",
+      "bbox": [
+        9.39,
+        2111.78,
+        349.35,
+        58.77
+      ],
+      "geometry": "rect",
+      "text": "画面キャプチャ",
+      "textPreview": "画面キャプチャ",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "画面キャプチャ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "画面キャプチャ",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "画面キャプチャ",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 46,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/tsvu9kni",
+      "id": "103",
+      "name": "図 86",
+      "bbox": [
+        410.38,
+        1932.11,
+        191.91,
+        191.91
+      ],
+      "contentType": "image/jpeg",
+      "asset": {
+        "assetId": "/ppt/media/image12.jpeg",
+        "contentType": "image/jpeg",
+        "byteLength": 20447
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image12.jpeg",
+        "contentType": "image/jpeg",
+        "byteLength": 20447
+      }
+    },
+    {
+      "order": 47,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "89",
+      "name": "テキスト ボックス 88",
+      "bbox": [
+        270.6,
+        2111.78,
+        471.47,
+        58.77
+      ],
+      "geometry": "rect",
+      "text": "映像の調整",
+      "textPreview": "映像の調整",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "映像の調整"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "映像の調整",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "映像の調整",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    },
+    {
+      "order": 48,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/mp0bi9s3",
+      "id": "104",
+      "name": "図 90",
+      "bbox": [
+        749.79,
+        1895,
+        295.48,
+        234.23
+      ],
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "/ppt/media/image13.png",
+        "contentType": "image/png",
+        "byteLength": 30620
+      },
+      "fillImage": {
+        "assetId": "/ppt/media/image13.png",
+        "contentType": "image/png",
+        "byteLength": 30620
+      }
+    },
+    {
+      "order": 49,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wfyxobm5",
+      "id": "93",
+      "name": "テキスト ボックス 92",
+      "bbox": [
+        644.07,
+        2082.7,
+        471.47,
+        116.93
+      ],
+      "geometry": "rect",
+      "text": "プロジェクター\n教室へ投影",
+      "textPreview": "プロジェクター | 教室へ投影",
+      "resolvedFontSize": 39.67,
+      "resolvedTextStyle": {
+        "fontSize": 39.67,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "wrap": "square",
+        "autoFit": "resizeShapeToFitText",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "プロジェクター"
+          },
+          {
+            "index": 2,
+            "text": "教室へ投影"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "プロジェクター",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "プロジェクター",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "教室へ投影",
+          "lineSpacingPercent": 150000,
+          "resolvedTextStyle": {
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "教室へ投影",
+              "fontSize": 32,
+              "typeface": "HG丸ｺﾞｼｯｸM-PRO",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

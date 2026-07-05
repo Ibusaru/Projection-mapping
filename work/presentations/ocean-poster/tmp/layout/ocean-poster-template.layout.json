@@ -1,0 +1,1211 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/43tt2n",
+    "id": "43tt2n",
+    "slide": 1,
+    "layoutId": "9ca28aa0-0bcb-49f1-9625-7abdead2efed",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "aaf33493-450a-420f-b852-46ab7677cf30",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#EAF8FB",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1080,
+      "height": 1536
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "9ca28aa0-0bcb-49f1-9625-7abdead2efed",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "aaf33493-450a-420f-b852-46ab7677cf30",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "aaf33493-450a-420f-b852-46ab7677cf30",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/g7adsji5",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1080,
+        1536
+      ],
+      "alt": "海面、海中、海底を縦構図で描いたポスター背景",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "2d567904-32fa-46d6-bc19-5e7b5077267f",
+        "contentType": "image/png",
+        "byteLength": 2491876
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u54zidon",
+      "id": "2",
+      "name": "poster-title",
+      "bbox": [
+        84,
+        58,
+        912,
+        82
+      ],
+      "geometry": "rect",
+      "text": "海洋環境の観察テーマ",
+      "textPreview": "海洋環境の観察テーマ",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "color": "#063348",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海洋環境の観察テーマ"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海洋環境の観察テーマ",
+          "resolvedTextStyle": {
+            "fontSize": 58,
+            "color": "#063348",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海洋環境の観察テーマ",
+              "fontSize": 58,
+              "color": "#063348",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqxs72x4",
+      "id": "3",
+      "name": "poster-subtitle",
+      "bbox": [
+        186,
+        138,
+        708,
+        38
+      ],
+      "geometry": "rect",
+      "text": "研究タイトル・発表者名をここに入力",
+      "textPreview": "研究タイトル・発表者名をここに入力",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "color": "#2B6475",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "研究タイトル・発表者名をここに入力"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "研究タイトル・発表者名をここに入力",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#2B6475",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "研究タイトル・発表者名をここに入力",
+              "fontSize": 24,
+              "color": "#2B6475",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "4",
+      "name": "sea-label",
+      "bbox": [
+        820,
+        340,
+        110,
+        54
+      ],
+      "geometry": "rect",
+      "text": "海",
+      "textPreview": "海",
+      "resolvedFontSize": 42,
+      "resolvedTextStyle": {
+        "fontSize": 42,
+        "typeface": "+mn-lt",
+        "color": "#064861",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海",
+          "resolvedTextStyle": {
+            "fontSize": 42,
+            "color": "#064861",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海",
+              "fontSize": 42,
+              "color": "#064861",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "5",
+      "name": "bubble-label",
+      "bbox": [
+        905,
+        442,
+        116,
+        42
+      ],
+      "geometry": "rect",
+      "text": "気泡",
+      "textPreview": "気泡",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "color": "#2A6A7A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "気泡"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "気泡",
+          "resolvedTextStyle": {
+            "fontSize": 28,
+            "color": "#2A6A7A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "気泡",
+              "fontSize": 28,
+              "color": "#2A6A7A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "6",
+      "name": "background-box",
+      "bbox": [
+        92,
+        560,
+        252,
+        186
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.62)",
+      "lineColor": "rgba(199, 228, 234, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "7",
+      "name": "background-heading",
+      "bbox": [
+        116,
+        582,
+        204,
+        36
+      ],
+      "geometry": "rect",
+      "text": "背景",
+      "textPreview": "背景",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "color": "#063348",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "背景"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "背景",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "color": "#063348",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "背景",
+              "fontSize": 29,
+              "color": "#063348",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gn29gr2p",
+      "id": "8",
+      "name": "background-body",
+      "bbox": [
+        116,
+        630,
+        204,
+        104
+      ],
+      "geometry": "rect",
+      "text": "この研究で注目する海の現象や課題を短く整理します。",
+      "textPreview": "この研究で注目する海の現象や課題を短く整理します。",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#285666",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "この研究で注目する海の"
+          },
+          {
+            "index": 2,
+            "text": "現象や課題を短く整理"
+          },
+          {
+            "index": 3,
+            "text": "します。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "この研究で注目する海の現象や課題を短く整理します。",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#285666",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "この研究で注目する海の現象や課題を短く整理します。",
+              "fontSize": 19,
+              "color": "#285666",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/58z25kb6",
+      "id": "9",
+      "name": "purpose-box",
+      "bbox": [
+        394,
+        560,
+        252,
+        186
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.62)",
+      "lineColor": "rgba(199, 228, 234, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d8bat47y",
+      "id": "10",
+      "name": "purpose-heading",
+      "bbox": [
+        418,
+        582,
+        204,
+        36
+      ],
+      "geometry": "rect",
+      "text": "目的",
+      "textPreview": "目的",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "color": "#063348",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "目的"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "目的",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "color": "#063348",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "目的",
+              "fontSize": 29,
+              "color": "#063348",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/knih4byh",
+      "id": "11",
+      "name": "purpose-body",
+      "bbox": [
+        418,
+        630,
+        204,
+        104
+      ],
+      "geometry": "rect",
+      "text": "観察・比較・評価したい問いを1文で示します。",
+      "textPreview": "観察・比較・評価したい問いを1文で示します。",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#285666",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "観察・比較・評価したい"
+          },
+          {
+            "index": 2,
+            "text": "問いを1文で示します。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "観察・比較・評価したい問いを1文で示します。",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#285666",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "観察・比較・評価したい問いを1文で示します。",
+              "fontSize": 19,
+              "color": "#285666",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/v6psfil0",
+      "id": "12",
+      "name": "method-box",
+      "bbox": [
+        696,
+        560,
+        252,
+        186
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.62)",
+      "lineColor": "rgba(199, 228, 234, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2lszqtcj",
+      "id": "13",
+      "name": "method-heading",
+      "bbox": [
+        720,
+        582,
+        204,
+        36
+      ],
+      "geometry": "rect",
+      "text": "方法",
+      "textPreview": "方法",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "color": "#063348",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "方法"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "方法",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "color": "#063348",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "方法",
+              "fontSize": 29,
+              "color": "#063348",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d0z61032",
+      "id": "14",
+      "name": "method-body",
+      "bbox": [
+        720,
+        630,
+        204,
+        104
+      ],
+      "geometry": "rect",
+      "text": "調査場所、測定方法、記録する項目を入れます。",
+      "textPreview": "調査場所、測定方法、記録する項目を入れます。",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#285666",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "調査場所、測定方法、"
+          },
+          {
+            "index": 2,
+            "text": "記録する項目を入れま"
+          },
+          {
+            "index": 3,
+            "text": "す。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "調査場所、測定方法、記録する項目を入れます。",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#285666",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "調査場所、測定方法、記録する項目を入れます。",
+              "fontSize": 19,
+              "color": "#285666",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kf6dcbul",
+      "id": "15",
+      "name": "result-box",
+      "bbox": [
+        170,
+        830,
+        360,
+        176
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.62)",
+      "lineColor": "rgba(199, 228, 234, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vu9knih4",
+      "id": "16",
+      "name": "result-heading",
+      "bbox": [
+        194,
+        852,
+        312,
+        36
+      ],
+      "geometry": "rect",
+      "text": "結果",
+      "textPreview": "結果",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "color": "#063348",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "結果"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "結果",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "color": "#063348",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "結果",
+              "fontSize": 29,
+              "color": "#063348",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/29gr2p8n",
+      "id": "17",
+      "name": "result-body",
+      "bbox": [
+        194,
+        900,
+        312,
+        86
+      ],
+      "geometry": "rect",
+      "text": "図表や写真を中央に置き、重要な発見を大きく示します。",
+      "textPreview": "図表や写真を中央に置き、重要な発見を大きく示します。",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#285666",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "図表や写真を中央に置き、重要な発"
+          },
+          {
+            "index": 2,
+            "text": "見を大きく示します。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "図表や写真を中央に置き、重要な発見を大きく示します。",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#285666",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "図表や写真を中央に置き、重要な発見を大きく示します。",
+              "fontSize": 19,
+              "color": "#285666",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/donyd0z6",
+      "id": "18",
+      "name": "discussion-box",
+      "bbox": [
+        550,
+        830,
+        360,
+        176
+      ],
+      "geometry": "roundRect",
+      "fillColor": "rgba(255, 255, 255, 0.62)",
+      "lineColor": "rgba(199, 228, 234, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/k3q5o7qp",
+      "id": "19",
+      "name": "discussion-heading",
+      "bbox": [
+        574,
+        852,
+        312,
+        36
+      ],
+      "geometry": "rect",
+      "text": "考察",
+      "textPreview": "考察",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "color": "#063348",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "考察"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "考察",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "color": "#063348",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "考察",
+              "fontSize": 29,
+              "color": "#063348",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kb6xkf6d",
+      "id": "20",
+      "name": "discussion-body",
+      "bbox": [
+        574,
+        900,
+        312,
+        86
+      ],
+      "geometry": "rect",
+      "text": "海面・海中・海底の関係から、結果の意味を説明します。",
+      "textPreview": "海面・海中・海底の関係から、結果の意味を説明します。",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#285666",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海面・海中・海底の関係から、結果の"
+          },
+          {
+            "index": 2,
+            "text": "意味を説明します。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海面・海中・海底の関係から、結果の意味を説明します。",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#285666",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海面・海中・海底の関係から、結果の意味を説明します。",
+              "fontSize": 19,
+              "color": "#285666",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9w3m94fu",
+      "id": "21",
+      "name": "seabed-label",
+      "bbox": [
+        320,
+        1328,
+        440,
+        52
+      ],
+      "geometry": "rect",
+      "text": "海底（サンゴ礁・砂・岩）",
+      "textPreview": "海底（サンゴ礁・砂・岩）",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "color": "#53443A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "海底（サンゴ礁・砂・岩）"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "海底（サンゴ礁・砂・岩）",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "color": "#53443A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "海底（サンゴ礁・砂・岩）",
+              "fontSize": 32,
+              "color": "#53443A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(255, 255, 255, 0.58)",
+      "lineColor": "rgba(211, 191, 174, 0.7)",
+      "lineWidth": 1
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25kb6xkf",
+      "id": "22",
+      "name": "small-note",
+      "bbox": [
+        235,
+        1060,
+        610,
+        44
+      ],
+      "geometry": "rect",
+      "text": "写真・グラフ・調査地点図を中央の余白に追加できます",
+      "textPreview": "写真・グラフ・調査地点図を中央の余白に追加できます",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#1F6878",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "写真・グラフ・調査地点図を中央の余白に追加できます"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "写真・グラフ・調査地点図を中央の余白に追加できます",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#1F6878",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "写真・グラフ・調査地点図を中央の余白に追加できます",
+              "fontSize": 22,
+              "color": "#1F6878",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "rgba(255, 255, 255, 0.34)",
+      "lineColor": "rgba(202, 238, 242, 0.6)",
+      "lineWidth": 1
+    }
+  ],
+  "composeRuns": []
+}

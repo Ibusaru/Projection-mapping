@@ -1,0 +1,121 @@
+{"kind":"slide","id":"sl/2x4nap4r","slide":1,"title":"概要","textShapes":17}
+{"kind":"shape","id":"sh/5gbq1ory","slide":1,"name":"Freeform 3","bbox":[746.9,982.92,766.44,470.04]}
+{"kind":"shape","id":"sh/udg7adsj","slide":1,"name":"TextBox 4","bbox":[637.95,952.2,875.38,500.77]}
+{"kind":"shape","id":"sh/cj6tovah","slide":1,"name":"Freeform 6","bbox":[810.51,956.72,332.23,82.42]}
+{"kind":"shape","id":"sh/54zidony","slide":1,"name":"TextBox 7","bbox":[810.51,910.29,332.23,128.85]}
+{"kind":"shape","id":"sh/rqd4vmtw","slide":1,"name":"Freeform 21","bbox":[810.51,485.2,709.52,446.2]}
+{"kind":"shape","id":"sh/kb6xkf6d","slide":1,"name":"TextBox 22","bbox":[810.51,453.83,709.52,477.57]}
+{"kind":"textbox","id":"sh/2t83itgf","slide":1,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/re1w7mp0","slide":1,"name":"TextBox 25","bbox":[803.82,363.01,181.15,154.9]}
+{"kind":"shape","id":"sh/2p8nqxs7","slide":1,"name":"Freeform 28","bbox":[73.33,485.2,709.52,446.2]}
+{"kind":"shape","id":"sh/ra5gbq1o","slide":1,"name":"TextBox 29","bbox":[73.33,421.7,709.52,509.7]}
+{"kind":"textbox","id":"sh/87ed8bat","slide":1,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/fmlkjm1c","slide":1,"name":"TextBox 32","bbox":[158.37,397.64,289.07,113.28]}
+{"kind":"shape","id":"sh/1gvy90je","slide":1,"name":"Freeform 34","bbox":[112.86,177.43,293.76,235.54]}
+{"kind":"shape","id":"sh/qtcj6tov","slide":1,"name":"Freeform 37","bbox":[1266.93,-228.38,241.92,643.15]}
+{"kind":"textbox","id":"sh/wb2hwfyx","slide":1,"textChars":11,"textLines":1}
+{"kind":"textbox","id":"sh/lwval87e","slide":1,"textChars":25,"textLines":1}
+{"kind":"textbox","id":"sh/l87ed8ba","slide":1,"textChars":4,"textLines":1}
+{"kind":"textbox","id":"sh/il0rqd4v","slide":1,"textChars":83,"textLines":1}
+{"kind":"textbox","id":"sh/tcj6tova","slide":1,"textChars":75,"textLines":3}
+{"kind":"shape","id":"sh/zupwb2hw","slide":1,"name":"Freeform 14","bbox":[50.24,1526.61,1439.26,681.88]}
+{"kind":"shape","id":"sh/l0rqd4vm","slide":1,"name":"TextBox 15","bbox":[50.24,1471.58,1439.26,736.91]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":1,"textChars":6,"textLines":1}
+{"kind":"shape","id":"sh/a9w3m94f","slide":1,"name":"TextBox 18","bbox":[158.01,1460.2,1269.92,77.64]}
+{"kind":"shape","id":"sh/nyd0z610","slide":1,"name":"Freeform 10","bbox":[73.33,987.5,647.39,476.33]}
+{"kind":"shape","id":"sh/udg7adsj","slide":1,"name":"TextBox 11","bbox":[148.64,1012.31,588.19,451.52]}
+{"kind":"shape","id":"sh/0je9cvix","slide":1,"name":"Freeform 6","bbox":[156.09,951.87,293.76,71.01]}
+{"kind":"shape","id":"sh/bulwval8","slide":1,"name":"TextBox 7","bbox":[156.09,911.87,293.76,111.01]}
+{"kind":"shape","id":"sh/u9knih4b","slide":1,"name":"矢印: 折線 7","bbox":[-124.35,702.09,104.81,93.74]}
+{"kind":"textbox","id":"sh/sneloj2t","slide":1,"textChars":6,"textLines":2}
+{"kind":"textbox","id":"sh/54zidony","slide":1,"textChars":23,"textLines":1}
+{"kind":"textbox","id":"sh/5gbq1ory","slide":1,"textChars":61,"textLines":4}
+{"kind":"textbox","id":"sh/8z25kb6x","slide":1,"textChars":25,"textLines":2}
+{"kind":"shape","id":"sh/q1orytsv","slide":1,"name":"テキスト ボックス 32","bbox":[-38.82,1088.85,1164.71,38.78]}
+{"kind":"textbox","id":"sh/wfyxobm5","slide":1,"textChars":17,"textLines":2}
+{"kind":"textbox","id":"sh/wval87ed","slide":1,"textChars":14,"textLines":2}
+{"kind":"textbox","id":"sh/h0fepkzu","slide":1,"textChars":7,"textLines":1}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":1,"textChars":5,"textLines":1}
+{"kind":"textbox","id":"sh/wfyxobm5","slide":1,"textChars":13,"textLines":2}
+{"kind":"image","id":"im/0nuxc3yl","slide":1,"name":"図 13","bbox":[-483.23,1164.29,182.78,182.78]}
+{"kind":"image","id":"im/p8nqxs72","slide":1,"name":"図 17","bbox":[382.83,1598.07,206.88,206.88]}
+{"kind":"image","id":"im/ih4byhgn","slide":1,"name":"図 14","bbox":[752.3,1049.9,152.65,183.69]}
+{"kind":"image","id":"im/72x4nap4","slide":1,"name":"図 60","bbox":[762.19,1624.08,151.35,154.87]}
+{"kind":"image","id":"im/wjudg7ad","slide":1,"name":"図 74","bbox":[1002.04,1613.75,329.47,185.33]}
+{"kind":"image","id":"im/p4r65wju","slide":1,"name":"図 16","bbox":[931.77,1050.38,210.98,181.72]}
+{"kind":"image","id":"im/m1cfa9w3","slide":1,"name":"図 37","bbox":[1161.87,1049.9,128.54,181.72]}
+{"kind":"image","id":"im/bm58z25k","slide":1,"name":"図 39","bbox":[1302.32,1049.9,191.64,183.69]}
+{"kind":"image","id":"im/47y1kre1","slide":1,"name":"図 82","bbox":[23.83,1923.87,320.23,200.15]}
+{"kind":"image","id":"im/tsvu9kni","slide":1,"name":"図 86","bbox":[410.38,1932.11,191.91,191.91]}
+{"kind":"image","id":"im/mp0bi9s3","slide":1,"name":"図 90","bbox":[749.79,1895,295.48,234.23]}
+{"kind":"slide","id":"sl/pg3ex0nu","slide":2,"title":"・魚の種類を増やし、より多彩な水族館を表現できるようにする。","textShapes":14}
+{"kind":"shape","id":"sh/obm58z25","slide":2,"name":"Freeform 14","bbox":[1701.86,536.5,1432.69,417.56]}
+{"kind":"shape","id":"sh/hwfyxobm","slide":2,"name":"TextBox 15","bbox":[1694.55,479.87,1432.69,451.25]}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":2,"textChars":139,"textLines":8}
+{"kind":"shape","id":"sh/r65wjudg","slide":2,"name":"TextBox 4","bbox":[80.64,1248.42,1425.39,415.17]}
+{"kind":"shape","id":"sh/9cvixcze","slide":2,"name":"Freeform 6","bbox":[161.55,1242.67,411.75,77]}
+{"kind":"shape","id":"sh/gr2p8nqx","slide":2,"name":"TextBox 7","bbox":[161.55,1199.29,411.75,120.37]}
+{"kind":"shape","id":"sh/w3m94fu1","slide":2,"name":"Freeform 14","bbox":[80.64,1730.76,1425.39,459.05]}
+{"kind":"shape","id":"sh/loj2t83i","slide":2,"name":"TextBox 15","bbox":[80.64,1693.71,1425.39,496.09]}
+{"kind":"shape","id":"sh/3itgfmlk","slide":2,"name":"Freeform 17","bbox":[158.72,1695.49,293.07,69.71]}
+{"kind":"shape","id":"sh/szqtcj6t","slide":2,"name":"TextBox 18","bbox":[158.72,1656.22,293.07,108.99]}
+{"kind":"shape","id":"sh/hk3q5o7q","slide":2,"name":"Freeform 37","bbox":[1266.93,-228.38,241.92,643.15]}
+{"kind":"textbox","id":"sh/q1orytsv","slide":2,"textChars":5,"textLines":1}
+{"kind":"textbox","id":"sh/kjm1cfa9","slide":2,"textChars":3,"textLines":1}
+{"kind":"textbox","id":"sh/r2p8nqxs","slide":2,"textChars":601,"textLines":1}
+{"kind":"shape","id":"sh/gfmlkjm1","slide":2,"name":"Freeform 14","bbox":[80.64,90.25,1425.39,1118.36]}
+{"kind":"shape","id":"sh/90je9cvi","slide":2,"name":"TextBox 15","bbox":[80.64,0,1425.39,1208.61]}
+{"kind":"shape","id":"sh/yd0z6103","slide":2,"name":"Freeform 17","bbox":[132.85,52.08,399.89,79.4]}
+{"kind":"shape","id":"sh/rytsvu9k","slide":2,"name":"TextBox 18","bbox":[132.85,7.35,399.89,124.14]}
+{"kind":"textbox","id":"sh/rmhk3q5o","slide":2,"textChars":5,"textLines":1}
+{"kind":"textbox","id":"sh/g7adsji5","slide":2,"textChars":601,"textLines":1}
+{"kind":"textbox","id":"sh/orytsvu9","slide":2,"textChars":19,"textLines":1}
+{"kind":"shape","id":"sh/oza1gvy9","slide":2,"name":"TextBox 18","bbox":[1782.77,451.22,337.78,121.97]}
+{"kind":"shape","id":"sh/zqtcj6to","slide":2,"name":"Freeform 17","bbox":[1782.77,495.17,337.78,78.02]}
+{"kind":"textbox","id":"sh/zed8v6ps","slide":2,"textChars":3,"textLines":1}
+{"kind":"textbox","id":"sh/yd0z6103","slide":2,"textChars":11,"textLines":2}
+{"kind":"textbox","id":"sh/wb2hwfyx","slide":2,"textChars":11,"textLines":1}
+{"kind":"textbox","id":"sh/lwval87e","slide":2,"textChars":14,"textLines":1}
+{"kind":"shape","id":"sh/wfyxobm5","slide":2,"name":"Freeform 2","bbox":[609.05,136.32,195.56,325.05]}
+{"kind":"shape","id":"sh/ed8bat47","slide":2,"name":"Freeform 3","bbox":[131.92,928.96,160.59,117.9]}
+{"kind":"shape","id":"sh/w7mp0bi9","slide":2,"name":"Freeform 4","bbox":[142.63,741.01,214.43,127.67]}
+{"kind":"shape","id":"sh/zqtcj6to","slide":2,"name":"Freeform 5","bbox":[277.16,855.36,178.26,127.67]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":2,"textChars":21,"textLines":2}
+{"kind":"shape","id":"sh/zed8v6ps","slide":2,"name":"Freeform 6","bbox":[945.75,722.3,514.88,323.53]}
+{"kind":"shape","id":"sh/al87ed8b","slide":2,"name":"Freeform 3","bbox":[995.81,766.7,112.08,72.82]}
+{"kind":"shape","id":"sh/fa9w3m94","slide":2,"name":"Freeform 4","bbox":[1252.62,791.13,176.37,95.15]}
+{"kind":"shape","id":"sh/xczed8v6","slide":2,"name":"Freeform 5","bbox":[1125.57,875.75,135.07,95.15]}
+{"kind":"textbox","id":"sh/fyxobm58","slide":2,"textChars":9,"textLines":1}
+{"kind":"textbox","id":"sh/x4nap4r6","slide":2,"textChars":2,"textLines":1}
+{"kind":"image","id":"im/yxobm58z","slide":2,"name":"図 11","bbox":[112.98,200.85,251.94,251.94]}
+{"kind":"slide","id":"sl/s72x4nap","slide":3,"title":"Slide 3","textShapes":0}
+{"kind":"shape","id":"sh/p4r65wju","slide":3,"name":"四角形: 角を丸くする 55","bbox":[1032.06,253.3,150.67,150.67]}
+{"kind":"shape","id":"sh/fepkzupw","slide":3,"name":"四角形: 角を丸くする 60","bbox":[1200.62,253.3,150.67,150.67]}
+{"kind":"shape","id":"sh/xkf6dcbu","slide":3,"name":"四角形: 角を丸くする 62","bbox":[1366.11,253.3,150.67,150.67]}
+{"kind":"shape","id":"sh/mlkjm1cf","slide":3,"name":"四角形: 角を丸くする 63","bbox":[1032.06,419.3,150.67,150.67]}
+{"kind":"shape","id":"sh/f6dcbulw","slide":3,"name":"四角形: 角を丸くする 64","bbox":[1200.62,419.3,150.67,150.67]}
+{"kind":"shape","id":"sh/4r65wjud","slide":3,"name":"四角形: 角を丸くする 65","bbox":[1369.17,419.3,150.67,150.67]}
+{"kind":"image","id":"im/2t83itgf","slide":3,"name":"図 53","bbox":[1057.54,268.64,99.72,120]}
+{"kind":"image","id":"im/9gr2p8nq","slide":3,"name":"図 58","bbox":[1203.81,272.79,139.32,120]}
+{"kind":"image","id":"im/gvy90je9","slide":3,"name":"図 66","bbox":[1394.65,272.79,93.58,120]}
+{"kind":"image","id":"im/upwb2hwf","slide":3,"name":"図 69","bbox":[1041.17,437.13,120,115.02]}
+{"kind":"image","id":"im/nap4r65w","slide":3,"name":"図 72","bbox":[1205.26,438.46,136.42,113.69]}
+{"kind":"image","id":"im/cvixczed","slide":3,"name":"図 77","bbox":[1371.54,422.01,140.28,140.28]}
+{"kind":"slide","id":"sl/val87ed8","slide":4,"title":"創造工学C1班 俵伊吹　中島華凛　三木海斗　長谷川兄","textShapes":5}
+{"kind":"shape","id":"sh/qtcj6tov","slide":4,"name":"正方形/長方形 1","bbox":[0,0,1089.88,291.1]}
+{"kind":"textbox","id":"sh/fmlkjm1c","slide":4,"textChars":27,"textLines":1}
+{"kind":"textbox","id":"sh/1w7mp0bi","slide":4,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/hk3q5o7q","slide":4,"name":"正方形/長方形 28","bbox":[37.96,1021.1,731.37,1063.77]}
+{"kind":"shape","id":"sh/8jqh0fep","slide":4,"name":"正方形/長方形 7","bbox":[154.82,357.93,1266.15,291.1]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":4,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/wval87ed","slide":4,"textChars":85,"textLines":2}
+{"kind":"shape","id":"sh/36hcrmhk","slide":4,"name":"正方形/長方形 37","bbox":[154.82,685.98,1266.15,291.1]}
+{"kind":"textbox","id":"sh/yhgn29gr","slide":4,"textChars":77,"textLines":3}
+{"kind":"shape","id":"sh/n29gr2p8","slide":4,"name":"Freeform 3","bbox":[1694.92,1260.61,160.59,117.9]}
+{"kind":"shape","id":"sh/gn29gr2p","slide":4,"name":"Freeform 4","bbox":[2119.17,1255.73,214.43,127.67]}
+{"kind":"shape","id":"sh/58z25kb6","slide":4,"name":"Freeform 5","bbox":[1898.21,1255.73,178.26,127.67]}
+{"kind":"image","id":"im/18jqh0fe","slide":4,"name":"図 4","bbox":[0,0,1586.67,2244.14]}
+{"kind":"image","id":"im/8nqxs72x","slide":4,"name":"図 11","bbox":[15.24,18.97,984.77,217.19]}
+{"kind":"slide","id":"sl/mlkjm1cf","slide":5,"title":"Slide 5","textShapes":0}
+{"kind":"image","id":"im/al87ed8b","slide":5,"name":"図 8","bbox":[0.02,-0.05,1586.65,2244.12]}
+{"kind":"notice","message":"Truncated: omitted 0 lines. Increase maxChars or narrow target."}

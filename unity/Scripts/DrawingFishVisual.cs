@@ -6,6 +6,10 @@ public sealed class DrawingFishVisual : MonoBehaviour
 {
     private const float CanvasWidth = 1024f;
     private const float CanvasHeight = 512f;
+    private const float VisualCanvasXMin = 91f;
+    private const float VisualCanvasYMin = 82f;
+    private const float VisualCanvasXMax = 990f;
+    private const float VisualCanvasYMax = 505f;
     private const int CurveSegments = 48;
 
     private MeshRenderer meshRenderer;
@@ -291,14 +295,14 @@ public sealed class DrawingFishVisual : MonoBehaviour
         private int AddVertex(Vector2 canvasPoint)
         {
             vertices.Add(CanvasToLocal(canvasPoint));
-            uvs.Add(new Vector2(canvasPoint.x / CanvasWidth, 1f - canvasPoint.y / CanvasHeight));
+            uvs.Add(new Vector2(1f - canvasPoint.x / CanvasWidth, 1f - canvasPoint.y / CanvasHeight));
             return vertices.Count - 1;
         }
 
         private Vector3 CanvasToLocal(Vector2 canvasPoint)
         {
-            float normalizedX = 0.5f - canvasPoint.x / CanvasWidth;
-            float normalizedY = 0.5f - canvasPoint.y / CanvasHeight;
+            float normalizedX = 0.5f - Mathf.InverseLerp(VisualCanvasXMin, VisualCanvasXMax, canvasPoint.x);
+            float normalizedY = 0.5f - Mathf.InverseLerp(VisualCanvasYMin, VisualCanvasYMax, canvasPoint.y);
             float length = Mathf.Max(bounds.size.x, bounds.size.z);
             float height = Mathf.Max(0.1f, bounds.size.y);
             return bounds.center + new Vector3(0f, normalizedY * height, normalizedX * length);

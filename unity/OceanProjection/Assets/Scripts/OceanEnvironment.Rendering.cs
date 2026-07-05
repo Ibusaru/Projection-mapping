@@ -115,20 +115,66 @@ public partial class OceanEnvironment
 
     private void CreateSunlight()
     {
+        GameObject sunObject = new GameObject("Clear Reef Sun");
+        sunObject.transform.SetParent(generatedRoot, false);
+        sunObject.transform.rotation = Quaternion.LookRotation(new Vector3(-0.34f, -0.86f, 0.38f).normalized, Vector3.up);
+        Light sun = sunObject.AddComponent<Light>();
+        sun.type = LightType.Directional;
+        sun.color = new Color(0.78f, 0.92f, 0.94f);
+        sun.intensity = 1.15f;
+        sun.shadows = LightShadows.Soft;
+        RenderSettings.sun = sun;
+
         for (int i = 0; i < 4; i++)
         {
             GameObject lightObject = new GameObject("Underwater Sun Spot");
             lightObject.transform.SetParent(generatedRoot, false);
-            lightObject.transform.position = new Vector3(Mathf.Lerp(-18f, 18f, i / 3f), waterSurfaceY - 0.1f, -8f + i * 5f);
-            lightObject.transform.rotation = Quaternion.Euler(78f, Mathf.Lerp(-25f, 25f, i / 3f), 0f);
+            float ratio = i / 3f;
+            lightObject.transform.position = new Vector3(Mathf.Lerp(-28f, 28f, ratio), waterSurfaceY - 0.08f, -18f + i * 10f);
+            lightObject.transform.rotation = Quaternion.LookRotation(new Vector3(Mathf.Lerp(-0.22f, 0.22f, ratio), -1f, 0.28f).normalized, Vector3.up);
 
             Light spot = lightObject.AddComponent<Light>();
             spot.type = LightType.Spot;
-            spot.color = new Color(0.82f, 0.98f, 1f);
-            spot.intensity = 1.85f;
+            spot.color = new Color(0.62f, 0.9f, 0.9f);
+            spot.intensity = 1.05f;
             spot.range = waterSurfaceY - seabedY + 8f;
-            spot.spotAngle = 58f;
+            spot.spotAngle = 36f;
             spot.shadows = LightShadows.None;
+        }
+
+        CreateSunbeams();
+    }
+
+    private void CreateSunbeams()
+    {
+        int beamCount = 18;
+        float halfX = oceanSize.x * 0.44f;
+        float halfZ = oceanSize.y * 0.42f;
+        Vector3 fallDirection = new Vector3(-0.26f, -1f, 0.32f).normalized;
+
+        for (int i = 0; i < beamCount; i++)
+        {
+            GameObject beamObject = new GameObject("Clear Sunbeam");
+            beamObject.transform.SetParent(generatedRoot, false);
+
+            float x = Random.Range(-halfX, halfX);
+            float z = Random.Range(-halfZ, halfZ);
+            float depth = Random.Range(7f, 15f);
+            Vector3 start = new Vector3(x, waterSurfaceY + 0.05f, z);
+            Vector3 end = start + fallDirection * depth;
+
+            LineRenderer beam = beamObject.AddComponent<LineRenderer>();
+            beam.sharedMaterial = causticLineMaterial;
+            beam.positionCount = 2;
+            beam.useWorldSpace = true;
+            beam.textureMode = LineTextureMode.Stretch;
+            beam.alignment = LineAlignment.View;
+            beam.startWidth = Random.Range(0.06f, 0.13f);
+            beam.endWidth = Random.Range(0.18f, 0.34f);
+            beam.startColor = new Color(0.64f, 0.88f, 0.88f, 0.13f);
+            beam.endColor = new Color(0.16f, 0.5f, 0.58f, 0.01f);
+            beam.SetPosition(0, start);
+            beam.SetPosition(1, end);
         }
     }
 

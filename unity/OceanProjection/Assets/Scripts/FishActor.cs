@@ -52,11 +52,11 @@ public partial class FishActor : MonoBehaviour
     [SerializeField] private Vector2 drawingProjectionPaddingRatio = new Vector2(0.16f, 0.18f);
 
     [Header("Movement")]
-    [SerializeField] private float baseSpeed = 0.9f;
+    [SerializeField] private float baseSpeed = 1.18f;
     [SerializeField] private float turnSpeed = 3.2f;
     [SerializeField] private float labelVisibleDistance = 72f;
     [SerializeField] private float boundsPadding = 0.7f;
-    [SerializeField] private float acceleration = 2.1f;
+    [SerializeField] private float acceleration = 2.65f;
     [SerializeField] private float turnSlowdown = 0.58f;
     [SerializeField] private bool autoWireRenderers = true;
     [SerializeField] private float boundsAvoidancePadding = 5.4f;
@@ -67,9 +67,9 @@ public partial class FishActor : MonoBehaviour
 
     [Header("Natural Swim")]
     [SerializeField] private float targetReachDistance = 2.05f;
-    [SerializeField] private float slowSwimMultiplier = 0.82f;
-    [SerializeField] private float fastSwimMultiplier = 1.55f;
-    [SerializeField] private float fastSwimChance = 0.24f;
+    [SerializeField] private float slowSwimMultiplier = 0.92f;
+    [SerializeField] private float fastSwimMultiplier = 1.72f;
+    [SerializeField] private float fastSwimChance = 0.28f;
     [SerializeField] private Vector2 slowSwimSecondsRange = new Vector2(3.5f, 7f);
     [SerializeField] private Vector2 fastSwimSecondsRange = new Vector2(0.9f, 2.2f);
     [SerializeField] private float waypointForwardBias = 0.18f;
@@ -91,6 +91,8 @@ public partial class FishActor : MonoBehaviour
     [SerializeField] private float slowTailSwayDegrees = 2.4f;
     [SerializeField] private float fastTailSwayDegrees = 8.5f;
     [SerializeField] private float tailSwayFrequency = 4.8f;
+    [SerializeField] private float proceduralSpineSwayMultiplier = 0.32f;
+    [SerializeField] private float proceduralTailSwayMultiplier = 1.35f;
 
     [Header("Schooling")]
     [SerializeField] private bool enableSchooling = true;
@@ -132,6 +134,13 @@ public partial class FishActor : MonoBehaviour
     [SerializeField] private float cameraAvoidanceWeight = 1.15f;
     [SerializeField] private float curiousLookSeconds = 1.15f;
 
+    [Header("Terrain Avoidance")]
+    [SerializeField] private bool avoidSeabed = true;
+    [SerializeField] private float seabedClearance = 0.65f;
+    [SerializeField] private float seabedLookAhead = 2.4f;
+    [SerializeField] private float seabedAvoidanceWeight = 2.2f;
+    [SerializeField] private float seabedSideProbeDistance = 1.4f;
+
     private Vector3 targetPosition;
     private Vector3 swimCenter;
     private Vector3 swimSize = new Vector3(16f, 7f, 10f);
@@ -143,6 +152,10 @@ public partial class FishActor : MonoBehaviour
     private Vector3 schoolGroupForward = Vector3.forward;
     private float schoolGroupRadius = 4f;
     private Quaternion baseModelLocalRotation = Quaternion.identity;
+    private Transform proceduralTailRoot;
+    private Transform proceduralSpineRoot;
+    private Quaternion proceduralTailBaseLocalRotation = Quaternion.identity;
+    private Quaternion proceduralSpineBaseLocalRotation = Quaternion.identity;
     private Animator[] animators = new Animator[0];
     private float[] animatorBaseSpeeds = new float[0];
     private float currentSpeed;
@@ -161,6 +174,7 @@ public partial class FishActor : MonoBehaviour
     private string personality = "calm";
     private string appliedTextureUrl = "";
     private Camera mainCamera;
+    private OceanEnvironment oceanEnvironment;
     private bool releasedFish;
     private bool cameraFocused;
     private int schoolGroupId = UnassignedSchoolGroupId;
@@ -181,6 +195,7 @@ public partial class FishActor : MonoBehaviour
     private int stableNicknameTagHorizontalSide = 1;
     private int stableNicknameTagTextSide = 1;
     private float stableNicknameTagFitScale = 1f;
+    private float nextOceanEnvironmentSearchTime;
 
     public float SpawnTime { get; private set; }
     public string Nickname { get; private set; } = "";
@@ -262,12 +277,14 @@ public partial class FishActor : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+        oceanEnvironment = FindAnyObjectByType<OceanEnvironment>();
         SpawnTime = Time.time;
         initialBaseSpeed = baseSpeed;
         initialSchoolModeChance = schoolModeChance;
         schoolingNoiseSeed = Random.Range(0f, 1000f);
         RemoveLegacyDrawingBillboards();
         AutoWireVisuals();
+        CacheProceduralAnimationBones();
         PickSchoolSlot();
         PickWanderDirection(true);
         CacheAnimators();
@@ -382,6 +399,11 @@ public partial class FishActor : MonoBehaviour
         UpdateLabel();
     }
 
+    private void LateUpdate()
+    {
+        ApplyProceduralSwimPose();
+    }
+
     private void Swim()
     {
         if (!IsInsideSwimBounds(transform.position, boundsPadding))
@@ -430,6 +452,7 @@ public partial class FishActor : MonoBehaviour
         desiredDirection = BlendSchoolingDirection(desiredDirection);
         desiredDirection = BlendCameraAwareness(desiredDirection);
         desiredDirection = BlendBoundsAvoidance(desiredDirection);
+        desiredDirection = BlendSeabedAvoidance(desiredDirection);
         desiredDirection = LimitVerticalSwim(desiredDirection);
         if (desiredDirection.sqrMagnitude < 0.001f)
         {
@@ -458,7 +481,7 @@ public partial class FishActor : MonoBehaviour
         }
 
         Vector3 nextPosition = transform.position + swimDirection * currentSpeed * Time.deltaTime;
-        Vector3 clampedPosition = ClampToSwimBounds(nextPosition, 0f);
+        Vector3 clampedPosition = ClampAboveSeabed(ClampToSwimBounds(nextPosition, 0f));
         if ((nextPosition - clampedPosition).sqrMagnitude > 0.0001f)
         {
             currentSpeed = Mathf.Max(currentSpeed * 0.45f, baseSpeed * currentSpeedMultiplier * 0.28f);
@@ -475,15 +498,6 @@ public partial class FishActor : MonoBehaviour
 
         transform.position = clampedPosition;
         UpdateSwimAnimation();
-
-        if (modelRoot != null && modelRoot != transform)
-        {
-            float swimAnimationRate = Mathf.Lerp(0.86f, 1.16f, currentSwimEffort);
-            float tailAmplitude = Mathf.Lerp(slowTailSwayDegrees, fastTailSwayDegrees, currentSwimEffort);
-            float sway = Mathf.Sin(Time.time * tailSwayFrequency * swimAnimationRate) * tailAmplitude;
-            float curiousYaw = Time.time < curiousLookUntil ? Mathf.Sin(Time.time * 5.2f) * 7f : 0f;
-            modelRoot.localRotation = baseModelLocalRotation * Quaternion.Euler(0f, sway + curiousYaw, 0f);
-        }
     }
 
     private void PickNextTarget()
@@ -530,6 +544,7 @@ public partial class FishActor : MonoBehaviour
             Mathf.Max(boundsPadding, boundsAvoidancePadding * 0.42f),
             boundsPadding
         );
+        targetPosition = ClampAboveSeabed(targetPosition);
         activeTargetReachDistance = targetReachDistance * Random.Range(0.85f, 1.45f);
     }
 
@@ -617,11 +632,11 @@ public partial class FishActor : MonoBehaviour
         Vector3 recoveryTarget = transform.position + inward.normalized * Mathf.Max(2f, Mathf.Min(swimSize.x, swimSize.z) * 0.22f);
         recoveryTarget += transform.right * Random.Range(-swimSize.x * 0.05f, swimSize.x * 0.05f);
         recoveryTarget.y = Mathf.Lerp(transform.position.y, swimCenter.y, 0.35f);
-        targetPosition = ClampToSwimBounds(
+        targetPosition = ClampAboveSeabed(ClampToSwimBounds(
             recoveryTarget,
             Mathf.Max(boundsPadding, boundsAvoidancePadding * 0.65f),
             boundsPadding
-        );
+        ));
         activeTargetReachDistance = targetReachDistance * 0.85f;
     }
 
@@ -681,6 +696,117 @@ public partial class FishActor : MonoBehaviour
         {
             axis -= Mathf.Clamp01((value - (max - padding)) / padding);
         }
+    }
+
+    private Vector3 BlendSeabedAvoidance(Vector3 direction)
+    {
+        if (!avoidSeabed || !TryGetSeabedHeight(transform.position, out float floorY, out float waterY))
+        {
+            return direction;
+        }
+
+        float safeClearance = Mathf.Max(0.12f, seabedClearance);
+        float currentClearance = transform.position.y - floorY;
+        Vector3 forward = StableHorizontalDirection(direction, transform.forward);
+        Vector3 aheadPosition = transform.position + forward * Mathf.Max(0.2f, seabedLookAhead);
+        float aheadFloorY = floorY;
+        TryGetSeabedHeight(aheadPosition, out aheadFloorY, out _);
+
+        float aheadClearance = transform.position.y - aheadFloorY;
+        float currentPressure = Mathf.InverseLerp(safeClearance * 2.1f, safeClearance * 0.45f, currentClearance);
+        float aheadPressure = Mathf.InverseLerp(safeClearance * 3.1f, safeClearance * 0.65f, aheadClearance);
+        if (floorY >= waterY - 0.45f || aheadFloorY >= waterY - 0.45f)
+        {
+            aheadPressure = Mathf.Max(aheadPressure, 0.95f);
+        }
+
+        Vector3 avoidance = Vector3.up * (currentPressure + aheadPressure * 0.74f) * seabedAvoidanceWeight;
+        if (aheadPressure > 0.03f)
+        {
+            avoidance += LowerTerrainEscapeDirection(aheadPosition, forward) * aheadPressure * seabedAvoidanceWeight * 0.7f;
+        }
+
+        if (transform.position.y > waterY - 0.42f)
+        {
+            avoidance += Vector3.down * Mathf.InverseLerp(waterY - 0.42f, waterY + 0.18f, transform.position.y) * 1.2f;
+        }
+
+        Vector3 blended = direction + avoidance;
+        return blended.sqrMagnitude > 0.001f ? blended.normalized : direction;
+    }
+
+    private Vector3 ClampAboveSeabed(Vector3 position)
+    {
+        if (!avoidSeabed || !TryGetSeabedHeight(position, out float floorY, out float waterY))
+        {
+            return position;
+        }
+
+        float safeClearance = Mathf.Max(0.12f, seabedClearance);
+        float minimumY = floorY + safeClearance;
+        float maximumY = waterY - 0.38f;
+        if (minimumY > maximumY)
+        {
+            position += LowerTerrainEscapeDirection(position, swimCenter - position) * safeClearance * 0.55f;
+            position.y = Mathf.Min(position.y, maximumY);
+            return position;
+        }
+
+        position.y = Mathf.Clamp(Mathf.Max(position.y, minimumY), swimCenter.y - swimSize.y * 0.5f, maximumY);
+        return position;
+    }
+
+    private Vector3 LowerTerrainEscapeDirection(Vector3 position, Vector3 fallbackDirection)
+    {
+        Vector3 forward = StableHorizontalDirection(fallbackDirection, transform.forward);
+        Vector3 right = Vector3.Cross(Vector3.up, forward);
+        if (right.sqrMagnitude < 0.001f)
+        {
+            right = transform.right;
+        }
+
+        right.Normalize();
+        float probe = Mathf.Max(0.35f, seabedSideProbeDistance);
+        bool hasLeft = TryGetSeabedHeight(position - right * probe, out float leftFloorY, out _);
+        bool hasRight = TryGetSeabedHeight(position + right * probe, out float rightFloorY, out _);
+        Vector3 side = hasLeft && hasRight && rightFloorY < leftFloorY ? right : -right;
+        Vector3 home = StableHorizontalDirection(swimCenter - position, -forward);
+        Vector3 escape = side + home * 0.22f;
+        return escape.sqrMagnitude > 0.001f ? escape.normalized : side;
+    }
+
+    private bool TryGetSeabedHeight(Vector3 worldPosition, out float floorY, out float waterY)
+    {
+        floorY = 0f;
+        waterY = float.PositiveInfinity;
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        if (environment == null)
+        {
+            return false;
+        }
+
+        Vector3 local = environment.transform.InverseTransformPoint(worldPosition);
+        float localFloorY = environment.SampleSeabedHeight(local.x, local.z);
+        floorY = environment.transform.TransformPoint(new Vector3(local.x, localFloorY, local.z)).y;
+        waterY = environment.transform.TransformPoint(new Vector3(local.x, environment.WaterSurfaceY, local.z)).y;
+        return true;
+    }
+
+    private OceanEnvironment ResolveOceanEnvironment()
+    {
+        if (oceanEnvironment != null)
+        {
+            return oceanEnvironment;
+        }
+
+        if (Time.time < nextOceanEnvironmentSearchTime)
+        {
+            return null;
+        }
+
+        nextOceanEnvironmentSearchTime = Time.time + 1f;
+        oceanEnvironment = FindAnyObjectByType<OceanEnvironment>();
+        return oceanEnvironment;
     }
 
     private void PickNextSpeedMode(bool initial)

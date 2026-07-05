@@ -1,23 +1,584 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
 Built from '6000.4/staging' branch; Version is '6000.4.11f1 (b0a1d6caadd2) revision 11575766'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat" at "2026-07-04T16:11:39.5351038Z"
 OS: 'Windows 11  (10.0.26200) Core' Language: 'ja' Physical Memory: 16109 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat" at "2026-06-30T05:52:37.7972228Z"
 System  architecture: x64
 Process architecture: x64
-Date: 2026-06-30T05:52:37Z
+Date: 2026-07-04T16:11:39Z
 
 COMMAND LINE ARGUMENTS:
 C:\Program Files\Unity\Hub\Editor\6000.4.11f1\Editor\Unity.exe
 -batchmode
--nographics
 -quit
 -projectPath
 C:\Users\scrat\Documents\創造工学\unity\OceanProjection
 -executeMethod
 FishSpawnValidator.Run
 -logFile
-C:\Users\scrat\Documents\創造工学\unity\OceanProjection\FishSpawnValidator.log
+FishSpawnValidator.log
 Successfully changed project path to: C:\Users\scrat\Documents\創造工学\unity\OceanProjection
 C:/Users/scrat/Documents/創造工学/unity/OceanProjection
-Exiting without the bug reporter. Application will terminate with return code 1
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Player connection [3664]  Target information:
+
+Player connection [3664]  * "[IP] 10.181.227.163 [Port] 55504 [Flags] 2 [Guid] 1729364875 [EditorId] 1729364875 [Version] 1048832 [Id] WindowsEditor(7,Ibusaru) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [3664]  * "[IP] 172.20.10.2 [Port] 55504 [Flags] 2 [Guid] 1729364875 [EditorId] 1729364875 [Version] 1048832 [Id] WindowsEditor(7,Ibusaru) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [3664] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [3664] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-35852" after 0.4 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-scrat"
+[Licensing::IpcConnector] LicenseClient-scrat channel disconnected successfully.
+[Licensing::IpcConnector] Channel LicenseClient-scrat-6000.4.11 doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 2188)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat-6000.4.11" at "2026-07-04T16:11:42.0815495Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 2188, path: "C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              e9f914f7c0204299afff9f36ad65506a
+  Correlation Id:          276c60cd84d2af8d65f2662a852ce554
+  External correlation Id: 6338113546186120500
+  Machine Id:              S0daBYJzEfXnzRSS8jSeuGq46cc=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-scrat-6000.4.11" (connect: 0.85s, validation: 0.12s, handshake: 0.01s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat-6000.4.11-notifications" at "2026-07-04T16:11:42.2123091Z"
+[Licensing::Module] Connected to LicensingClient (PId: 2188, launch time: 0.01, total connection time: 0.98s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 15668926921957-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 2.73s
+[Licensing::Module] Licensing is initialized (took 2.00s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 1 unused hashed content files
+Initialize engine version: 6000.4.11f1 (b0a1d6caadd2)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/scrat/Documents/創造工学/unity/OceanProjection/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        NVIDIA GeForce RTX 3060 Laptop GPU (ID=0x2520)
+    Vendor:          NVIDIA
+    VRAM:            5994 MB
+    App VRAM Budget: 5226 MB
+    Driver:          32.0.16.1047
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56852
+CodeReloadManager initialized
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.003593 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.694 seconds
+Domain Reload Profiling: 1407ms
+	BeginReloadAssembly (222ms)
+		CreateAndSetChildDomain (21ms)
+	RebuildCommonClasses (54ms)
+	RebuildNativeTypeToScriptingClass (17ms)
+	initialDomainReloadingComplete (93ms)
+	LoadAllAssembliesAndSetupDomain (325ms)
+		LoadAssemblies (199ms)
+		AnalyzeDomain (308ms)
+			TypeCache.Refresh (306ms)
+				TypeCache.ScanAssembly (285ms)
+	FinalizeReload (696ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (74ms)
+			BeforeProcessingInitializeOnLoad (167ms)
+			ProcessInitializeOnLoadAttributes (199ms)
+			ProcessInitializeOnLoadMethodAttributes (155ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 57 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.13 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ai.navigation@42d896194035)
+    com.unity.collab-proxy@2.12.4 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.collab-proxy@0b1559bcd34e)
+    com.unity.ide.rider@3.0.40 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ide.rider@e4950c6d131b)
+    com.unity.ide.visualstudio@2.0.27 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.inputsystem@1.19.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.inputsystem@21a28c3a6c83)
+    com.unity.timeline@1.8.12 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.11 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.visualscripting@8bed5ad90189)
+    com.unity.searcher@4.9.4 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.29 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.burst@6bb9aca3ef38)
+    com.unity.mathematics@1.3.3 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.multiplayer.center@f01f4ba8d00a)
+    com.unity.render-pipelines.universal@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.render-pipelines.universal@d3aed158d698)
+    com.unity.test-framework@1.6.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.test-framework@996f223345ba)
+    com.unity.ugui@2.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ugui@bf94f8b81813)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.core@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.render-pipelines.core@2e28fe32b230)
+    com.unity.shadergraph@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.shadergraph@a2f5226fbfe7)
+    com.unity.render-pipelines.universal-config@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.render-pipelines.universal-config@0db4263b9e6b)
+    com.unity.collections@6.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.collections@5b6ebd78ccc0)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.06 seconds
+Starting: C:\Program Files\Unity\Hub\Editor\6000.4.11f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/scrat/Documents/創造工学/unity/OceanProjection
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s407ms
+[713/906    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.36 seconds), 1 items updated, 906 evaluated
+AssetDatabase: script compilation time: 1.027817s
+Begin MonoManager ReloadAssembly
+Total cache size 33293272
+Total cache size after purge 33293272, took 00:00:00.0525047
+Assembly Assembly-CSharp-Editor-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll not valid. Loading of assembly skipped.
+Assembly DocCodeExamples.dll at Library/ScriptAssemblies/DocCodeExamples.dll not valid. Loading of assembly skipped.
+Assembly TestNewCustomAssembly.dll at Library/ScriptAssemblies/TestNewCustomAssembly.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.BurstCompatibilityGen.dll at Library/ScriptAssemblies/Unity.Collections.BurstCompatibilityGen.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.DocCodeSamples.dll at Library/ScriptAssemblies/Unity.Collections.DocCodeSamples.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.PerformanceTests.dll at Library/ScriptAssemblies/Unity.Collections.PerformanceTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.Tests.dll at Library/ScriptAssemblies/Unity.Collections.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.Tests.Playmode.dll at Library/ScriptAssemblies/Unity.Collections.Tests.Playmode.dll not valid. Loading of assembly skipped.
+Assembly Unity.InputSystem.IntegrationTests.dll at Library/ScriptAssemblies/Unity.InputSystem.IntegrationTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Mathematics.Tests.dll at Library/ScriptAssemblies/Unity.Mathematics.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Editor.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Nuget.Mono-Cecil.dll at Library/ScriptAssemblies/Unity.Nuget.Mono-Cecil.dll not valid. Loading of assembly skipped.
+Assembly Unity.PathTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.PathTracing.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Core.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Core.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Config.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Config.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Searcher.EditorTests.dll at Library/ScriptAssemblies/Unity.Searcher.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.ShaderGraph.Editor.Tests.dll at Library/ScriptAssemblies/Unity.ShaderGraph.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Editor.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.UnifiedRayTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.UnifiedRayTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.Common.Tests.dll at Library/ScriptAssemblies/UnityEditor.UI.Common.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.EditorTests.dll at Library/ScriptAssemblies/UnityEditor.UI.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly UnityEngine.UI.Tests.dll at Library/ScriptAssemblies/UnityEngine.UI.Tests.dll not valid. Loading of assembly skipped.
+Refreshing native plugins compatible for Editor in 2.78 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.36 ms, found 4 plugins.
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  4.466 seconds
+Domain Reload Profiling: 5742ms
+	BeginReloadAssembly (316ms)
+		DisableScriptedObjects (35ms)
+		CreateAndSetChildDomain (63ms)
+	RebuildCommonClasses (50ms)
+	RebuildNativeTypeToScriptingClass (16ms)
+	initialDomainReloadingComplete (101ms)
+	LoadAllAssembliesAndSetupDomain (791ms)
+		LoadAssemblies (594ms)
+		AnalyzeDomain (354ms)
+			TypeCache.Refresh (239ms)
+				TypeCache.ScanAssembly (224ms)
+			BuildScriptInfoCaches (97ms)
+			ResolveRequiredComponents (15ms)
+	FinalizeReload (4467ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (44ms)
+			BeforeProcessingInitializeOnLoad (238ms)
+			ProcessInitializeOnLoadAttributes (3599ms)
+			ProcessInitializeOnLoadMethodAttributes (137ms)
+			AfterProcessingInitializeOnLoad (10ms)
+		AwakeInstancesAfterBackupRestoration (34ms)
+(Values over 0.050ms)
+Asset Pipeline Refresh (id=fe46c07297578df47a5a6531fdd4e321): Total: 7.816 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=5299 ms
+		Asset DB Callback time: managed=72 ms, native=65 ms
+		Scripting: domain reloads=1, domain reload time=1283 ms, compile time=1030 ms, other=63 ms
+		Project Asset Count: scripts=1425, non-scripts=4359
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 68.122ms
+	ApplyChangesToAssetFolders: 0.928ms
+	Scan: 288.927ms
+	CategorizeScriptCompilationAssets: 80.669ms
+	ProcessAssetsWithTransientArtifactChanges: 108.443ms
+	CategorizeAssets: 123.230ms
+	CompileScripts: 1030.017ms
+	ImportOutOfDateAssets: 4490.072ms (4482.900ms without children)
+		ReloadNativeAssets: 0.082ms
+		UnloadImportedAssets: 1.385ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 2.651ms
+		OnDemandSchedulerStart: 3.043ms
+	PostProcessAllAssets: 72.869ms
+		MonoPostProcessAllAssets: 72.639ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 24.809ms
+			SyncVS.PostprocessSyncProject 8.612ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 7.147ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 4.632ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 1.421ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.705ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.682ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.541ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.423ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.273ms
+	UnloadStreamsBegin: 3.780ms
+	PersistCurrentRevisions: 0.368ms
+	GenerateScriptTypeHashes: 6.538ms
+	GenerateScriptTypeSerializationHashes: 9.474ms
+	Untracked: 1539.934ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+Scanning for USB devices : 3.504ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-OceanProjection
+Unloading 27 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6651 unused Assets / (7.5 MB). Loaded Objects now: 7562.
+Memory consumption went from 236.6 MB to 229.1 MB.
+Total: 19.903600 ms (FindLiveObjects: 0.776600 ms CreateObjectMapping: 0.872100 ms MarkObjects: 10.476700 ms  DeleteObjects: 7.772600 ms)
+
+Opening scene 'Assets/Scenes/SampleScene.unity'
+Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/SampleScene.unity'
+	Deserialize:            18.004 ms
+	Integration:            1478.126 ms
+	Integration of assets:  11.136 ms
+	Thread Wait Time:       3.493 ms
+	Total Operation Time:   1510.759 ms
+Unloading 3 unused Assets / (Unknown). Loaded Objects now: 17731.
+Memory consumption went from 284.7 MB to 286.7 MB.
+Total: 13.914100 ms (FindLiveObjects: 1.332900 ms CreateObjectMapping: 0.481500 ms MarkObjects: 12.011200 ms  DeleteObjects: 0.086200 ms)
+
+FishSpawnValidator: defaultFishCount=150, minimumFishCount=125, maxFishCount=340, defaultPrefabCount=2
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidateSpawnerSettings (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:51)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:26)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 51)
+
+FishSpawnValidator: clownfishPrefab='ReleasedKakukuma', prefabRendererCount=3, instanceRendererCount=3, visualRendererCount=3, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(12.94, 12.43, 25.84), mediumNormalizedBoundsSize=(0.28, 0.26, 0.55), hasFishActor=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:153)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:27)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 153)
+
+FishSpawnValidator: jellyfishPrefab='ReleasedKurage', prefabRendererCount=1, instanceRendererCount=1, visualRendererCount=1, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(2.47, 1.58, 2.42), mediumNormalizedBoundsSize=(0.55, 0.35, 0.54), hasFishActor=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:153)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:28)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 153)
+
+FishSpawnValidator: tunaPrefab='ReleasedKakukuma', prefabRendererCount=3, instanceRendererCount=3, visualRendererCount=3, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(12.94, 12.43, 25.84), mediumNormalizedBoundsSize=(0.28, 0.26, 0.55), hasFishActor=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:153)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:29)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 153)
+
+FishSpawnValidator: originalPrefab='ReleasedKakukuma', prefabRendererCount=3, instanceRendererCount=3, visualRendererCount=3, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(12.94, 12.43, 25.84), mediumNormalizedBoundsSize=(0.28, 0.26, 0.55), hasFishActor=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:153)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:30)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 153)
+
+FishSpawnValidator: modelRootSafety modelRoot=null, usesActorRoot=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidateModelRootDoesNotOverwriteActorRotation () (at Assets/Editor/FishSpawnValidator.cs:204)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:32)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 204)
+
+FishSpawnValidator: nicknameTagVisibility distance=88, uiTexts=0, activeUiTexts=0, screenLabelVisible=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidateNicknameTagVisibility (FishSpawner,UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:288)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:33)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 288)
+
+FishSpawnValidator: screen-space nickname tag did not become visible for a released Japanese-name fish in front of the camera.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+FishSpawnValidator:ValidateNicknameTagVisibility (FishSpawner,UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:294)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:33)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 294)
+
+Assertion failed on expression: '(ptr->GetHideFlags() & m_RequiredHideFlags) == m_RequiredHideFlags'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.GameObject:CreatePrimitive (UnityEngine.PrimitiveType)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:421)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:397)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
+
+[Assets/Editor/FishSpawnValidator.cs line 421]
+
+Instantiating material due to calling renderer.material during edit mode. This will leak materials into the scene. You most likely want to use renderer.sharedMaterial instead.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.Renderer:GetMaterial ()
+UnityEngine.Renderer:get_material ()
+FishActor:ApplyColor (UnityEngine.Renderer[],UnityEngine.Color) (at Assets/Scripts/FishActor.Visuals.cs:118)
+FishActor:Apply (FishData) (at Assets/Scripts/FishActor.cs:349)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:434)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:397)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
+
+[Assets/Scripts/FishActor.cs line 349]
+
+FishSpawnValidator: defaultNicknameTagHidden scenario=focused, textVisible=False, lineVisible=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:483)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:397)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 483)
+
+Assertion failed on expression: '(ptr->GetHideFlags() & m_RequiredHideFlags) == m_RequiredHideFlags'
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.GameObject:CreatePrimitive (UnityEngine.PrimitiveType)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:421)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:398)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
+
+[Assets/Editor/FishSpawnValidator.cs line 421]
+
+Instantiating material due to calling renderer.material during edit mode. This will leak materials into the scene. You most likely want to use renderer.sharedMaterial instead.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.Renderer:GetMaterial ()
+UnityEngine.Renderer:get_material ()
+FishActor:ApplyColor (UnityEngine.Renderer[],UnityEngine.Color) (at Assets/Scripts/FishActor.Visuals.cs:118)
+FishActor:Apply (FishData) (at Assets/Scripts/FishActor.cs:349)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:434)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:398)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
+
+[Assets/Scripts/FishActor.cs line 349]
+
+FishSpawnValidator: defaultNicknameTagHidden scenario=nearby, textVisible=False, lineVisible=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:483)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:398)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 483)
+
+FishSpawnValidator: defaultSchoolSpawn spawned=150, spanX=58.62, spanZ=57.93, wallPinned=0, broadlyDistributed=True, awayFromWalls=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidateDefaultSchoolSpawnDistribution (FishSpawner,UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:658)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:35)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 658)
+
+FishSpawnValidator: boundsRecovery position=(49.92, -1.40, 0.00), target=(34.96, -1.40, 0.73), targetMovesInward=True, targetHasWallMargin=True
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidateBoundsRecoveryTarget (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:706)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:36)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 706)
+
+FishSpawnValidator: releasedFishTargetLength=0.55
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:38)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 38)
+
+FishSpawnValidator: releasedFishSpawnSpread=(24.00, 6.00, 16.00)
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:39)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 39)
+
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-scrat-6000.4.11-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-scrat-6000.4.11 channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1783181517569,"processId":35852,"allocatedMemory":19615377,"memoryLabels":[{"Default":218734},{"Permanent":15276},{"NewDelete":65691},{"Thread":4237552},{"Manager":36173},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":851414},{"Material":24},{"GfxDevice":57360},{"Animation":392},{"Audio":3008},{"FreeType":8},{"FontEngine":736},{"Physics":2146},{"Physics2D":16},{"Serialization":952},{"Input":9880},{"JobScheduler":33024},{"TextLib":216},{"Mono":32},{"MonoCode":64},{"ScriptingNativeRuntime":155052},{"BaseObject":1620368},{"Resource":1184},{"Renderer":3008},{"Transform":4685},{"File":4013},{"WebCam":616},{"Culling":32},{"Terrain":11394},{"Wind":24},{"STL":40},{"String":16403},{"StaticString":6718},{"Utility":2673862},{"Curl":2559},{"PoolAlloc":2168},{"AI":80},{"TypeTree":13637},{"ScriptManager":448},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":120},{"GI":7792},{"Director":8320},{"CloudService":8000},{"WebRequest":6506},{"VR":48050},{"SceneManager":504},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":2377},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":472},{"Hierarchy":608},{"CoreStats":13112},{"Identifiers":12960},{"Gui":128},{"EditorUtility":140877},{"VersionControl":4},{"Undo":931},{"AssetDatabase":8911889},{"EditorGi":328},{"UnityConnect":37753},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":211},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2891},{"Windowing":456},{"Licensing":664},{"AssetReference":32},{"IPCStream":32}]}
