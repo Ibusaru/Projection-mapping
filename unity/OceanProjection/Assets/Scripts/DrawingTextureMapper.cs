@@ -55,6 +55,27 @@ public static class DrawingTextureMapper
         return texture;
     }
 
+    public static Texture2D CreateDisplayTexture(Texture2D source)
+    {
+        if (source == null)
+        {
+            return null;
+        }
+
+        Color32[] pixels = source.GetPixels32();
+        NormalizeExportBasePixels(pixels);
+
+        Texture2D texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, true)
+        {
+            name = $"{source.name}_DisplayCanvas",
+            filterMode = FilterMode.Bilinear,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        texture.SetPixels32(pixels);
+        texture.Apply(true, false);
+        return texture;
+    }
+
     private static readonly Color32 Transparent = new Color32(0, 0, 0, 0);
 
     private static Rect CalculateProjectionSourceRect(int width, int height, Vector2 paddingRatio)

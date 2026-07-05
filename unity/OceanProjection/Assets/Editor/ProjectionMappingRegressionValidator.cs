@@ -17,9 +17,10 @@ public static class ProjectionMappingRegressionValidator
         valid &= ValidateModelTextureReplacesLegacyWebSilhouetteBase();
         valid &= ValidateModelTextureUsesNearestPaintForTransparentMask();
         valid &= ValidateFallbackMeshUvPreservesWebOrientation();
-        valid &= ValidateReleasedDrawingUsesModelVisual();
+        valid &= ValidateReleasedDrawingUsesFlatVisual();
         valid &= ValidateNicknameLabelStaysCameraParallel();
 
+        Debug.Log($"ProjectionMappingRegressionValidator: Run completed valid={valid}");
         EditorApplication.Exit(valid ? 0 : 2);
     }
 
@@ -50,8 +51,9 @@ public static class ProjectionMappingRegressionValidator
         valid &= ValidateModelTextureFillsTransparentFishMask();
         valid &= ValidateModelTextureReplacesLegacyWebSilhouetteBase();
         valid &= ValidateModelTextureUsesNearestPaintForTransparentMask();
-        valid &= ValidateReleasedDrawingUsesModelVisual();
+        valid &= ValidateReleasedDrawingUsesFlatVisual();
 
+        Debug.Log($"ProjectionMappingRegressionValidator: RunReleasedDrawingModelVisual completed valid={valid}");
         EditorApplication.Exit(valid ? 0 : 2);
     }
 
@@ -584,9 +586,9 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
-    private static bool ValidateReleasedDrawingUsesModelVisual()
+    private static bool ValidateReleasedDrawingUsesFlatVisual()
     {
-        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "Projection Mapping Released Fish Model");
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "Projection Mapping Released Fish Flat Visual");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
         FishActor actor = fishObject.AddComponent<FishActor>();
         actor.SetReleasedFish(true);
@@ -601,39 +603,31 @@ public static class ProjectionMappingRegressionValidator
         texture.SetPixels32(pixels);
         texture.Apply(false, false);
 
-        MethodInfo method = typeof(FishActor).GetMethod("ApplyGeneratedUvDrawingTexture", BindingFlags.Instance | BindingFlags.NonPublic);
+        MethodInfo method = typeof(FishActor).GetMethod("ApplyReleasedDrawingTexture", BindingFlags.Instance | BindingFlags.NonPublic);
         if (method == null)
         {
-            Debug.LogError("ProjectionMappingRegressionValidator: ApplyGeneratedUvDrawingTexture was not found.");
+            Debug.LogError("ProjectionMappingRegressionValidator: ApplyReleasedDrawingTexture was not found.");
             Object.DestroyImmediate(texture);
             Object.DestroyImmediate(fishObject);
             return false;
         }
 
-        bool applied = (bool)method.Invoke(actor, new object[] { texture });
+        method.Invoke(actor, new object[] { texture });
 
         DrawingFishVisual visual = fishObject.GetComponentInChildren<DrawingFishVisual>(true);
-        Material modelMaterial = originalRenderer != null ? originalRenderer.sharedMaterial : null;
-        Texture modelTexture = modelMaterial != null && modelMaterial.HasProperty("_BaseMap")
-            ? modelMaterial.GetTexture("_BaseMap")
-            : null;
         bool flatVisualActive = visual != null && visual.gameObject.activeSelf && visual.Renderer != null && visual.Renderer.enabled;
-        bool hasDrawingMaterial = modelMaterial != null
-            && modelMaterial.shader != null
-            && modelMaterial.shader.name.Contains("Drawing Fish");
-        bool hasModelMappedTexture = modelTexture != null && modelTexture.name.Contains("ModelMapped");
+        Texture flatTexture = flatVisualActive ? visual.Renderer.sharedMaterial.mainTexture : null;
+        bool keepsCanvasTexture = flatTexture != null && flatTexture.name.Contains("DisplayCanvas");
 
-        bool valid = applied
-            && originalRenderer != null
-            && originalRenderer.enabled
-            && hasDrawingMaterial
-            && hasModelMappedTexture
-            && !flatVisualActive;
+        bool valid = originalRenderer != null
+            && !originalRenderer.enabled
+            && flatVisualActive
+            && keepsCanvasTexture;
 
         if (!valid)
         {
             Debug.LogError(
-                $"ProjectionMappingRegressionValidator: released drawing did not stay on the 3D model. applied={applied}, originalEnabled={originalRenderer?.enabled}, shader={modelMaterial?.shader?.name}, texture={modelTexture?.name}, flatVisualActive={flatVisualActive}"
+                $"ProjectionMappingRegressionValidator: released drawing did not switch to the exact flat drawing visual. originalEnabled={originalRenderer?.enabled}, flatVisualActive={flatVisualActive}, texture={flatTexture?.name}"
             );
         }
 
@@ -674,19 +668,35 @@ public static class ProjectionMappingRegressionValidator
             size = "medium",
             personality = "calm"
         });
-        SetPrivateField(actor, "nicknameTagRevealProgress", 1f);
-        InvokePrivate(actor, "UpdateLabel");
+        InvokePrivate(actor, "EnsureNicknameLabel");
+        InvokePrivate(actor, "EnsureNicknameTagLine");
+        Vector3 anchorPosition = InvokePrivate<Vector3>(actor, "LabelAnchorPosition");
+        InvokePrivate(actor, "ShowNicknameWorldTag", anchorPosition, 1f);
 
         Transform labelTransform = FindActiveNicknameLabel(fishObject);
+        Renderer labelRenderer = labelTransform != null ? labelTransform.GetComponent<Renderer>() : null;
+        LineRenderer lineRenderer = fishObject.GetComponentInChildren<LineRenderer>(true);
+        bool labelAboveLine = IsLabelAboveTagLine(camera, labelRenderer, lineRenderer);
         bool valid = labelTransform != null
-            && Quaternion.Angle(labelTransform.rotation, cameraObject.transform.rotation) <= 0.5f;
+            && Quaternion.Angle(labelTransform.rotation, cameraObject.transform.rotation) <= 0.5f
+            && labelAboveLine;
 
         if (!valid)
         {
             string rotation = labelTransform != null ? labelTransform.rotation.eulerAngles.ToString() : "missing";
+            TMP_Text[] tmpTexts = fishObject.GetComponentsInChildren<TMP_Text>(true);
+            TextMesh[] textMeshes = fishObject.GetComponentsInChildren<TextMesh>(true);
+            Vector3 anchorViewport = camera.WorldToViewportPoint(anchorPosition);
+            string tmpState = tmpTexts.Length > 0
+                ? $"{tmpTexts[0].name}:activeSelf={tmpTexts[0].gameObject.activeSelf}, activeInHierarchy={tmpTexts[0].gameObject.activeInHierarchy}, rendererEnabled={tmpTexts[0].GetComponent<Renderer>()?.enabled}"
+                : "tmp=none";
+            string lineState = lineRenderer != null
+                ? $"lineEnabled={lineRenderer.enabled}, linePositions={lineRenderer.positionCount}"
+                : "line=missing";
             Debug.LogError(
-                $"ProjectionMappingRegressionValidator: nickname label is not camera-parallel. " +
-                $"camera={cameraObject.transform.rotation.eulerAngles}, label={rotation}"
+                $"ProjectionMappingRegressionValidator: nickname label is not camera-parallel above the tag line. " +
+                $"camera={cameraObject.transform.rotation.eulerAngles}, label={rotation}, aboveLine={labelAboveLine}, " +
+                $"tmpCount={tmpTexts.Length}, textMeshCount={textMeshes.Length}, anchorViewport={anchorViewport}, {tmpState}, {lineState}"
             );
         }
 
@@ -695,13 +705,49 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
+    private static bool IsLabelAboveTagLine(Camera camera, Renderer labelRenderer, LineRenderer lineRenderer)
+    {
+        if (camera == null || labelRenderer == null || lineRenderer == null || lineRenderer.positionCount < 3)
+        {
+            return false;
+        }
+
+        Bounds labelBounds = labelRenderer.bounds;
+        float labelMinY = float.PositiveInfinity;
+        Vector3 min = labelBounds.min;
+        Vector3 max = labelBounds.max;
+        Vector3[] corners =
+        {
+            new Vector3(min.x, min.y, min.z),
+            new Vector3(min.x, min.y, max.z),
+            new Vector3(min.x, max.y, min.z),
+            new Vector3(min.x, max.y, max.z),
+            new Vector3(max.x, min.y, min.z),
+            new Vector3(max.x, min.y, max.z),
+            new Vector3(max.x, max.y, min.z),
+            new Vector3(max.x, max.y, max.z)
+        };
+
+        for (int i = 0; i < corners.Length; i++)
+        {
+            labelMinY = Mathf.Min(labelMinY, camera.WorldToViewportPoint(corners[i]).y);
+        }
+
+        float lineMaxY = Mathf.Max(
+            camera.WorldToViewportPoint(lineRenderer.GetPosition(1)).y,
+            camera.WorldToViewportPoint(lineRenderer.GetPosition(2)).y
+        );
+        return labelMinY > lineMaxY + 0.001f;
+    }
+
     private static Transform FindActiveNicknameLabel(GameObject root)
     {
         TMP_Text[] tmpTexts = root.GetComponentsInChildren<TMP_Text>(true);
         for (int i = 0; i < tmpTexts.Length; i++)
         {
             TMP_Text text = tmpTexts[i];
-            if (text != null && text.gameObject.activeInHierarchy)
+            Renderer renderer = text != null ? text.GetComponent<Renderer>() : null;
+            if (text != null && text.gameObject.activeSelf && (renderer == null || renderer.enabled))
             {
                 return text.transform;
             }
@@ -711,7 +757,8 @@ public static class ProjectionMappingRegressionValidator
         for (int i = 0; i < textMeshes.Length; i++)
         {
             TextMesh text = textMeshes[i];
-            if (text != null && text.gameObject.activeInHierarchy)
+            Renderer renderer = text != null ? text.GetComponent<Renderer>() : null;
+            if (text != null && text.gameObject.activeSelf && (renderer == null || renderer.enabled))
             {
                 return text.transform;
             }
@@ -720,10 +767,16 @@ public static class ProjectionMappingRegressionValidator
         return null;
     }
 
-    private static void InvokePrivate(object target, string methodName)
+    private static object InvokePrivate(object target, string methodName, params object[] arguments)
     {
         MethodInfo method = target.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
-        method?.Invoke(target, null);
+        return method?.Invoke(target, arguments);
+    }
+
+    private static T InvokePrivate<T>(object target, string methodName, params object[] arguments)
+    {
+        object result = InvokePrivate(target, methodName, arguments);
+        return result is T typed ? typed : default;
     }
 
     private static void SetPrivateField<T>(object target, string fieldName, T value)

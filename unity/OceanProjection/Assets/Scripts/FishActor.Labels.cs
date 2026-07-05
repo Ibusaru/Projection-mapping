@@ -546,7 +546,7 @@ public partial class FishActor
         float distanceScale = NicknameTagDistanceScale();
         int preferredSide = anchorViewport.x >= 0.5f ? -1 : 1;
         int[] horizontalSides = { preferredSide, -preferredSide };
-        int[] verticalSides = { 1, -1 };
+        int[] verticalSides = { 1 };
         float minFitScale = Mathf.Clamp(nicknameTagMinFitScale, 0.25f, 1f);
         float padding = Mathf.Clamp(nicknameTagViewportPadding, 0.02f, 0.22f);
         float bestScore = float.PositiveInfinity;
@@ -602,7 +602,7 @@ public partial class FishActor
         }
 
         int horizontalSide = stableNicknameTagHorizontalSide >= 0 ? 1 : -1;
-        int textSide = stableNicknameTagTextSide >= 0 ? 1 : -1;
+        int textSide = 1;
         float startingFitScale = Mathf.Clamp(stableNicknameTagFitScale, minFitScale, 1f);
         for (float fitScale = startingFitScale; fitScale >= minFitScale; fitScale -= 0.08f)
         {

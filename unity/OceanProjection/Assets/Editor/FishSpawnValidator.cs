@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -28,7 +29,6 @@ public static class FishSpawnValidator
         allValid &= ValidatePrefab(serializedSpawner, "jellyfishPrefab", releasedFishTargetLength);
         allValid &= ValidatePrefab(serializedSpawner, "tunaPrefab", releasedFishTargetLength);
         allValid &= ValidatePrefab(serializedSpawner, "originalPrefab", releasedFishTargetLength);
-        allValid &= ValidateFishActorDefaults();
         allValid &= ValidateModelRootDoesNotOverwriteActorRotation();
         allValid &= ValidateNicknameTagVisibility(spawner, serializedSpawner);
         allValid &= ValidateDefaultNicknameTagsHidden(serializedSpawner);
@@ -174,23 +174,6 @@ public static class FishSpawnValidator
         return hasBounds;
     }
 
-    private static bool ValidateFishActorDefaults()
-    {
-        GameObject instance = new GameObject("FishActor Default Validation");
-        instance.hideFlags = HideFlags.HideAndDontSave;
-        FishActor actor = instance.AddComponent<FishActor>();
-        SerializedObject serializedActor = new SerializedObject(actor);
-        SerializedProperty projectedDrawing = serializedActor.FindProperty("useProjectedDrawingTextureForReleasedFish");
-        bool valid = projectedDrawing != null && projectedDrawing.boolValue;
-        if (!valid)
-        {
-            Debug.LogError("FishSpawnValidator: released fish drawing projection must be enabled by default.");
-        }
-
-        Object.DestroyImmediate(instance);
-        return valid;
-    }
-
     private static bool ValidateModelRootDoesNotOverwriteActorRotation()
     {
         GameObject instance = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "FishSpawnValidator Root Rotation Fish");
@@ -234,7 +217,8 @@ public static class FishSpawnValidator
 
         GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "FishSpawnValidator Nickname Fish");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
-        fishObject.transform.position = cameraTransform.position + cameraForward * 88f;
+        const float validationDistance = 4f;
+        fishObject.transform.position = cameraTransform.position + cameraForward * validationDistance;
         fishObject.transform.localScale = Vector3.one * 0.5f;
 
         FishActor actor = fishObject.AddComponent<FishActor>();
@@ -255,6 +239,8 @@ public static class FishSpawnValidator
             personality = "calm"
         });
 
+        actor.SetCameraFocused(true);
+        SetPrivateField(actor, "nicknameTagRevealProgress", 1f);
         InvokePrivate(actor, "UpdateLabel");
 
         bool screenLabelVisible = false;
@@ -282,14 +268,57 @@ public static class FishSpawnValidator
             }
         }
 
-        bool valid = screenLabelVisible;
+        bool worldLabelVisible = false;
+        int worldTextCount = 0;
+        foreach (TMP_Text text in fishObject.GetComponentsInChildren<TMP_Text>(true))
+        {
+            if (text == null)
+            {
+                continue;
+            }
+
+            Renderer textRenderer = text.GetComponent<Renderer>();
+            worldTextCount++;
+            worldLabelVisible |= text.gameObject.activeSelf
+                && textRenderer != null
+                && textRenderer.enabled
+                && text.text == actor.Nickname;
+        }
+
+        foreach (TextMesh text in fishObject.GetComponentsInChildren<TextMesh>(true))
+        {
+            if (text == null)
+            {
+                continue;
+            }
+
+            Renderer textRenderer = text.GetComponent<Renderer>();
+            worldTextCount++;
+            worldLabelVisible |= text.gameObject.activeSelf
+                && textRenderer != null
+                && textRenderer.enabled
+                && text.text == actor.Nickname;
+        }
+
+        bool worldLineVisible = false;
+        foreach (LineRenderer line in fishObject.GetComponentsInChildren<LineRenderer>(true))
+        {
+            if (line != null && line.enabled)
+            {
+                worldLineVisible = true;
+                break;
+            }
+        }
+
+        bool valid = screenLabelVisible || (worldLabelVisible && worldLineVisible);
         Debug.Log(
-            $"FishSpawnValidator: nicknameTagVisibility distance=88, uiTexts={uiTextCount}, " +
-            $"activeUiTexts={activeUiTextCount}, screenLabelVisible={screenLabelVisible}"
+            $"FishSpawnValidator: nicknameTagVisibility distance={validationDistance}, uiTexts={uiTextCount}, " +
+            $"activeUiTexts={activeUiTextCount}, screenLabelVisible={screenLabelVisible}, " +
+            $"worldTextCount={worldTextCount}, worldLabelVisible={worldLabelVisible}, worldLineVisible={worldLineVisible}"
         );
         if (!valid)
         {
-            Debug.LogError("FishSpawnValidator: screen-space nickname tag did not become visible for a released Japanese-name fish in front of the camera.");
+            Debug.LogError("FishSpawnValidator: nickname tag did not become visible for a focused released Japanese-name fish in front of the camera.");
         }
 
         Object.DestroyImmediate(fishObject);
@@ -723,6 +752,12 @@ public static class FishSpawnValidator
     {
         FieldInfo field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
         return field != null ? (T)field.GetValue(target) : default;
+    }
+
+    private static void SetPrivateField<T>(object target, string fieldName, T value)
+    {
+        FieldInfo field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        field?.SetValue(target, value);
     }
 
     private static int CountEnabled(Behaviour[] behaviours)

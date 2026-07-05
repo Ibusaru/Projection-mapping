@@ -47,7 +47,6 @@ public partial class FishActor : MonoBehaviour
     [SerializeField] private bool remapDrawingTextureForModel = true;
     [SerializeField] private int remappedDrawingTextureSize = 512;
     [SerializeField] private float drawingAlphaThreshold = 0.05f;
-    [SerializeField] private bool useProjectedDrawingTextureForReleasedFish = true;
     [SerializeField] private bool flipReleasedDrawingHorizontally = true;
     [SerializeField] private Vector2 drawingProjectionPaddingRatio = new Vector2(0.16f, 0.18f);
 
@@ -311,7 +310,6 @@ public partial class FishActor : MonoBehaviour
         releasedFish = value;
         if (releasedFish)
         {
-            useProjectedDrawingTextureForReleasedFish = true;
             schoolDirection = Vector3.zero;
             currentSchoolStrength *= Mathf.Clamp01(releasedFishSchoolingMultiplier);
             EnsureReleasedFishMaterials();
