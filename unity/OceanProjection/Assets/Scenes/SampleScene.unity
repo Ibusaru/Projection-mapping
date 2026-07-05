@@ -15,15 +15,15 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.024, g: 0.34, b: 0.56, a: 1}
+  m_FogColor: {r: 0.028, g: 0.2, b: 0.28, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.026
+  m_FogDensity: 0.031
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.42, g: 0.86, b: 0.98, a: 1}
-  m_AmbientEquatorColor: {r: 0.22, g: 0.68, b: 0.84, a: 1}
-  m_AmbientGroundColor: {r: 0.18, g: 0.44, b: 0.52, a: 1}
-  m_AmbientIntensity: 1.25
+  m_AmbientSkyColor: {r: 0.22, g: 0.5, b: 0.58, a: 1}
+  m_AmbientEquatorColor: {r: 0.11, g: 0.34, b: 0.4, a: 1}
+  m_AmbientGroundColor: {r: 0.04, g: 0.16, b: 0.21, a: 1}
+  m_AmbientIntensity: 0.72
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
@@ -157,7 +157,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.045, g: 0.27, b: 0.35, a: 1}
+  m_BackGroundColor: {r: 0.07, g: 0.36, b: 0.46, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -507,9 +507,9 @@ MonoBehaviour:
   basinCount: 5
   reefMoundCount: 7
   reefDecorationBias: 0.74
-  waterColor: {r: 0.045, g: 0.45, b: 0.58, a: 0.54}
-  deepFogColor: {r: 0.014, g: 0.13, b: 0.19, a: 1}
-  fogDensity: 0.04
+  waterColor: {r: 0.075, g: 0.56, b: 0.7, a: 0.5}
+  deepFogColor: {r: 0.028, g: 0.2, b: 0.28, a: 1}
+  fogDensity: 0.031
   waterResolution: 96
   waveAmplitude: 0.32
   waveSpeed: 0.68
@@ -522,8 +522,8 @@ MonoBehaviour:
   disableAllEnvironmentParticles: 1
   suimonoModulePrefabHint: Suimono_Module
   suimonoSurfacePrefabHint: Suimono_Surface
-  shallowWaterColor: {r: 0.18, g: 0.66, b: 0.74, a: 0.5}
-  foamColor: {r: 0.78, g: 0.95, b: 0.96, a: 0.32}
+  shallowWaterColor: {r: 0.25, g: 0.78, b: 0.86, a: 0.5}
+  foamColor: {r: 0.86, g: 0.98, b: 1, a: 0.36}
   rockCount: 68
   simpleCoralCount: 72
   branchCoralCount: 96

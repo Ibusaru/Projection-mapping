@@ -20,9 +20,9 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float reefDecorationBias = 0.74f;
 
     [Header("Water")]
-    [SerializeField] private Color waterColor = new Color(0.045f, 0.45f, 0.58f, 0.54f);
-    [SerializeField] private Color deepFogColor = new Color(0.014f, 0.13f, 0.19f, 1f);
-    [SerializeField] private float fogDensity = 0.043f;
+    [SerializeField] private Color waterColor = new Color(0.075f, 0.56f, 0.7f, 0.5f);
+    [SerializeField] private Color deepFogColor = new Color(0.028f, 0.2f, 0.28f, 1f);
+    [SerializeField] private float fogDensity = 0.031f;
     [SerializeField, Range(16, 128)] private int waterResolution = 96;
     [SerializeField] private float waveAmplitude = 0.32f;
     [SerializeField] private float waveSpeed = 0.68f;
@@ -37,8 +37,8 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private bool disableAllEnvironmentParticles = true;
     [SerializeField] private string suimonoModulePrefabHint = "Suimono_Module";
     [SerializeField] private string suimonoSurfacePrefabHint = "Suimono_Surface";
-    [SerializeField] private Color shallowWaterColor = new Color(0.18f, 0.66f, 0.74f, 0.5f);
-    [SerializeField] private Color foamColor = new Color(0.78f, 0.95f, 0.96f, 0.32f);
+    [SerializeField] private Color shallowWaterColor = new Color(0.25f, 0.78f, 0.86f, 0.5f);
+    [SerializeField] private Color foamColor = new Color(0.86f, 0.98f, 1f, 0.36f);
 
     [Header("Decorations")]
     [SerializeField] private int rockCount = 52;
@@ -137,10 +137,10 @@ public partial class OceanEnvironment : MonoBehaviour
         RenderSettings.fogColor = deepFogColor;
         RenderSettings.fogDensity = fogDensity;
         RenderSettings.skybox = null;
-        RenderSettings.ambientSkyColor = new Color(0.14f, 0.38f, 0.45f);
-        RenderSettings.ambientEquatorColor = new Color(0.065f, 0.25f, 0.31f);
-        RenderSettings.ambientGroundColor = new Color(0.022f, 0.1f, 0.14f);
-        RenderSettings.ambientIntensity = 0.58f;
+        RenderSettings.ambientSkyColor = new Color(0.22f, 0.5f, 0.58f);
+        RenderSettings.ambientEquatorColor = new Color(0.11f, 0.34f, 0.4f);
+        RenderSettings.ambientGroundColor = new Color(0.04f, 0.16f, 0.21f);
+        RenderSettings.ambientIntensity = 0.72f;
 
         if (!tintCameras)
         {
@@ -150,7 +150,7 @@ public partial class OceanEnvironment : MonoBehaviour
         foreach (Camera camera in Camera.allCameras)
         {
             camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.backgroundColor = new Color(0.045f, 0.27f, 0.35f, 1f);
+            camera.backgroundColor = new Color(0.07f, 0.36f, 0.46f, 1f);
         }
 
         ApplyDepthAwareFog();
@@ -165,20 +165,20 @@ public partial class OceanEnvironment : MonoBehaviour
         float depth = Mathf.Max(0f, waterSurfaceY - localCameraY);
         float depthBlend = Smooth01(Mathf.InverseLerp(0.4f, 14f, depth));
         float aboveWaterBlend = Smooth01(Mathf.InverseLerp(waterSurfaceY + 0.5f, waterSurfaceY + 8f, localCameraY));
-        float densityMultiplier = Mathf.Lerp(1.05f, 3.45f, depthBlend);
-        densityMultiplier = Mathf.Lerp(densityMultiplier, 0.65f, aboveWaterBlend);
+        float densityMultiplier = Mathf.Lerp(0.85f, 2.65f, depthBlend);
+        densityMultiplier = Mathf.Lerp(densityMultiplier, 0.52f, aboveWaterBlend);
 
         RenderSettings.fog = true;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
         RenderSettings.fogDensity = Mathf.Max(0f, fogDensity * densityMultiplier);
-        RenderSettings.fogColor = Color.Lerp(new Color(0.045f, 0.27f, 0.35f, 1f), deepFogColor, Mathf.Lerp(0.38f, 1f, depthBlend));
+        RenderSettings.fogColor = Color.Lerp(new Color(0.07f, 0.36f, 0.46f, 1f), deepFogColor, Mathf.Lerp(0.3f, 1f, depthBlend));
 
         if (!tintCameras)
         {
             return;
         }
 
-        Color cameraColor = Color.Lerp(new Color(0.045f, 0.27f, 0.35f, 1f), deepFogColor, depthBlend * 0.9f);
+        Color cameraColor = Color.Lerp(new Color(0.07f, 0.36f, 0.46f, 1f), deepFogColor, depthBlend * 0.82f);
         foreach (Camera item in Camera.allCameras)
         {
             item.clearFlags = CameraClearFlags.SolidColor;

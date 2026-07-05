@@ -10,9 +10,12 @@ public static class ProjectionMappingRegressionValidator
         bool valid = true;
         valid &= ValidateReleasedDrawingFlipDefault();
         valid &= ValidateProjectionFrameIsFlipped();
-        valid &= ValidateProjectionFrameIgnoresUpAxisForLength();
+        valid &= ValidateProjectionFrameUsesLongestAxisForLength();
+        valid &= ValidateProjectionFrameKeepsUnityUpForRoundCrossSection();
         valid &= ValidateTransparentFishMaskKeepsProjectionScale();
         valid &= ValidateModelTextureFillsTransparentFishMask();
+        valid &= ValidateModelTextureReplacesLegacyWebSilhouetteBase();
+        valid &= ValidateModelTextureUsesNearestPaintForTransparentMask();
         valid &= ValidateFallbackMeshUvPreservesWebOrientation();
         valid &= ValidateReleasedDrawingUsesModelVisual();
         valid &= ValidateNicknameLabelStaysCameraParallel();
@@ -25,8 +28,10 @@ public static class ProjectionMappingRegressionValidator
         bool valid = true;
         valid &= ValidateDrawingUvShaderLoads();
         valid &= ValidateGeneratedDrawingUvsAreFlipped();
-        valid &= ValidateGeneratedDrawingUvsIgnoreUpAxisForLength();
+        valid &= ValidateGeneratedDrawingUvsUseLongestAxisForLength();
         valid &= ValidateModelTextureFillsTransparentFishMask();
+        valid &= ValidateModelTextureReplacesLegacyWebSilhouetteBase();
+        valid &= ValidateModelTextureUsesNearestPaintForTransparentMask();
 
         EditorApplication.Exit(valid ? 0 : 2);
     }
@@ -40,9 +45,11 @@ public static class ProjectionMappingRegressionValidator
     {
         bool valid = true;
         valid &= ValidateFallbackMeshUvPreservesWebOrientation();
-        valid &= ValidateProjectionFrameIgnoresUpAxisForLength();
-        valid &= ValidateGeneratedDrawingUvsIgnoreUpAxisForLength();
+        valid &= ValidateProjectionFrameUsesLongestAxisForLength();
+        valid &= ValidateGeneratedDrawingUvsUseLongestAxisForLength();
         valid &= ValidateModelTextureFillsTransparentFishMask();
+        valid &= ValidateModelTextureReplacesLegacyWebSilhouetteBase();
+        valid &= ValidateModelTextureUsesNearestPaintForTransparentMask();
         valid &= ValidateReleasedDrawingUsesModelVisual();
 
         EditorApplication.Exit(valid ? 0 : 2);
@@ -167,7 +174,7 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
-    private static bool ValidateProjectionFrameIgnoresUpAxisForLength()
+    private static bool ValidateProjectionFrameUsesLongestAxisForLength()
     {
         MethodInfo method = typeof(FishActor).GetMethod("CreateProjectionFrame", BindingFlags.Static | BindingFlags.NonPublic);
         if (method == null)
@@ -189,14 +196,48 @@ public static class ProjectionMappingRegressionValidator
         Vector3 origin = (Vector3)args[2];
         Vector3 uVector = (Vector3)args[3];
         Vector3 vVector = (Vector3)args[4];
-        bool valid = Mathf.Abs(origin.x - 1f) <= 0.0001f
-            && Vector3.Distance(uVector, Vector3.left * 2f) <= 0.0001f
-            && Vector3.Distance(vVector, Vector3.up * 8f) <= 0.0001f;
+        bool valid = Mathf.Abs(origin.y - 4f) <= 0.0001f
+            && Vector3.Distance(uVector, Vector3.down * 8f) <= 0.0001f
+            && Vector3.Distance(vVector, Vector3.right * 2f) <= 0.0001f;
 
         if (!valid)
         {
             Debug.LogError(
-                $"ProjectionMappingRegressionValidator: projection frame used the up axis as drawing length. origin={origin}, u={uVector}, v={vVector}"
+                $"ProjectionMappingRegressionValidator: projection frame did not use the longest model axis as drawing length. origin={origin}, u={uVector}, v={vVector}"
+            );
+        }
+
+        return valid;
+    }
+
+    private static bool ValidateProjectionFrameKeepsUnityUpForRoundCrossSection()
+    {
+        MethodInfo method = typeof(FishActor).GetMethod("CreateProjectionFrame", BindingFlags.Static | BindingFlags.NonPublic);
+        if (method == null)
+        {
+            Debug.LogError("ProjectionMappingRegressionValidator: CreateProjectionFrame was not found.");
+            return false;
+        }
+
+        object[] args =
+        {
+            new Bounds(Vector3.zero, new Vector3(3.33f, 1.01f, 1.01f)),
+            true,
+            null,
+            null,
+            null
+        };
+        method.Invoke(null, args);
+
+        Vector3 uVector = (Vector3)args[3];
+        Vector3 vVector = (Vector3)args[4];
+        bool valid = Vector3.Distance(uVector, Vector3.left * 3.33f) <= 0.0001f
+            && Vector3.Distance(vVector, Vector3.up * 1.01f) <= 0.0001f;
+
+        if (!valid)
+        {
+            Debug.LogError(
+                $"ProjectionMappingRegressionValidator: round fish cross-section did not keep Unity up as drawing height. u={uVector}, v={vVector}"
             );
         }
 
@@ -328,6 +369,127 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
+    private static bool ValidateModelTextureReplacesLegacyWebSilhouetteBase()
+    {
+        Texture2D source = new Texture2D(16, 8, TextureFormat.RGBA32, false);
+        Color32[] pixels = new Color32[16 * 8];
+        Color32 transparent = new Color32(0, 0, 0, 0);
+        Color32 legacyBase = new Color32(9, 31, 42, 219);
+        Color32 red = new Color32(255, 40, 32, 255);
+
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = transparent;
+        }
+
+        for (int y = 2; y <= 5; y++)
+        {
+            for (int x = 2; x <= 13; x++)
+            {
+                pixels[y * 16 + x] = legacyBase;
+            }
+        }
+
+        pixels[4 * 16 + 12] = red;
+        source.SetPixels32(pixels);
+        source.Apply(false, false);
+
+        const int expectedSize = 64;
+        Texture2D modelTexture = DrawingTextureMapper.CreateModelTexture(source, expectedSize, 0.05f);
+        Color32[] modelPixels = modelTexture != null ? modelTexture.GetPixels32() : null;
+        Color32 baseSample = modelPixels != null ? modelPixels[expectedSize * expectedSize / 2] : transparent;
+        int redCount = 0;
+        int darkCount = 0;
+
+        if (modelPixels != null)
+        {
+            for (int i = 0; i < modelPixels.Length; i++)
+            {
+                Color32 color = modelPixels[i];
+                if (color.r > 220 && color.g < 90 && color.b < 90)
+                {
+                    redCount++;
+                }
+
+                if (color.r < 32 && color.g < 54 && color.b < 66)
+                {
+                    darkCount++;
+                }
+            }
+        }
+
+        bool valid = modelTexture != null
+            && modelPixels != null
+            && baseSample.r > 245
+            && baseSample.g > 245
+            && baseSample.b > 245
+            && redCount > 0
+            && darkCount == 0;
+
+        if (!valid)
+        {
+            Debug.LogError(
+                $"ProjectionMappingRegressionValidator: legacy web silhouette base was not normalized. base={baseSample}, red={redCount}, dark={darkCount}"
+            );
+        }
+
+        Object.DestroyImmediate(source);
+        Object.DestroyImmediate(modelTexture);
+        return valid;
+    }
+
+    private static bool ValidateModelTextureUsesNearestPaintForTransparentMask()
+    {
+        Texture2D source = new Texture2D(16, 8, TextureFormat.RGBA32, false);
+        Color32[] pixels = new Color32[16 * 8];
+        Color32 transparent = new Color32(0, 0, 0, 0);
+        Color32 blue = new Color32(32, 92, 220, 255);
+        Color32 red = new Color32(255, 40, 32, 255);
+
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = transparent;
+        }
+
+        for (int y = 2; y <= 5; y++)
+        {
+            for (int x = 2; x <= 11; x++)
+            {
+                pixels[y * 16 + x] = blue;
+            }
+        }
+
+        pixels[2 * 16 + 11] = transparent;
+        pixels[2 * 16 + 12] = transparent;
+        pixels[5 * 16 + 12] = blue;
+        pixels[2 * 16 + 13] = red;
+        source.SetPixels32(pixels);
+        source.Apply(false, false);
+
+        const int expectedSize = 64;
+        Texture2D modelTexture = DrawingTextureMapper.CreateModelTexture(source, expectedSize, 0.05f);
+        Color32[] modelPixels = modelTexture != null ? modelTexture.GetPixels32() : null;
+        int sampleX = Mathf.RoundToInt((12f - 2f) / (13f - 2f) * (expectedSize - 1));
+        Color32 sampled = modelPixels != null ? modelPixels[sampleX] : transparent;
+        bool valid = modelTexture != null
+            && modelPixels != null
+            && sampled.r > 220
+            && sampled.g < 90
+            && sampled.b < 90
+            && sampled.a == 255;
+
+        if (!valid)
+        {
+            Debug.LogError(
+                $"ProjectionMappingRegressionValidator: model texture filled transparent mask pixels with a non-local color. sample={sampled}"
+            );
+        }
+
+        Object.DestroyImmediate(source);
+        Object.DestroyImmediate(modelTexture);
+        return valid;
+    }
+
     private static bool ValidateFallbackMeshUvPreservesWebOrientation()
     {
         GameObject owner = new GameObject("Projection Mapping Fallback Owner");
@@ -372,7 +534,7 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
-    private static bool ValidateGeneratedDrawingUvsIgnoreUpAxisForLength()
+    private static bool ValidateGeneratedDrawingUvsUseLongestAxisForLength()
     {
         GameObject owner = new GameObject("Projection Mapping Tall Generated UV Owner");
         owner.hideFlags = HideFlags.HideAndDontSave;
@@ -406,14 +568,15 @@ public static class ProjectionMappingRegressionValidator
             && uvs != null
             && uvs.Length == 4
             && uvs[0].x > 0.95f
-            && uvs[1].x < 0.05f
-            && Mathf.Abs(uvs[0].x - uvs[2].x) <= 0.001f
-            && uvs[2].y > 0.95f;
+            && uvs[2].x < 0.05f
+            && Mathf.Abs(uvs[0].x - uvs[1].x) <= 0.001f
+            && uvs[1].y > 0.95f
+            && uvs[0].y < 0.05f;
 
         if (!valid)
         {
             string uvSummary = uvs == null ? "missing" : string.Join(", ", uvs);
-            Debug.LogError($"ProjectionMappingRegressionValidator: tall generated drawing UVs used the up axis as length. applied={applied}, uvs={uvSummary}");
+            Debug.LogError($"ProjectionMappingRegressionValidator: tall generated drawing UVs did not use the longest model axis as length. applied={applied}, uvs={uvSummary}");
         }
 
         Object.DestroyImmediate(owner);

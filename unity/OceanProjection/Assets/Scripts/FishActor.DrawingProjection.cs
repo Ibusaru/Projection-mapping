@@ -370,11 +370,8 @@ public partial class FishActor
     )
     {
         Vector3 size = bounds.size;
-        int upAxis = 1;
-        int lengthAxis = LargestAxis(size, upAxis);
-        int heightAxis = AxisValue(size, upAxis) >= AxisValue(size, lengthAxis) * 0.08f
-            ? upAxis
-            : LargestAxis(size, lengthAxis);
+        int lengthAxis = LargestAxis(size, -1);
+        int heightAxis = ChooseProjectionHeightAxis(size, lengthAxis);
         float length = Mathf.Max(AxisValue(size, lengthAxis), 0.001f);
         float height = Mathf.Max(AxisValue(size, heightAxis), 0.001f);
 
@@ -407,6 +404,18 @@ public partial class FishActor
         }
 
         return bestAxis;
+    }
+
+    private static int ChooseProjectionHeightAxis(Vector3 size, int lengthAxis)
+    {
+        const int unityUpAxis = 1;
+        if (lengthAxis != unityUpAxis
+            && AxisValue(size, unityUpAxis) >= AxisValue(size, lengthAxis) * 0.08f)
+        {
+            return unityUpAxis;
+        }
+
+        return LargestAxis(size, lengthAxis);
     }
 
     private static float AxisValue(Vector3 value, int axis)

@@ -120,8 +120,8 @@ public partial class OceanEnvironment
         sunObject.transform.rotation = Quaternion.LookRotation(new Vector3(-0.34f, -0.86f, 0.38f).normalized, Vector3.up);
         Light sun = sunObject.AddComponent<Light>();
         sun.type = LightType.Directional;
-        sun.color = new Color(0.62f, 0.82f, 0.86f);
-        sun.intensity = 0.82f;
+        sun.color = new Color(0.75f, 0.92f, 0.96f);
+        sun.intensity = 1.05f;
         sun.shadows = LightShadows.Soft;
         RenderSettings.sun = sun;
 
@@ -135,9 +135,9 @@ public partial class OceanEnvironment
 
             Light spot = lightObject.AddComponent<Light>();
             spot.type = LightType.Spot;
-            spot.color = new Color(0.44f, 0.72f, 0.75f);
-            spot.intensity = 0.62f;
-            spot.range = waterSurfaceY - seabedY + 6f;
+            spot.color = new Color(0.58f, 0.86f, 0.88f);
+            spot.intensity = 0.84f;
+            spot.range = waterSurfaceY - seabedY + 8f;
             spot.spotAngle = 36f;
             spot.shadows = LightShadows.None;
         }
@@ -171,8 +171,8 @@ public partial class OceanEnvironment
             beam.alignment = LineAlignment.View;
             beam.startWidth = Random.Range(0.06f, 0.13f);
             beam.endWidth = Random.Range(0.18f, 0.34f);
-            beam.startColor = new Color(0.5f, 0.78f, 0.8f, 0.1f);
-            beam.endColor = new Color(0.09f, 0.32f, 0.38f, 0.01f);
+            beam.startColor = new Color(0.62f, 0.88f, 0.9f, 0.14f);
+            beam.endColor = new Color(0.16f, 0.42f, 0.5f, 0.018f);
             beam.SetPosition(0, start);
             beam.SetPosition(1, end);
         }

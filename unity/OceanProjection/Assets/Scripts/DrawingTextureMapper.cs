@@ -8,6 +8,7 @@ public static class DrawingTextureMapper
     private const float VisualCanvasYMin = 82f;
     private const float VisualCanvasXMax = 990f;
     private const float VisualCanvasYMax = 505f;
+    private static readonly Color32 ExportBaseColor = new Color32(255, 255, 255, 255);
 
     public static Texture2D CreateProjectionTexture(Texture2D source, float alphaThreshold)
     {
@@ -22,6 +23,7 @@ public static class DrawingTextureMapper
         }
 
         Color32[] sourcePixels = source.GetPixels32();
+        NormalizeExportBasePixels(sourcePixels);
         Color32[] outputPixels = new Color32[sourcePixels.Length];
         Rect sourceRect = TryFindPaintedBounds(sourcePixels, source.width, source.height, alphaThreshold, out RectInt paintedBounds)
             ? ExpandPaintedBounds(paintedBounds, source.width, source.height, projectionPaddingRatio)
@@ -99,13 +101,14 @@ public static class DrawingTextureMapper
 
         int outputSize = Mathf.Clamp(textureSize, 64, 2048);
         Color32[] sourcePixels = source.GetPixels32();
+        NormalizeExportBasePixels(sourcePixels);
         if (!TryFindPaintedBounds(sourcePixels, source.width, source.height, alphaThreshold, out RectInt paintedBounds))
         {
             return CreateSolidTexture(source.name, outputSize, outputSize, Color.white, "ModelMappedFallback");
         }
 
         Color32 fallbackColor = AveragePaintedColor(sourcePixels, alphaThreshold);
-        Color32[] columnColors = BuildColumnColors(sourcePixels, source.width, paintedBounds, fallbackColor, alphaThreshold);
+        Color32[] filledPixels = BuildNearestFilledPixels(sourcePixels, source.width, source.height, paintedBounds, fallbackColor, alphaThreshold);
         Color32[] outputPixels = new Color32[outputSize * outputSize];
 
         for (int y = 0; y < outputSize; y++)
@@ -126,14 +129,7 @@ public static class DrawingTextureMapper
                     source.width - 1
                 );
 
-                outputPixels[y * outputSize + x] = SampleFilledColor(
-                    sourcePixels,
-                    source.width,
-                    sourceX,
-                    sourceY,
-                    columnColors[sourceX],
-                    alphaThreshold
-                );
+                outputPixels[y * outputSize + x] = filledPixels[sourceY * source.width + sourceX];
             }
         }
 
@@ -148,66 +144,123 @@ public static class DrawingTextureMapper
         return texture;
     }
 
-    private static Color32 SampleFilledColor(
+    private static Color32[] BuildNearestFilledPixels(
         Color32[] pixels,
         int width,
-        int x,
-        int y,
+        int height,
+        RectInt bounds,
         Color32 fallbackColor,
         float alphaThreshold
     )
     {
-        Color32 color = pixels[y * width + x];
-        if (!IsPaintedPixel(color, alphaThreshold))
-        {
-            color = fallbackColor;
-        }
-        return color;
-    }
-
-    private static bool TryFindPaintedBounds(Color32[] pixels, int width, int height, float alphaThreshold, out RectInt bounds)
-    {
-        if (TryFindAlphaBounds(pixels, width, height, alphaThreshold, out RectInt alphaBounds)
-            && (alphaBounds.width < width || alphaBounds.height < height))
-        {
-            bounds = alphaBounds;
-            return true;
-        }
-
-        int minX = width;
-        int minY = height;
-        int maxX = -1;
-        int maxY = -1;
+        Color32[] filledPixels = new Color32[pixels.Length];
+        bool[] visited = new bool[pixels.Length];
+        int[] queue = new int[Mathf.Max(1, bounds.width * bounds.height)];
+        int head = 0;
+        int tail = 0;
         byte alphaByteThreshold = AlphaByteThreshold(alphaThreshold);
 
-        for (int y = 0; y < height; y++)
+        for (int y = bounds.yMin; y < bounds.yMax; y++)
         {
-            int row = y * width;
-            for (int x = 0; x < width; x++)
+            for (int x = bounds.xMin; x < bounds.xMax; x++)
             {
-                if (!IsPaintedPixel(pixels[row + x], alphaByteThreshold))
+                int index = y * width + x;
+                Color32 color = pixels[index];
+                if (!IsPaintedPixel(color, alphaByteThreshold))
                 {
                     continue;
                 }
 
-                minX = Mathf.Min(minX, x);
-                minY = Mathf.Min(minY, y);
-                maxX = Mathf.Max(maxX, x);
-                maxY = Mathf.Max(maxY, y);
+                color.a = 255;
+                filledPixels[index] = color;
+                visited[index] = true;
+                queue[tail++] = index;
             }
         }
 
-        if (maxX < minX || maxY < minY)
+        if (tail == 0)
         {
-            bounds = new RectInt(0, 0, width, height);
+            for (int i = 0; i < filledPixels.Length; i++)
+            {
+                filledPixels[i] = fallbackColor;
+            }
+
+            return filledPixels;
+        }
+
+        while (head < tail)
+        {
+            int index = queue[head++];
+            int x = index % width;
+            int y = index / width;
+            Color32 color = filledPixels[index];
+
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x - 1, y, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x + 1, y, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x, y - 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x, y + 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x - 1, y - 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x + 1, y - 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x - 1, y + 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x + 1, y + 1, color);
+        }
+
+        return filledPixels;
+    }
+
+    private static void VisitFilledNeighbor(
+        Color32[] filledPixels,
+        bool[] visited,
+        int[] queue,
+        ref int tail,
+        int width,
+        int height,
+        RectInt bounds,
+        int x,
+        int y,
+        Color32 fillColor
+    )
+    {
+        if (x < bounds.xMin || x >= bounds.xMax || y < bounds.yMin || y >= bounds.yMax || x < 0 || x >= width || y < 0 || y >= height)
+        {
+            return;
+        }
+
+        int index = y * width + x;
+        if (visited[index])
+        {
+            return;
+        }
+
+        filledPixels[index] = fillColor;
+        visited[index] = true;
+        queue[tail++] = index;
+    }
+
+    private static void NormalizeExportBasePixels(Color32[] pixels)
+    {
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            if (LooksLikeLegacyWebSilhouetteBase(pixels[i]))
+            {
+                pixels[i] = ExportBaseColor;
+            }
+        }
+    }
+
+    private static bool LooksLikeLegacyWebSilhouetteBase(Color32 color)
+    {
+        if (color.a < 24 || color.a > 245)
+        {
             return false;
         }
 
-        bounds = new RectInt(minX, minY, maxX - minX + 1, maxY - minY + 1);
-        return true;
+        return Mathf.Abs(color.r - 9) <= 12
+            && Mathf.Abs(color.g - 31) <= 18
+            && Mathf.Abs(color.b - 42) <= 20;
     }
 
-    private static bool TryFindAlphaBounds(Color32[] pixels, int width, int height, float alphaThreshold, out RectInt bounds)
+    private static bool TryFindPaintedBounds(Color32[] pixels, int width, int height, float alphaThreshold, out RectInt bounds)
     {
         int minX = width;
         int minY = height;
@@ -270,103 +323,6 @@ public static class DrawingTextureMapper
         }
 
         return new Color32((byte)(r / count), (byte)(g / count), (byte)(b / count), 255);
-    }
-
-    private static Color32[] BuildColumnColors(
-        Color32[] pixels,
-        int width,
-        RectInt bounds,
-        Color32 fallbackColor,
-        float alphaThreshold
-    )
-    {
-        Color32[] colors = new Color32[width];
-        bool[] hasColor = new bool[width];
-        byte alphaByteThreshold = AlphaByteThreshold(alphaThreshold);
-
-        for (int x = 0; x < width; x++)
-        {
-            long r = 0;
-            long g = 0;
-            long b = 0;
-            int count = 0;
-            for (int y = bounds.yMin; y < bounds.yMax; y++)
-            {
-                Color32 color = pixels[y * width + x];
-                if (!IsPaintedPixel(color, alphaByteThreshold))
-                {
-                    continue;
-                }
-
-                r += color.r;
-                g += color.g;
-                b += color.b;
-                count++;
-            }
-
-            colors[x] = count > 0
-                ? new Color32((byte)(r / count), (byte)(g / count), (byte)(b / count), 255)
-                : fallbackColor;
-            hasColor[x] = count > 0;
-        }
-
-        FillEmptyColumnColors(colors, hasColor, fallbackColor);
-        return colors;
-    }
-
-    private static void FillEmptyColumnColors(Color32[] colors, bool[] hasColor, Color32 fallbackColor)
-    {
-        int lastPainted = -1;
-        int[] nearestLeft = new int[colors.Length];
-        int[] nearestRight = new int[colors.Length];
-
-        for (int x = 0; x < colors.Length; x++)
-        {
-            if (hasColor[x])
-            {
-                lastPainted = x;
-            }
-
-            nearestLeft[x] = lastPainted;
-        }
-
-        lastPainted = -1;
-        for (int x = colors.Length - 1; x >= 0; x--)
-        {
-            if (hasColor[x])
-            {
-                lastPainted = x;
-            }
-
-            nearestRight[x] = lastPainted;
-        }
-
-        for (int x = 0; x < colors.Length; x++)
-        {
-            if (hasColor[x])
-            {
-                continue;
-            }
-
-            int left = nearestLeft[x];
-            int right = nearestRight[x];
-            if (left < 0 && right < 0)
-            {
-                colors[x] = fallbackColor;
-            }
-            else if (left < 0)
-            {
-                colors[x] = colors[right];
-            }
-            else if (right < 0)
-            {
-                colors[x] = colors[left];
-            }
-            else
-            {
-                colors[x] = x - left <= right - x ? colors[left] : colors[right];
-            }
-        }
     }
 
     private static byte AlphaByteThreshold(float alphaThreshold)
@@ -583,11 +539,8 @@ public static class DrawingTextureMapper
     )
     {
         Vector3 size = bounds.size;
-        int upAxis = 1;
-        int lengthAxis = LargestAxis(size, upAxis);
-        int heightAxis = AxisValue(size, upAxis) >= AxisValue(size, lengthAxis) * 0.08f
-            ? upAxis
-            : LargestAxis(size, lengthAxis);
+        int lengthAxis = LargestAxis(size, -1);
+        int heightAxis = ChooseProjectionHeightAxis(size, lengthAxis);
         float length = Mathf.Max(AxisValue(size, lengthAxis), 0.001f);
         float height = Mathf.Max(AxisValue(size, heightAxis), 0.001f);
 
@@ -620,6 +573,18 @@ public static class DrawingTextureMapper
         }
 
         return bestAxis;
+    }
+
+    private static int ChooseProjectionHeightAxis(Vector3 size, int lengthAxis)
+    {
+        const int unityUpAxis = 1;
+        if (lengthAxis != unityUpAxis
+            && AxisValue(size, unityUpAxis) >= AxisValue(size, lengthAxis) * 0.08f)
+        {
+            return unityUpAxis;
+        }
+
+        return LargestAxis(size, lengthAxis);
     }
 
     private static float AxisValue(Vector3 value, int axis)

@@ -74,10 +74,7 @@ Shader "OceanProjection/Drawing Fish UV"
                 half4 drawing = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, saturate(input.uv)) * _Tint;
                 float paintAlpha = saturate((drawing.a - _AlphaClip) / max(1.0 - _AlphaClip, 0.0001));
 
-                float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - input.positionWS);
-                float edgeLight = saturate(abs(dot(normalize(input.normalWS), viewDirection)));
                 half4 color = half4(lerp(_BaseColor.rgb, drawing.rgb, paintAlpha), _BaseColor.a);
-                color.rgb *= lerp(0.68, 1.08, edgeLight);
                 color.a = 1.0;
                 return color;
             }

@@ -8,6 +8,7 @@ const EMPTY_ALPHA_THRESHOLD = 24;
 const SEAM_ALPHA_THRESHOLD = 180;
 const SEAM_GROW_STEPS = 2;
 const FISH_SILHOUETTE_FILL = "rgba(9, 31, 42, 0.86)";
+const FISH_EXPORT_BASE_FILL = "rgba(255, 255, 255, 1)";
 let paintMaskPixels = null;
 
 function addBodyPath(path) {
@@ -378,7 +379,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
         context.save();
         const mask = createPaintableFishPath();
-        drawSilhouette(context, FISH_SILHOUETTE_FILL);
+        drawSilhouette(context, FISH_EXPORT_BASE_FILL);
         context.clip(mask);
         context.drawImage(source, 0, 0);
         context.restore();
