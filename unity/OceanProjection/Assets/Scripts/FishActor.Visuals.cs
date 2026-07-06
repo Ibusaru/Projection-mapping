@@ -189,7 +189,7 @@ public partial class FishActor
             return;
         }
 
-        if (ApplyGeneratedUvDrawingTexture(texture) || ApplyProjectedDrawingTexture(texture))
+        if (ApplyAuthoredUvDrawingTexture(texture) || ApplyGeneratedUvDrawingTexture(texture) || ApplyProjectedDrawingTexture(texture))
         {
             return;
         }

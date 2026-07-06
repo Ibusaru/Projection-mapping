@@ -1,8 +1,9 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Eraser, PaintBucket, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-react";
+import { createFishSilhouettePath, fishCanvasSize } from "../config/fishSilhouette";
 
-const CANVAS_WIDTH = 1024;
-const CANVAS_HEIGHT = 512;
+const CANVAS_WIDTH = fishCanvasSize.width;
+const CANVAS_HEIGHT = fishCanvasSize.height;
 const MAX_HISTORY_STEPS = 30;
 const EMPTY_ALPHA_THRESHOLD = 24;
 const SEAM_ALPHA_THRESHOLD = 180;
@@ -11,66 +12,8 @@ const FISH_SILHOUETTE_FILL = "rgba(9, 31, 42, 0.86)";
 const FISH_EXPORT_BASE_FILL = "rgba(255, 255, 255, 1)";
 let paintMaskPixels = null;
 
-function addBodyPath(path) {
-  path.moveTo(54, 258);
-  path.bezierCurveTo(70, 214, 122, 178, 205, 158);
-  path.lineTo(292, 132);
-  path.lineTo(358, 74);
-  path.lineTo(472, 122);
-  path.lineTo(426, 158);
-  path.lineTo(530, 130);
-  path.lineTo(598, 206);
-  path.lineTo(747, 184);
-  path.lineTo(790, 218);
-  path.bezierCurveTo(816, 238, 821, 271, 790, 296);
-  path.lineTo(742, 310);
-  path.lineTo(624, 300);
-  path.lineTo(578, 350);
-  path.lineTo(456, 368);
-  path.lineTo(374, 352);
-  path.lineTo(328, 402);
-  path.lineTo(292, 356);
-  path.lineTo(188, 344);
-  path.bezierCurveTo(118, 333, 72, 300, 54, 258);
-  path.closePath();
-}
-
-function addTailPath(path) {
-  path.moveTo(754, 188);
-  path.lineTo(955, 148);
-  path.lineTo(1000, 260);
-  path.lineTo(954, 340);
-  path.lineTo(754, 304);
-  path.lineTo(806, 258);
-  path.closePath();
-}
-
-function addFinPaths(path) {
-  path.moveTo(334, 246);
-  path.lineTo(424, 236);
-  path.lineTo(414, 322);
-  path.lineTo(336, 338);
-  path.closePath();
-
-  path.moveTo(404, 358);
-  path.lineTo(478, 382);
-  path.lineTo(516, 456);
-  path.lineTo(454, 424);
-  path.closePath();
-
-  path.moveTo(522, 342);
-  path.lineTo(610, 386);
-  path.lineTo(566, 430);
-  path.lineTo(492, 368);
-  path.closePath();
-}
-
 function createPaintableFishPath(context) {
-  const path = new Path2D();
-
-  addBodyPath(path);
-  addTailPath(path);
-  addFinPaths(path);
+  const path = createFishSilhouettePath();
 
   if (context) {
     context.fill(path);

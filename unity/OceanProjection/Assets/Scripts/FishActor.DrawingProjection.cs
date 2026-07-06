@@ -7,6 +7,40 @@ public partial class FishActor
     private const string DrawingUvShaderName = "OceanProjection/Drawing Fish UV";
     private static readonly Color DrawingProjectionFallbackBaseColor = new Color(0.52f, 0.68f, 0.72f, 1f);
 
+    private bool ApplyAuthoredUvDrawingTexture(Texture2D texture)
+    {
+        if (texture == null)
+        {
+            return false;
+        }
+
+        Shader shader = Shader.Find(DrawingUvShaderName);
+        if (shader == null)
+        {
+            shader = Resources.Load<Shader>("Shaders/DrawingFishUv");
+        }
+
+        if (!IsUsableProjectionShader(shader))
+        {
+            Debug.LogWarning($"FishActor: shader '{DrawingUvShaderName}' was not found or is unsupported; falling back to projected texture mapping.");
+            return false;
+        }
+
+        Renderer[] visualTextureRenderers = FishRendererUtility.GetVisualRenderers(gameObject, true);
+        if (visualTextureRenderers.Length == 0 || !DrawingTextureMapper.HasAuthoredDrawingUvs(visualTextureRenderers))
+        {
+            return false;
+        }
+
+        Texture2D uvTexture = DrawingTextureMapper.CreateDisplayTexture(texture) ?? texture;
+        uvTexture.wrapMode = TextureWrapMode.Clamp;
+        uvTexture.filterMode = FilterMode.Bilinear;
+
+        ApplyUvDrawingTextureToRenderers(visualTextureRenderers, shader, uvTexture);
+        HideDrawingFishVisual();
+        return true;
+    }
+
     private bool ApplyGeneratedUvDrawingTexture(Texture2D texture)
     {
         if (texture == null)
@@ -46,6 +80,14 @@ public partial class FishActor
 
         uvTexture.wrapMode = TextureWrapMode.Clamp;
         uvTexture.filterMode = FilterMode.Bilinear;
+
+        ApplyUvDrawingTextureToRenderers(visualTextureRenderers, shader, uvTexture);
+        HideDrawingFishVisual();
+        return true;
+    }
+
+    private void ApplyUvDrawingTextureToRenderers(Renderer[] visualTextureRenderers, Shader shader, Texture2D uvTexture)
+    {
         textureRenderers = visualTextureRenderers;
         colorRenderers = visualTextureRenderers;
         subColorRenderers = visualTextureRenderers;
@@ -80,9 +122,6 @@ public partial class FishActor
 
             item.materials = nextMaterials;
         }
-
-        HideDrawingFishVisual();
-        return true;
     }
 
     private bool ApplyProjectedDrawingTexture(Texture2D texture)

@@ -4,10 +4,11 @@ public static class DrawingTextureMapper
 {
     private const float CanvasWidth = 1024f;
     private const float CanvasHeight = 512f;
-    private const float VisualCanvasXMin = 91f;
-    private const float VisualCanvasYMin = 82f;
-    private const float VisualCanvasXMax = 990f;
-    private const float VisualCanvasYMax = 505f;
+    private const float VisualCanvasXMin = 50f;
+    private const float VisualCanvasYMin = 34f;
+    private const float VisualCanvasXMax = 974f;
+    private const float VisualCanvasYMax = 478f;
+    private const string AuthoredDrawingUvMeshNameMarker = "_CanvasUV";
     private static readonly Color32 ExportBaseColor = new Color32(255, 255, 255, 255);
 
     public static Texture2D CreateProjectionTexture(Texture2D source, float alphaThreshold)
@@ -401,14 +402,8 @@ public static class DrawingTextureMapper
                 continue;
             }
 
-            Vector3[] vertices;
-            try
+            if (!TryGetUvSourceVertices(renderer, mesh, out Vector3[] vertices))
             {
-                vertices = mesh.vertices;
-            }
-            catch (UnityException exception)
-            {
-                Debug.LogWarning($"DrawingTextureMapper: mesh '{mesh.name}' is not readable, so generated drawing UVs could not be applied. {exception.Message}");
                 continue;
             }
 
@@ -428,6 +423,126 @@ public static class DrawingTextureMapper
         }
 
         return applied;
+    }
+
+    public static bool HasAuthoredDrawingUvs(Renderer[] renderers)
+    {
+        if (renderers == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Mesh mesh = GetRendererMesh(renderers[i]);
+            if (HasUsableAuthoredDrawingUv(mesh))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool HasUsableAuthoredDrawingUv(Mesh mesh)
+    {
+        if (mesh == null || mesh.vertexCount == 0)
+        {
+            return false;
+        }
+
+        if (!mesh.name.Contains(AuthoredDrawingUvMeshNameMarker))
+        {
+            return false;
+        }
+
+        Vector2[] uvs;
+        try
+        {
+            uvs = mesh.uv;
+        }
+        catch (UnityException exception)
+        {
+            Debug.LogWarning($"DrawingTextureMapper: authored drawing UV mesh '{mesh.name}' could not be read. {exception.Message}");
+            return false;
+        }
+
+        if (uvs.Length != mesh.vertexCount)
+        {
+            return false;
+        }
+
+        float minU = 1f;
+        float minV = 1f;
+        float maxU = 0f;
+        float maxV = 0f;
+        for (int i = 0; i < uvs.Length; i++)
+        {
+            Vector2 uv = uvs[i];
+            minU = Mathf.Min(minU, uv.x);
+            minV = Mathf.Min(minV, uv.y);
+            maxU = Mathf.Max(maxU, uv.x);
+            maxV = Mathf.Max(maxV, uv.y);
+        }
+
+        return maxU - minU > 0.25f && maxV - minV > 0.25f;
+    }
+
+    private static Mesh GetRendererMesh(Renderer renderer)
+    {
+        if (renderer is SkinnedMeshRenderer skinned)
+        {
+            return skinned.sharedMesh;
+        }
+
+        MeshFilter meshFilter = renderer != null ? renderer.GetComponent<MeshFilter>() : null;
+        return meshFilter != null ? meshFilter.sharedMesh : null;
+    }
+
+    private static bool TryGetUvSourceVertices(Renderer renderer, Mesh mesh, out Vector3[] vertices)
+    {
+        vertices = null;
+        if (mesh == null)
+        {
+            return false;
+        }
+
+        if (renderer is SkinnedMeshRenderer skinned)
+        {
+            Mesh bakedMesh = new Mesh
+            {
+                name = $"{mesh.name}_UvBake"
+            };
+
+            try
+            {
+                skinned.BakeMesh(bakedMesh, false);
+                if (bakedMesh.vertexCount == mesh.vertexCount)
+                {
+                    vertices = bakedMesh.vertices;
+                    return true;
+                }
+            }
+            catch (UnityException exception)
+            {
+                Debug.LogWarning($"DrawingTextureMapper: skinned mesh '{mesh.name}' could not be baked for drawing UVs. {exception.Message}");
+            }
+            finally
+            {
+                Object.Destroy(bakedMesh);
+            }
+        }
+
+        try
+        {
+            vertices = mesh.vertices;
+            return true;
+        }
+        catch (UnityException exception)
+        {
+            Debug.LogWarning($"DrawingTextureMapper: mesh '{mesh.name}' is not readable, so generated drawing UVs could not be applied. {exception.Message}");
+            return false;
+        }
     }
 
     private static Mesh CreateWritableMeshInstance(Renderer renderer)
