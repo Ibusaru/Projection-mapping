@@ -87,6 +87,7 @@ public static class ReleasedFishPrefabSetup
         DisableImportedViewComponents(root);
         FishRendererUtility.GetVisualRenderers(root, true);
         CenterTopLevelVisualsOnRoot(root);
+        EnsureProceduralMeshAnimation(root);
 
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
         Object.DestroyImmediate(root);
@@ -171,5 +172,20 @@ public static class ReleasedFishPrefabSetup
             Transform child = root.transform.GetChild(i);
             child.localPosition -= localCenter;
         }
+    }
+
+    private static void EnsureProceduralMeshAnimation(GameObject root)
+    {
+        if (root == null || root.GetComponent<ProceduralFishMeshDeformer>() != null)
+        {
+            return;
+        }
+
+        if (root.GetComponentsInChildren<MeshFilter>(true).Length == 0)
+        {
+            return;
+        }
+
+        root.AddComponent<ProceduralFishMeshDeformer>();
     }
 }

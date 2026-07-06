@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 406209664741703289}
+  - component: {fileID: 6026736425585722813}
   m_Layer: 0
   m_Name: ReleasedKakukuma
   m_TagString: Untagged
@@ -32,6 +33,23 @@ Transform:
   - {fileID: 6289487437482776472}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6026736425585722813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3402341388813766529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1101326fb2daa64591a8f53ff42a1a1, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralFishMeshDeformer
+  frequency: 4.8
+  sideAmplitude: 0.035
+  twistAmplitude: 4.5
+  waveLength: 1.35
+  centerStillness: 0.18
 --- !u!1001 &5819221352964173939
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41,16 +59,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 406209664741703289}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e0642ea8b69441c8b8290590e8db50a2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e0642ea8b69441c8b8290590e8db50a2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e0642ea8b69441c8b8290590e8db50a2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e0642ea8b69441c8b8290590e8db50a2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.473128
+      value: 0.05865342
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e0642ea8b69441c8b8290590e8db50a2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 31.354637
+      value: 0.05915175
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e0642ea8b69441c8b8290590e8db50a2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -52.216423
+      value: -0.18772945
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e0642ea8b69441c8b8290590e8db50a2, type: 3}
       propertyPath: m_LocalRotation.w

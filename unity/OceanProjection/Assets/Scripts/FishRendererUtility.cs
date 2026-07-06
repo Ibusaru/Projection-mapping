@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class FishRendererUtility
 {
+    private const string AuthoredDrawingUvMeshNameMarker = "_CanvasUV";
+
     private static readonly string[] IgnoredNameParts =
     {
         "camera",
@@ -125,6 +127,11 @@ public static class FishRendererUtility
 
     private static bool HasIgnoredNamePart(Renderer renderer, Mesh mesh)
     {
+        if (mesh != null && mesh.name.Contains(AuthoredDrawingUvMeshNameMarker))
+        {
+            return false;
+        }
+
         string searchableName = RendererSearchName(renderer, mesh);
         for (int i = 0; i < IgnoredNameParts.Length; i++)
         {

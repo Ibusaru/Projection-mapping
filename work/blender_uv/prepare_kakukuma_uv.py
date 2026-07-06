@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 import bpy
+from mathutils import Matrix
 
 
 CANVAS_WIDTH = 1024
@@ -16,6 +17,7 @@ CANVAS_BOX = {
 UV_MARKER = "_CanvasUV"
 MESH_NAME = "Clownfish_CanvasUV"
 UV_LAYER_NAME = "DrawingCanvasUV"
+UNITY_FORWARD_NOTE = "source head side is mirrored to Blender +Y so Unity imports it toward +Z"
 
 
 def parse_args():
@@ -139,9 +141,46 @@ def projected_profile_points(obj, y_min, y_max, z_min, z_max, sample_count=52):
     return top, bottom
 
 
-def select_export_objects():
+def orient_mesh_for_unity_forward(obj):
+    mesh = obj.data
+    for vertex in mesh.vertices:
+        vertex.co.y = -vertex.co.y
+
+    mesh.flip_normals()
+    mesh.update()
+
+
+def create_static_export_mesh(source_obj):
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    evaluated = source_obj.evaluated_get(depsgraph)
+    mesh = bpy.data.meshes.new_from_object(
+        evaluated,
+        depsgraph=depsgraph,
+        preserve_all_data_layers=True,
+    )
+    mesh.name = MESH_NAME
+
+    export_obj = bpy.data.objects.new(MESH_NAME, mesh)
+    bpy.context.collection.objects.link(export_obj)
+    mesh.transform(source_obj.matrix_world)
+    mesh.update()
+    export_obj.matrix_world = Matrix.Identity(4)
+    export_obj.name = MESH_NAME
+    export_obj.location = (0.0, 0.0, 0.0)
+    export_obj.rotation_euler = (0.0, 0.0, 0.0)
+    export_obj.scale = (1.0, 1.0, 1.0)
+    return export_obj
+
+
+def keep_only_export_object(export_obj):
+    for obj in list(bpy.context.scene.objects):
+        if obj != export_obj:
+            bpy.data.objects.remove(obj, do_unlink=True)
+
+
+def select_export_objects(export_obj):
     for obj in bpy.context.scene.objects:
-        should_export = obj.type in {"MESH", "ARMATURE"}
+        should_export = obj == export_obj
         obj.select_set(should_export)
         if should_export:
             bpy.context.view_layer.objects.active = obj
@@ -162,10 +201,12 @@ def main():
     if len(meshes) != 1:
         raise RuntimeError(f"Expected exactly one mesh object, found {len(meshes)}")
 
-    mesh = meshes[0]
-    y_min, y_max, z_min, z_max = assign_canvas_uv(mesh)
-    configure_materials(mesh)
-    top, bottom = projected_profile_points(mesh, y_min, y_max, z_min, z_max)
+    export_mesh = create_static_export_mesh(meshes[0])
+    keep_only_export_object(export_mesh)
+    y_min, y_max, z_min, z_max = assign_canvas_uv(export_mesh)
+    configure_materials(export_mesh)
+    top, bottom = projected_profile_points(export_mesh, y_min, y_max, z_min, z_max)
+    orient_mesh_for_unity_forward(export_mesh)
 
     output_blend = Path(args.output_blend)
     output_blend.parent.mkdir(parents=True, exist_ok=True)
@@ -173,13 +214,12 @@ def main():
 
     output_fbx = Path(args.output_fbx)
     output_fbx.parent.mkdir(parents=True, exist_ok=True)
-    select_export_objects()
+    select_export_objects(export_mesh)
     bpy.ops.export_scene.fbx(
         filepath=str(output_fbx),
         use_selection=True,
-        object_types={"ARMATURE", "MESH"},
-        add_leaf_bones=False,
-        bake_anim=True,
+        object_types={"MESH"},
+        bake_anim=False,
         apply_unit_scale=True,
         bake_space_transform=False,
         axis_forward="-Z",
@@ -190,10 +230,11 @@ def main():
     print(
         json.dumps(
             {
-                "mesh": mesh.data.name,
-                "object": mesh.name,
+                "mesh": export_mesh.data.name,
+                "object": export_mesh.name,
                 "uv_layer": UV_LAYER_NAME,
                 "uv_marker": UV_MARKER,
+                "unity_forward": UNITY_FORWARD_NOTE,
                 "canvas_box": CANVAS_BOX,
                 "top": top,
                 "bottom": bottom,
