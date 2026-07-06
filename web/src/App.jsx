@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import { Check, Fish, Gauge, Palette, QrCode, RotateCcw, Send, Waves } from "lucide-react";
+import { Check, Fish, Gauge, Palette, QrCode, RotateCcw, Send, SlidersHorizontal, Waves, X } from "lucide-react";
 import { DrawingCanvas } from "./components/DrawingCanvas";
 import { QrPanel } from "./components/QrPanel";
 import { brushColors, brushSizeRange, fillToleranceRange } from "./config/fishOptions";
@@ -23,6 +23,7 @@ export function App() {
   const [message, setMessage] = useState("");
   const [isQrOpen, setIsQrOpen] = useState(false);
   const [isDrawingActive, setIsDrawingActive] = useState(false);
+  const [activeToolPanel, setActiveToolPanel] = useState("");
   const [shouldShakeNickname, setShouldShakeNickname] = useState(false);
 
   const nicknameError = useMemo(() => validateNickname(nickname), [nickname]);
@@ -34,6 +35,20 @@ export function App() {
     "nickname-input",
     shownNicknameError ? "invalid" : "",
     shouldShakeNickname ? "shake" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const composerClassName = [
+    "composer",
+    isDrawingActive ? "is-drawing" : "",
+    activeToolPanel ? "has-tools-popover" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const toolsPanelClassName = [
+    "panel tools-panel",
+    activeToolPanel ? "is-open" : "",
+    activeToolPanel ? `section-${activeToolPanel}` : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -76,7 +91,15 @@ export function App() {
 
   function handleColorChange(color) {
     setBrushColor(color);
-    setTool("brush");
+  }
+
+  function toggleToolPanel(panelName) {
+    setActiveToolPanel((currentPanel) => (currentPanel === panelName ? "" : panelName));
+  }
+
+  function clearDrawing() {
+    drawingRef.current?.clear();
+    setActiveToolPanel("");
   }
 
   function handleNicknameChange(event) {
@@ -112,7 +135,7 @@ export function App() {
         </button>
       </header>
 
-      <form className={isDrawingActive ? "composer is-drawing" : "composer"} onSubmit={handleSubmit}>
+      <form className={composerClassName} onSubmit={handleSubmit}>
         <DrawingCanvas
           brushColor={brushColor}
           brushSize={brushSize}
@@ -124,7 +147,58 @@ export function App() {
           tool={tool}
         />
 
-        <section className="panel tools-panel" aria-label="描画設定">
+        <div className="canvas-quick-actions" role="toolbar" aria-label="描画設定">
+          <button
+            aria-label="色"
+            aria-pressed={activeToolPanel === "colors"}
+            className={activeToolPanel === "colors" ? "icon-button selected" : "icon-button"}
+            onClick={() => toggleToolPanel("colors")}
+            title="色"
+            type="button"
+          >
+            <Palette size={19} />
+          </button>
+          <button
+            aria-label="ペンの太さ"
+            aria-pressed={activeToolPanel === "brush"}
+            className={activeToolPanel === "brush" ? "icon-button selected" : "icon-button"}
+            onClick={() => toggleToolPanel("brush")}
+            title="ペンの太さ"
+            type="button"
+          >
+            <SlidersHorizontal size={19} />
+          </button>
+          <button
+            aria-label="塗りつぶしの範囲"
+            aria-pressed={activeToolPanel === "fill"}
+            className={activeToolPanel === "fill" ? "icon-button selected" : "icon-button"}
+            onClick={() => toggleToolPanel("fill")}
+            title="塗りつぶしの範囲"
+            type="button"
+          >
+            <Gauge size={19} />
+          </button>
+          <button
+            aria-label="全部消す"
+            className="icon-button"
+            onClick={clearDrawing}
+            title="全部消す"
+            type="button"
+          >
+            <RotateCcw size={19} />
+          </button>
+        </div>
+
+        <section className={toolsPanelClassName} aria-label="描画設定">
+          <button
+            aria-label="閉じる"
+            className="icon-button panel-close-button"
+            onClick={() => setActiveToolPanel("")}
+            title="閉じる"
+            type="button"
+          >
+            <X size={18} />
+          </button>
           <div className="tool-section color-section">
             <div className="tool-section-title">
               <Palette size={18} />
@@ -135,7 +209,7 @@ export function App() {
               {brushColors.map((color) => (
                 <button
                   aria-label={color.name}
-                  className={brushColor === color.value && tool === "brush" ? "swatch selected" : "swatch"}
+                  className={brushColor === color.value ? "swatch selected" : "swatch"}
                   key={color.value}
                   onClick={() => handleColorChange(color.value)}
                   style={{ "--swatch": color.value }}
@@ -199,7 +273,7 @@ export function App() {
           <button
             aria-label="全部消す"
             className="icon-button clear-button"
-            onClick={() => drawingRef.current.clear()}
+            onClick={clearDrawing}
             title="全部消す"
             type="button"
           >

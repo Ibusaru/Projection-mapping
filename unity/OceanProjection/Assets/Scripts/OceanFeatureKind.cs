@@ -10,6 +10,7 @@ public enum OceanFeatureKind
 public enum OceanCinematicShotKind
 {
     FishFocus,
+    UnderwaterExplore,
     DroneOverview,
     SurfaceSkim,
     ReefDive,

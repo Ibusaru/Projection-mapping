@@ -8,7 +8,7 @@ public static class ReleasedFishPrefabSetup
 {
     private const string ScenePath = "Assets/Scenes/SampleScene.unity";
     private const string PrefabFolder = "Assets/Prefabs/ReleasedFish";
-    private const string KakukumaModelPath = "Assets/Models/\u30AB\u30AF\u30AF\u30DE.fbx";
+    private const string KakukumaModelPath = "Assets/Models/\u30AB\u30AF\u30AF\u30DE\u5B8C.fbx";
     private const string KurageModelPath = "Assets/Models/\u30AF\u30E9\u30B2\uFF12.fbx";
     private const string KakukumaPrefabPath = PrefabFolder + "/ReleasedKakukuma.prefab";
     private const string KuragePrefabPath = PrefabFolder + "/ReleasedKurage.prefab";
@@ -19,7 +19,7 @@ public static class ReleasedFishPrefabSetup
         EditorApplication.delayCall += Run;
     }
 
-    private static void Run()
+    public static void Run()
     {
         if (EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling)
         {

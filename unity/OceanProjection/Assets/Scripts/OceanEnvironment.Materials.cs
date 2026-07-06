@@ -6,12 +6,14 @@ public partial class OceanEnvironment
 
     private void CreateMaterials()
     {
-        seabedMaterial = MakeMaterial("Reef White Sand", new Color(0.86f, 0.82f, 0.66f, 1f), 0f);
+        seabedMaterial = MakeMaterial("Reef White Sand", new Color(0.94f, 0.9f, 0.72f, 1f), 0f);
         waterMaterial = MakeMaterial("Bright Reef Water Surface", waterColor, 0.72f);
-        rockMaterial = MakeMaterial("Reef Rock", new Color(0.42f, 0.52f, 0.43f, 1f), 0f);
-        coralMaterial = MakeMaterial("Warm Reef Coral", new Color(0.96f, 0.58f, 0.44f, 1f), 0f);
-        whiteCoralMaterial = MakeMaterial("Pale Branch Coral", new Color(0.88f, 0.84f, 0.7f, 1f), 0f);
-        causticLineMaterial = MakeUnlitMaterial("Thin Reef Caustics", new Color(0.46f, 0.86f, 0.9f, 0.14f));
+        rockMaterial = MakeMaterial("Reef Rock", new Color(0.5f, 0.62f, 0.52f, 1f), 0f);
+        coralMaterial = MakeMaterial("Warm Reef Coral", new Color(1f, 0.66f, 0.5f, 1f), 0f);
+        whiteCoralMaterial = MakeMaterial("Pale Branch Coral", new Color(0.94f, 0.9f, 0.74f, 1f), 0f);
+        shorelineMaterial = MakeMaterial("Dry Shore Sand", new Color(0.95f, 0.84f, 0.58f, 1f), 0f);
+        shorePlantMaterial = MakeMaterial("Sparse Shore Grass", new Color(0.48f, 0.66f, 0.36f, 1f), 0f);
+        causticLineMaterial = MakeUnlitMaterial("Thin Reef Caustics", new Color(0.66f, 0.95f, 1f, 0.22f));
         foamMaterial = MakeUnlitMaterial("Soft Reef Surface Sparkle", foamColor);
     }
 

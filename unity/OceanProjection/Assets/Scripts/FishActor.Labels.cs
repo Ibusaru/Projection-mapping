@@ -11,6 +11,11 @@ public partial class FishActor
     private const float MinNicknameTagRetreatSeconds = 0.24f;
     private const float StickyNicknameTagOverflowTolerance = 0.025f;
     private const float MaxNicknameTextViewportWidth = 0.46f;
+    private static readonly Color NicknameTagTextColor = Color.black;
+    private static readonly Color NicknameTagOutlineColor = new Color(1f, 1f, 1f, 1f);
+    private static readonly Color NicknameTagShadowColor = new Color(0f, 0f, 0f, 1f);
+    private static readonly Color NicknameTagLineStartColor = new Color(0.02f, 0.82f, 1f, 1f);
+    private static readonly Color NicknameTagLineEndColor = new Color(0.02f, 0.14f, 0.38f, 1f);
     private static TMP_FontAsset cachedNicknameJapaneseFontAsset;
     private static bool attemptedNicknameJapaneseFontAsset;
     private static bool warnedNicknameJapaneseFontFallback;
@@ -132,7 +137,7 @@ public partial class FishActor
         TextMeshPro label = labelObject.AddComponent<TextMeshPro>();
         label.alignment = TextAlignmentOptions.Center;
         label.fontSize = nicknameTagFontSize;
-        label.color = new Color(0.9f, 1f, 1f, 0.92f);
+        label.color = WithAlpha(NicknameTagTextColor, 0.94f);
         label.richText = false;
         label.textWrappingMode = TextWrappingModes.NoWrap;
         label.overflowMode = TextOverflowModes.Overflow;
@@ -226,7 +231,7 @@ public partial class FishActor
         label.alignment = TextAlignment.Center;
         label.fontSize = 128;
         label.characterSize = NicknameFallbackCharacterSize();
-        label.color = new Color(0.9f, 1f, 1f, 0.96f);
+        label.color = WithAlpha(NicknameTagTextColor, 0.98f);
         label.text = Nickname;
 
         Font font = ResolveNicknameFallbackFont();
@@ -295,8 +300,8 @@ public partial class FishActor
             }
         }
 
-        nicknameTagLine.startColor = new Color(0.88f, 1f, 1f, 0.72f);
-        nicknameTagLine.endColor = new Color(0.88f, 1f, 1f, 0.92f);
+        nicknameTagLine.startColor = WithAlpha(NicknameTagLineStartColor, 0.78f);
+        nicknameTagLine.endColor = WithAlpha(NicknameTagLineEndColor, 0.96f);
         nicknameTagLine.enabled = false;
     }
 
@@ -521,8 +526,8 @@ public partial class FishActor
         nicknameTagLine.SetPosition(0, anchorPosition);
         nicknameTagLine.SetPosition(1, currentElbow);
         nicknameTagLine.SetPosition(2, currentEnd);
-        nicknameTagLine.startColor = new Color(0.88f, 1f, 1f, 0.56f * reveal);
-        nicknameTagLine.endColor = new Color(0.88f, 1f, 1f, 0.92f * reveal);
+        nicknameTagLine.startColor = WithAlpha(NicknameTagLineStartColor, 0.7f * reveal);
+        nicknameTagLine.endColor = WithAlpha(NicknameTagLineEndColor, 0.98f * reveal);
         nicknameTagLine.enabled = reveal > 0.01f;
 
         float textReveal = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.56f, 1f, reveal));
@@ -841,7 +846,7 @@ public partial class FishActor
         if (nicknameLabel != null)
         {
             nicknameLabel.text = Nickname;
-            nicknameLabel.color = new Color(0.9f, 1f, 1f, 0.92f * alpha);
+            nicknameLabel.color = WithAlpha(NicknameTagTextColor, 0.94f * alpha);
             nicknameLabel.gameObject.SetActive(showText && !showFallback);
             Renderer labelRenderer = nicknameLabel.GetComponent<Renderer>();
             if (labelRenderer != null)
@@ -853,6 +858,7 @@ public partial class FishActor
             {
                 nicknameLabel.ForceMeshUpdate();
                 RefreshNicknameTmpMaterial(nicknameLabel);
+                ApplyNicknameTmpReadableMaterial(nicknameLabel.fontSharedMaterial, alpha);
                 PlaceNicknameLabel(nicknameLabel.transform, labelRenderer, layout, true);
             }
         }
@@ -860,7 +866,7 @@ public partial class FishActor
         if (nicknameFallbackLabel != null)
         {
             nicknameFallbackLabel.text = Nickname;
-            nicknameFallbackLabel.color = new Color(0.9f, 1f, 1f, 0.96f * alpha);
+            nicknameFallbackLabel.color = WithAlpha(NicknameTagTextColor, 0.98f * alpha);
             RefreshNicknameFallbackMaterial();
             nicknameFallbackLabel.gameObject.SetActive(showText && showFallback);
             if (nicknameFallbackRenderer != null)
@@ -1302,6 +1308,7 @@ public partial class FishActor
             material.SetInt("_ZTest", (int)UnityEngine.Rendering.CompareFunction.Always);
         }
 
+        ApplyNicknameTmpReadableMaterial(material, 1f);
         return material;
     }
 
@@ -1329,6 +1336,69 @@ public partial class FishActor
         {
             label.fontSharedMaterial.SetTexture("_MainTex", texture);
         }
+
+        ApplyNicknameTmpReadableMaterial(label.fontSharedMaterial, 1f);
+    }
+
+    private static void ApplyNicknameTmpReadableMaterial(Material material, float alpha)
+    {
+        if (material == null)
+        {
+            return;
+        }
+
+        if (material.HasProperty("_FaceColor"))
+        {
+            material.SetColor("_FaceColor", WithAlpha(NicknameTagTextColor, Mathf.Clamp01(alpha)));
+        }
+
+        if (material.HasProperty("_OutlineColor"))
+        {
+            material.EnableKeyword("OUTLINE_ON");
+            material.SetColor("_OutlineColor", WithAlpha(NicknameTagOutlineColor, Mathf.Clamp01(alpha) * 0.96f));
+        }
+
+        if (material.HasProperty("_OutlineWidth"))
+        {
+            material.SetFloat("_OutlineWidth", 0.26f);
+        }
+
+        if (material.HasProperty("_OutlineSoftness"))
+        {
+            material.SetFloat("_OutlineSoftness", 0.025f);
+        }
+
+        if (material.HasProperty("_UnderlayColor"))
+        {
+            material.EnableKeyword("UNDERLAY_ON");
+            material.SetColor("_UnderlayColor", WithAlpha(NicknameTagShadowColor, Mathf.Clamp01(alpha) * 0.72f));
+        }
+
+        if (material.HasProperty("_UnderlayOffsetX"))
+        {
+            material.SetFloat("_UnderlayOffsetX", 0.55f);
+        }
+
+        if (material.HasProperty("_UnderlayOffsetY"))
+        {
+            material.SetFloat("_UnderlayOffsetY", -0.55f);
+        }
+
+        if (material.HasProperty("_UnderlayDilate"))
+        {
+            material.SetFloat("_UnderlayDilate", 0.18f);
+        }
+
+        if (material.HasProperty("_UnderlaySoftness"))
+        {
+            material.SetFloat("_UnderlaySoftness", 0.18f);
+        }
+    }
+
+    private static Color WithAlpha(Color color, float alpha)
+    {
+        color.a = Mathf.Clamp01(alpha);
+        return color;
     }
 
     private void RefreshNicknameFallbackMaterial()

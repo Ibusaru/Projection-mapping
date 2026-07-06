@@ -15,16 +15,16 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.028, g: 0.2, b: 0.28, a: 1}
+  m_FogColor: {r: 0.22533877, g: 0.69251025, b: 0.7952592, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.031
+  m_FogDensity: 0.006134464
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.22, g: 0.5, b: 0.58, a: 1}
-  m_AmbientEquatorColor: {r: 0.11, g: 0.34, b: 0.4, a: 1}
-  m_AmbientGroundColor: {r: 0.04, g: 0.16, b: 0.21, a: 1}
-  m_AmbientIntensity: 0.72
-  m_AmbientMode: 0
+  m_AmbientSkyColor: {r: 0.58, g: 0.88, b: 0.96, a: 1}
+  m_AmbientEquatorColor: {r: 0.24, g: 0.66, b: 0.76, a: 1}
+  m_AmbientGroundColor: {r: 0.2, g: 0.38, b: 0.34, a: 1}
+  m_AmbientIntensity: 1.22
+  m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -157,7 +157,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.07, g: 0.36, b: 0.46, a: 1}
+  m_BackGroundColor: {r: 0.23848775, g: 0.7171646, b: 0.8174481, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -223,8 +223,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
@@ -267,13 +267,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f05bccd07335834987fa82c00119a6e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanCameraRig
   target: {fileID: 0}
   center: {x: 0, y: -0.8, z: 0}
   orbitSize: {x: 34, y: 7, z: 24}
   orbitSeconds: 58
   lookAhead: 4.5
+  cameraMaxTurnDegreesPerSecond: 72
   useCinematicShots: 1
   oceanEnvironment: {fileID: 0}
   cinematicShotSeconds: {x: 10, y: 17}
@@ -284,21 +285,29 @@ MonoBehaviour:
   cinematicRotationSmooth: 1.65
   cinematicMaxSpeed: 18
   cinematicUnderwaterMaxSpeed: 5.2
-  cinematicDroneHeightScale: 0.22
+  cinematicExploreInterestLookBlend: 0.46
+  cinematicDroneHeightScale: 0.54
+  cinematicDroneMinimumHeightScale: 0.5
+  cinematicDroneFieldOfView: 64
+  cinematicDefaultFieldOfView: 48
+  cinematicFieldOfViewSmooth: 1.4
+  cinematicDronePathVariation: 0.34
+  cinematicDroneLookVariation: 0.46
+  cinematicDroneLateralSweep: 0.2
   cinematicSurfaceHeight: 1.35
   focusFish: 1
   targetRefreshSeconds: 5
   prioritizeReleasedFish: 1
-  followDistance: 3.5
+  followDistance: 5.2
   sideOffset: 0.48
   heightOffset: 0.55
   forwardLookAhead: 2.4
-  minFocusDistance: 3.2
-  maxFocusDistance: 8.5
-  focusRadiusMultiplier: 3
-  releasedFishApproachDistance: 3.15
-  releasedFishFocusRadiusMultiplier: 0.95
-  minReleasedFishFocusDistance: 3
+  minFocusDistance: 4.8
+  maxFocusDistance: 12.5
+  focusRadiusMultiplier: 3.6
+  releasedFishApproachDistance: 5.3
+  releasedFishFocusRadiusMultiplier: 1.35
+  minReleasedFishFocusDistance: 4.8
   positionSmoothTime: 2.8
   rotationSmooth: 1.45
   driftAmplitude: 0.34
@@ -306,10 +315,22 @@ MonoBehaviour:
   maximumCameraSpeed: 5.8
   focusTransitionSeconds: 1.45
   focusTransitionMaxSpeedMultiplier: 1.35
-  surfaceDiveSmoothTime: 0.75
-  surfaceDiveMaxSpeed: 14
-  surfaceDiveDiagonalOffset: 5.5
+  surfaceDiveSmoothTime: 0.075
+  surfaceDiveMaxSpeed: 92
+  surfaceDiveDiagonalOffset: 10
+  surfaceDiveDuration: 0.82
+  surfaceDiveArcHeight: 4.5
+  surfaceDiveArcForwardOffset: 18
+  surfaceDiveMinimumTargetDepth: 4.6
   surfaceDiveDepthTrigger: 0.9
+  surfaceDiveFieldOfViewKick: 16
+  surfaceDiveFieldOfViewSmooth: 8.5
+  showSurfaceDiveSpeedLines: 1
+  surfaceDiveSpeedLineCount: 22
+  surfaceDiveSpeedLineDistance: 2.6
+  surfaceDiveSpeedLineLength: 0.48
+  surfaceDiveSpeedLineWidth: 0.022
+  surfaceDiveSpeedLineColor: {r: 0.7, g: 0.98, b: 1, a: 0.78}
   avoidSeabed: 1
   cameraSeabedClearance: 2.25
   cameraSeabedProbeDistance: 2.6
@@ -319,21 +340,34 @@ MonoBehaviour:
   schoolInterestDistance: 72
   schoolNeighborRadius: 6.5
   minimumSchoolSize: 5
-  fishApproachDistance: 4.1
-  schoolApproachDistance: 7.4
-  fishObserveSeconds: {x: 9, y: 14}
-  goodAngleFishObserveSeconds: {x: 12, y: 18}
+  fishApproachDistance: 5.9
+  schoolApproachDistance: 9.2
+  fishObserveSeconds: {x: 6.5, y: 7.5}
+  goodAngleFishObserveSeconds: {x: 6.5, y: 7.5}
   schoolObserveSeconds: {x: 5.5, y: 9}
-  focusObserveWaitForTagSeconds: 18
-  cruiseSeconds: {x: 4, y: 8}
+  focusObserveWaitForTagSeconds: 1.5
+  fishObserveStartDistance: 6.8
+  cruiseSeconds: {x: 7, y: 12}
+  cruiseInterestLookBlend: 0.42
+  cruiseInterestApproachBlend: 0.46
+  roamLookSweepBlend: 0.72
+  roamLookSweepDistance: 11
+  roamLookSweepSideOffset: 7.4
+  roamLookSweepVerticalOffset: 1.3
+  roamLookSweepSpeed: 0.58
   diverLookAhead: 1.8
   schoolRadiusPadding: 1.35
   relaxedCameraSpeed: 2.7
   approachCameraSpeed: 4.4
-  maxContinuousFishFocusSeconds: 56
+  maxContinuousFishFocusSeconds: 8
   recentFishFocusStackSize: 6
   recentFishFocusPenalty: 10
   currentFishRepeatPenalty: 18
+  showNearbyReleasedFishTagsWhileRoaming: 1
+  nearbyReleasedFishTagDistance: 6.4
+  nearbyReleasedFishTagHysteresis: 1.2
+  nearbyReleasedFishTagForwardDot: 0.18
+  maxNearbyReleasedFishTags: 2
   frontViewAngleRange: {x: 10, y: 22}
   diagonalViewAngleRange: {x: 26, y: 48}
   sideViewAngleRange: {x: 58, y: 72}
@@ -450,8 +484,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
@@ -496,21 +530,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83ef4a7f779346e4893b9733271df1b6, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanEnvironment
-  oceanSize: {x: 140, y: 96}
+  oceanSize: {x: 560, y: 420}
   seabedY: -8
   waterSurfaceY: 4.5
-  seabedResolution: 128
+  seabedResolution: 160
   decorationSeed: 4217
+  activeAreaSize: {x: 100, y: 68}
+  activeDecorationPadding: 18
+  createOpenOceanBackdrop: 1
+  openOceanBackdropScale: 2.4
+  createVisibleShoreline: 1
+  shorelineWidth: 120
+  shorelineWaterInset: 4.5
+  shorelineFoamLineCount: 3
+  shorelineResolution: 40
+  outerRockCount: 260
+  outerCoralCount: 320
+  shoreAccentCount: 95
   seabedRelief: 3.1
   basinCount: 5
   reefMoundCount: 7
   reefDecorationBias: 0.74
-  waterColor: {r: 0.075, g: 0.56, b: 0.7, a: 0.5}
-  deepFogColor: {r: 0.028, g: 0.2, b: 0.28, a: 1}
-  fogDensity: 0.031
-  waterResolution: 96
+  waterColor: {r: 0.13, g: 0.72, b: 0.9, a: 0.42}
+  deepFogColor: {r: 0.08, g: 0.42, b: 0.55, a: 1}
+  fogDensity: 0.014
+  waterResolution: 128
   waveAmplitude: 0.32
   waveSpeed: 0.68
   waveLength: 0.32
@@ -574,8 +620,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_IsGlobal: 1
   priority: 0
   blendDistance: 0
@@ -624,7 +670,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cafcca7ed0660f945a1b2c0d2930f079, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishSpawner
   apiClient: {fileID: 0}
   clownfishPrefab: {fileID: 3402341388813766529, guid: c094647e7ad0719499631177f863d1b9, type: 3}
@@ -641,6 +687,8 @@ MonoBehaviour:
   releasedFishSpawnSpread: {x: 24, y: 6, z: 16}
   minimumReleasedFishSpawnDistanceFromCamera: 9
   spawnPositionAttempts: 18
+  oceanEnvironment: {fileID: 0}
+  spawnSeabedClearance: 1.1
   spawnDefaultFishOnStart: 1
   defaultFishCount: 230
   defaultFishTargetLengthRange: {x: 0.18, y: 0.38}
@@ -665,10 +713,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5893cb158db21340be1253826e2d18f, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishApiClient
-  supabaseUrl:
-  supabaseAnonKey:
+  supabaseUrl: 
+  supabaseAnonKey: 
   pollingSeconds: 8
   fetchLimit: 100
   catchUpPageLimit: 6

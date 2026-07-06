@@ -4,6 +4,7 @@ public partial class OceanEnvironment
 {
     public float WaterSurfaceY => waterSurfaceY;
     public Vector2 OceanSize => oceanSize;
+    public Vector2 ActiveAreaSize => activeAreaSize;
 
     public float SampleSeabedHeight(float x, float z)
     {
@@ -48,8 +49,9 @@ public partial class OceanEnvironment
 
         for (int i = 0; i < attempts; i++)
         {
-            float x = Random.Range(-oceanSize.x * 0.5f * inset, oceanSize.x * 0.5f * inset);
-            float z = Random.Range(-oceanSize.y * 0.5f * inset, oceanSize.y * 0.5f * inset);
+            Vector2 sampleSize = ActiveDecorationSampleSize(inset);
+            float x = Random.Range(-sampleSize.x * 0.5f, sampleSize.x * 0.5f);
+            float z = Random.Range(-sampleSize.y * 0.5f, sampleSize.y * 0.5f);
             Vector3 position = SampleSeabedPosition(x, z);
             if (i == 0)
             {
@@ -68,5 +70,14 @@ public partial class OceanEnvironment
     private Vector3 SampleSeabedPosition(float x, float z)
     {
         return new Vector3(x, SampleSeabedHeight(x, z), z);
+    }
+
+    private Vector2 ActiveDecorationSampleSize(float inset)
+    {
+        float safeInset = Mathf.Max(0.05f, inset);
+        return new Vector2(
+            Mathf.Min(oceanSize.x * safeInset, activeAreaSize.x + activeDecorationPadding * 2f),
+            Mathf.Min(oceanSize.y * safeInset, activeAreaSize.y + activeDecorationPadding * 2f)
+        );
     }
 }

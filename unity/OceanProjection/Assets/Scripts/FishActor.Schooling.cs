@@ -3,6 +3,10 @@ using UnityEngine;
 
 public partial class FishActor
 {
+    private static readonly int SwimSpeedAnimatorParameter = Animator.StringToHash("swimSpeed");
+    private static readonly int TurnAnimatorParameter = Animator.StringToHash("turn");
+    private static readonly int SwimAnimatorState = Animator.StringToHash("Swim");
+
     private void UpdateSwimAnimation()
     {
         float baseReferenceSpeed = Mathf.Max(0.1f, baseSpeed * animationSpeedAtBaseSwim);
@@ -29,6 +33,17 @@ public partial class FishActor
             Animator animator = animators[i];
             if (animator != null)
             {
+                if (i < animatorHasSwimSpeedParameter.Length && animatorHasSwimSpeedParameter[i])
+                {
+                    animator.SetFloat(SwimSpeedAnimatorParameter, Mathf.Lerp(0.48f, 1f, currentSwimEffort));
+                }
+
+                if (i < animatorHasTurnParameter.Length && animatorHasTurnParameter[i])
+                {
+                    float neutralTurnSway = Mathf.Sin((Time.time + schoolingNoiseSeed) * tailSwayFrequency * 0.28f) * 0.055f;
+                    animator.SetFloat(TurnAnimatorParameter, Mathf.Clamp01(0.5f + neutralTurnSway));
+                }
+
                 animator.speed = animatorBaseSpeeds[i] * currentAnimationSpeed;
             }
         }
@@ -37,11 +52,11 @@ public partial class FishActor
     private void CacheProceduralAnimationBones()
     {
         Transform searchRoot = modelRoot != null ? modelRoot : transform;
-        proceduralTailRoot = FindChildByNamePart(searchRoot, "tail");
-        proceduralSpineRoot = FindChildByNamePart(searchRoot, "spine_back");
+        proceduralTailRoot = FindChildByNameParts(searchRoot, "tail", "caudal", "尾", "しっぽ");
+        proceduralSpineRoot = FindChildByNameParts(searchRoot, "spine_back", "spine");
         if (proceduralSpineRoot == null)
         {
-            proceduralSpineRoot = FindChildByNamePart(searchRoot, "spine");
+            proceduralSpineRoot = FindChildByNameParts(searchRoot, "body", "root");
         }
 
         proceduralTailBaseLocalRotation = proceduralTailRoot != null
@@ -104,6 +119,44 @@ public partial class FishActor
         }
 
         return null;
+    }
+
+    private static Transform FindChildByNameParts(Transform root, params string[] nameParts)
+    {
+        if (nameParts == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < nameParts.Length; i++)
+        {
+            Transform match = FindChildByNamePart(root, nameParts[i]);
+            if (match != null)
+            {
+                return match;
+            }
+        }
+
+        return null;
+    }
+
+    private static bool HasAnimatorParameter(Animator animator, int parameterHash)
+    {
+        if (animator == null)
+        {
+            return false;
+        }
+
+        AnimatorControllerParameter[] parameters = animator.parameters;
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            if (parameters[i].nameHash == parameterHash)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private Vector3 BlendSchoolingDirection(Vector3 direction)

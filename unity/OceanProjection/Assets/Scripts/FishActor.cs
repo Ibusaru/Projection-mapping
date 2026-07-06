@@ -157,6 +157,8 @@ public partial class FishActor : MonoBehaviour
     private Quaternion proceduralSpineBaseLocalRotation = Quaternion.identity;
     private Animator[] animators = new Animator[0];
     private float[] animatorBaseSpeeds = new float[0];
+    private bool[] animatorHasSwimSpeedParameter = new bool[0];
+    private bool[] animatorHasTurnParameter = new bool[0];
     private float currentSpeed;
     private float currentAnimationSpeed = 1f;
     private float currentSwimEffort = 0.5f;
@@ -918,6 +920,8 @@ public partial class FishActor : MonoBehaviour
     {
         animators = GetComponentsInChildren<Animator>(true);
         animatorBaseSpeeds = new float[animators.Length];
+        animatorHasSwimSpeedParameter = new bool[animators.Length];
+        animatorHasTurnParameter = new bool[animators.Length];
 
         for (int i = 0; i < animators.Length; i++)
         {
@@ -928,6 +932,26 @@ public partial class FishActor : MonoBehaviour
 
             if (animator != null)
             {
+                animator.enabled = true;
+                animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                animatorHasSwimSpeedParameter[i] = HasAnimatorParameter(animator, SwimSpeedAnimatorParameter);
+                animatorHasTurnParameter[i] = HasAnimatorParameter(animator, TurnAnimatorParameter);
+                if (animatorHasSwimSpeedParameter[i])
+                {
+                    animator.SetFloat(SwimSpeedAnimatorParameter, 1f);
+                }
+
+                if (animatorHasTurnParameter[i])
+                {
+                    animator.SetFloat(TurnAnimatorParameter, 0.5f);
+                }
+
+                if (animator.runtimeAnimatorController != null && animator.HasState(0, SwimAnimatorState))
+                {
+                    animator.Play(SwimAnimatorState, 0, Random.value);
+                    animator.Update(0f);
+                }
+
                 animator.speed = animatorBaseSpeeds[i] * currentAnimationSpeed;
             }
         }

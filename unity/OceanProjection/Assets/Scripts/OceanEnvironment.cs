@@ -7,11 +7,25 @@ using UnityEditor;
 public partial class OceanEnvironment : MonoBehaviour
 {
     [Header("Layout")]
-    [SerializeField] private Vector2 oceanSize = new Vector2(140f, 96f);
+    [SerializeField] private Vector2 oceanSize = new Vector2(560f, 420f);
     [SerializeField] private float seabedY = -8f;
     [SerializeField] private float waterSurfaceY = 4.5f;
     [SerializeField, Range(16, 160)] private int seabedResolution = 128;
     [SerializeField] private int decorationSeed = 4217;
+
+    [Header("Unused Area Fill")]
+    [SerializeField] private Vector2 activeAreaSize = new Vector2(100f, 68f);
+    [SerializeField] private float activeDecorationPadding = 18f;
+    [SerializeField] private bool createOpenOceanBackdrop = true;
+    [SerializeField, Range(1.2f, 4f)] private float openOceanBackdropScale = 2.4f;
+    [SerializeField] private bool createVisibleShoreline = true;
+    [SerializeField, Range(8f, 180f)] private float shorelineWidth = 120f;
+    [SerializeField, Range(0f, 12f)] private float shorelineWaterInset = 4.5f;
+    [SerializeField, Range(0, 8)] private int shorelineFoamLineCount = 3;
+    [SerializeField, Range(8, 80)] private int shorelineResolution = 40;
+    [SerializeField] private int outerRockCount = 260;
+    [SerializeField] private int outerCoralCount = 320;
+    [SerializeField] private int shoreAccentCount = 95;
 
     [Header("Seabed Terrain")]
     [SerializeField, Range(0f, 6f)] private float seabedRelief = 3.6f;
@@ -20,9 +34,9 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float reefDecorationBias = 0.74f;
 
     [Header("Water")]
-    [SerializeField] private Color waterColor = new Color(0.075f, 0.56f, 0.7f, 0.5f);
-    [SerializeField] private Color deepFogColor = new Color(0.028f, 0.2f, 0.28f, 1f);
-    [SerializeField] private float fogDensity = 0.031f;
+    [SerializeField] private Color waterColor = new Color(0.13f, 0.72f, 0.9f, 0.42f);
+    [SerializeField] private Color deepFogColor = new Color(0.08f, 0.42f, 0.55f, 1f);
+    [SerializeField] private float fogDensity = 0.014f;
     [SerializeField, Range(16, 128)] private int waterResolution = 96;
     [SerializeField] private float waveAmplitude = 0.32f;
     [SerializeField] private float waveSpeed = 0.68f;
@@ -41,7 +55,7 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private Color foamColor = new Color(0.86f, 0.98f, 1f, 0.36f);
 
     [Header("Decorations")]
-    [SerializeField] private int rockCount = 52;
+    [SerializeField] private int rockCount = 68;
     [SerializeField] private int simpleCoralCount = 72;
     [SerializeField] private int branchCoralCount = 96;
     [SerializeField] private int bubbleColumnCount = 5;
@@ -59,6 +73,8 @@ public partial class OceanEnvironment : MonoBehaviour
     private Material rockMaterial;
     private Material coralMaterial;
     private Material whiteCoralMaterial;
+    private Material shorelineMaterial;
+    private Material shorePlantMaterial;
     private Material causticLineMaterial;
     private Material foamMaterial;
     private Mesh seabedMesh;
@@ -82,6 +98,16 @@ public partial class OceanEnvironment : MonoBehaviour
         seabedRelief = Mathf.Max(0f, seabedRelief);
         basinCount = Mathf.Max(0, basinCount);
         reefMoundCount = Mathf.Max(0, reefMoundCount);
+        activeAreaSize = new Vector2(Mathf.Max(1f, activeAreaSize.x), Mathf.Max(1f, activeAreaSize.y));
+        activeDecorationPadding = Mathf.Max(0f, activeDecorationPadding);
+        openOceanBackdropScale = Mathf.Max(1f, openOceanBackdropScale);
+        shorelineWidth = Mathf.Max(1f, shorelineWidth);
+        shorelineWaterInset = Mathf.Max(0f, shorelineWaterInset);
+        shorelineFoamLineCount = Mathf.Max(0, shorelineFoamLineCount);
+        shorelineResolution = Mathf.Max(4, shorelineResolution);
+        outerRockCount = Mathf.Max(0, outerRockCount);
+        outerCoralCount = Mathf.Max(0, outerCoralCount);
+        shoreAccentCount = Mathf.Max(0, shoreAccentCount);
         needsRebuild = true;
     }
 
@@ -122,6 +148,8 @@ public partial class OceanEnvironment : MonoBehaviour
             CreateWaterSurface();
         }
 
+        CreateOpenOceanBackdrop();
+        CreateVisibleShoreline();
         CreateSunlight();
         CreateCausticLines();
         CreateSurfaceHighlights();
@@ -137,10 +165,11 @@ public partial class OceanEnvironment : MonoBehaviour
         RenderSettings.fogColor = deepFogColor;
         RenderSettings.fogDensity = fogDensity;
         RenderSettings.skybox = null;
-        RenderSettings.ambientSkyColor = new Color(0.22f, 0.5f, 0.58f);
-        RenderSettings.ambientEquatorColor = new Color(0.11f, 0.34f, 0.4f);
-        RenderSettings.ambientGroundColor = new Color(0.04f, 0.16f, 0.21f);
-        RenderSettings.ambientIntensity = 0.72f;
+        RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
+        RenderSettings.ambientSkyColor = new Color(0.58f, 0.88f, 0.96f);
+        RenderSettings.ambientEquatorColor = new Color(0.24f, 0.66f, 0.76f);
+        RenderSettings.ambientGroundColor = new Color(0.2f, 0.38f, 0.34f);
+        RenderSettings.ambientIntensity = 1.22f;
 
         if (!tintCameras)
         {
@@ -150,7 +179,7 @@ public partial class OceanEnvironment : MonoBehaviour
         foreach (Camera camera in Camera.allCameras)
         {
             camera.clearFlags = CameraClearFlags.SolidColor;
-            camera.backgroundColor = new Color(0.07f, 0.36f, 0.46f, 1f);
+            camera.backgroundColor = new Color(0.42f, 0.78f, 0.92f, 1f);
         }
 
         ApplyDepthAwareFog();
@@ -163,22 +192,26 @@ public partial class OceanEnvironment : MonoBehaviour
             ? transform.InverseTransformPoint(camera.transform.position).y
             : waterSurfaceY;
         float depth = Mathf.Max(0f, waterSurfaceY - localCameraY);
-        float depthBlend = Smooth01(Mathf.InverseLerp(0.4f, 14f, depth));
+        float depthBlend = Smooth01(Mathf.InverseLerp(1.5f, 24f, depth));
         float aboveWaterBlend = Smooth01(Mathf.InverseLerp(waterSurfaceY + 0.5f, waterSurfaceY + 8f, localCameraY));
-        float densityMultiplier = Mathf.Lerp(0.85f, 2.65f, depthBlend);
-        densityMultiplier = Mathf.Lerp(densityMultiplier, 0.52f, aboveWaterBlend);
+        float densityMultiplier = Mathf.Lerp(0.42f, 1.42f, depthBlend);
+        densityMultiplier = Mathf.Lerp(densityMultiplier, 0.18f, aboveWaterBlend);
+        Color shallowColor = new Color(0.24f, 0.72f, 0.82f, 1f);
+        Color skyColor = new Color(0.45f, 0.82f, 0.94f, 1f);
 
         RenderSettings.fog = true;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
         RenderSettings.fogDensity = Mathf.Max(0f, fogDensity * densityMultiplier);
-        RenderSettings.fogColor = Color.Lerp(new Color(0.07f, 0.36f, 0.46f, 1f), deepFogColor, Mathf.Lerp(0.3f, 1f, depthBlend));
+        RenderSettings.fogColor = Color.Lerp(shallowColor, deepFogColor, Mathf.Lerp(0.08f, 0.72f, depthBlend));
+        RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, skyColor, aboveWaterBlend * 0.86f);
 
         if (!tintCameras)
         {
             return;
         }
 
-        Color cameraColor = Color.Lerp(new Color(0.07f, 0.36f, 0.46f, 1f), deepFogColor, depthBlend * 0.82f);
+        Color cameraColor = Color.Lerp(shallowColor, deepFogColor, depthBlend * 0.52f);
+        cameraColor = Color.Lerp(cameraColor, skyColor, aboveWaterBlend * 0.9f);
         foreach (Camera item in Camera.allCameras)
         {
             item.clearFlags = CameraClearFlags.SolidColor;
