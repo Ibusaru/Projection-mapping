@@ -159,13 +159,6 @@ public partial class FishActor
         Texture2D texture = DownloadHandlerTexture.GetContent(request);
         if (releasedFish)
         {
-            if (useProjectedDrawingTextureForReleasedFish && ApplyProjectedDrawingTexture(texture))
-            {
-                appliedTextureUrl = textureUrl;
-                textureCoroutine = null;
-                yield break;
-            }
-
             ApplyReleasedDrawingTexture(texture);
             appliedTextureUrl = textureUrl;
             textureCoroutine = null;
@@ -191,27 +184,32 @@ public partial class FishActor
 
     private void ApplyReleasedDrawingTexture(Texture2D texture)
     {
-        Renderer[] visualTextureRenderers = FishRendererUtility.GetVisualRenderers(gameObject, true);
-        if (visualTextureRenderers.Length > 0)
+        if (texture == null)
         {
-            Texture2D modelTexture = remapDrawingTextureForModel
-                ? DrawingTextureMapper.CreateModelTexture(texture, remappedDrawingTextureSize, drawingAlphaThreshold)
-                : texture;
-            textureRenderers = visualTextureRenderers;
-            colorRenderers = visualTextureRenderers;
-            subColorRenderers = visualTextureRenderers;
-            ApplyTexture(textureRenderers, modelTexture);
-            Debug.LogWarning($"FishActor: projection was unavailable for '{Nickname}', applied drawing to the 3D model instead of using a flat fallback.");
             return;
         }
 
+        if (ApplyAuthoredUvDrawingTexture(texture) || ApplyGeneratedUvDrawingTexture(texture) || ApplyProjectedDrawingTexture(texture))
+        {
+            return;
+        }
+
+        Debug.LogWarning($"FishActor: could not apply '{Nickname}' drawing to the 3D fish model; using flat fallback visual.");
+        ApplyFlatReleasedDrawingTexture(texture);
+    }
+
+    private void ApplyFlatReleasedDrawingTexture(Texture2D texture)
+    {
         Bounds visualBounds = TryGetVisualBounds(out Bounds bounds)
             ? bounds
             : new Bounds(transform.position, new Vector3(1.8f, 0.9f, 0.1f));
 
         Renderer[] originalRenderers = FishRendererUtility.GetVisualRenderers(gameObject, false);
+        Texture2D displayTexture = DrawingTextureMapper.CreateDisplayTexture(texture) ?? texture;
+        drawingProjectionRoot = null;
+        projectedDrawingMaterials = new Material[0];
         drawingFishVisual = EnsureDrawingFishVisual();
-        drawingFishVisual.Apply(texture, visualBounds);
+        drawingFishVisual.Apply(displayTexture, visualBounds);
 
         for (int i = 0; i < originalRenderers.Length; i++)
         {
@@ -226,7 +224,27 @@ public partial class FishActor
         colorRenderers = new[] { drawingRenderer };
         subColorRenderers = colorRenderers;
         textureRenderers = colorRenderers;
-        Debug.LogWarning($"FishActor: no 3D renderers were found for '{Nickname}', so the emergency flat drawing fallback was used.");
+    }
+
+    private void HideDrawingFishVisual()
+    {
+        if (drawingFishVisual == null)
+        {
+            drawingFishVisual = GetComponentInChildren<DrawingFishVisual>(true);
+        }
+
+        if (drawingFishVisual == null)
+        {
+            return;
+        }
+
+        Renderer renderer = drawingFishVisual.Renderer;
+        if (renderer != null)
+        {
+            renderer.enabled = false;
+        }
+
+        drawingFishVisual.gameObject.SetActive(false);
     }
 
     private DrawingFishVisual EnsureDrawingFishVisual()

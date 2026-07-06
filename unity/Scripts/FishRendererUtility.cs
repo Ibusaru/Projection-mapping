@@ -3,6 +3,8 @@ using UnityEngine;
 
 public static class FishRendererUtility
 {
+    private const string AuthoredDrawingUvMeshNameMarker = "_CanvasUV";
+
     private static readonly string[] IgnoredNameParts =
     {
         "camera",
@@ -91,6 +93,11 @@ public static class FishRendererUtility
             }
 
             Mesh mesh = GetMesh(renderer);
+            if (mesh != null && IsSimpleFlatPanel(mesh))
+            {
+                continue;
+            }
+
             if (HasIgnoredNamePart(renderer, mesh))
             {
                 continue;
@@ -125,6 +132,11 @@ public static class FishRendererUtility
 
     private static bool HasIgnoredNamePart(Renderer renderer, Mesh mesh)
     {
+        if (mesh != null && mesh.name.Contains(AuthoredDrawingUvMeshNameMarker))
+        {
+            return false;
+        }
+
         string searchableName = RendererSearchName(renderer, mesh);
         for (int i = 0; i < IgnoredNameParts.Length; i++)
         {
@@ -187,6 +199,19 @@ public static class FishRendererUtility
         }
 
         string meshName = mesh != null ? mesh.name : "";
-        return $"{renderer.name} {renderer.transform.parent?.name} {meshName} {materialNames}".ToLowerInvariant();
+        return $"{TransformHierarchySearchName(renderer.transform)} {meshName} {materialNames}".ToLowerInvariant();
+    }
+
+    private static string TransformHierarchySearchName(Transform transform)
+    {
+        string names = "";
+        Transform current = transform;
+        while (current != null)
+        {
+            names += " " + current.name;
+            current = current.parent;
+        }
+
+        return names;
     }
 }

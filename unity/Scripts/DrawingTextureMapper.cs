@@ -4,10 +4,12 @@ public static class DrawingTextureMapper
 {
     private const float CanvasWidth = 1024f;
     private const float CanvasHeight = 512f;
-    private const float VisualCanvasXMin = 91f;
-    private const float VisualCanvasYMin = 82f;
-    private const float VisualCanvasXMax = 990f;
-    private const float VisualCanvasYMax = 505f;
+    private const float VisualCanvasXMin = 50f;
+    private const float VisualCanvasYMin = 34f;
+    private const float VisualCanvasXMax = 974f;
+    private const float VisualCanvasYMax = 478f;
+    private const string AuthoredDrawingUvMeshNameMarker = "_CanvasUV";
+    private static readonly Color32 ExportBaseColor = new Color32(255, 255, 255, 255);
 
     public static Texture2D CreateProjectionTexture(Texture2D source, float alphaThreshold)
     {
@@ -22,8 +24,11 @@ public static class DrawingTextureMapper
         }
 
         Color32[] sourcePixels = source.GetPixels32();
+        NormalizeExportBasePixels(sourcePixels);
         Color32[] outputPixels = new Color32[sourcePixels.Length];
-        Rect sourceRect = CalculateProjectionSourceRect(source.width, source.height, projectionPaddingRatio);
+        Rect sourceRect = TryFindPaintedBounds(sourcePixels, source.width, source.height, alphaThreshold, out RectInt paintedBounds)
+            ? ExpandPaintedBounds(paintedBounds, source.width, source.height, projectionPaddingRatio)
+            : CalculateProjectionSourceRect(source.width, source.height, projectionPaddingRatio);
 
         for (int y = 0; y < source.height; y++)
         {
@@ -36,7 +41,7 @@ public static class DrawingTextureMapper
                 float u = source.width <= 1 ? 0f : x / (float)(source.width - 1);
                 int sourceX = Mathf.Clamp(Mathf.RoundToInt(Mathf.Lerp(sourceRect.xMin, sourceRect.xMax, u)), 0, source.width - 1);
                 Color32 color = sourcePixels[sourceY * source.width + sourceX];
-                outputPixels[outputIndex] = color.a / 255f < alphaThreshold ? Transparent : color;
+                outputPixels[outputIndex] = IsPaintedPixel(color, alphaThreshold) ? color : Transparent;
             }
         }
 
@@ -47,6 +52,27 @@ public static class DrawingTextureMapper
             wrapMode = TextureWrapMode.Clamp
         };
         texture.SetPixels32(outputPixels);
+        texture.Apply(true, false);
+        return texture;
+    }
+
+    public static Texture2D CreateDisplayTexture(Texture2D source)
+    {
+        if (source == null)
+        {
+            return null;
+        }
+
+        Color32[] pixels = source.GetPixels32();
+        NormalizeExportBasePixels(pixels);
+
+        Texture2D texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, true)
+        {
+            name = $"{source.name}_DisplayCanvas",
+            filterMode = FilterMode.Bilinear,
+            wrapMode = TextureWrapMode.Clamp
+        };
+        texture.SetPixels32(pixels);
         texture.Apply(true, false);
         return texture;
     }
@@ -73,6 +99,21 @@ public static class DrawingTextureMapper
         return Rect.MinMaxRect(sourceXMin, sourceYMin, sourceXMax, sourceYMax);
     }
 
+    private static Rect ExpandPaintedBounds(RectInt paintedBounds, int width, int height, Vector2 paddingRatio)
+    {
+        float safePaddingX = Mathf.Clamp(paddingRatio.x, 0f, 0.45f);
+        float safePaddingY = Mathf.Clamp(paddingRatio.y, 0f, 0.45f);
+        float paddingX = Mathf.Max(1f, paintedBounds.width * safePaddingX);
+        float paddingY = Mathf.Max(1f, paintedBounds.height * safePaddingY);
+
+        float sourceXMin = Mathf.Max(0f, paintedBounds.xMin - paddingX);
+        float sourceXMax = Mathf.Min(width - 1f, paintedBounds.xMax - 1f + paddingX);
+        float sourceYMin = Mathf.Max(0f, paintedBounds.yMin - paddingY);
+        float sourceYMax = Mathf.Min(height - 1f, paintedBounds.yMax - 1f + paddingY);
+
+        return Rect.MinMaxRect(sourceXMin, sourceYMin, sourceXMax, sourceYMax);
+    }
+
     public static Texture2D CreateModelTexture(Texture2D source, int textureSize, float alphaThreshold)
     {
         if (source == null)
@@ -82,13 +123,14 @@ public static class DrawingTextureMapper
 
         int outputSize = Mathf.Clamp(textureSize, 64, 2048);
         Color32[] sourcePixels = source.GetPixels32();
+        NormalizeExportBasePixels(sourcePixels);
         if (!TryFindPaintedBounds(sourcePixels, source.width, source.height, alphaThreshold, out RectInt paintedBounds))
         {
             return CreateSolidTexture(source.name, outputSize, outputSize, Color.white, "ModelMappedFallback");
         }
 
         Color32 fallbackColor = AveragePaintedColor(sourcePixels, alphaThreshold);
-        Color32[] columnColors = BuildColumnColors(sourcePixels, source.width, paintedBounds, fallbackColor, alphaThreshold);
+        Color32[] filledPixels = BuildNearestFilledPixels(sourcePixels, source.width, source.height, paintedBounds, fallbackColor, alphaThreshold);
         Color32[] outputPixels = new Color32[outputSize * outputSize];
 
         for (int y = 0; y < outputSize; y++)
@@ -109,14 +151,7 @@ public static class DrawingTextureMapper
                     source.width - 1
                 );
 
-                outputPixels[y * outputSize + x] = SampleFilledColor(
-                    sourcePixels,
-                    source.width,
-                    sourceX,
-                    sourceY,
-                    columnColors[sourceX],
-                    alphaThreshold
-                );
+                outputPixels[y * outputSize + x] = filledPixels[sourceY * source.width + sourceX];
             }
         }
 
@@ -131,21 +166,120 @@ public static class DrawingTextureMapper
         return texture;
     }
 
-    private static Color32 SampleFilledColor(
+    private static Color32[] BuildNearestFilledPixels(
         Color32[] pixels,
         int width,
-        int x,
-        int y,
+        int height,
+        RectInt bounds,
         Color32 fallbackColor,
         float alphaThreshold
     )
     {
-        Color32 color = pixels[y * width + x];
-        if (color.a / 255f < alphaThreshold)
+        Color32[] filledPixels = new Color32[pixels.Length];
+        bool[] visited = new bool[pixels.Length];
+        int[] queue = new int[Mathf.Max(1, bounds.width * bounds.height)];
+        int head = 0;
+        int tail = 0;
+        byte alphaByteThreshold = AlphaByteThreshold(alphaThreshold);
+
+        for (int y = bounds.yMin; y < bounds.yMax; y++)
         {
-            color = fallbackColor;
+            for (int x = bounds.xMin; x < bounds.xMax; x++)
+            {
+                int index = y * width + x;
+                Color32 color = pixels[index];
+                if (!IsPaintedPixel(color, alphaByteThreshold))
+                {
+                    continue;
+                }
+
+                color.a = 255;
+                filledPixels[index] = color;
+                visited[index] = true;
+                queue[tail++] = index;
+            }
         }
-        return color;
+
+        if (tail == 0)
+        {
+            for (int i = 0; i < filledPixels.Length; i++)
+            {
+                filledPixels[i] = fallbackColor;
+            }
+
+            return filledPixels;
+        }
+
+        while (head < tail)
+        {
+            int index = queue[head++];
+            int x = index % width;
+            int y = index / width;
+            Color32 color = filledPixels[index];
+
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x - 1, y, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x + 1, y, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x, y - 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x, y + 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x - 1, y - 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x + 1, y - 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x - 1, y + 1, color);
+            VisitFilledNeighbor(filledPixels, visited, queue, ref tail, width, height, bounds, x + 1, y + 1, color);
+        }
+
+        return filledPixels;
+    }
+
+    private static void VisitFilledNeighbor(
+        Color32[] filledPixels,
+        bool[] visited,
+        int[] queue,
+        ref int tail,
+        int width,
+        int height,
+        RectInt bounds,
+        int x,
+        int y,
+        Color32 fillColor
+    )
+    {
+        if (x < bounds.xMin || x >= bounds.xMax || y < bounds.yMin || y >= bounds.yMax || x < 0 || x >= width || y < 0 || y >= height)
+        {
+            return;
+        }
+
+        int index = y * width + x;
+        if (visited[index])
+        {
+            return;
+        }
+
+        filledPixels[index] = fillColor;
+        visited[index] = true;
+        queue[tail++] = index;
+    }
+
+    private static void NormalizeExportBasePixels(Color32[] pixels)
+    {
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            if (LooksLikeLegacyWebSilhouetteBase(pixels[i]))
+            {
+                pixels[i] = ExportBaseColor;
+            }
+        }
+    }
+
+    private static bool LooksLikeLegacyWebSilhouetteBase(Color32 color)
+    {
+        if (color.a < 24 || color.a > 245)
+        {
+            return false;
+        }
+
+        return Mathf.Abs(color.r - 9) <= 12
+            && Mathf.Abs(color.g - 31) <= 18
+            && Mathf.Abs(color.b - 42) <= 20;
     }
 
     private static bool TryFindPaintedBounds(Color32[] pixels, int width, int height, float alphaThreshold, out RectInt bounds)
@@ -194,7 +328,7 @@ public static class DrawingTextureMapper
         for (int i = 0; i < pixels.Length; i++)
         {
             Color32 color = pixels[i];
-            if (color.a < alphaByteThreshold)
+            if (!IsPaintedPixel(color, alphaByteThreshold))
             {
                 continue;
             }
@@ -213,106 +347,19 @@ public static class DrawingTextureMapper
         return new Color32((byte)(r / count), (byte)(g / count), (byte)(b / count), 255);
     }
 
-    private static Color32[] BuildColumnColors(
-        Color32[] pixels,
-        int width,
-        RectInt bounds,
-        Color32 fallbackColor,
-        float alphaThreshold
-    )
-    {
-        Color32[] colors = new Color32[width];
-        bool[] hasColor = new bool[width];
-        byte alphaByteThreshold = AlphaByteThreshold(alphaThreshold);
-
-        for (int x = 0; x < width; x++)
-        {
-            long r = 0;
-            long g = 0;
-            long b = 0;
-            int count = 0;
-            for (int y = bounds.yMin; y < bounds.yMax; y++)
-            {
-                Color32 color = pixels[y * width + x];
-                if (color.a < alphaByteThreshold)
-                {
-                    continue;
-                }
-
-                r += color.r;
-                g += color.g;
-                b += color.b;
-                count++;
-            }
-
-            colors[x] = count > 0
-                ? new Color32((byte)(r / count), (byte)(g / count), (byte)(b / count), 255)
-                : fallbackColor;
-            hasColor[x] = count > 0;
-        }
-
-        FillEmptyColumnColors(colors, hasColor, fallbackColor);
-        return colors;
-    }
-
-    private static void FillEmptyColumnColors(Color32[] colors, bool[] hasColor, Color32 fallbackColor)
-    {
-        int lastPainted = -1;
-        int[] nearestLeft = new int[colors.Length];
-        int[] nearestRight = new int[colors.Length];
-
-        for (int x = 0; x < colors.Length; x++)
-        {
-            if (hasColor[x])
-            {
-                lastPainted = x;
-            }
-
-            nearestLeft[x] = lastPainted;
-        }
-
-        lastPainted = -1;
-        for (int x = colors.Length - 1; x >= 0; x--)
-        {
-            if (hasColor[x])
-            {
-                lastPainted = x;
-            }
-
-            nearestRight[x] = lastPainted;
-        }
-
-        for (int x = 0; x < colors.Length; x++)
-        {
-            if (hasColor[x])
-            {
-                continue;
-            }
-
-            int left = nearestLeft[x];
-            int right = nearestRight[x];
-            if (left < 0 && right < 0)
-            {
-                colors[x] = fallbackColor;
-            }
-            else if (left < 0)
-            {
-                colors[x] = colors[right];
-            }
-            else if (right < 0)
-            {
-                colors[x] = colors[left];
-            }
-            else
-            {
-                colors[x] = x - left <= right - x ? colors[left] : colors[right];
-            }
-        }
-    }
-
     private static byte AlphaByteThreshold(float alphaThreshold)
     {
         return (byte)Mathf.Clamp(Mathf.RoundToInt(alphaThreshold * 255f), 1, 255);
+    }
+
+    private static bool IsPaintedPixel(Color32 color, float alphaThreshold)
+    {
+        return IsPaintedPixel(color, AlphaByteThreshold(alphaThreshold));
+    }
+
+    private static bool IsPaintedPixel(Color32 color, byte alphaByteThreshold)
+    {
+        return color.a >= alphaByteThreshold;
     }
 
     private static Texture2D CreateSolidTexture(string sourceName, int width, int height, Color32 color, string suffix)
@@ -332,5 +379,383 @@ public static class DrawingTextureMapper
         texture.SetPixels32(pixels);
         texture.Apply(true, false);
         return texture;
+    }
+
+    public static bool ApplyGeneratedUvs(Renderer[] renderers, Transform projector, bool flipHorizontal)
+    {
+        if (renderers == null || projector == null || !TryCalculateProjectionBounds(renderers, projector, out Bounds bounds))
+        {
+            return false;
+        }
+
+        CreateProjectionFrame(bounds, flipHorizontal, out Vector3 origin, out Vector3 uVector, out Vector3 vVector);
+        float uLengthSq = Mathf.Max(Vector3.Dot(uVector, uVector), 0.000001f);
+        float vLengthSq = Mathf.Max(Vector3.Dot(vVector, vVector), 0.000001f);
+        bool applied = false;
+
+        for (int rendererIndex = 0; rendererIndex < renderers.Length; rendererIndex++)
+        {
+            Renderer renderer = renderers[rendererIndex];
+            Mesh mesh = CreateWritableMeshInstance(renderer);
+            if (mesh == null)
+            {
+                continue;
+            }
+
+            if (!TryGetUvSourceVertices(renderer, mesh, out Vector3[] vertices))
+            {
+                continue;
+            }
+
+            Vector2[] uvs = new Vector2[vertices.Length];
+            for (int vertexIndex = 0; vertexIndex < vertices.Length; vertexIndex++)
+            {
+                Vector3 worldPoint = renderer.transform.TransformPoint(vertices[vertexIndex]);
+                Vector3 projectorPoint = projector.InverseTransformPoint(worldPoint);
+                Vector3 relative = projectorPoint - origin;
+                float u = Vector3.Dot(relative, uVector) / uLengthSq;
+                float v = Vector3.Dot(relative, vVector) / vLengthSq;
+                uvs[vertexIndex] = new Vector2(Mathf.Clamp01(u), Mathf.Clamp01(v));
+            }
+
+            mesh.uv = uvs;
+            applied = true;
+        }
+
+        return applied;
+    }
+
+    public static bool HasAuthoredDrawingUvs(Renderer[] renderers)
+    {
+        if (renderers == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Mesh mesh = GetRendererMesh(renderers[i]);
+            if (HasUsableAuthoredDrawingUv(mesh))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool HasUsableAuthoredDrawingUv(Mesh mesh)
+    {
+        if (mesh == null || mesh.vertexCount == 0)
+        {
+            return false;
+        }
+
+        if (!mesh.name.Contains(AuthoredDrawingUvMeshNameMarker))
+        {
+            return false;
+        }
+
+        Vector2[] uvs;
+        try
+        {
+            uvs = mesh.uv;
+        }
+        catch (UnityException exception)
+        {
+            Debug.LogWarning($"DrawingTextureMapper: authored drawing UV mesh '{mesh.name}' could not be read. {exception.Message}");
+            return false;
+        }
+
+        if (uvs.Length != mesh.vertexCount)
+        {
+            return false;
+        }
+
+        float minU = 1f;
+        float minV = 1f;
+        float maxU = 0f;
+        float maxV = 0f;
+        for (int i = 0; i < uvs.Length; i++)
+        {
+            Vector2 uv = uvs[i];
+            minU = Mathf.Min(minU, uv.x);
+            minV = Mathf.Min(minV, uv.y);
+            maxU = Mathf.Max(maxU, uv.x);
+            maxV = Mathf.Max(maxV, uv.y);
+        }
+
+        return maxU - minU > 0.25f && maxV - minV > 0.25f;
+    }
+
+    private static Mesh GetRendererMesh(Renderer renderer)
+    {
+        if (renderer is SkinnedMeshRenderer skinned)
+        {
+            return skinned.sharedMesh;
+        }
+
+        MeshFilter meshFilter = renderer != null ? renderer.GetComponent<MeshFilter>() : null;
+        return meshFilter != null ? meshFilter.sharedMesh : null;
+    }
+
+    private static bool TryGetUvSourceVertices(Renderer renderer, Mesh mesh, out Vector3[] vertices)
+    {
+        vertices = null;
+        if (mesh == null)
+        {
+            return false;
+        }
+
+        if (renderer is SkinnedMeshRenderer skinned)
+        {
+            Mesh bakedMesh = new Mesh
+            {
+                name = $"{mesh.name}_UvBake"
+            };
+
+            try
+            {
+                skinned.BakeMesh(bakedMesh, false);
+                if (bakedMesh.vertexCount == mesh.vertexCount)
+                {
+                    vertices = bakedMesh.vertices;
+                    return true;
+                }
+            }
+            catch (UnityException exception)
+            {
+                Debug.LogWarning($"DrawingTextureMapper: skinned mesh '{mesh.name}' could not be baked for drawing UVs. {exception.Message}");
+            }
+            finally
+            {
+                Object.Destroy(bakedMesh);
+            }
+        }
+
+        try
+        {
+            vertices = mesh.vertices;
+            return true;
+        }
+        catch (UnityException exception)
+        {
+            Debug.LogWarning($"DrawingTextureMapper: mesh '{mesh.name}' is not readable, so generated drawing UVs could not be applied. {exception.Message}");
+            return false;
+        }
+    }
+
+    private static Mesh CreateWritableMeshInstance(Renderer renderer)
+    {
+        if (renderer is SkinnedMeshRenderer skinned)
+        {
+            Mesh source = skinned.sharedMesh;
+            if (!IsReadableSourceMesh(source))
+            {
+                return null;
+            }
+
+            if (source.name.EndsWith("_DrawingUV"))
+            {
+                return source;
+            }
+
+            Mesh copy = UnityEngine.Object.Instantiate(source);
+            copy.name = $"{source.name}_DrawingUV";
+            skinned.sharedMesh = copy;
+            return copy;
+        }
+
+        MeshFilter meshFilter = renderer != null ? renderer.GetComponent<MeshFilter>() : null;
+        if (meshFilter == null)
+        {
+            return null;
+        }
+
+        Mesh mesh = meshFilter.sharedMesh;
+        if (!IsReadableSourceMesh(mesh))
+        {
+            return null;
+        }
+
+        if (mesh.name.EndsWith("_DrawingUV"))
+        {
+            return mesh;
+        }
+
+        Mesh meshCopy = UnityEngine.Object.Instantiate(mesh);
+        meshCopy.name = $"{mesh.name}_DrawingUV";
+        meshFilter.sharedMesh = meshCopy;
+        return meshCopy;
+    }
+
+    private static bool IsReadableSourceMesh(Mesh mesh)
+    {
+        if (mesh == null)
+        {
+            return false;
+        }
+
+        if (mesh.name.EndsWith("_DrawingUV"))
+        {
+            return true;
+        }
+
+        if (mesh.isReadable)
+        {
+            return true;
+        }
+
+        Debug.LogWarning($"DrawingTextureMapper: mesh '{mesh.name}' is not readable. Enable Read/Write on the model import settings to use generated drawing UVs.");
+        return false;
+    }
+
+    private static bool TryCalculateProjectionBounds(Renderer[] renderers, Transform projector, out Bounds bounds)
+    {
+        bounds = new Bounds(Vector3.zero, Vector3.zero);
+        bool hasBounds = false;
+        if (renderers == null || projector == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer renderer = renderers[i];
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            Bounds localBounds = renderer.localBounds;
+            if (localBounds.size.sqrMagnitude <= 0.000001f)
+            {
+                continue;
+            }
+
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, localBounds.min);
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.min.x, localBounds.min.y, localBounds.max.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.min.x, localBounds.max.y, localBounds.min.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.min.x, localBounds.max.y, localBounds.max.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.max.x, localBounds.min.y, localBounds.min.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.max.x, localBounds.min.y, localBounds.max.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, new Vector3(localBounds.max.x, localBounds.max.y, localBounds.min.z));
+            EncapsulateRendererLocalCorner(ref bounds, ref hasBounds, projector, renderer, localBounds.max);
+        }
+
+        return hasBounds;
+    }
+
+    private static void EncapsulateRendererLocalCorner(
+        ref Bounds bounds,
+        ref bool hasBounds,
+        Transform projector,
+        Renderer renderer,
+        Vector3 rendererLocalPoint
+    )
+    {
+        Vector3 worldPoint = renderer.transform.TransformPoint(rendererLocalPoint);
+        Vector3 localPoint = projector.InverseTransformPoint(worldPoint);
+        if (!hasBounds)
+        {
+            bounds = new Bounds(localPoint, Vector3.zero);
+            hasBounds = true;
+            return;
+        }
+
+        bounds.Encapsulate(localPoint);
+    }
+
+    private static void CreateProjectionFrame(
+        Bounds bounds,
+        bool flipHorizontal,
+        out Vector3 origin,
+        out Vector3 uVector,
+        out Vector3 vVector
+    )
+    {
+        Vector3 size = bounds.size;
+        int lengthAxis = LargestAxis(size, -1);
+        int heightAxis = ChooseProjectionHeightAxis(size, lengthAxis);
+        float length = Mathf.Max(AxisValue(size, lengthAxis), 0.001f);
+        float height = Mathf.Max(AxisValue(size, heightAxis), 0.001f);
+
+        Vector3 min = bounds.min;
+        Vector3 max = bounds.max;
+        origin = bounds.min;
+        SetAxisValue(ref origin, lengthAxis, flipHorizontal ? AxisValue(max, lengthAxis) : AxisValue(min, lengthAxis));
+        SetAxisValue(ref origin, heightAxis, AxisValue(min, heightAxis));
+        uVector = AxisVector(lengthAxis, flipHorizontal ? -length : length);
+        vVector = AxisVector(heightAxis, height);
+    }
+
+    private static int LargestAxis(Vector3 value, int ignoredAxis)
+    {
+        int bestAxis = ignoredAxis == 0 ? 1 : 0;
+        float bestValue = AxisValue(value, bestAxis);
+        for (int axis = 0; axis < 3; axis++)
+        {
+            if (axis == ignoredAxis)
+            {
+                continue;
+            }
+
+            float candidate = AxisValue(value, axis);
+            if (candidate > bestValue)
+            {
+                bestAxis = axis;
+                bestValue = candidate;
+            }
+        }
+
+        return bestAxis;
+    }
+
+    private static int ChooseProjectionHeightAxis(Vector3 size, int lengthAxis)
+    {
+        const int unityUpAxis = 1;
+        if (lengthAxis != unityUpAxis
+            && AxisValue(size, unityUpAxis) >= AxisValue(size, lengthAxis) * 0.08f)
+        {
+            return unityUpAxis;
+        }
+
+        return LargestAxis(size, lengthAxis);
+    }
+
+    private static float AxisValue(Vector3 value, int axis)
+    {
+        return axis switch
+        {
+            0 => value.x,
+            1 => value.y,
+            _ => value.z
+        };
+    }
+
+    private static void SetAxisValue(ref Vector3 value, int axis, float axisValue)
+    {
+        if (axis == 0)
+        {
+            value.x = axisValue;
+        }
+        else if (axis == 1)
+        {
+            value.y = axisValue;
+        }
+        else
+        {
+            value.z = axisValue;
+        }
+    }
+
+    private static Vector3 AxisVector(int axis, float magnitude)
+    {
+        return axis switch
+        {
+            0 => Vector3.right * magnitude,
+            1 => Vector3.up * magnitude,
+            _ => Vector3.forward * magnitude
+        };
     }
 }
