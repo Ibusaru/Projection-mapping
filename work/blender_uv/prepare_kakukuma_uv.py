@@ -17,7 +17,7 @@ CANVAS_BOX = {
 UV_MARKER = "_CanvasUV"
 MESH_NAME = "Clownfish_CanvasUV"
 UV_LAYER_NAME = "DrawingCanvasUV"
-UNITY_FORWARD_NOTE = "source head side is mirrored to Blender +Y so Unity imports it toward +Z"
+UNITY_FORWARD_NOTE = "source height maps to Unity Y and source head side maps to Unity +Z"
 
 
 def parse_args():
@@ -144,9 +144,11 @@ def projected_profile_points(obj, y_min, y_max, z_min, z_max, sample_count=52):
 def orient_mesh_for_unity_forward(obj):
     mesh = obj.data
     for vertex in mesh.vertices:
-        vertex.co.y = -vertex.co.y
+        source = vertex.co.copy()
+        vertex.co.x = source.x
+        vertex.co.y = source.z
+        vertex.co.z = -source.y
 
-    mesh.flip_normals()
     mesh.update()
 
 
