@@ -184,6 +184,22 @@ public partial class FishActor
 
     private void ApplyReleasedDrawingTexture(Texture2D texture)
     {
+        if (texture == null)
+        {
+            return;
+        }
+
+        if (ApplyGeneratedUvDrawingTexture(texture) || ApplyProjectedDrawingTexture(texture))
+        {
+            return;
+        }
+
+        Debug.LogWarning($"FishActor: could not apply '{Nickname}' drawing to the 3D fish model; using flat fallback visual.");
+        ApplyFlatReleasedDrawingTexture(texture);
+    }
+
+    private void ApplyFlatReleasedDrawingTexture(Texture2D texture)
+    {
         Bounds visualBounds = TryGetVisualBounds(out Bounds bounds)
             ? bounds
             : new Bounds(transform.position, new Vector3(1.8f, 0.9f, 0.1f));

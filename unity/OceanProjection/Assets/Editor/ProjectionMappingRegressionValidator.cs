@@ -17,7 +17,7 @@ public static class ProjectionMappingRegressionValidator
         valid &= ValidateModelTextureReplacesLegacyWebSilhouetteBase();
         valid &= ValidateModelTextureUsesNearestPaintForTransparentMask();
         valid &= ValidateFallbackMeshUvPreservesWebOrientation();
-        valid &= ValidateReleasedDrawingUsesFlatVisual();
+        valid &= ValidateReleasedDrawingUsesModelVisual();
         valid &= ValidateNicknameLabelStaysCameraParallel();
 
         Debug.Log($"ProjectionMappingRegressionValidator: Run completed valid={valid}");
@@ -51,7 +51,7 @@ public static class ProjectionMappingRegressionValidator
         valid &= ValidateModelTextureFillsTransparentFishMask();
         valid &= ValidateModelTextureReplacesLegacyWebSilhouetteBase();
         valid &= ValidateModelTextureUsesNearestPaintForTransparentMask();
-        valid &= ValidateReleasedDrawingUsesFlatVisual();
+        valid &= ValidateReleasedDrawingUsesModelVisual();
 
         Debug.Log($"ProjectionMappingRegressionValidator: RunReleasedDrawingModelVisual completed valid={valid}");
         EditorApplication.Exit(valid ? 0 : 2);
@@ -586,9 +586,9 @@ public static class ProjectionMappingRegressionValidator
         return valid;
     }
 
-    private static bool ValidateReleasedDrawingUsesFlatVisual()
+    private static bool ValidateReleasedDrawingUsesModelVisual()
     {
-        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "Projection Mapping Released Fish Flat Visual");
+        GameObject fishObject = GeneratedPrimitiveFactory.Create(PrimitiveType.Cube, "Projection Mapping Released Fish Model Visual");
         fishObject.hideFlags = HideFlags.HideAndDontSave;
         FishActor actor = fishObject.AddComponent<FishActor>();
         actor.SetReleasedFish(true);
@@ -616,24 +616,60 @@ public static class ProjectionMappingRegressionValidator
 
         DrawingFishVisual visual = fishObject.GetComponentInChildren<DrawingFishVisual>(true);
         bool flatVisualActive = visual != null && visual.gameObject.activeSelf && visual.Renderer != null && visual.Renderer.enabled;
-        Texture flatTexture = flatVisualActive ? visual.Renderer.sharedMaterial.mainTexture : null;
-        bool keepsCanvasTexture = flatTexture != null && flatTexture.name.Contains("DisplayCanvas");
+        Texture modelTexture = ReadRendererDrawingTexture(originalRenderer);
+        Material modelMaterial = originalRenderer != null ? originalRenderer.sharedMaterial : null;
+        bool usesModelTexture = modelTexture != null && modelTexture.name.Contains("ModelMapped");
+        bool usesDrawingMaterial = modelMaterial != null
+            && modelMaterial.shader != null
+            && modelMaterial.shader.name.Contains("Drawing Fish");
 
         bool valid = originalRenderer != null
-            && !originalRenderer.enabled
-            && flatVisualActive
-            && keepsCanvasTexture;
+            && originalRenderer.enabled
+            && !flatVisualActive
+            && usesModelTexture
+            && usesDrawingMaterial;
 
         if (!valid)
         {
             Debug.LogError(
-                $"ProjectionMappingRegressionValidator: released drawing did not switch to the exact flat drawing visual. originalEnabled={originalRenderer?.enabled}, flatVisualActive={flatVisualActive}, texture={flatTexture?.name}"
+                $"ProjectionMappingRegressionValidator: released drawing did not stay on the 3D model. " +
+                $"originalEnabled={originalRenderer?.enabled}, flatVisualActive={flatVisualActive}, " +
+                $"texture={modelTexture?.name}, shader={modelMaterial?.shader?.name}"
             );
         }
 
         Object.DestroyImmediate(texture);
         Object.DestroyImmediate(fishObject);
         return valid;
+    }
+
+    private static Texture ReadRendererDrawingTexture(Renderer renderer)
+    {
+        if (renderer == null || renderer.sharedMaterial == null)
+        {
+            return null;
+        }
+
+        Material material = renderer.sharedMaterial;
+        if (material.HasProperty("_DrawingTex"))
+        {
+            Texture texture = material.GetTexture("_DrawingTex");
+            if (texture != null)
+            {
+                return texture;
+            }
+        }
+
+        if (material.HasProperty("_BaseMap"))
+        {
+            Texture texture = material.GetTexture("_BaseMap");
+            if (texture != null)
+            {
+                return texture;
+            }
+        }
+
+        return material.mainTexture;
     }
 
     private static bool ValidateNicknameLabelStaysCameraParallel()

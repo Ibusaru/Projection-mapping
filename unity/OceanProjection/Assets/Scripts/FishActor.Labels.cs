@@ -12,8 +12,8 @@ public partial class FishActor
     private const float StickyNicknameTagOverflowTolerance = 0.025f;
     private const float MaxNicknameTextViewportWidth = 0.46f;
     private static readonly Color NicknameTagTextColor = Color.black;
-    private static readonly Color NicknameTagOutlineColor = new Color(1f, 1f, 1f, 1f);
-    private static readonly Color NicknameTagShadowColor = new Color(0f, 0f, 0f, 1f);
+    private static readonly Color NicknameTagOutlineColor = new Color(0f, 0f, 0f, 0f);
+    private static readonly Color NicknameTagShadowColor = new Color(0f, 0f, 0f, 0f);
     private static readonly Color NicknameTagLineStartColor = new Color(0.02f, 0.82f, 1f, 1f);
     private static readonly Color NicknameTagLineEndColor = new Color(0.02f, 0.14f, 0.38f, 1f);
     private static TMP_FontAsset cachedNicknameJapaneseFontAsset;
@@ -1354,44 +1354,44 @@ public partial class FishActor
 
         if (material.HasProperty("_OutlineColor"))
         {
-            material.EnableKeyword("OUTLINE_ON");
-            material.SetColor("_OutlineColor", WithAlpha(NicknameTagOutlineColor, Mathf.Clamp01(alpha) * 0.96f));
+            material.DisableKeyword("OUTLINE_ON");
+            material.SetColor("_OutlineColor", NicknameTagOutlineColor);
         }
 
         if (material.HasProperty("_OutlineWidth"))
         {
-            material.SetFloat("_OutlineWidth", 0.26f);
+            material.SetFloat("_OutlineWidth", 0f);
         }
 
         if (material.HasProperty("_OutlineSoftness"))
         {
-            material.SetFloat("_OutlineSoftness", 0.025f);
+            material.SetFloat("_OutlineSoftness", 0f);
         }
 
         if (material.HasProperty("_UnderlayColor"))
         {
-            material.EnableKeyword("UNDERLAY_ON");
-            material.SetColor("_UnderlayColor", WithAlpha(NicknameTagShadowColor, Mathf.Clamp01(alpha) * 0.72f));
+            material.DisableKeyword("UNDERLAY_ON");
+            material.SetColor("_UnderlayColor", NicknameTagShadowColor);
         }
 
         if (material.HasProperty("_UnderlayOffsetX"))
         {
-            material.SetFloat("_UnderlayOffsetX", 0.55f);
+            material.SetFloat("_UnderlayOffsetX", 0f);
         }
 
         if (material.HasProperty("_UnderlayOffsetY"))
         {
-            material.SetFloat("_UnderlayOffsetY", -0.55f);
+            material.SetFloat("_UnderlayOffsetY", 0f);
         }
 
         if (material.HasProperty("_UnderlayDilate"))
         {
-            material.SetFloat("_UnderlayDilate", 0.18f);
+            material.SetFloat("_UnderlayDilate", 0f);
         }
 
         if (material.HasProperty("_UnderlaySoftness"))
         {
-            material.SetFloat("_UnderlaySoftness", 0.18f);
+            material.SetFloat("_UnderlaySoftness", 0f);
         }
     }
 
