@@ -3,15 +3,17 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public sealed class ProceduralFishMeshDeformer : MonoBehaviour
 {
-    [SerializeField] private float frequency = 4.8f;
-    [SerializeField] private float sideAmplitude = 0.035f;
-    [SerializeField] private float twistAmplitude = 4.5f;
-    [SerializeField] private float waveLength = 1.35f;
-    [SerializeField] private float centerStillness = 0.18f;
+    [SerializeField] private float frequency = 3.2f;
+    [SerializeField] private float sideAmplitude = 0.022f;
+    [SerializeField] private float twistAmplitude = 2.2f;
+    [SerializeField] private float waveLength = 1.08f;
+    [SerializeField] private float centerStillness = 0.34f;
+    [SerializeField] private float deformationSmooth = 9f;
 
     private MeshFilter[] meshFilters = new MeshFilter[0];
     private Mesh[] runtimeMeshes = new Mesh[0];
     private Vector3[][] baseVertices = new Vector3[0][];
+    private Vector3[][] deformedVertices = new Vector3[0][];
     private Bounds[] baseBounds = new Bounds[0];
     private float phaseOffset;
 
@@ -23,7 +25,10 @@ public sealed class ProceduralFishMeshDeformer : MonoBehaviour
 
     private void OnEnable()
     {
-        CaptureMeshes();
+        if (!HasUsableMeshes())
+        {
+            CaptureMeshes();
+        }
     }
 
     private void LateUpdate()
@@ -34,6 +39,8 @@ public sealed class ProceduralFishMeshDeformer : MonoBehaviour
         }
 
         float phase = (Time.time + phaseOffset) * frequency;
+        float deltaTime = Time.deltaTime > 0f ? Time.deltaTime : 1f / 60f;
+        float blend = 1f - Mathf.Exp(-Mathf.Max(0.01f, deformationSmooth) * deltaTime);
         for (int i = 0; i < runtimeMeshes.Length; i++)
         {
             Mesh mesh = runtimeMeshes[i];
@@ -51,25 +58,32 @@ public sealed class ProceduralFishMeshDeformer : MonoBehaviour
             float maxLength = AxisValue(bounds.max, lengthAxis);
             float sideSize = Mathf.Max(AxisValue(bounds.size, sideAxis), 0.0001f);
             float upSize = Mathf.Max(AxisValue(bounds.size, upAxis), 0.0001f);
-            Vector3[] vertices = new Vector3[sourceVertices.Length];
+            Vector3[] vertices = i < deformedVertices.Length ? deformedVertices[i] : null;
+            if (vertices == null || vertices.Length != sourceVertices.Length)
+            {
+                vertices = (Vector3[])sourceVertices.Clone();
+                deformedVertices[i] = vertices;
+            }
 
             for (int vertexIndex = 0; vertexIndex < sourceVertices.Length; vertexIndex++)
             {
                 Vector3 vertex = sourceVertices[vertexIndex];
                 float t = Mathf.InverseLerp(minLength, maxLength, AxisValue(vertex, lengthAxis));
                 float centered = Mathf.Abs(t - 0.5f) * 2f;
-                float weight = Mathf.SmoothStep(centerStillness, 1f, centered);
+                float centerWeight = Mathf.SmoothStep(centerStillness, 1f, centered);
+                float tailWeight = Mathf.SmoothStep(0.18f, 1f, t);
+                float weight = centerWeight * Mathf.Lerp(0.45f, 1f, tailWeight);
                 float wave = Mathf.Sin(phase - t * Mathf.PI * 2f * waveLength);
                 float sideOffset = wave * sideAmplitude * sideSize * weight;
                 float twist = Mathf.Sin(phase * 0.78f - t * Mathf.PI * 2f) * twistAmplitude * Mathf.Deg2Rad * weight;
                 float upRelative = AxisValue(vertex, upAxis) - AxisValue(bounds.center, upAxis);
 
                 SetAxisValue(ref vertex, sideAxis, AxisValue(vertex, sideAxis) + sideOffset + upRelative * Mathf.Sin(twist) * 0.35f);
-                SetAxisValue(ref vertex, upAxis, AxisValue(vertex, upAxis) + wave * 0.01f * upSize * weight);
-                vertices[vertexIndex] = vertex;
+                SetAxisValue(ref vertex, upAxis, AxisValue(vertex, upAxis) + wave * 0.004f * upSize * weight);
+                vertices[vertexIndex] = Vector3.Lerp(vertices[vertexIndex], vertex, blend);
             }
 
-            mesh.vertices = vertices;
+            mesh.SetVertices(vertices);
             mesh.RecalculateBounds();
         }
     }
@@ -79,6 +93,7 @@ public sealed class ProceduralFishMeshDeformer : MonoBehaviour
         meshFilters = GetComponentsInChildren<MeshFilter>(true);
         runtimeMeshes = new Mesh[meshFilters.Length];
         baseVertices = new Vector3[meshFilters.Length][];
+        deformedVertices = new Vector3[meshFilters.Length][];
         baseBounds = new Bounds[meshFilters.Length];
 
         for (int i = 0; i < meshFilters.Length; i++)
@@ -92,9 +107,11 @@ public sealed class ProceduralFishMeshDeformer : MonoBehaviour
 
             Mesh runtimeMesh = Instantiate(sourceMesh);
             runtimeMesh.name = sourceMesh.name.EndsWith("_Animated") ? sourceMesh.name : $"{sourceMesh.name}_Animated";
+            runtimeMesh.MarkDynamic();
             meshFilter.sharedMesh = runtimeMesh;
             runtimeMeshes[i] = runtimeMesh;
             baseVertices[i] = runtimeMesh.vertices;
+            deformedVertices[i] = runtimeMesh.vertices;
             baseBounds[i] = runtimeMesh.bounds;
         }
     }

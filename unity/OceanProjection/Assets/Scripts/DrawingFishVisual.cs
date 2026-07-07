@@ -11,10 +11,14 @@ public sealed class DrawingFishVisual : MonoBehaviour
     private const float VisualCanvasXMax = 1000f;
     private const float VisualCanvasYMax = 456f;
     private const int CurveSegments = 48;
+    private const string ShadowObjectName = "Drawing Fish Soft Shadow";
 
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
     private Material material;
+    private MeshRenderer shadowRenderer;
+    private MeshFilter shadowFilter;
+    private Material shadowMaterial;
 
     public Renderer Renderer => meshRenderer;
 
@@ -33,12 +37,15 @@ public sealed class DrawingFishVisual : MonoBehaviour
         gameObject.SetActive(true);
         EnsureComponents();
         EnsureMaterial(texture);
-        meshFilter.sharedMesh = CreateFishMesh(
-            WorldBoundsToLocal(transform.parent != null ? transform.parent : transform, worldBounds),
-            sideOffset
-        );
+        EnsureShadowMaterial(texture);
+
+        Bounds localBounds = WorldBoundsToLocal(transform.parent != null ? transform.parent : transform, worldBounds);
+        meshFilter.sharedMesh = CreateFishMesh(localBounds, sideOffset);
+        shadowFilter.sharedMesh = CreateShadowMesh(localBounds, sideOffset);
         meshRenderer.sharedMaterial = material;
+        shadowRenderer.sharedMaterial = shadowMaterial;
         meshRenderer.enabled = true;
+        shadowRenderer.enabled = true;
     }
 
     private void EnsureComponents()
@@ -60,8 +67,37 @@ public sealed class DrawingFishVisual : MonoBehaviour
                 meshRenderer = gameObject.AddComponent<MeshRenderer>();
             }
 
-            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
-            meshRenderer.receiveShadows = false;
+            meshRenderer.shadowCastingMode = ShadowCastingMode.TwoSided;
+            meshRenderer.receiveShadows = true;
+            meshRenderer.lightProbeUsage = LightProbeUsage.BlendProbes;
+            meshRenderer.reflectionProbeUsage = ReflectionProbeUsage.BlendProbes;
+        }
+
+        if (shadowFilter == null || shadowRenderer == null)
+        {
+            Transform shadowTransform = transform.Find(ShadowObjectName);
+            GameObject shadowObject = shadowTransform != null
+                ? shadowTransform.gameObject
+                : new GameObject(ShadowObjectName);
+            shadowObject.transform.SetParent(transform, false);
+            shadowObject.transform.localPosition = Vector3.zero;
+            shadowObject.transform.localRotation = Quaternion.identity;
+            shadowObject.transform.localScale = Vector3.one;
+
+            shadowFilter = shadowObject.GetComponent<MeshFilter>();
+            if (shadowFilter == null)
+            {
+                shadowFilter = shadowObject.AddComponent<MeshFilter>();
+            }
+
+            shadowRenderer = shadowObject.GetComponent<MeshRenderer>();
+            if (shadowRenderer == null)
+            {
+                shadowRenderer = shadowObject.AddComponent<MeshRenderer>();
+            }
+
+            shadowRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            shadowRenderer.receiveShadows = false;
         }
     }
 
@@ -69,20 +105,20 @@ public sealed class DrawingFishVisual : MonoBehaviour
     {
         if (material == null)
         {
-            Shader shader = Shader.Find("Sprites/Default");
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
             if (shader == null)
             {
-                shader = Shader.Find("Universal Render Pipeline/Unlit");
+                shader = Shader.Find("Standard");
             }
 
             if (shader == null)
             {
-                shader = Shader.Find("Unlit/Transparent");
+                shader = Shader.Find("Sprites/Default");
             }
 
             material = new Material(shader)
             {
-                name = "Released Fish Drawing 1to1",
+                name = "Released Fish Drawing Lit",
                 renderQueue = (int)RenderQueue.Transparent
             };
             material.SetOverrideTag("RenderType", "Transparent");
@@ -109,6 +145,16 @@ public sealed class DrawingFishVisual : MonoBehaviour
             material.SetColor("_BaseColor", Color.white);
         }
 
+        if (material.HasProperty("_Metallic"))
+        {
+            material.SetFloat("_Metallic", 0f);
+        }
+
+        if (material.HasProperty("_Smoothness"))
+        {
+            material.SetFloat("_Smoothness", 0.34f);
+        }
+
         if (material.HasProperty("_Surface"))
         {
             material.SetFloat("_Surface", 1f);
@@ -128,9 +174,93 @@ public sealed class DrawingFishVisual : MonoBehaviour
         material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
     }
 
+    private void EnsureShadowMaterial(Texture2D texture)
+    {
+        if (shadowMaterial == null)
+        {
+            Shader shader = Shader.Find("Sprites/Default");
+            if (shader == null)
+            {
+                shader = Shader.Find("Universal Render Pipeline/Unlit");
+            }
+
+            if (shader == null)
+            {
+                shader = Shader.Find("Unlit/Transparent");
+            }
+
+            shadowMaterial = new Material(shader)
+            {
+                name = "Released Fish Drawing Soft Shadow",
+                renderQueue = (int)RenderQueue.Transparent - 1
+            };
+            shadowMaterial.SetOverrideTag("RenderType", "Transparent");
+        }
+
+        shadowMaterial.mainTexture = texture;
+        if (shadowMaterial.HasProperty("_MainTex"))
+        {
+            shadowMaterial.SetTexture("_MainTex", texture);
+        }
+
+        if (shadowMaterial.HasProperty("_BaseMap"))
+        {
+            shadowMaterial.SetTexture("_BaseMap", texture);
+        }
+
+        Color shadowColor = new Color(0f, 0f, 0f, 0.28f);
+        if (shadowMaterial.HasProperty("_Color"))
+        {
+            shadowMaterial.SetColor("_Color", shadowColor);
+        }
+
+        if (shadowMaterial.HasProperty("_BaseColor"))
+        {
+            shadowMaterial.SetColor("_BaseColor", shadowColor);
+        }
+
+        if (shadowMaterial.HasProperty("_Surface"))
+        {
+            shadowMaterial.SetFloat("_Surface", 1f);
+        }
+
+        if (shadowMaterial.HasProperty("_Blend"))
+        {
+            shadowMaterial.SetFloat("_Blend", 0f);
+        }
+
+        if (shadowMaterial.HasProperty("_Cull"))
+        {
+            shadowMaterial.SetFloat("_Cull", 0f);
+        }
+
+        shadowMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+        shadowMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+    }
+
     private static Mesh CreateFishMesh(Bounds localBounds, float sideOffset)
     {
-        MeshBuilder builder = new MeshBuilder(localBounds, sideOffset);
+        return CreateFishMesh(localBounds, sideOffset, 0f, 1f, 1f);
+    }
+
+    private static Mesh CreateShadowMesh(Bounds localBounds, float sideOffset)
+    {
+        float length = Mathf.Max(localBounds.size.x, localBounds.size.z);
+        float height = Mathf.Max(0.1f, localBounds.size.y);
+        float shadowSideOffset = sideOffset - Mathf.Max(0.015f, length * 0.018f);
+        float shadowVerticalOffset = -Mathf.Max(0.02f, height * 0.055f);
+        return CreateFishMesh(localBounds, shadowSideOffset, shadowVerticalOffset, 1.035f, 1.02f);
+    }
+
+    private static Mesh CreateFishMesh(
+        Bounds localBounds,
+        float sideOffset,
+        float verticalOffset,
+        float lengthScale,
+        float heightScale
+    )
+    {
+        MeshBuilder builder = new MeshBuilder(localBounds, sideOffset, verticalOffset, lengthScale, heightScale);
 
         List<Vector2> body = new List<Vector2>
         {
@@ -234,17 +364,23 @@ public sealed class DrawingFishVisual : MonoBehaviour
     {
         private readonly Bounds bounds;
         private readonly float sideOffset;
+        private readonly float verticalOffset;
+        private readonly float lengthScale;
+        private readonly float heightScale;
         private readonly bool useZLength;
         private readonly List<Vector3> vertices = new List<Vector3>();
         private readonly List<Vector2> uvs = new List<Vector2>();
         private readonly List<int> triangles = new List<int>();
 
-        public MeshBuilder(Bounds localBounds, float sideOffset)
+        public MeshBuilder(Bounds localBounds, float sideOffset, float verticalOffset, float lengthScale, float heightScale)
         {
             bounds = localBounds.size.sqrMagnitude > 0.001f
                 ? localBounds
                 : new Bounds(Vector3.zero, new Vector3(1.8f, 0.9f, 0.1f));
             this.sideOffset = sideOffset;
+            this.verticalOffset = verticalOffset;
+            this.lengthScale = Mathf.Max(0.1f, lengthScale);
+            this.heightScale = Mathf.Max(0.1f, heightScale);
             useZLength = bounds.size.z >= bounds.size.x;
         }
 
@@ -339,11 +475,11 @@ public sealed class DrawingFishVisual : MonoBehaviour
         {
             float normalizedX = 0.5f - Mathf.InverseLerp(VisualCanvasXMin, VisualCanvasXMax, canvasPoint.x);
             float normalizedY = 0.5f - Mathf.InverseLerp(VisualCanvasYMin, VisualCanvasYMax, canvasPoint.y);
-            float length = Mathf.Max(bounds.size.x, bounds.size.z);
-            float height = Mathf.Max(0.1f, bounds.size.y);
+            float length = Mathf.Max(bounds.size.x, bounds.size.z) * lengthScale;
+            float height = Mathf.Max(0.1f, bounds.size.y) * heightScale;
             return useZLength
-                ? bounds.center + new Vector3(sideOffset, normalizedY * height, normalizedX * length)
-                : bounds.center + new Vector3(normalizedX * length, normalizedY * height, sideOffset);
+                ? bounds.center + new Vector3(sideOffset, normalizedY * height + verticalOffset, normalizedX * length)
+                : bounds.center + new Vector3(normalizedX * length, normalizedY * height + verticalOffset, sideOffset);
         }
     }
 }

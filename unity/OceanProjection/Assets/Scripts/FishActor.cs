@@ -162,6 +162,8 @@ public partial class FishActor : MonoBehaviour
     private float currentSpeed;
     private float currentAnimationSpeed = 1f;
     private float currentSwimEffort = 0.5f;
+    private float currentBodySwayDegrees;
+    private float currentTailSwayDegrees;
     private float currentSpeedMultiplier = 1f;
     private float schoolingNoiseSeed;
     private float nextSpeedModeTime;
