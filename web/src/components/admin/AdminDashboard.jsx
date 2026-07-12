@@ -172,7 +172,7 @@ export function AdminDashboard({ session, onSignedOut }) {
           >
             <Focus size={21} />
             <span>
-              <strong>選択した魚にフォーカス</strong>
+              <strong>魚にフォーカス</strong>
               <small>{selectedFish ? selectedFish.nickname : "下の一覧から魚を選択"}</small>
             </span>
           </button>
@@ -223,6 +223,7 @@ export function AdminDashboard({ session, onSignedOut }) {
                   <span className="admin-radio" aria-hidden="true" />
                 </button>
                 <button
+                  aria-label={confirming ? `「${fish.nickname}」を完全に削除` : `「${fish.nickname}」を削除`}
                   className={confirming ? "admin-delete-button confirming" : "admin-delete-button"}
                   disabled={busyAction === `delete-${fish.id}`}
                   onBlur={() => setPendingDeleteId((current) => current === fish.id ? "" : current)}
@@ -230,7 +231,9 @@ export function AdminDashboard({ session, onSignedOut }) {
                   type="button"
                 >
                   <Trash2 size={17} />
-                  {busyAction === `delete-${fish.id}` ? "削除中" : confirming ? "もう一度押して削除" : "削除"}
+                  <span>
+                    {busyAction === `delete-${fish.id}` ? "削除中" : confirming ? "もう一度押して削除" : "削除"}
+                  </span>
                 </button>
               </article>
             );
