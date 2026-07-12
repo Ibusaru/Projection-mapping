@@ -105,6 +105,7 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private Vector2 cruiseSeconds = new Vector2(7f, 12f);
     [SerializeField] private float cruiseInterestLookBlend = 0.42f;
     [SerializeField] private float cruiseInterestApproachBlend = 0.46f;
+    [SerializeField] private float cruiseDestinationReachDistance = 2.4f;
     [SerializeField] private float roamLookSweepBlend = 0.72f;
     [SerializeField] private float roamLookSweepDistance = 11f;
     [SerializeField] private float roamLookSweepSideOffset = 7.4f;
@@ -320,6 +321,7 @@ public class OceanCameraRig : MonoBehaviour
             if (candidate != OceanCinematicShotKind.FishFocus)
             {
                 SetFocusedFish(null);
+                intent = DiverIntent.Cruise;
                 surfaceDiveArcActive = false;
                 SetSurfaceDiveSpeedLinesVisible(false);
             }
@@ -753,14 +755,7 @@ public class OceanCameraRig : MonoBehaviour
 
     private bool ShouldShowNearbyTagsForCurrentCameraMode()
     {
-        if (focusedFish != null && intent != DiverIntent.Cruise)
-        {
-            return false;
-        }
-
-        return !useCinematicShots
-            || currentCinematicShot != OceanCinematicShotKind.FishFocus
-            || intent == DiverIntent.Cruise;
+        return focusedFish == null && intent == DiverIntent.Cruise;
     }
 
     private bool IsNearbyReleasedFishTagCandidate(FishActor fish, bool alreadyTagged, IReadOnlyList<FishActor> activeFishes)
@@ -1606,7 +1601,7 @@ public class OceanCameraRig : MonoBehaviour
 
     private void UpdateFallbackDiverCruise()
     {
-        if (Time.time >= intentUntilTime || cruiseDestination == Vector3.zero)
+        if (ShouldPickNewCruiseDestination())
         {
             PickCruiseDestination();
         }
@@ -1632,11 +1627,20 @@ public class OceanCameraRig : MonoBehaviour
             + forward * lookAhead
             + Vector3.up * Mathf.Sin(driftTime) * 0.2f;
         routeLookTarget = ApplyRoamLookSweep(transform.position, routeLookTarget, forward, SpawnTimeSeed() * 0.27f);
-        Vector3 lookTarget = target != null
-            ? target.position
-            : BlendRoamLookTargetTowardInterest(transform.position, routeLookTarget, forward, cruiseInterestLookBlend);
+        Vector3 lookTarget = BlendRoamLookTargetTowardInterest(transform.position, routeLookTarget, forward, cruiseInterestLookBlend);
         LookAtTarget(lookTarget, rotationSmooth * 0.72f, snapped);
         ApplySurfaceDiveCameraEffects(surfaceDive);
+    }
+
+    private bool ShouldPickNewCruiseDestination()
+    {
+        if (Time.time >= intentUntilTime || cruiseDestination == Vector3.zero)
+        {
+            return true;
+        }
+
+        float reachDistance = Mathf.Max(0.35f, cruiseDestinationReachDistance);
+        return Vector3.Distance(transform.position, cruiseDestination) <= reachDistance;
     }
 
     private void PickCruiseDestination()

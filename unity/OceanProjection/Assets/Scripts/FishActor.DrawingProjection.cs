@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public partial class FishActor
 {
@@ -104,6 +105,7 @@ public partial class FishActor
 
             EnsureHierarchyActive(item.transform);
             item.enabled = true;
+            EnableDrawingLighting(item);
             Material[] currentMaterials = item.sharedMaterials;
             int materialCount = currentMaterials != null && currentMaterials.Length > 0 ? currentMaterials.Length : 1;
             Material[] nextMaterials = new Material[materialCount];
@@ -188,6 +190,7 @@ public partial class FishActor
 
             EnsureHierarchyActive(item.transform);
             item.enabled = true;
+            EnableDrawingLighting(item);
             Material[] currentMaterials = item.sharedMaterials;
             int materialCount = currentMaterials != null && currentMaterials.Length > 0 ? currentMaterials.Length : 1;
             Material[] nextMaterials = new Material[materialCount];
@@ -527,6 +530,19 @@ public partial class FishActor
         }
 
         return hasBounds;
+    }
+
+    private static void EnableDrawingLighting(Renderer renderer)
+    {
+        if (renderer == null)
+        {
+            return;
+        }
+
+        renderer.shadowCastingMode = ShadowCastingMode.On;
+        renderer.receiveShadows = true;
+        renderer.lightProbeUsage = LightProbeUsage.BlendProbes;
+        renderer.reflectionProbeUsage = ReflectionProbeUsage.BlendProbes;
     }
 
     private static void EncapsulateRendererLocalCorner(

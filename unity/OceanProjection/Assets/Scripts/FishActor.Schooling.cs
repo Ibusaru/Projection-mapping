@@ -73,7 +73,12 @@ public partial class FishActor
         float tailAmplitude = Mathf.Lerp(slowTailSwayDegrees, fastTailSwayDegrees, currentSwimEffort);
         float wave = Mathf.Sin((Time.time + schoolingNoiseSeed) * tailSwayFrequency * swimAnimationRate);
         float curiousYaw = Time.time < curiousLookUntil ? Mathf.Sin(Time.time * 5.2f) * 7f : 0f;
-        float bodySway = wave * tailAmplitude + curiousYaw;
+        float releasedSwayMultiplier = releasedFish ? 0.42f : 1f;
+        float targetBodySway = (wave * tailAmplitude + curiousYaw) * releasedSwayMultiplier;
+        float deltaTime = Time.deltaTime > 0f ? Time.deltaTime : 1f / 60f;
+        float poseBlend = 1f - Mathf.Exp(-Mathf.Max(0.01f, animationSmooth * 1.6f) * deltaTime);
+        currentBodySwayDegrees = Mathf.Lerp(currentBodySwayDegrees, targetBodySway, poseBlend);
+        float bodySway = currentBodySwayDegrees;
 
         if (modelRoot != null && modelRoot != transform)
         {
@@ -88,7 +93,9 @@ public partial class FishActor
 
         if (proceduralTailRoot != null && proceduralTailRoot != modelRoot)
         {
-            float tailYaw = wave * tailAmplitude * Mathf.Max(0f, proceduralTailSwayMultiplier);
+            float targetTailYaw = wave * tailAmplitude * Mathf.Max(0f, proceduralTailSwayMultiplier) * releasedSwayMultiplier;
+            currentTailSwayDegrees = Mathf.Lerp(currentTailSwayDegrees, targetTailYaw, poseBlend);
+            float tailYaw = currentTailSwayDegrees;
             proceduralTailRoot.localRotation = proceduralTailBaseLocalRotation
                 * Quaternion.Euler(0f, tailYaw, tailYaw * 0.18f);
         }

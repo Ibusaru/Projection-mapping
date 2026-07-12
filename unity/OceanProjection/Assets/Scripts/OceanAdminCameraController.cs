@@ -1,0 +1,210 @@
+using System;
+using UnityEngine;
+
+[DefaultExecutionOrder(100)]
+public class OceanAdminCameraController : MonoBehaviour
+{
+    private enum AdminCameraMode
+    {
+        Roam,
+        Aerial,
+        FishFocus
+    }
+
+    [Header("References")]
+    [SerializeField] private OceanCameraRig automaticRig;
+    [SerializeField] private OceanEnvironment oceanEnvironment;
+
+    [Header("Aerial View")]
+    [SerializeField] private float minimumAerialHeight = 22f;
+    [SerializeField] private float aerialDistanceScale = 0.68f;
+    [SerializeField] private float aerialBackOffsetScale = 0.14f;
+
+    [Header("Fish Focus")]
+    [SerializeField] private float fishFollowDistance = 5.4f;
+    [SerializeField] private float fishFollowHeight = 0.8f;
+    [SerializeField] private float focusLookAhead = 1.4f;
+
+    [Header("Motion")]
+    [SerializeField] private float positionSmoothTime = 1.25f;
+    [SerializeField] private float maximumSpeed = 24f;
+    [SerializeField] private float rotationSpeed = 2.6f;
+
+    private AdminCameraMode mode = AdminCameraMode.Roam;
+    private FishActor focusedFish;
+    private Vector3 positionVelocity;
+
+    private void Awake()
+    {
+        if (automaticRig == null)
+        {
+            automaticRig = GetComponent<OceanCameraRig>();
+        }
+
+        if (oceanEnvironment == null)
+        {
+            oceanEnvironment = FindAnyObjectByType<OceanEnvironment>();
+        }
+    }
+
+    private void OnDisable()
+    {
+        ClearFocusedFish();
+        if (automaticRig != null)
+        {
+            automaticRig.enabled = true;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        switch (mode)
+        {
+            case AdminCameraMode.Aerial:
+                UpdateAerialView();
+                break;
+            case AdminCameraMode.FishFocus:
+                UpdateFishFocus();
+                break;
+        }
+    }
+
+    public void ShowAerialView()
+    {
+        ClearFocusedFish();
+        mode = AdminCameraMode.Aerial;
+        BeginManualControl();
+        Debug.Log("OceanAdminCameraController: switched to aerial view.");
+    }
+
+    public void ResumeRoam()
+    {
+        ClearFocusedFish();
+        mode = AdminCameraMode.Roam;
+        positionVelocity = Vector3.zero;
+        if (automaticRig != null)
+        {
+            automaticRig.enabled = true;
+        }
+        Debug.Log("OceanAdminCameraController: resumed automatic roaming.");
+    }
+
+    public bool FocusFish(string fishId)
+    {
+        FishActor targetFish = FindFish(fishId);
+        if (targetFish == null)
+        {
+            Debug.LogWarning($"OceanAdminCameraController: fish id='{fishId}' was not found.");
+            return false;
+        }
+
+        ClearFocusedFish();
+        focusedFish = targetFish;
+        focusedFish.SetCameraFocused(true);
+        mode = AdminCameraMode.FishFocus;
+        BeginManualControl();
+        Debug.Log($"OceanAdminCameraController: focused fish '{focusedFish.Nickname}' ({fishId}).");
+        return true;
+    }
+
+    private void BeginManualControl()
+    {
+        positionVelocity = Vector3.zero;
+        if (automaticRig != null)
+        {
+            automaticRig.enabled = false;
+        }
+    }
+
+    private void UpdateAerialView()
+    {
+        Vector3 lookTarget = Vector3.zero;
+        float areaScale = 30f;
+        if (oceanEnvironment != null)
+        {
+            Vector2 oceanSize = oceanEnvironment.OceanSize;
+            areaScale = Mathf.Max(12f, oceanSize.x, oceanSize.y);
+            lookTarget = oceanEnvironment.transform.TransformPoint(
+                new Vector3(0f, oceanEnvironment.WaterSurfaceY - 2f, 0f)
+            );
+        }
+
+        Vector3 desiredPosition = lookTarget
+            + Vector3.up * Mathf.Max(minimumAerialHeight, areaScale * aerialDistanceScale)
+            + Vector3.back * (areaScale * aerialBackOffsetScale);
+        MoveAndLook(desiredPosition, lookTarget);
+    }
+
+    private void UpdateFishFocus()
+    {
+        if (focusedFish == null || !focusedFish.isActiveAndEnabled)
+        {
+            ResumeRoam();
+            return;
+        }
+
+        Vector3 forward = Vector3.ProjectOnPlane(focusedFish.transform.forward, Vector3.up);
+        if (forward.sqrMagnitude < 0.001f)
+        {
+            forward = Vector3.forward;
+        }
+        forward.Normalize();
+
+        float radius = Mathf.Max(0.5f, focusedFish.CameraFocusRadius);
+        float distance = Mathf.Max(fishFollowDistance, radius * 3.2f);
+        Vector3 focusPoint = focusedFish.VisualCenter;
+        Vector3 desiredPosition = focusPoint - forward * distance + Vector3.up * fishFollowHeight;
+        Vector3 lookTarget = focusPoint + forward * focusLookAhead;
+        MoveAndLook(desiredPosition, lookTarget);
+    }
+
+    private void MoveAndLook(Vector3 desiredPosition, Vector3 lookTarget)
+    {
+        transform.position = Vector3.SmoothDamp(
+            transform.position,
+            desiredPosition,
+            ref positionVelocity,
+            Mathf.Max(0.05f, positionSmoothTime),
+            Mathf.Max(0.1f, maximumSpeed)
+        );
+
+        Vector3 direction = lookTarget - transform.position;
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            return;
+        }
+
+        Quaternion desiredRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+        float blend = 1f - Mathf.Exp(-Mathf.Max(0.1f, rotationSpeed) * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, blend);
+    }
+
+    private void ClearFocusedFish()
+    {
+        if (focusedFish != null)
+        {
+            focusedFish.SetCameraFocused(false);
+            focusedFish = null;
+        }
+    }
+
+    private static FishActor FindFish(string fishId)
+    {
+        if (string.IsNullOrWhiteSpace(fishId))
+        {
+            return null;
+        }
+
+        foreach (FishActor fish in FishActor.AllActiveFishes)
+        {
+            if (fish != null
+                && fish.IsReleasedFish
+                && string.Equals(fish.SourceId, fishId.Trim(), StringComparison.OrdinalIgnoreCase))
+            {
+                return fish;
+            }
+        }
+
+        return null;
+    }
+}

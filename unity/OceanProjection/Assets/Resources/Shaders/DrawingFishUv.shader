@@ -20,7 +20,7 @@ Shader "OceanProjection/Drawing Fish UV"
 
         Pass
         {
-            Name "ForwardUnlit"
+            Name "ForwardLit"
             Tags { "LightMode" = "UniversalForward" }
 
             Cull Back
@@ -30,8 +30,10 @@ Shader "OceanProjection/Drawing Fish UV"
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             TEXTURE2D(_BaseMap);
             SAMPLER(sampler_BaseMap);
@@ -56,16 +58,19 @@ Shader "OceanProjection/Drawing Fish UV"
                 float3 positionWS : TEXCOORD0;
                 float3 normalWS : TEXCOORD1;
                 float2 uv : TEXCOORD2;
+                float4 shadowCoord : TEXCOORD3;
             };
 
             Varyings Vert(Attributes input)
             {
                 Varyings output;
                 VertexPositionInputs positionInputs = GetVertexPositionInputs(input.positionOS.xyz);
+                VertexNormalInputs normalInputs = GetVertexNormalInputs(input.normalOS);
                 output.positionHCS = positionInputs.positionCS;
                 output.positionWS = positionInputs.positionWS;
-                output.normalWS = TransformObjectToWorldNormal(input.normalOS);
+                output.normalWS = normalInputs.normalWS;
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
+                output.shadowCoord = GetShadowCoord(positionInputs);
                 return output;
             }
 
@@ -75,8 +80,72 @@ Shader "OceanProjection/Drawing Fish UV"
                 float paintAlpha = saturate((drawing.a - _AlphaClip) / max(1.0 - _AlphaClip, 0.0001));
 
                 half4 color = half4(lerp(_BaseColor.rgb, drawing.rgb, paintAlpha), _BaseColor.a);
+                half3 normalWS = normalize(input.normalWS);
+                Light mainLight = GetMainLight(input.shadowCoord);
+                half mainLightAmount = saturate(dot(normalWS, mainLight.direction)) * mainLight.shadowAttenuation;
+                half3 ambient = SampleSH(normalWS) * 0.55;
+                half3 directional = mainLight.color * (0.24 + mainLightAmount * 0.76);
+                color.rgb = saturate(color.rgb * (ambient + directional + 0.08));
                 color.a = 1.0;
                 return color;
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags { "LightMode" = "ShadowCaster" }
+
+            Cull Back
+            ZWrite On
+            ZTest LEqual
+            ColorMask 0
+
+            HLSLPROGRAM
+            #pragma vertex ShadowPassVertex
+            #pragma fragment ShadowPassFragment
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
+
+            float3 _LightDirection;
+            float3 _LightPosition;
+
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+            };
+
+            struct Varyings
+            {
+                float4 positionHCS : SV_POSITION;
+            };
+
+            Varyings ShadowPassVertex(Attributes input)
+            {
+                Varyings output;
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+                float3 lightDirectionWS = _LightDirection;
+                #if defined(_CASTING_PUNCTUAL_LIGHT_SHADOW)
+                    lightDirectionWS = normalize(_LightPosition - positionWS);
+                #endif
+
+                output.positionHCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, lightDirectionWS));
+                #if UNITY_REVERSED_Z
+                    output.positionHCS.z = min(output.positionHCS.z, output.positionHCS.w * UNITY_NEAR_CLIP_VALUE);
+                #else
+                    output.positionHCS.z = max(output.positionHCS.z, output.positionHCS.w * UNITY_NEAR_CLIP_VALUE);
+                #endif
+                return output;
+            }
+
+            half4 ShadowPassFragment(Varyings input) : SV_TARGET
+            {
+                return 0;
             }
             ENDHLSL
         }

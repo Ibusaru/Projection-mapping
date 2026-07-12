@@ -45,11 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1101326fb2daa64591a8f53ff42a1a1, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralFishMeshDeformer
-  frequency: 4.8
-  sideAmplitude: 0.035
-  twistAmplitude: 4.5
-  waveLength: 1.35
-  centerStillness: 0.18
+  frequency: 3.2
+  sideAmplitude: 0.022
+  twistAmplitude: 2.2
+  waveLength: 1.08
+  centerStillness: 0.34
+  deformationSmooth: 9
 --- !u!1001 &5819221352964173939
 PrefabInstance:
   m_ObjectHideFlags: 0

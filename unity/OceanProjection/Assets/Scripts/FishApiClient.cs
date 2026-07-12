@@ -20,6 +20,14 @@ public class FishApiClient : MonoBehaviour
 
     public event Action<IReadOnlyList<FishData>> OnNewFishes;
 
+    private void Awake()
+    {
+        if (GetComponent<OceanAdminCommandClient>() == null)
+        {
+            gameObject.AddComponent<OceanAdminCommandClient>();
+        }
+    }
+
     private void Start()
     {
         Dictionary<string, string> localEnv = ReadLocalEnvFile();

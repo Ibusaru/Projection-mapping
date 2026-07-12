@@ -154,3 +154,5 @@ with check (
 drop policy if exists "Anyone can update fish drawings" on storage.objects;
 drop policy if exists "Anyone can delete fish drawings" on storage.objects;
 -- Storage objects are append-only from the public app. Delete bad submissions from the Supabase dashboard.
+
+-- 管理画面を使う場合は、このファイルに続けて supabase-admin-migration.sql を実行する。
