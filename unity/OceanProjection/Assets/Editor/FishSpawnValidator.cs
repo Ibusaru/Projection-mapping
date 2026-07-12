@@ -78,6 +78,32 @@ public static class FishSpawnValidator
         return valid;
     }
 
+    private static Bounds RendererBounds(GameObject root)
+    {
+        Renderer[] renderers = FishRendererUtility.GetVisualRenderers(root, false);
+        Bounds bounds = new Bounds(root.transform.position, Vector3.zero);
+        bool hasBounds = false;
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            if (!hasBounds)
+            {
+                bounds = renderer.bounds;
+                hasBounds = true;
+            }
+            else
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+        }
+
+        return bounds;
+    }
+
     private static bool ValidatePrefab(SerializedObject serializedSpawner, string propertyName, float releasedFishTargetLength)
     {
         SerializedProperty property = serializedSpawner.FindProperty(propertyName);

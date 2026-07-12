@@ -25,6 +25,7 @@ git push -u origin main
 1. Supabaseで新規プロジェクトを作る。
 2. SQL Editorを開く。
 3. `docs/supabase.sql` の内容を実行する。
+   既存環境で管理画面追加後に投稿が RLS で拒否される場合は、`docs/supabase-submission-rls-fix.sql` も一度実行する。
 4. 管理画面を使う場合は `docs/supabase-admin-migration.sql` も実行する。
 5. Supabase Dashboardの Authentication > Users で管理者ユーザーを作成し、SQL Editorで次を実行する。
 

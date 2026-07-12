@@ -44,8 +44,90 @@ public partial class OceanEnvironment
         }
 
         CreateOuterAreaFill();
-        CreateShorelineAccents();
+        CreateBeachModelDecorations();
         CreatePandazoleBoneAccents();
+        SubmergeGeneratedUnderwaterDecorations();
+    }
+
+    private void SubmergeGeneratedUnderwaterDecorations()
+    {
+        if (generatedRoot == null)
+        {
+            return;
+        }
+
+        const float surfaceClearance = 0.18f;
+        float surfaceWorldY = transform.TransformPoint(new Vector3(0f, waterSurfaceY, 0f)).y;
+        float maximumDecorationY = surfaceWorldY - surfaceClearance;
+        int adjustedCount = 0;
+
+        for (int i = 0; i < generatedRoot.childCount; i++)
+        {
+            Transform decoration = generatedRoot.GetChild(i);
+            if (IsStructuralOrBeachRoot(decoration.name)
+                || !TryGetSolidRendererBounds(decoration.gameObject, out Bounds bounds))
+            {
+                continue;
+            }
+
+            Vector3 localCenter = transform.InverseTransformPoint(bounds.center);
+            if (!OceanShorelineLayout.IsUnderwaterPoint(
+                    oceanSize,
+                    activeAreaSize,
+                    shorelineWidth,
+                    decorationSeed,
+                    localCenter,
+                    0.5f)
+                || bounds.max.y <= maximumDecorationY)
+            {
+                continue;
+            }
+
+            decoration.position += Vector3.down * (bounds.max.y - maximumDecorationY);
+            adjustedCount++;
+        }
+
+        Debug.Log(
+            $"OceanEnvironment: submerged {adjustedCount} decoration roots below " +
+            $"waterY={surfaceWorldY:0.00} with clearance={surfaceClearance:0.00}."
+        );
+    }
+
+    private static bool IsStructuralOrBeachRoot(string objectName)
+    {
+        return objectName == "Seabed"
+            || objectName == "Water Surface"
+            || objectName == "Underwater Water Surface Cue"
+            || objectName == "Visible Shoreline"
+            || objectName == "Beach Props"
+            || objectName.StartsWith("Shore ", System.StringComparison.Ordinal);
+    }
+
+    private static bool TryGetSolidRendererBounds(GameObject root, out Bounds bounds)
+    {
+        bounds = default;
+        bool found = false;
+        Renderer[] renderers = root.GetComponentsInChildren<Renderer>(true);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer renderer = renderers[i];
+            if (renderer == null || renderer is LineRenderer || renderer is ParticleSystemRenderer)
+            {
+                continue;
+            }
+
+            if (!found)
+            {
+                bounds = renderer.bounds;
+                found = true;
+            }
+            else
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+        }
+
+        return found;
     }
 
     private void CreateOuterAreaFill()
@@ -109,9 +191,9 @@ public partial class OceanEnvironment
         for (int i = 0; i < shoreAccentCount; i++)
         {
             float z = Random.Range(-halfZ * 0.88f, halfZ * 0.88f);
-            float shorelineX = ShorelineStartX(z, halfX, halfZ, activeHalfX, usableWidth);
+            float shorelineX = ShorelineStartX(z);
             float x = Random.Range(shorelineX + 2f, halfX - 2f);
-            Vector3 position = new Vector3(x, SampleShorelineLandHeight(x, z, shorelineX, halfX), z);
+            Vector3 position = new Vector3(x, SampleShorelineLandHeight(x, z), z);
 
             if (i % 3 == 0)
             {
@@ -162,18 +244,20 @@ public partial class OceanEnvironment
         {
             float x = Random.Range(-oceanSize.x * 0.5f * inset, oceanSize.x * 0.5f * inset);
             float z = Random.Range(-oceanSize.y * 0.5f * inset, oceanSize.y * 0.5f * inset);
-            if (!IsOutsideActiveArea(x, z, 2.5f))
+            Vector3 candidate = SampleSeabedPosition(x, z);
+            if (!IsOutsideActiveArea(x, z, 2.5f)
+                || !OceanShorelineLayout.IsUnderwaterPoint(oceanSize, activeAreaSize, shorelineWidth, decorationSeed, candidate, 4f))
             {
                 continue;
             }
 
             if (preferReef && terrain != null && Random.value < reefDecorationBias && !terrain.IsReefMound(x, z))
             {
-                fallback = SampleSeabedPosition(x, z);
+                fallback = candidate;
                 continue;
             }
 
-            return SampleSeabedPosition(x, z);
+            return candidate;
         }
 
         return fallback;

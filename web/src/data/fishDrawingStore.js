@@ -4,8 +4,17 @@ import { defaultFishPayload } from "../config/fishOptions";
 const storageBucket = "fish-drawings";
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Public submissions must stay anonymous even if /admin has a persisted login.
 const supabase =
-  supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+  supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          autoRefreshToken: false,
+          detectSessionInUrl: false,
+          persistSession: false,
+        },
+      })
+    : null;
 
 function createId() {
   if (globalThis.crypto?.randomUUID) {

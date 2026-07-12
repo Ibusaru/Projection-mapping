@@ -1,0 +1,471 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat" at "2026-07-06T12:13:48.8897919Z"
+Built from '6000.4/staging' branch; Version is '6000.4.11f1 (b0a1d6caadd2) revision 11575766'; Using compiler version '194234433'; Build Type 'Release'
+OS: 'Windows 11  (10.0.26200) Core' Language: 'ja' Physical Memory: 16109 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-07-06T12:13:48Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.4.11f1\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+.
+-executeMethod
+ReleasedFishPrefabSetup.Run
+-logFile
+ReleasedFishPrefabSetup.log
+Successfully changed project path to: C:/Users/scrat/Documents/創造工学/unity/OceanProjection
+C:/Users/scrat/Documents/創造工学/unity/OceanProjection
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Player connection [14860]  Target information:
+
+Player connection [14860]  * "[IP] 10.181.227.163 [Port] 55504 [Flags] 2 [Guid] 3751214361 [EditorId] 3751214361 [Version] 1048832 [Id] WindowsEditor(7,Ibusaru) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [14860]  * "[IP] 192.168.10.34 [Port] 55504 [Flags] 2 [Guid] 3751214361 [EditorId] 3751214361 [Version] 1048832 [Id] WindowsEditor(7,Ibusaru) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [14860] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [14860] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-43456" after 0.5 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-scrat"
+[Licensing::IpcConnector] LicenseClient-scrat channel disconnected successfully.
+[Licensing::IpcConnector] Channel LicenseClient-scrat-6000.4.11 doesn't exist
+[Licensing::Module] Successfully launched the LicensingClient (PId: 42180)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat-6000.4.11" at "2026-07-06T12:13:51.9666455Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 42180, path: "C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              f01cd0d29eb346f484f33a576559b852
+  Correlation Id:          18796fda94edca75737aa224a8f9815f
+  External correlation Id: 4237496212538692958
+  Machine Id:              S0daBYJzEfXnzRSS8jSeuGq46cc=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-scrat-6000.4.11" (connect: 0.57s, validation: 0.27s, handshake: 0.02s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat-6000.4.11-notifications" at "2026-07-06T12:13:52.2480806Z"
+[Licensing::Module] Connected to LicensingClient (PId: 42180, launch time: 0.01, total connection time: 0.85s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 15668926921957-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 3.41s
+[Licensing::Module] Licensing is initialized (took 2.57s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 3 unused hashed content files
+Initialize engine version: 6000.4.11f1 (b0a1d6caadd2)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/scrat/Documents/創造工学/unity/OceanProjection/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        NVIDIA GeForce RTX 3060 Laptop GPU (ID=0x2520)
+    Vendor:          NVIDIA
+    VRAM:            5994 MB
+    App VRAM Budget: 5226 MB
+    Driver:          32.0.16.1047
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56456
+CodeReloadManager initialized
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.008014 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.932 seconds
+Domain Reload Profiling: 2119ms
+	BeginReloadAssembly (389ms)
+		CreateAndSetChildDomain (21ms)
+	RebuildCommonClasses (94ms)
+	RebuildNativeTypeToScriptingClass (30ms)
+	initialDomainReloadingComplete (182ms)
+	LoadAllAssembliesAndSetupDomain (479ms)
+		LoadAssemblies (353ms)
+		AnalyzeDomain (459ms)
+			TypeCache.Refresh (455ms)
+				TypeCache.ScanAssembly (423ms)
+	FinalizeReload (944ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (101ms)
+			BeforeProcessingInitializeOnLoad (170ms)
+			ProcessInitializeOnLoadAttributes (256ms)
+			ProcessInitializeOnLoadMethodAttributes (254ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 57 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.13 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ai.navigation@42d896194035)
+    com.unity.collab-proxy@2.12.4 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.collab-proxy@0b1559bcd34e)
+    com.unity.ide.rider@3.0.40 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ide.rider@e4950c6d131b)
+    com.unity.ide.visualstudio@2.0.27 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.inputsystem@1.19.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.inputsystem@21a28c3a6c83)
+    com.unity.timeline@1.8.12 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.11 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.visualscripting@8bed5ad90189)
+    com.unity.searcher@4.9.4 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.29 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.burst@6bb9aca3ef38)
+    com.unity.mathematics@1.3.3 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.multiplayer.center@f01f4ba8d00a)
+    com.unity.render-pipelines.universal@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.render-pipelines.universal@d3aed158d698)
+    com.unity.test-framework@1.6.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.test-framework@996f223345ba)
+    com.unity.ugui@2.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ugui@bf94f8b81813)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.core@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.render-pipelines.core@2e28fe32b230)
+    com.unity.shadergraph@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.shadergraph@a2f5226fbfe7)
+    com.unity.render-pipelines.universal-config@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.render-pipelines.universal-config@0db4263b9e6b)
+    com.unity.collections@6.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.collections@5b6ebd78ccc0)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.08 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.4.11f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/scrat/Documents/創造工学/unity/OceanProjection
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 8s90ms
+[711/906    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[898/906    4s] Csc Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll (+2 others)
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\utility_ConvertToSurface.cs(32,48): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\fx_causticObject.cs(39,5): warning CS0618: 'Light.cookieSize' is obsolete: 'Light.cookieSize has been deprecated. Use Light.cookieSize2D instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\fx_causticModule.cs(33,48): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\fx_buoyancy.cs(76,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\fx_EffectObject.cs(156,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoModuleFX.cs(71,48): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\Suimono_UnderwaterFog.cs(90,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\Suimono_UnderwaterFog.cs(91,40): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\cameraCausticsHandler.cs(28,48): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\cameraTools.cs(102,55): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\Suimono_ShorelineObject.cs(92,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoObject.cs(371,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoObject.cs(462,53): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoModule.cs(820,58): warning CS0618: 'RenderingPath.DeferredLighting' is obsolete: 'DeferredLighting has been removed. Use DeferredShading, Forward or HDRP/URP instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoObject.cs(474,53): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\cameraTools.cs(279,19): warning CS0618: 'RenderingPath.DeferredLighting' is obsolete: 'DeferredLighting has been removed. Use DeferredShading, Forward or HDRP/URP instead.'
+
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\cameraTools.cs(289,17): warning CS0618: 'RenderingPath.DeferredLighting' is obsolete: 'DeferredLighting has been removed. Use DeferredShading, Forward or HDRP/URP instead.'
+[900/906    1s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp-Editor.dll, with 138 defines and 343 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[901/906    1s] ILPostProcess Library/Bee/artifacts/1900b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.dll, with 140 defines and 320 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[903/906    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[904/906    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+*** Tundra build success (7.66 seconds), 6 items updated, 906 evaluated
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\utility_ConvertToSurface.cs(32,48): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\fx_causticObject.cs(39,5): warning CS0618: 'Light.cookieSize' is obsolete: 'Light.cookieSize has been deprecated. Use Light.cookieSize2D instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\fx_causticModule.cs(33,48): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\fx_buoyancy.cs(76,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\fx_EffectObject.cs(156,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoModuleFX.cs(71,48): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\Suimono_UnderwaterFog.cs(90,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\Suimono_UnderwaterFog.cs(91,40): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\cameraCausticsHandler.cs(28,48): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\cameraTools.cs(102,55): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\Suimono_ShorelineObject.cs(92,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoObject.cs(371,49): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoObject.cs(462,53): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoModule.cs(820,58): warning CS0618: 'RenderingPath.DeferredLighting' is obsolete: 'DeferredLighting has been removed. Use DeferredShading, Forward or HDRP/URP instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\SuimonoObject.cs(474,53): warning CS0618: 'Object.FindObjectOfType(Type)' is obsolete: 'Object.FindObjectOfType has been deprecated. Use Object.FindAnyObjectByType instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\cameraTools.cs(279,19): warning CS0618: 'RenderingPath.DeferredLighting' is obsolete: 'DeferredLighting has been removed. Use DeferredShading, Forward or HDRP/URP instead.'
+Assets\SUIMONO - WATER SYSTEM 2\SCRIPTS\cameraTools.cs(289,17): warning CS0618: 'RenderingPath.DeferredLighting' is obsolete: 'DeferredLighting has been removed. Use DeferredShading, Forward or HDRP/URP instead.'
+AssetDatabase: script compilation time: 9.601954s
+Begin MonoManager ReloadAssembly
+Total cache size 33293272
+Total cache size after purge 33293272, took 00:00:00.1242951
+Assembly Assembly-CSharp-Editor-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll not valid. Loading of assembly skipped.
+Assembly DocCodeExamples.dll at Library/ScriptAssemblies/DocCodeExamples.dll not valid. Loading of assembly skipped.
+Assembly TestNewCustomAssembly.dll at Library/ScriptAssemblies/TestNewCustomAssembly.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.BurstCompatibilityGen.dll at Library/ScriptAssemblies/Unity.Collections.BurstCompatibilityGen.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.DocCodeSamples.dll at Library/ScriptAssemblies/Unity.Collections.DocCodeSamples.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.PerformanceTests.dll at Library/ScriptAssemblies/Unity.Collections.PerformanceTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.Tests.dll at Library/ScriptAssemblies/Unity.Collections.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.Tests.Playmode.dll at Library/ScriptAssemblies/Unity.Collections.Tests.Playmode.dll not valid. Loading of assembly skipped.
+Assembly Unity.InputSystem.IntegrationTests.dll at Library/ScriptAssemblies/Unity.InputSystem.IntegrationTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Mathematics.Tests.dll at Library/ScriptAssemblies/Unity.Mathematics.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Editor.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Nuget.Mono-Cecil.dll at Library/ScriptAssemblies/Unity.Nuget.Mono-Cecil.dll not valid. Loading of assembly skipped.
+Assembly Unity.PathTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.PathTracing.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Core.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Core.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Config.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Config.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Searcher.EditorTests.dll at Library/ScriptAssemblies/Unity.Searcher.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.ShaderGraph.Editor.Tests.dll at Library/ScriptAssemblies/Unity.ShaderGraph.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Editor.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.UnifiedRayTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.UnifiedRayTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.Common.Tests.dll at Library/ScriptAssemblies/UnityEditor.UI.Common.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.EditorTests.dll at Library/ScriptAssemblies/UnityEditor.UI.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly UnityEngine.UI.Tests.dll at Library/ScriptAssemblies/UnityEngine.UI.Tests.dll not valid. Loading of assembly skipped.
+Refreshing native plugins compatible for Editor in 11.56 ms, found 4 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 5.56 ms, found 4 plugins.
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  7.418 seconds
+Domain Reload Profiling: 10795ms
+	BeginReloadAssembly (558ms)
+		DisableScriptedObjects (79ms)
+		CreateAndSetChildDomain (89ms)
+	RebuildCommonClasses (91ms)
+	RebuildNativeTypeToScriptingClass (29ms)
+	initialDomainReloadingComplete (1047ms)
+	LoadAllAssembliesAndSetupDomain (1651ms)
+		LoadAssemblies (1197ms)
+		AnalyzeDomain (714ms)
+			TypeCache.Refresh (486ms)
+				TypeCache.ScanAssembly (457ms)
+			BuildScriptInfoCaches (194ms)
+			ResolveRequiredComponents (29ms)
+	FinalizeReload (7419ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (73ms)
+			BeforeProcessingInitializeOnLoad (426ms)
+			ProcessInitializeOnLoadAttributes (5823ms)
+			ProcessInitializeOnLoadMethodAttributes (287ms)
+			AfterProcessingInitializeOnLoad (21ms)
+		AwakeInstancesAfterBackupRestoration (47ms)
+Refreshing native plugins compatible for Editor in 5.17 ms, found 4 plugins.
+(Values over 0.050ms)
+Asset Pipeline Refresh (id=8e070308dd6feb544802eeaf04fdeb18): Total: 22.709 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=8653 ms
+		Asset DB Callback time: managed=763 ms, native=122 ms
+		Scripting: domain reloads=1, domain reload time=3397 ms, compile time=9605 ms, other=164 ms
+		Project Asset Count: scripts=1425, non-scripts=4362
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 92.853ms
+	ApplyChangesToAssetFolders: 1.553ms
+	Scan: 363.099ms
+	OnSourceAssetsModified: 1.549ms
+	CategorizeScriptCompilationAssets: 119.328ms
+	ProcessAssetsWithTransientArtifactChanges: 183.010ms
+	CategorizeAssets: 141.296ms
+	CompileScripts: 9605.312ms
+	ImportOutOfDateAssets: 7455.192ms (7449.159ms without children)
+		ReloadNativeAssets: 0.065ms
+		UnloadImportedAssets: 1.317ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.886ms
+		OnDemandSchedulerStart: 2.761ms
+	PostProcessAllAssets: 774.440ms
+		VCAutoAddAssetPostprocess 5.848ms
+		XRBuildSystem.XRAssetImported 1.702ms
+		PostProcessCallbackCreateDeferredMaterials 0.703ms
+		ShaderAssetModifiedCallback 0.444ms
+		WindowTitlePostprocess 0.388ms
+		MonoPostProcessAllAssets: 761.846ms
+			AssetPostprocessor.OnPostprocessAllAssets 549.708ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 97.772ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 28.838ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 17.760ms
+			SyncVS.PostprocessSyncProject 7.840ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 4.860ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 4.849ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 3.610ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 3.128ms
+			AssetChangedListener.OnPostprocessAllAssets 2.709ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 1.718ms
+			MaterialPostprocessor.OnPostprocessAllAssets 1.524ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 1.454ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 1.165ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.944ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 0.866ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.816ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 0.774ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.768ms
+			PostProcessor.OnPostprocessAllAssets 0.582ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 0.563ms
+			AssetEvents.OnPostprocessAllAssets 0.537ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.483ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.412ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.384ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.365ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.359ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.337ms
+			AudioContainerPostProcessor.OnPostprocessAllAssets 0.291ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.289ms
+	PostAssetChangesProfiler: 24.455ms
+	UnloadStreamsBegin: 8.693ms
+	PersistCurrentRevisions: 0.608ms
+	GenerateScriptTypeHashes: 8.058ms
+	GenerateScriptTypeSerializationHashes: 13.910ms
+	Untracked: 3924.947ms
+
+Application.AssetDatabase Initial Refresh End
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Scanning for USB devices : 6.572ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-OceanProjection
+Unloading 27 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 6653 unused Assets / (7.5 MB). Loaded Objects now: 7565.
+Memory consumption went from 250.3 MB to 242.8 MB.
+Total: 29.845700 ms (FindLiveObjects: 1.216900 ms CreateObjectMapping: 1.777200 ms MarkObjects: 15.542700 ms  DeleteObjects: 11.301300 ms)
+
+Start importing Assets/Prefabs/ReleasedFish/ReleasedKakukuma.prefab using Guid(c094647e7ad0719499631177f863d1b9) (PrefabImporter) -> (Import Result ID: '15789ac9c6acc7c39ad3bc9527441e0b') in 0.038029 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=e966896dd61e4da9b43ee074a13fe93b DependenciesID=14404b725da319678bb32fb66d7dc767 StaticDependenciesID=58a8968fb765b5a555e5a3e58262b6b3 
+Refreshing native plugins compatible for Editor in 5.19 ms, found 4 plugins.
+Asset Pipeline Refresh (id=9925107b09f2dfc4b86c31f0a50c3c0c): Total: 0.243 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=a728492cebfe58b44a0d0f6456e94bbf): Total: 0.034 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Opening scene 'Assets/Scenes/SampleScene.unity'
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+Loaded scene 'Assets/Scenes/SampleScene.unity'
+	Deserialize:            25.102 ms
+	Integration:            2218.803 ms
+	Integration of assets:  6.455 ms
+	Thread Wait Time:       0.023 ms
+	Total Operation Time:   2250.384 ms
+Unloading 16 unused Assets / (1.8 KB). Loaded Objects now: 27457.
+Memory consumption went from 296.0 MB to 296.0 MB.
+Total: 18.850800 ms (FindLiveObjects: 3.642200 ms CreateObjectMapping: 1.171900 ms MarkObjects: 13.909000 ms  DeleteObjects: 0.125700 ms)
+
+Batchmode quit successfully invoked - shutting down!
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-scrat-6000.4.11-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-scrat-6000.4.11 channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

@@ -14,6 +14,9 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private Object tunaPrefab;
     [SerializeField] private Object originalPrefab;
     [SerializeField] private GameObject[] defaultFishAlivePrefabs;
+    [SerializeField] private GameObject emperorAngelfishPrefab;
+    [SerializeField, Range(0f, 0.4f)] private float emperorAngelfishSchoolShare = 0.09f;
+    [SerializeField] private Vector2 emperorAngelfishTargetLengthRange = new Vector2(0.18f, 0.38f);
     [SerializeField] private Transform fishParent;
 
     [Header("Spawn Area")]
@@ -204,7 +207,11 @@ public class FishSpawner : MonoBehaviour
             DefaultSchoolCluster cluster = clusters[clusterIndex];
             for (int localIndex = 0; localIndex < cluster.count; localIndex++)
             {
-                GameObject prefab = prefabs[fishIndex % prefabs.Length];
+                bool useEmperorAngelfish = emperorAngelfishPrefab != null
+                    && Random.value < Mathf.Clamp01(emperorAngelfishSchoolShare);
+                GameObject prefab = useEmperorAngelfish
+                    ? emperorAngelfishPrefab
+                    : prefabs[fishIndex % prefabs.Length];
                 if (prefab == null)
                 {
                     fishIndex++;
@@ -228,7 +235,10 @@ public class FishSpawner : MonoBehaviour
                 actor.SetSwimBounds(center, size);
                 actor.ConfigureSchoolGroup(cluster.id, cluster.center, cluster.forward, cluster.radius);
                 actor.Apply(CreateDefaultFishData(prefab.name, fishIndex));
-                NormalizeFishScaleToLength(instance, Random.Range(defaultFishTargetLengthRange.x, defaultFishTargetLengthRange.y));
+                Vector2 targetLengthRange = useEmperorAngelfish
+                    ? emperorAngelfishTargetLengthRange
+                    : defaultFishTargetLengthRange;
+                NormalizeFishScaleToLength(instance, Random.Range(targetLengthRange.x, targetLengthRange.y));
                 fishQueue.Enqueue(actor);
                 fishIndex++;
             }

@@ -12,6 +12,7 @@ public static class ReleasedFishPrefabSetup
     private const string KurageModelPath = "Assets/Models/\u30AF\u30E9\u30B2\uFF12.fbx";
     private const string KakukumaPrefabPath = PrefabFolder + "/ReleasedKakukuma.prefab";
     private const string KuragePrefabPath = PrefabFolder + "/ReleasedKurage.prefab";
+    private const string CenteredVisualPivotName = "Centered Visual Pivot";
 
     [InitializeOnLoadMethod]
     private static void Initialize()
@@ -167,10 +168,39 @@ public static class ReleasedFishPrefabSetup
             return;
         }
 
-        for (int i = 0; i < root.transform.childCount; i++)
+        Transform pivot = CreateCenteredVisualPivot(root.transform);
+        MoveTopLevelChildrenUnderPivot(root.transform, pivot);
+
+        for (int i = 0; i < pivot.childCount; i++)
         {
-            Transform child = root.transform.GetChild(i);
+            Transform child = pivot.GetChild(i);
             child.localPosition -= localCenter;
+        }
+    }
+
+    private static Transform CreateCenteredVisualPivot(Transform root)
+    {
+        GameObject pivotObject = new GameObject(CenteredVisualPivotName);
+        Transform pivot = pivotObject.transform;
+        pivot.SetParent(root, false);
+        pivot.localPosition = Vector3.zero;
+        pivot.localRotation = Quaternion.identity;
+        pivot.localScale = Vector3.one;
+        return pivot;
+    }
+
+    private static void MoveTopLevelChildrenUnderPivot(Transform root, Transform pivot)
+    {
+        while (root.childCount > 1)
+        {
+            Transform child = root.GetChild(0);
+            if (child == pivot)
+            {
+                child.SetSiblingIndex(root.childCount - 1);
+                continue;
+            }
+
+            child.SetParent(pivot, true);
         }
     }
 

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e88f73ae50c448441b69348cc61b1fbb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287370
+  packageName: Beach
+  packageVersion: 1.0
+  assetPath: Assets/Simple_Beach_Models/Materials/Ball_Materials/Blue.mat
+  uploadId: 671357

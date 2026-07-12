@@ -8,22 +8,27 @@ public partial class OceanEnvironment
         Vector3[] vertices = new Vector3[points * points];
         Vector2[] uvs = new Vector2[vertices.Length];
         int[] triangles = new int[waterResolution * waterResolution * 6];
-        float halfX = oceanSize.x * 0.5f;
-        float halfZ = oceanSize.y * 0.5f;
-        float activeHalfX = ShorelineActiveHalfX(halfX);
-        float usableWidth = ShorelineUsableWidth(halfX, activeHalfX);
+        float mainHalfX = oceanSize.x * 0.5f;
+        float mainHalfZ = oceanSize.y * 0.5f;
+        float extensionScale = createOpenOceanBackdrop ? Mathf.Clamp(openOceanBackdropScale, 1f, 2.4f) : 1f;
+        float halfX = mainHalfX * extensionScale;
+        float depthScale = createOpenOceanBackdrop ? Mathf.Clamp(openOceanBackdropDepthScale, 1f, 3f) : 1f;
+        float halfZ = mainHalfZ * extensionScale * depthScale;
+        float coastlineHalfZ = CoastlineRenderHalfZ();
 
         for (int z = 0; z < points; z++)
         {
             float tz = z / (float)waterResolution;
             float localZ = Mathf.Lerp(-halfZ, halfZ, tz);
-            float waterEdgeX = WaterSurfaceEdgeX(localZ, halfX, halfZ, activeHalfX, usableWidth);
+            float coastZ = Mathf.Clamp(localZ, -coastlineHalfZ, coastlineHalfZ);
+            float coastEndBlend = Smooth01(Mathf.InverseLerp(coastlineHalfZ * 0.92f, coastlineHalfZ * 1.08f, Mathf.Abs(localZ)));
+            float waterEdgeX = Mathf.Lerp(WaterSurfaceEdgeX(coastZ), halfX, coastEndBlend);
             for (int x = 0; x < points; x++)
             {
                 float tx = x / (float)waterResolution;
                 vertices[z * points + x] = new Vector3(
                     Mathf.Lerp(-halfX, waterEdgeX, tx),
-                    waterSurfaceY,
+                    0f,
                     localZ
                 );
                 uvs[z * points + x] = new Vector2(tx * 3f, tz * 3f);
@@ -51,10 +56,14 @@ public partial class OceanEnvironment
         waterMesh.triangles = triangles;
         waterMesh.RecalculateNormals();
         waterMesh.RecalculateBounds();
-        waterBaseVertices = vertices;
 
         GameObject water = new GameObject("Water Surface");
         water.transform.SetParent(generatedRoot, false);
+        // Keep the authoritative water level on the transform. The imported
+        // Simple Water Shader Graph reconstructs vertex Position and replaces
+        // local Y with wave noise, so baking the world height into mesh
+        // vertices made every configured waterSurfaceY render back near zero.
+        water.transform.localPosition = Vector3.up * waterSurfaceY;
         water.AddComponent<MeshFilter>().sharedMesh = waterMesh;
         water.AddComponent<MeshRenderer>().sharedMaterial = waterMaterial;
     }
@@ -74,15 +83,13 @@ public partial class OceanEnvironment
         Vector2[] uvs = new Vector2[vertices.Length];
         int[] triangles = new int[zSegments * xSegments * 6];
         float halfX = oceanSize.x * 0.5f;
-        float halfZ = oceanSize.y * 0.5f;
-        float activeHalfX = Mathf.Min(Mathf.Abs(activeAreaSize.x) * 0.5f, Mathf.Max(1f, halfX - 3f));
-        float usableWidth = Mathf.Clamp(shorelineWidth, 3f, Mathf.Max(3f, halfX - activeHalfX - 2f));
+        float halfZ = CoastlineRenderHalfZ();
 
         for (int z = 0; z < zPoints; z++)
         {
             float v = z / (float)zSegments;
             float localZ = Mathf.Lerp(-halfZ, halfZ, v);
-            float shorelineX = ShorelineStartX(localZ, halfX, halfZ, activeHalfX, usableWidth);
+            float shorelineX = SandMaterialTransitionX(localZ);
 
             for (int x = 0; x < xPoints; x++)
             {
@@ -90,7 +97,7 @@ public partial class OceanEnvironment
                 float localX = Mathf.Lerp(shorelineX, halfX, u);
                 vertices[z * xPoints + x] = new Vector3(
                     localX,
-                    SampleShorelineLandHeight(localX, localZ, shorelineX, halfX),
+                    SampleShorelineLandHeight(localX, localZ),
                     localZ
                 );
                 uvs[z * xPoints + x] = new Vector2(u * 2.4f, v * 5f);
@@ -124,183 +131,57 @@ public partial class OceanEnvironment
         shore.AddComponent<MeshFilter>().sharedMesh = shoreMesh;
         shore.AddComponent<MeshRenderer>().sharedMaterial = shorelineMaterial != null ? shorelineMaterial : seabedMaterial;
 
-        CreateShorelineFoamLines(halfX, halfZ, activeHalfX, usableWidth);
+    }
+
+    private void CreateUnderwaterSurfaceCue()
+    {
+        if (!createUnderwaterSurfaceCue || waterMesh == null || underwaterSurfaceMaterial == null)
+        {
+            return;
+        }
+
+        GameObject cue = new GameObject("Underwater Water Surface Cue");
+        cue.transform.SetParent(generatedRoot, false);
+        cue.transform.localPosition = Vector3.up * (waterSurfaceY - 0.035f);
+        cue.AddComponent<MeshFilter>().sharedMesh = waterMesh;
+        cue.AddComponent<MeshRenderer>().sharedMaterial = underwaterSurfaceMaterial;
+        underwaterSurfaceMaterial.SetFloat("_WaterLevel", transform.TransformPoint(new Vector3(0f, waterSurfaceY, 0f)).y);
     }
 
     private float ShorelineActiveHalfX(float halfX)
     {
-        return Mathf.Min(Mathf.Abs(activeAreaSize.x) * 0.5f, Mathf.Max(1f, halfX - 3f));
+        return OceanShorelineLayout.ActiveHalfX(oceanSize, activeAreaSize);
     }
 
     private float ShorelineUsableWidth(float halfX, float activeHalfX)
     {
-        return Mathf.Clamp(shorelineWidth, 3f, Mathf.Max(3f, halfX - activeHalfX - 2f));
+        return OceanShorelineLayout.UsableWidth(oceanSize, activeAreaSize, shorelineWidth);
     }
 
-    private float WaterSurfaceEdgeX(float z, float halfX, float halfZ, float activeHalfX, float usableWidth)
+    private float WaterSurfaceEdgeX(float z)
     {
-        if (!createVisibleShoreline)
-        {
-            return halfX;
-        }
-
-        return ShorelineStartX(z, halfX, halfZ, activeHalfX, usableWidth) - Mathf.Max(0f, shorelineWaterInset);
+        return createVisibleShoreline ? SandMaterialTransitionX(z) : oceanSize.x * 0.5f;
     }
 
-    private float ShorelineStartX(float z, float halfX, float halfZ, float activeHalfX, float usableWidth)
+    private float CoastlineRenderHalfZ()
     {
-        float normalizedZ = halfZ > 0.001f ? z / halfZ : 0f;
-        float inlet = Mathf.Sin(normalizedZ * Mathf.PI * 2.7f + decorationSeed * 0.017f) * usableWidth * 0.08f;
-        float grain = (Mathf.PerlinNoise(decorationSeed * 0.013f, z * 0.018f + 19.7f) - 0.5f) * usableWidth * 0.16f;
-        float baseStart = activeHalfX + Mathf.Max(18f, usableWidth * 0.22f);
-        float start = baseStart + inlet + grain;
-        return Mathf.Clamp(start, activeHalfX + 10f, halfX - usableWidth * 0.35f);
-    }
-
-    private float SampleShorelineLandHeight(float x, float z, float shorelineX, float halfX)
-    {
-        float inland = Smooth01(Mathf.InverseLerp(shorelineX, halfX, x));
-        float dune = Mathf.Sin(z * 0.055f + inland * 2.8f + decorationSeed * 0.004f) * 0.18f;
-        float grain = (Mathf.PerlinNoise(x * 0.055f + decorationSeed * 0.01f, z * 0.055f) - 0.5f) * 0.46f;
-        return waterSurfaceY + Mathf.Lerp(-0.08f, 1.35f, inland) + (dune + grain) * inland;
-    }
-
-    private void CreateShorelineFoamLines(float halfX, float halfZ, float activeHalfX, float usableWidth)
-    {
-        if (shorelineFoamLineCount <= 0 || foamMaterial == null)
-        {
-            return;
-        }
-
-        int pointCount = Mathf.Max(12, shorelineResolution);
-        for (int lineIndex = 0; lineIndex < shorelineFoamLineCount; lineIndex++)
-        {
-            GameObject lineObject = new GameObject("Shoreline Foam");
-            lineObject.transform.SetParent(generatedRoot, false);
-
-            LineRenderer line = lineObject.AddComponent<LineRenderer>();
-            line.sharedMaterial = foamMaterial;
-            line.positionCount = pointCount;
-            line.useWorldSpace = true;
-            line.textureMode = LineTextureMode.Stretch;
-            line.alignment = LineAlignment.View;
-            float width = Mathf.Lerp(0.07f, 0.025f, lineIndex / Mathf.Max(1f, shorelineFoamLineCount - 1f));
-            line.startWidth = width;
-            line.endWidth = width * 0.72f;
-            float alpha = Mathf.Lerp(0.34f, 0.12f, lineIndex / Mathf.Max(1f, shorelineFoamLineCount - 1f));
-            Color color = new Color(foamColor.r, foamColor.g, foamColor.b, alpha);
-            line.startColor = color;
-            line.endColor = new Color(color.r, color.g, color.b, alpha * 0.58f);
-
-            float offset = lineIndex * 0.78f;
-            for (int i = 0; i < pointCount; i++)
-            {
-                float t = pointCount <= 1 ? 0f : i / (float)(pointCount - 1);
-                float z = Mathf.Lerp(-halfZ * 0.98f, halfZ * 0.98f, t);
-                float x = WaterSurfaceEdgeX(z, halfX, halfZ, activeHalfX, usableWidth) - offset;
-                float ripple = Mathf.Sin(t * Mathf.PI * 12f + lineIndex * 1.7f) * 0.18f;
-                line.SetPosition(i, new Vector3(x + ripple, waterSurfaceY + 0.055f + lineIndex * 0.01f, z));
-            }
-        }
-    }
-
-    private void CreateOpenOceanBackdrop()
-    {
-        if (!createOpenOceanBackdrop)
-        {
-            return;
-        }
-
-        float scale = Mathf.Max(1.2f, openOceanBackdropScale);
-        float width = oceanSize.x * scale;
-        float depth = oceanSize.y * scale;
-
-        GameObject floor = GeneratedPrimitiveFactory.Create(PrimitiveType.Plane, "Open Ocean Deep Floor", seabedMaterial);
-        floor.transform.SetParent(generatedRoot, false);
-        floor.transform.localPosition = new Vector3(0f, seabedY - 5.5f, 0f);
-        floor.transform.localScale = new Vector3(width * 0.1f, 1f, depth * 0.1f);
-
-        float mainHalfX = oceanSize.x * 0.5f;
         float mainHalfZ = oceanSize.y * 0.5f;
-        float outerHalfX = width * 0.5f;
-        float outerHalfZ = depth * 0.5f;
-        float stripX = Mathf.Max(0f, outerHalfX - mainHalfX);
-        float stripZ = Mathf.Max(0f, outerHalfZ - mainHalfZ);
-        CreateBackdropWaterStrip("Open Ocean Horizon Water East", new Vector3((mainHalfX + outerHalfX) * 0.5f, waterSurfaceY - 0.08f, 0f), new Vector2(stripX, oceanSize.y));
-        CreateBackdropWaterStrip("Open Ocean Horizon Water West", new Vector3(-(mainHalfX + outerHalfX) * 0.5f, waterSurfaceY - 0.08f, 0f), new Vector2(stripX, oceanSize.y));
-        CreateBackdropWaterStrip("Open Ocean Horizon Water North", new Vector3(0f, waterSurfaceY - 0.08f, (mainHalfZ + outerHalfZ) * 0.5f), new Vector2(width, stripZ));
-        CreateBackdropWaterStrip("Open Ocean Horizon Water South", new Vector3(0f, waterSurfaceY - 0.08f, -(mainHalfZ + outerHalfZ) * 0.5f), new Vector2(width, stripZ));
+        return createOpenOceanBackdrop ? mainHalfZ * 1.45f : mainHalfZ;
     }
 
-    private void CreateBackdropWaterStrip(string objectName, Vector3 position, Vector2 size)
+    private float ShorelineStartX(float z)
     {
-        if (size.x <= 0.01f || size.y <= 0.01f)
-        {
-            return;
-        }
-
-        GameObject water = GeneratedPrimitiveFactory.Create(PrimitiveType.Plane, objectName, waterMaterial);
-        water.transform.SetParent(generatedRoot, false);
-        water.transform.localPosition = position;
-        water.transform.localScale = new Vector3(size.x * 0.1f, 1f, size.y * 0.1f);
+        return OceanShorelineLayout.StartX(oceanSize, activeAreaSize, shorelineWidth, decorationSeed, z);
     }
 
-    private void AnimateWater()
+    private float SandMaterialTransitionX(float z)
     {
-        if (waterMesh == null)
-        {
-            return;
-        }
+        return OceanShorelineLayout.SandMaterialTransitionX(oceanSize, activeAreaSize, shorelineWidth, decorationSeed, z);
+    }
 
-        Vector3[] vertices = waterMesh.vertices;
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            Vector3 baseVertex = waterBaseVertices[i];
-            float waveA = Mathf.Sin(Time.time * waveSpeed + baseVertex.x * waveLength + baseVertex.z * 0.22f);
-            float waveB = Mathf.Cos(Time.time * waveSpeed * 1.37f + baseVertex.z * waveLength * 1.2f);
-            float waveC = Mathf.Sin(Time.time * waveSpeed * 0.63f + (baseVertex.x + baseVertex.z) * waveLength * 0.58f);
-            vertices[i].y = waterSurfaceY + (waveA * 0.52f + waveB * 0.31f + waveC * 0.17f) * waveAmplitude;
-        }
-
-        waterMesh.vertices = vertices;
-        waterMesh.RecalculateNormals();
-
-        if (causticLines == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < causticLines.Length; i++)
-        {
-            LineRenderer line = causticLines[i];
-            if (line == null)
-            {
-                continue;
-            }
-
-            float width = 0.018f + Mathf.Sin(Time.time * 1.4f + i * 0.47f) * 0.006f;
-            line.startWidth = width;
-            line.endWidth = width * 0.72f;
-        }
-
-        if (foamLines == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < foamLines.Length; i++)
-        {
-            LineRenderer line = foamLines[i];
-            if (line == null)
-            {
-                continue;
-            }
-
-            float shimmer = 0.5f + Mathf.Sin(Time.time * 1.8f + i * 0.91f) * 0.5f;
-            Color color = Color.Lerp(new Color(foamColor.r, foamColor.g, foamColor.b, 0.12f), foamColor, shimmer);
-            line.startColor = color;
-            line.endColor = new Color(color.r, color.g, color.b, color.a * 0.35f);
-        }
+    private float SampleShorelineLandHeight(float x, float z)
+    {
+        return OceanShorelineLayout.SampleLandHeight(oceanSize, activeAreaSize, shorelineWidth, decorationSeed, shorelineSurfaceY, x, z);
     }
 
     private void CreateSunlight()
@@ -344,47 +225,14 @@ public partial class OceanEnvironment
             spot.shadows = LightShadows.None;
         }
 
-        CreateSunbeams();
-    }
-
-    private void CreateSunbeams()
-    {
-        int beamCount = 32;
-        float halfX = Mathf.Max(20f, activeAreaSize.x * 0.62f);
-        float halfZ = Mathf.Max(16f, activeAreaSize.y * 0.62f);
-        Vector3 fallDirection = new Vector3(-0.26f, -1f, 0.32f).normalized;
-
-        for (int i = 0; i < beamCount; i++)
-        {
-            GameObject beamObject = new GameObject("Clear Sunbeam");
-            beamObject.transform.SetParent(generatedRoot, false);
-
-            float x = Random.Range(-halfX, halfX);
-            float z = Random.Range(-halfZ, halfZ);
-            float depth = Random.Range(9f, 20f);
-            Vector3 start = new Vector3(x, waterSurfaceY + 0.05f, z);
-            Vector3 end = start + fallDirection * depth;
-
-            LineRenderer beam = beamObject.AddComponent<LineRenderer>();
-            beam.sharedMaterial = causticLineMaterial;
-            beam.positionCount = 2;
-            beam.useWorldSpace = true;
-            beam.textureMode = LineTextureMode.Stretch;
-            beam.alignment = LineAlignment.View;
-            beam.startWidth = Random.Range(0.09f, 0.18f);
-            beam.endWidth = Random.Range(0.24f, 0.46f);
-            beam.startColor = new Color(0.78f, 0.98f, 1f, 0.24f);
-            beam.endColor = new Color(0.32f, 0.72f, 0.8f, 0.035f);
-            beam.SetPosition(0, start);
-            beam.SetPosition(1, end);
-        }
     }
 
     private void CreateCausticLines()
     {
-        causticLines = new LineRenderer[causticLineCount];
+        int visibleCount = Mathf.Min(causticLineCount, 18);
+        causticLines = new LineRenderer[visibleCount];
 
-        for (int i = 0; i < causticLineCount; i++)
+        for (int i = 0; i < visibleCount; i++)
         {
             GameObject lineObject = new GameObject("Thin Reef Caustic");
             lineObject.transform.SetParent(generatedRoot, false);
@@ -416,40 +264,4 @@ public partial class OceanEnvironment
         }
     }
 
-    private void CreateSurfaceHighlights()
-    {
-        int highlightCount = Mathf.Max(8, causticLineCount / 2);
-        foamLines = new LineRenderer[highlightCount];
-        float halfX = oceanSize.x * 0.5f;
-        float halfZ = oceanSize.y * 0.5f;
-
-        for (int i = 0; i < highlightCount; i++)
-        {
-            GameObject lineObject = new GameObject("Surface Sparkle");
-            lineObject.transform.SetParent(generatedRoot, false);
-
-            float x = Random.Range(-halfX * 0.92f, halfX * 0.92f);
-            float z = Random.Range(-halfZ * 0.92f, halfZ * 0.92f);
-            float length = Random.Range(0.35f, 1.1f);
-            float angle = Random.Range(-35f, 35f) * Mathf.Deg2Rad;
-            Vector3 direction = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
-
-            LineRenderer line = lineObject.AddComponent<LineRenderer>();
-            line.sharedMaterial = foamMaterial;
-            line.positionCount = 3;
-            line.useWorldSpace = true;
-            line.textureMode = LineTextureMode.Stretch;
-            line.alignment = LineAlignment.View;
-            line.startWidth = Random.Range(0.012f, 0.028f);
-            line.endWidth = 0.004f;
-            line.startColor = foamColor;
-            line.endColor = new Color(foamColor.r, foamColor.g, foamColor.b, 0.12f);
-
-            Vector3 center = new Vector3(x, waterSurfaceY + 0.045f, z);
-            line.SetPosition(0, center - direction * length * 0.5f);
-            line.SetPosition(1, center + Vector3.up * Random.Range(0.01f, 0.04f));
-            line.SetPosition(2, center + direction * length * 0.5f);
-            foamLines[i] = line;
-        }
-    }
 }

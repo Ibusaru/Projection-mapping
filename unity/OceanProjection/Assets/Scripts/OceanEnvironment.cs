@@ -7,9 +7,17 @@ using UnityEditor;
 public partial class OceanEnvironment : MonoBehaviour
 {
     [Header("Layout")]
-    [SerializeField] private Vector2 oceanSize = new Vector2(560f, 420f);
+    // Keep the generated world focused on the playable water/beach story.
+    // The active fish area remains 100 x 68, while this surrounding shell is
+    // deliberately compact so the player reaches the beach and fish quickly.
+    [SerializeField] private Vector2 oceanSize = new Vector2(420f, 280f);
     [SerializeField] private float seabedY = -8f;
-    [SerializeField] private float waterSurfaceY = 4.5f;
+    // The generated wet/dry sand transition ranges from roughly 4.54 to 4.63.
+    // Keep the surface just above it without flooding the dry beach.
+    [SerializeField] private float waterSurfaceY = 4.65f;
+    // Keep the beach/terrain datum independent from the actual water plane so
+    // raising the water does not silently lift the shoreline and props too.
+    [SerializeField] private float shorelineSurfaceY = 4.5f;
     [SerializeField, Range(16, 160)] private int seabedResolution = 128;
     [SerializeField] private int decorationSeed = 4217;
 
@@ -17,15 +25,20 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private Vector2 activeAreaSize = new Vector2(100f, 68f);
     [SerializeField] private float activeDecorationPadding = 18f;
     [SerializeField] private bool createOpenOceanBackdrop = true;
-    [SerializeField, Range(1.2f, 4f)] private float openOceanBackdropScale = 2.4f;
+    [SerializeField, Range(1f, 2.4f)] private float openOceanBackdropScale = 2f;
+    // Extend only the open-water depth so the aerial camera never sees the
+    // finite Z edge of the generated shoreline shell. This does not enlarge
+    // the playable land or fish area.
+    [SerializeField, Range(1f, 3f)] private float openOceanBackdropDepthScale = 2.1f;
     [SerializeField] private bool createVisibleShoreline = true;
-    [SerializeField, Range(8f, 180f)] private float shorelineWidth = 120f;
-    [SerializeField, Range(0f, 12f)] private float shorelineWaterInset = 4.5f;
-    [SerializeField, Range(0, 8)] private int shorelineFoamLineCount = 3;
-    [SerializeField, Range(8, 80)] private int shorelineResolution = 40;
+    [SerializeField, Range(8f, 300f)] private float shorelineWidth = 120f;
+    // Kept serialized for existing scenes. A water inset or fixed foam lines
+    // would create a second shoreline, so the values are held at zero.
+    [SerializeField, HideInInspector] private float shorelineWaterInset;
+    [SerializeField, Range(8, 96)] private int shorelineResolution = 56;
     [SerializeField] private int outerRockCount = 260;
     [SerializeField] private int outerCoralCount = 320;
-    [SerializeField] private int shoreAccentCount = 95;
+    [SerializeField] private int shoreAccentCount = 130;
 
     [Header("Seabed Terrain")]
     [SerializeField, Range(0f, 6f)] private float seabedRelief = 3.6f;
@@ -34,13 +47,10 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float reefDecorationBias = 0.74f;
 
     [Header("Water")]
-    [SerializeField] private Color waterColor = new Color(0.13f, 0.72f, 0.9f, 0.42f);
+    [SerializeField] private Color waterColor = new Color(0.10f, 0.54f, 0.70f, 0.72f);
     [SerializeField] private Color deepFogColor = new Color(0.08f, 0.42f, 0.55f, 1f);
     [SerializeField] private float fogDensity = 0.014f;
-    [SerializeField, Range(16, 128)] private int waterResolution = 96;
-    [SerializeField] private float waveAmplitude = 0.32f;
-    [SerializeField] private float waveSpeed = 0.68f;
-    [SerializeField] private float waveLength = 0.32f;
+    [SerializeField, Range(16, 128)] private int waterResolution = 128;
     [SerializeField] private bool tintCameras = true;
 
     [Header("Suimono Water System")]
@@ -54,12 +64,16 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private Color shallowWaterColor = new Color(0.25f, 0.78f, 0.86f, 0.5f);
     [SerializeField] private Color foamColor = new Color(0.86f, 0.98f, 1f, 0.36f);
 
+    // The main stable water surface is double-sided. Keep this legacy second
+    // surface opt-in only so aerial views cannot show two overlapping planes.
+    [SerializeField] private bool createUnderwaterSurfaceCue = false;
+
     [Header("Decorations")]
     [SerializeField] private int rockCount = 68;
     [SerializeField] private int simpleCoralCount = 72;
     [SerializeField] private int branchCoralCount = 96;
     [SerializeField] private int bubbleColumnCount = 5;
-    [SerializeField] private int causticLineCount = 96;
+    [SerializeField] private int causticLineCount = 18;
 
     [Header("Pandazole Nature Pack")]
     [SerializeField] private bool usePandazoleNaturePackWhenAvailable = true;
@@ -70,19 +84,17 @@ public partial class OceanEnvironment : MonoBehaviour
     private Transform generatedRoot;
     private Material seabedMaterial;
     private Material waterMaterial;
+    private Material underwaterSurfaceMaterial;
     private Material rockMaterial;
     private Material coralMaterial;
     private Material whiteCoralMaterial;
     private Material shorelineMaterial;
     private Material shorePlantMaterial;
     private Material causticLineMaterial;
-    private Material foamMaterial;
     private Mesh seabedMesh;
     private Mesh waterMesh;
-    private Vector3[] waterBaseVertices;
     private OceanSeabedTerrain seabedTerrain;
     private LineRenderer[] causticLines;
-    private LineRenderer[] foamLines;
     private bool needsRebuild;
 
     private void OnEnable()
@@ -100,14 +112,18 @@ public partial class OceanEnvironment : MonoBehaviour
         reefMoundCount = Mathf.Max(0, reefMoundCount);
         activeAreaSize = new Vector2(Mathf.Max(1f, activeAreaSize.x), Mathf.Max(1f, activeAreaSize.y));
         activeDecorationPadding = Mathf.Max(0f, activeDecorationPadding);
-        openOceanBackdropScale = Mathf.Max(1f, openOceanBackdropScale);
+        openOceanBackdropScale = Mathf.Clamp(openOceanBackdropScale, 1f, 2.4f);
+        openOceanBackdropDepthScale = Mathf.Max(1f, openOceanBackdropDepthScale);
         shorelineWidth = Mathf.Max(1f, shorelineWidth);
-        shorelineWaterInset = Mathf.Max(0f, shorelineWaterInset);
-        shorelineFoamLineCount = Mathf.Max(0, shorelineFoamLineCount);
+        shorelineWaterInset = 0f;
         shorelineResolution = Mathf.Max(4, shorelineResolution);
         outerRockCount = Mathf.Max(0, outerRockCount);
         outerCoralCount = Mathf.Max(0, outerCoralCount);
         shoreAccentCount = Mathf.Max(0, shoreAccentCount);
+        beachPalmCount = Mathf.Max(0, beachPalmCount);
+        beachParasolCount = Mathf.Max(0, beachParasolCount);
+        beachSmallPropCount = Mathf.Max(0, beachSmallPropCount);
+        beachModelScale = Mathf.Max(0.25f, beachModelScale);
         needsRebuild = true;
     }
 
@@ -120,7 +136,6 @@ public partial class OceanEnvironment : MonoBehaviour
             ApplyRenderSettings();
         }
 
-        AnimateWater();
         ApplyDepthAwareFog();
 
         if (disableAllEnvironmentParticles)
@@ -134,8 +149,9 @@ public partial class OceanEnvironment : MonoBehaviour
         ClearGenerated();
         CreateMaterials();
         PreparePandazoleAssets();
+        PrepareBeachAssets();
         Random.InitState(decorationSeed);
-        seabedTerrain = OceanSeabedTerrain.Create(oceanSize, seabedY, waterSurfaceY, decorationSeed, seabedRelief, basinCount, reefMoundCount);
+        seabedTerrain = OceanSeabedTerrain.Create(oceanSize, activeAreaSize, shorelineWidth, seabedY, waterSurfaceY, shorelineSurfaceY, decorationSeed, seabedRelief, basinCount, reefMoundCount);
 
         generatedRoot = new GameObject(GeneratedRootName).transform;
         generatedRoot.SetParent(transform, false);
@@ -148,14 +164,22 @@ public partial class OceanEnvironment : MonoBehaviour
             CreateWaterSurface();
         }
 
-        CreateOpenOceanBackdrop();
+        CreateUnderwaterSurfaceCue();
+
         CreateVisibleShoreline();
         CreateSunlight();
         CreateCausticLines();
-        CreateSurfaceHighlights();
         CreateDecorations();
         CreateBubbleColumns();
         FinalizeGeneratedRoot();
+    }
+
+    [ContextMenu("Rebuild Ocean Environment")]
+    public void RebuildEnvironment()
+    {
+        needsRebuild = false;
+        BuildEnvironment();
+        ApplyRenderSettings();
     }
 
     private void ApplyRenderSettings()
@@ -434,13 +458,13 @@ public partial class OceanEnvironment : MonoBehaviour
 
             SetMember(component, "enableCaustics", true);
             SetMember(component, "enableCausticsBlending", true);
-            SetMember(component, "waveScale", Mathf.Max(0.35f, waveLength));
-            SetMember(component, "flowSpeed", waveSpeed * 0.075f);
+            SetMember(component, "waveScale", 0.35f);
+            SetMember(component, "flowSpeed", 0.05f);
 
             SetMember(component, "useBeaufortScale", true);
             SetMember(component, "beaufortScale", 2.4f);
-            SetMember(component, "waveHeight", waveAmplitude * 2.1f);
-            SetMember(component, "lgWaveHeight", waveAmplitude * 0.18f);
+            SetMember(component, "waveHeight", 0.67f);
+            SetMember(component, "lgWaveHeight", 0.058f);
             SetMember(component, "lgWaveScale", 0.04f);
             SetMember(component, "turbulenceFactor", 0.18f);
             SetMember(component, "oceanScale", Mathf.Max(oceanSize.x, oceanSize.y) / 8.5f);
@@ -554,42 +578,50 @@ public partial class OceanEnvironment : MonoBehaviour
 
     private void CreateSeabed()
     {
-        int points = seabedResolution + 1;
-        Vector3[] vertices = new Vector3[points * points];
+        float extensionScale = createOpenOceanBackdrop ? Mathf.Clamp(openOceanBackdropScale, 1f, 2.4f) : 1f;
+        float depthScale = createOpenOceanBackdrop ? Mathf.Clamp(openOceanBackdropDepthScale, 1f, 3f) : 1f;
+        int xResolution = Mathf.Max(seabedResolution, Mathf.CeilToInt(seabedResolution * extensionScale));
+        int zResolution = Mathf.Max(seabedResolution, Mathf.CeilToInt(seabedResolution * extensionScale * depthScale));
+        int xPoints = xResolution + 1;
+        int zPoints = zResolution + 1;
+        Vector3[] vertices = new Vector3[xPoints * zPoints];
         Vector2[] uvs = new Vector2[vertices.Length];
-        int[] triangles = new int[seabedResolution * seabedResolution * 6];
-        float halfX = oceanSize.x * 0.5f;
-        float halfZ = oceanSize.y * 0.5f;
+        int[] triangles = new int[xResolution * zResolution * 6];
+        float mainHalfX = oceanSize.x * 0.5f;
+        float mainHalfZ = oceanSize.y * 0.5f;
+        float halfX = mainHalfX * extensionScale;
+        float halfZ = mainHalfZ * extensionScale * depthScale;
 
-        for (int z = 0; z < points; z++)
+        for (int z = 0; z < zPoints; z++)
         {
-            for (int x = 0; x < points; x++)
+            for (int x = 0; x < xPoints; x++)
             {
-                float tx = x / (float)seabedResolution;
-                float tz = z / (float)seabedResolution;
+                float tx = x / (float)xResolution;
+                float tz = z / (float)zResolution;
                 float px = Mathf.Lerp(-halfX, halfX, tx);
                 float pz = Mathf.Lerp(-halfZ, halfZ, tz);
-                vertices[z * points + x] = SampleSeabedPosition(px, pz);
-                uvs[z * points + x] = new Vector2(tx * 4f, tz * 4f);
+                vertices[z * xPoints + x] = SampleExtendedSeabedPosition(px, pz, mainHalfX, mainHalfZ);
+                uvs[z * xPoints + x] = new Vector2(tx * 4f * extensionScale, tz * 4f * extensionScale * depthScale);
             }
         }
 
         int index = 0;
-        for (int z = 0; z < seabedResolution; z++)
+        for (int z = 0; z < zResolution; z++)
         {
-            for (int x = 0; x < seabedResolution; x++)
+            for (int x = 0; x < xResolution; x++)
             {
-                int i = z * points + x;
+                int i = z * xPoints + x;
                 triangles[index++] = i;
-                triangles[index++] = i + points;
+                triangles[index++] = i + xPoints;
                 triangles[index++] = i + 1;
                 triangles[index++] = i + 1;
-                triangles[index++] = i + points;
-                triangles[index++] = i + points + 1;
+                triangles[index++] = i + xPoints;
+                triangles[index++] = i + xPoints + 1;
             }
         }
 
         seabedMesh = new Mesh { name = "Generated Seabed Mesh" };
+        seabedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         seabedMesh.vertices = vertices;
         seabedMesh.uv = uvs;
         seabedMesh.triangles = triangles;
@@ -601,6 +633,25 @@ public partial class OceanEnvironment : MonoBehaviour
         seabed.AddComponent<MeshFilter>().sharedMesh = seabedMesh;
         seabed.AddComponent<MeshRenderer>().sharedMaterial = seabedMaterial;
         seabed.AddComponent<MeshCollider>().sharedMesh = seabedMesh;
+    }
+
+    private Vector3 SampleExtendedSeabedPosition(float x, float z, float mainHalfX, float mainHalfZ)
+    {
+        float clampedX = Mathf.Clamp(x, -mainHalfX, mainHalfX);
+        float clampedZ = Mathf.Clamp(z, -mainHalfZ, mainHalfZ);
+        Vector3 edge = SampleSeabedPosition(clampedX, clampedZ);
+        float outsideX = Mathf.Max(0f, Mathf.Abs(x) - mainHalfX);
+        float outsideZ = Mathf.Max(0f, Mathf.Abs(z) - mainHalfZ);
+        float outsideDistance = Mathf.Sqrt(outsideX * outsideX + outsideZ * outsideZ);
+        if (outsideDistance <= 0.001f)
+        {
+            return edge;
+        }
+
+        float blend = Smooth01(Mathf.InverseLerp(0f, 42f, outsideDistance));
+        float deepNoise = (Mathf.PerlinNoise(x * 0.012f + 31.7f, z * 0.012f + 8.3f) - 0.5f) * 0.8f;
+        float deepY = seabedY - 6f + deepNoise;
+        return new Vector3(x, Mathf.Lerp(edge.y, deepY, blend), z);
     }
 
     private void ClearGenerated()
@@ -619,9 +670,7 @@ public partial class OceanEnvironment : MonoBehaviour
         generatedRoot = null;
         seabedMesh = null;
         waterMesh = null;
-        waterBaseVertices = null;
         causticLines = null;
-        foamLines = null;
     }
 
     private static void DestroyGeneratedObject(GameObject target)

@@ -84,7 +84,7 @@ drop policy if exists "Anyone can insert fishes" on public.fishes;
 create policy "Anyone can insert fishes"
 on public.fishes
 for insert
-to anon
+to anon, authenticated
 with check (
   char_length(nickname) between 1 and 12
   and species in ('clownfish', 'jellyfish', 'tuna', 'original')
@@ -101,7 +101,7 @@ drop policy if exists "Anyone can read fishes" on public.fishes;
 create policy "Anyone can read fishes"
 on public.fishes
 for select
-to anon
+to anon, authenticated
 using (true);
 
 drop policy if exists "Anyone can update fishes" on public.fishes;
@@ -138,14 +138,14 @@ drop policy if exists "Anyone can read fish drawings" on storage.objects;
 create policy "Anyone can read fish drawings"
 on storage.objects
 for select
-to anon
+to anon, authenticated
 using (bucket_id = 'fish-drawings');
 
 drop policy if exists "Anyone can upload fish drawings" on storage.objects;
 create policy "Anyone can upload fish drawings"
 on storage.objects
 for insert
-to anon
+to anon, authenticated
 with check (
   bucket_id = 'fish-drawings'
   and lower(storage.extension(name)) = 'png'

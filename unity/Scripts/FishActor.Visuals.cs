@@ -4,6 +4,9 @@ using UnityEngine.Networking;
 
 public partial class FishActor
 {
+    private const string CenteredVisualPivotName = "Centered Visual Pivot";
+    private const float VisualPivotOffsetTolerance = 0.0005f;
+
     private void AutoWireVisuals()
     {
         if (!autoWireRenderers)
@@ -16,6 +19,9 @@ public partial class FishActor
         {
             modelRoot = ResolveModelRoot(visualRenderers);
         }
+
+        modelRoot = EnsureCenteredModelRootPivot(visualRenderers, modelRoot);
+        modelRootUsesStableVisualCenter = ModelRootMatchesVisualCenter(visualRenderers, modelRoot);
 
         Transform scaleRoot = modelRoot != null ? modelRoot : transform;
         initialModelScale = scaleRoot.localScale;
@@ -72,6 +78,83 @@ public partial class FishActor
         }
 
         return root != transform ? root : null;
+    }
+
+    private Transform EnsureCenteredModelRootPivot(Renderer[] visualRenderers, Transform visualRoot)
+    {
+        if (visualRoot == null
+            || visualRoot == transform
+            || visualRoot.parent != transform
+            || !TryCalculateVisualBounds(visualRenderers, out Bounds visualBounds))
+        {
+            return visualRoot;
+        }
+
+        float pivotOffset = Vector3.Distance(visualRoot.position, visualBounds.center);
+        float tolerance = VisualCenterTolerance(visualBounds);
+        if (pivotOffset <= tolerance)
+        {
+            return visualRoot;
+        }
+
+        GameObject pivotObject = new GameObject(CenteredVisualPivotName);
+        Transform pivot = pivotObject.transform;
+        int siblingIndex = visualRoot.GetSiblingIndex();
+        pivot.SetParent(transform, false);
+        pivot.SetSiblingIndex(siblingIndex);
+        pivot.position = visualBounds.center;
+        pivot.localRotation = Quaternion.identity;
+        pivot.localScale = Vector3.one;
+        visualRoot.SetParent(pivot, true);
+        return pivot;
+    }
+
+    private bool ModelRootMatchesVisualCenter(Renderer[] visualRenderers, Transform visualRoot)
+    {
+        if (visualRoot == null
+            || visualRoot == transform
+            || !TryCalculateVisualBounds(visualRenderers, out Bounds visualBounds))
+        {
+            return false;
+        }
+
+        return Vector3.Distance(visualRoot.position, visualBounds.center) <= VisualCenterTolerance(visualBounds);
+    }
+
+    private static bool TryCalculateVisualBounds(Renderer[] visualRenderers, out Bounds bounds)
+    {
+        bounds = new Bounds(Vector3.zero, Vector3.zero);
+        bool hasBounds = false;
+        if (visualRenderers == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < visualRenderers.Length; i++)
+        {
+            Renderer renderer = visualRenderers[i];
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            if (!hasBounds)
+            {
+                bounds = renderer.bounds;
+                hasBounds = true;
+            }
+            else
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+        }
+
+        return hasBounds;
+    }
+
+    private static float VisualCenterTolerance(Bounds bounds)
+    {
+        return Mathf.Max(VisualPivotOffsetTolerance, bounds.extents.magnitude * 0.005f);
     }
 
     private Transform TopLevelVisualChild(Transform item)

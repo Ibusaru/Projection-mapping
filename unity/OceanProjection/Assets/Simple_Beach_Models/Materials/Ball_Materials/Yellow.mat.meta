@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ec9a6928328e9fb408199b4fa9c0d316
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 287370
+  packageName: Beach
+  packageVersion: 1.0
+  assetPath: Assets/Simple_Beach_Models/Materials/Ball_Materials/Yellow.mat
+  uploadId: 671357
