@@ -169,11 +169,11 @@ export function App() {
             <SlidersHorizontal size={19} />
           </button>
           <button
-            aria-label="塗りつぶしの範囲"
+            aria-label="塗りつぶし感度"
             aria-pressed={activeToolPanel === "fill"}
             className={activeToolPanel === "fill" ? "icon-button selected" : "icon-button"}
             onClick={() => toggleToolPanel("fill")}
-            title="塗りつぶしの範囲"
+            title="塗りつぶし感度（近い色をまとめて塗る強さ）"
             type="button"
           >
             <Gauge size={19} />
@@ -255,11 +255,11 @@ export function App() {
           <div className="tool-section fill-section">
             <label className="tool-section-title" htmlFor="fill-tolerance">
               <Gauge size={18} />
-              <span>塗り範囲</span>
+              <span>塗りつぶし感度</span>
               <span className="size-value">{fillTolerance}</span>
             </label>
             <input
-              aria-label="塗りつぶしの範囲"
+              aria-label="塗りつぶし感度（近い色をまとめて塗る強さ）"
               id="fill-tolerance"
               max={fillToleranceRange.max}
               min={fillToleranceRange.min}

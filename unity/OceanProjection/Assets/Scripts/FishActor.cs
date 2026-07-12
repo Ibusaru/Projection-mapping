@@ -23,20 +23,20 @@ public partial class FishActor : MonoBehaviour
     [SerializeField] private float defaultNearbyLabelVisibleDistance = 12f;
     [SerializeField] private float defaultForwardConeLabelDistance = 18f;
     [SerializeField] private float defaultFocusedLabelVisibleDistance = 28f;
-    [SerializeField] private Vector2 nicknameTagOffset = new Vector2(0.075f, 0.095f);
+    [SerializeField] private Vector2 nicknameTagOffset = new Vector2(0.052f, 0.068f);
     [SerializeField] private float nicknameTagAnchorLift = 0.18f;
-    [SerializeField] private float nicknameTagLineWidth = 0.0032f;
-    [SerializeField] private float nicknameTagFontSize = 0.9f;
-    [SerializeField] private float nicknameTagHorizontalLength = 0.18f;
+    [SerializeField] private float nicknameTagLineWidth = 0.0024f;
+    [SerializeField] private float nicknameTagFontSize = 0.72f;
+    [SerializeField] private float nicknameTagHorizontalLength = 0.12f;
     [SerializeField] private float nicknameTagTextLift = 0.0035f;
-    [SerializeField] private float nicknameTagTextViewportHeight = 0.064f;
-    [SerializeField] private float nicknameTagTextMaxWidthRatio = 1.05f;
+    [SerializeField] private float nicknameTagTextViewportHeight = 0.046f;
+    [SerializeField] private float nicknameTagTextMaxWidthRatio = 1.15f;
     [SerializeField] private float nicknameTagRevealDistance = 6.2f;
     [SerializeField] private float nicknameTagRevealHysteresisDistance = 0.75f;
     [SerializeField] private float nicknameTagMinApparentRadiusViewport = 0.045f;
     [SerializeField] private float nicknameTagNearScaleDistance = 1.2f;
     [SerializeField] private float nicknameTagFarScaleDistance = 9.5f;
-    [SerializeField] private Vector2 nicknameTagDistanceScaleRange = new Vector2(0.82f, 1.12f);
+    [SerializeField] private Vector2 nicknameTagDistanceScaleRange = new Vector2(0.76f, 1f);
     [SerializeField] private float nicknameTagMinFitScale = 0.48f;
     [SerializeField] private float nicknameTagRevealSeconds = 0.68f;
     [SerializeField] private float nicknameTagRetreatSeconds = 0.26f;
@@ -151,6 +151,7 @@ public partial class FishActor : MonoBehaviour
     private Vector3 schoolGroupForward = Vector3.forward;
     private float schoolGroupRadius = 4f;
     private Quaternion baseModelLocalRotation = Quaternion.identity;
+    private bool modelRootUsesStableVisualCenter;
     private Transform proceduralTailRoot;
     private Transform proceduralSpineRoot;
     private Quaternion proceduralTailBaseLocalRotation = Quaternion.identity;
@@ -970,6 +971,11 @@ public partial class FishActor : MonoBehaviour
 
     private Vector3 EstimateVisualCenter()
     {
+        if (modelRootUsesStableVisualCenter && modelRoot != null)
+        {
+            return modelRoot.position;
+        }
+
         return TryGetVisualBounds(out Bounds bounds) ? bounds.center : transform.position;
     }
 

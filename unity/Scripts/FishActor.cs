@@ -143,6 +143,7 @@ public partial class FishActor : MonoBehaviour
     private Vector3 schoolGroupForward = Vector3.forward;
     private float schoolGroupRadius = 4f;
     private Quaternion baseModelLocalRotation = Quaternion.identity;
+    private bool modelRootUsesStableVisualCenter;
     private Animator[] animators = new Animator[0];
     private float[] animatorBaseSpeeds = new float[0];
     private float currentSpeed;
@@ -818,6 +819,11 @@ public partial class FishActor : MonoBehaviour
 
     private Vector3 EstimateVisualCenter()
     {
+        if (modelRootUsesStableVisualCenter && modelRoot != null)
+        {
+            return modelRoot.position;
+        }
+
         return TryGetVisualBounds(out Bounds bounds) ? bounds.center : transform.position;
     }
 

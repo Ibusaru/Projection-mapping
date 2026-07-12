@@ -1,22 +1,22 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat" at "2026-07-12T06:06:49.08516Z"
 Built from '6000.4/staging' branch; Version is '6000.4.11f1 (b0a1d6caadd2) revision 11575766'; Using compiler version '194234433'; Build Type 'Release'
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat" at "2026-07-04T16:11:39.5351038Z"
 OS: 'Windows 11  (10.0.26200) Core' Language: 'ja' Physical Memory: 16109 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
 System  architecture: x64
 Process architecture: x64
-Date: 2026-07-04T16:11:39Z
+Date: 2026-07-12T06:06:49Z
 
 COMMAND LINE ARGUMENTS:
 C:\Program Files\Unity\Hub\Editor\6000.4.11f1\Editor\Unity.exe
 -batchmode
--quit
+-nographics
 -projectPath
 C:\Users\scrat\Documents\創造工学\unity\OceanProjection
 -executeMethod
 FishSpawnValidator.Run
 -logFile
-FishSpawnValidator.log
+C:\Users\scrat\Documents\創造工学\unity\OceanProjection\FishSpawnValidator.log
 Successfully changed project path to: C:\Users\scrat\Documents\創造工学\unity\OceanProjection
 C:/Users/scrat/Documents/創造工学/unity/OceanProjection
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -54,18 +54,18 @@ C:/Users/scrat/Documents/創造工学/unity/OceanProjection
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Player connection [3664]  Target information:
+Player connection [38684]  Target information:
 
-Player connection [3664]  * "[IP] 10.181.227.163 [Port] 55504 [Flags] 2 [Guid] 1729364875 [EditorId] 1729364875 [Version] 1048832 [Id] WindowsEditor(7,Ibusaru) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [38684]  * "[IP] 10.181.227.163 [Port] 55504 [Flags] 2 [Guid] 126665455 [EditorId] 126665455 [Version] 1048832 [Id] WindowsEditor(7,Ibusaru) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [3664]  * "[IP] 172.20.10.2 [Port] 55504 [Flags] 2 [Guid] 1729364875 [EditorId] 1729364875 [Version] 1048832 [Id] WindowsEditor(7,Ibusaru) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [38684]  * "[IP] 192.168.10.27 [Port] 55504 [Flags] 2 [Guid] 126665455 [EditorId] 126665455 [Version] 1048832 [Id] WindowsEditor(7,Ibusaru) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [3664] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [3664] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [38684] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [38684] Host joined alternative multi-casting on [225.0.0.222:34997]...
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
 [Physics::Module] Id: 0xdecafbad
-[Package Manager] Connected to IPC stream "Upm-35852" after 0.4 seconds.
+[Package Manager] Connected to IPC stream "Upm-34612" after 0.3 seconds.
 [Licensing::Module] Licensing is not yet initialized.
 [Licensing::Client] Error: HandshakeResponse reported an error:
 	ResponseCode: 505
@@ -73,19 +73,19 @@ Input System module state changed to: Initialized.
 [Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-scrat"
 [Licensing::IpcConnector] LicenseClient-scrat channel disconnected successfully.
 [Licensing::IpcConnector] Channel LicenseClient-scrat-6000.4.11 doesn't exist
-[Licensing::Module] Successfully launched the LicensingClient (PId: 2188)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat-6000.4.11" at "2026-07-04T16:11:42.0815495Z"
-[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 2188, path: "C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] Successfully launched the LicensingClient (PId: 7096)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat-6000.4.11" at "2026-07-12T06:06:50.8390653Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 7096, path: "C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
 [Licensing::Module] LicensingClient has failed validation; ignoring
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.18.1+9fbee8e
-  Session Id:              e9f914f7c0204299afff9f36ad65506a
-  Correlation Id:          276c60cd84d2af8d65f2662a852ce554
-  External correlation Id: 6338113546186120500
+  Session Id:              02390fe2b54a4cab90be3eb203947c22
+  Correlation Id:          7eef7709f0726af46cd512bb1612ccd3
+  External correlation Id: 512017796875425821
   Machine Id:              S0daBYJzEfXnzRSS8jSeuGq46cc=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-scrat-6000.4.11" (connect: 0.85s, validation: 0.12s, handshake: 0.01s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat-6000.4.11-notifications" at "2026-07-04T16:11:42.2123091Z"
-[Licensing::Module] Connected to LicensingClient (PId: 2188, launch time: 0.01, total connection time: 0.98s)
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-scrat-6000.4.11" (connect: 0.57s, validation: 0.22s, handshake: 0.01s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-scrat-6000.4.11-notifications" at "2026-07-12T06:06:51.06978Z"
+[Licensing::Module] Connected to LicensingClient (PId: 7096, launch time: 0.01, total connection time: 0.80s)
 [Licensing::Module] Error: Access token is unavailable; failed to update
 [Licensing::Client] Successfully resolved entitlement details
 [Licensing::Module] License group:
@@ -95,8 +95,8 @@ Input System module state changed to: Initialized.
   Expiration: Unlimited
 [Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
 [Licensing::Client] Successfully resolved entitlement details
-[Licensing::Module] Licensing Background thread has ended after 2.73s
-[Licensing::Module] Licensing is initialized (took 2.00s).
+[Licensing::Module] Licensing Background thread has ended after 2.04s
+[Licensing::Module] Licensing is initialized (took 1.46s).
 [Licensing::Client] Successfully resolved entitlement details
 Library Redirect Path: Library/
 [Physics::Module] Selected backend.
@@ -105,24 +105,22 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Artifact Garbage Collection - Removed 1 unused hashed content files
+Artifact Garbage Collection - Removed 3 unused hashed content files
 Initialize engine version: 6000.4.11f1 (b0a1d6caadd2)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Resources/UnitySubsystems
 [Subsystems] Discovering subsystems at path C:/Users/scrat/Documents/創造工学/unity/OceanProjection/Assets
+Forcing GfxDevice: Null
 GfxDevice: creating device client; kGfxThreadingModeNonThreaded
-d3d12: failed to query info queue interface (0x80004002).
-Direct3D:
-    Version:         Direct3D 12 [level 12.2]
-    Renderer:        NVIDIA GeForce RTX 3060 Laptop GPU (ID=0x2520)
-    Vendor:          NVIDIA
-    VRAM:            5994 MB
-    App VRAM Budget: 5226 MB
-    Driver:          32.0.16.1047
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
 Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56852
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56612
 CodeReloadManager initialized
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
@@ -132,35 +130,35 @@ Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.003593 seconds.
+Registered in 0.002857 seconds.
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
 Package Manager log level set to [2]
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.694 seconds
-Domain Reload Profiling: 1407ms
-	BeginReloadAssembly (222ms)
-		CreateAndSetChildDomain (21ms)
+- Finished resetting the current domain, in  0.525 seconds
+Domain Reload Profiling: 1133ms
+	BeginReloadAssembly (178ms)
+		CreateAndSetChildDomain (4ms)
 	RebuildCommonClasses (54ms)
-	RebuildNativeTypeToScriptingClass (17ms)
-	initialDomainReloadingComplete (93ms)
-	LoadAllAssembliesAndSetupDomain (325ms)
-		LoadAssemblies (199ms)
-		AnalyzeDomain (308ms)
-			TypeCache.Refresh (306ms)
-				TypeCache.ScanAssembly (285ms)
-	FinalizeReload (696ms)
+	RebuildNativeTypeToScriptingClass (16ms)
+	initialDomainReloadingComplete (89ms)
+	LoadAllAssembliesAndSetupDomain (269ms)
+		LoadAssemblies (171ms)
+		AnalyzeDomain (257ms)
+			TypeCache.Refresh (255ms)
+				TypeCache.ScanAssembly (238ms)
+	FinalizeReload (527ms)
 		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (74ms)
-			BeforeProcessingInitializeOnLoad (167ms)
-			ProcessInitializeOnLoadAttributes (199ms)
-			ProcessInitializeOnLoadMethodAttributes (155ms)
+			InitializePlatformSupportModulesInManaged (64ms)
+			BeforeProcessingInitializeOnLoad (107ms)
+			ProcessInitializeOnLoadAttributes (146ms)
+			ProcessInitializeOnLoadMethodAttributes (122ms)
 [Licensing::Client] Successfully resolved entitlement details
 Application.AssetDatabase Initial Refresh Start
 [Package Manager] Restoring resolved packages state from cache
 [Licensing::Client] Successfully resolved entitlement details
-[Package Manager] Registered 57 packages:
+[Package Manager] Registered 59 packages:
   Packages from [https://packages.unity.com]:
     com.unity.ai.navigation@2.0.13 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.ai.navigation@42d896194035)
     com.unity.collab-proxy@2.12.4 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.collab-proxy@0b1559bcd34e)
@@ -169,6 +167,7 @@ Application.AssetDatabase Initial Refresh Start
     com.unity.inputsystem@1.19.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.inputsystem@21a28c3a6c83)
     com.unity.timeline@1.8.12 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.timeline@8cd8509afae5)
     com.unity.visualscripting@1.9.11 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.visualscripting@8bed5ad90189)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.nuget.newtonsoft-json@4dfd81071c64)
     com.unity.searcher@4.9.4 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.searcher@d45a78918735)
     com.unity.burst@1.8.29 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.burst@6bb9aca3ef38)
     com.unity.mathematics@1.3.3 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
@@ -220,18 +219,20 @@ Application.AssetDatabase Initial Refresh Start
     com.unity.shadergraph@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.shadergraph@a2f5226fbfe7)
     com.unity.render-pipelines.universal-config@17.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.render-pipelines.universal-config@0db4263b9e6b)
     com.unity.collections@6.4.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.unity.collections@5b6ebd78ccc0)
+  Git packages:
+    com.coplaydev.unity-mcp@https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#v10.0.0 (location: C:\Users\scrat\Documents\創造工学\unity\OceanProjection\Library\PackageCache\com.coplaydev.unity-mcp@7b7db7b31f4e)
 [Subsystems] No new subsystems found in resolved package list.
-[Package Manager] Done registering packages in 0.06 seconds
+[Package Manager] Done registering packages in 0.02 seconds
 Starting: C:\Program Files\Unity\Hub\Editor\6000.4.11f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
 WorkingDir: C:/Users/scrat/Documents/創造工学/unity/OceanProjection
 DisplayProgressbar: Compiling Scripts
-ExitCode: 0 Duration: 0s407ms
-[713/906    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-*** Tundra build success (0.36 seconds), 1 items updated, 906 evaluated
-AssetDatabase: script compilation time: 1.027817s
+ExitCode: 0 Duration: 0s450ms
+[727/926    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.38 seconds), 1 items updated, 926 evaluated
+AssetDatabase: script compilation time: 1.037201s
 Begin MonoManager ReloadAssembly
-Total cache size 33293272
-Total cache size after purge 33293272, took 00:00:00.0525047
+Total cache size 63985260
+Total cache size after purge 63985260, took 00:00:00.0960227
 Assembly Assembly-CSharp-Editor-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll not valid. Loading of assembly skipped.
 Assembly Assembly-CSharp-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll not valid. Loading of assembly skipped.
 Assembly DocCodeExamples.dll at Library/ScriptAssemblies/DocCodeExamples.dll not valid. Loading of assembly skipped.
@@ -261,100 +262,1162 @@ Assembly Unity.UnifiedRayTracing.Editor.Tests.dll at Library/ScriptAssemblies/Un
 Assembly UnityEditor.UI.Common.Tests.dll at Library/ScriptAssemblies/UnityEditor.UI.Common.Tests.dll not valid. Loading of assembly skipped.
 Assembly UnityEditor.UI.EditorTests.dll at Library/ScriptAssemblies/UnityEditor.UI.EditorTests.dll not valid. Loading of assembly skipped.
 Assembly UnityEngine.UI.Tests.dll at Library/ScriptAssemblies/UnityEngine.UI.Tests.dll not valid. Loading of assembly skipped.
-Refreshing native plugins compatible for Editor in 2.78 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 3.72 ms, found 4 plugins.
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.36 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 2.16 ms, found 4 plugins.
 ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  4.466 seconds
-Domain Reload Profiling: 5742ms
-	BeginReloadAssembly (316ms)
-		DisableScriptedObjects (35ms)
-		CreateAndSetChildDomain (63ms)
-	RebuildCommonClasses (50ms)
-	RebuildNativeTypeToScriptingClass (16ms)
-	initialDomainReloadingComplete (101ms)
-	LoadAllAssembliesAndSetupDomain (791ms)
-		LoadAssemblies (594ms)
-		AnalyzeDomain (354ms)
-			TypeCache.Refresh (239ms)
-				TypeCache.ScanAssembly (224ms)
-			BuildScriptInfoCaches (97ms)
-			ResolveRequiredComponents (15ms)
-	FinalizeReload (4467ms)
+- Finished resetting the current domain, in  4.850 seconds
+Domain Reload Profiling: 6047ms
+	BeginReloadAssembly (281ms)
+		DisableScriptedObjects (30ms)
+		CreateAndSetChildDomain (56ms)
+	RebuildCommonClasses (49ms)
+	RebuildNativeTypeToScriptingClass (15ms)
+	initialDomainReloadingComplete (89ms)
+	LoadAllAssembliesAndSetupDomain (763ms)
+		LoadAssemblies (539ms)
+		AnalyzeDomain (353ms)
+			TypeCache.Refresh (249ms)
+				TypeCache.ScanAssembly (229ms)
+			BuildScriptInfoCaches (89ms)
+			ResolveRequiredComponents (12ms)
+	FinalizeReload (4850ms)
 		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (44ms)
-			BeforeProcessingInitializeOnLoad (238ms)
-			ProcessInitializeOnLoadAttributes (3599ms)
-			ProcessInitializeOnLoadMethodAttributes (137ms)
-			AfterProcessingInitializeOnLoad (10ms)
-		AwakeInstancesAfterBackupRestoration (34ms)
+			InitializePlatformSupportModulesInManaged (31ms)
+			BeforeProcessingInitializeOnLoad (198ms)
+			ProcessInitializeOnLoadAttributes (4191ms)
+			ProcessInitializeOnLoadMethodAttributes (107ms)
+			AfterProcessingInitializeOnLoad (9ms)
+		AwakeInstancesAfterBackupRestoration (21ms)
 (Values over 0.050ms)
-Asset Pipeline Refresh (id=fe46c07297578df47a5a6531fdd4e321): Total: 7.816 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+Asset Pipeline Refresh (id=d38add8dfdae6094fbd565d30430bb99): Total: 7.955 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
 	Summary:
 		Imports: total=0 (actual=0, local cache=0, cache server=0)
-		Asset DB Process Time: managed=0 ms, native=5299 ms
-		Asset DB Callback time: managed=72 ms, native=65 ms
-		Scripting: domain reloads=1, domain reload time=1283 ms, compile time=1030 ms, other=63 ms
-		Project Asset Count: scripts=1425, non-scripts=4359
+		Asset DB Process Time: managed=0 ms, native=5552 ms
+		Asset DB Callback time: managed=61 ms, native=27 ms
+		Scripting: domain reloads=1, domain reload time=1204 ms, compile time=1039 ms, other=69 ms
+		Project Asset Count: scripts=1533, non-scripts=4555
 		Asset File Changes: new=0, changed=0, moved=0, deleted=0
 		Scan Filter Count: 0
-	InvokePackagesCallback: 68.122ms
-	ApplyChangesToAssetFolders: 0.928ms
-	Scan: 288.927ms
-	CategorizeScriptCompilationAssets: 80.669ms
-	ProcessAssetsWithTransientArtifactChanges: 108.443ms
-	CategorizeAssets: 123.230ms
-	CompileScripts: 1030.017ms
-	ImportOutOfDateAssets: 4490.072ms (4482.900ms without children)
-		ReloadNativeAssets: 0.082ms
-		UnloadImportedAssets: 1.385ms
-		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 2.651ms
-		OnDemandSchedulerStart: 3.043ms
-	PostProcessAllAssets: 72.869ms
-		MonoPostProcessAllAssets: 72.639ms
-			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 24.809ms
-			SyncVS.PostprocessSyncProject 8.612ms
-			SpeedTree9Postprocessor.OnPostprocessAllAssets 7.147ms
-			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 4.632ms
-			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 1.421ms
-			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.705ms
-			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.682ms
-			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.541ms
-			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.423ms
-			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.273ms
-	UnloadStreamsBegin: 3.780ms
-	PersistCurrentRevisions: 0.368ms
-	GenerateScriptTypeHashes: 6.538ms
-	GenerateScriptTypeSerializationHashes: 9.474ms
-	Untracked: 1539.934ms
+	InvokePackagesCallback: 30.455ms
+	ApplyChangesToAssetFolders: 1.001ms
+	Scan: 221.091ms
+	CategorizeScriptCompilationAssets: 65.376ms
+	ProcessAssetsWithTransientArtifactChanges: 93.055ms
+	CategorizeAssets: 85.180ms
+	CompileScripts: 1039.126ms
+	ImportOutOfDateAssets: 4866.962ms (4863.749ms without children)
+		UnloadImportedAssets: 0.783ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.185ms
+		OnDemandSchedulerStart: 1.198ms
+	PostProcessAllAssets: 61.370ms
+		MonoPostProcessAllAssets: 61.297ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 28.462ms
+			SyncVS.PostprocessSyncProject 5.679ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 3.152ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 2.969ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.893ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.439ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.408ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.302ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.252ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.251ms
+	UnloadStreamsBegin: 5.373ms
+	PersistCurrentRevisions: 0.312ms
+	GenerateScriptTypeHashes: 4.343ms
+	GenerateScriptTypeSerializationHashes: 7.128ms
+	Untracked: 1454.414ms
 
 Application.AssetDatabase Initial Refresh End
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
-Scanning for USB devices : 3.504ms
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
+Scanning for USB devices : 3.245ms
 Initializing Unity extensions:
 [MODES] ModeService[none].Initialize
 [MODES] ModeService[none].LoadModes
 [MODES] Loading mode Default (0) for mode-current-id-OceanProjection
 Unloading 27 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6651 unused Assets / (7.5 MB). Loaded Objects now: 7562.
-Memory consumption went from 236.6 MB to 229.1 MB.
-Total: 19.903600 ms (FindLiveObjects: 0.776600 ms CreateObjectMapping: 0.872100 ms MarkObjects: 10.476700 ms  DeleteObjects: 7.772600 ms)
+Unloading 6967 unused Assets / (3.5 MB). Loaded Objects now: 7884.
+Memory consumption went from 222.6 MB to 219.1 MB.
+Total: 12.183400 ms (FindLiveObjects: 0.757200 ms CreateObjectMapping: 0.685000 ms MarkObjects: 7.625200 ms  DeleteObjects: 3.110700 ms)
 
 Opening scene 'Assets/Scenes/SampleScene.unity'
-Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
-Loaded scene 'Assets/Scenes/SampleScene.unity'
-	Deserialize:            18.004 ms
-	Integration:            1478.126 ms
-	Integration of assets:  11.136 ms
-	Thread Wait Time:       3.493 ms
-	Total Operation Time:   1510.759 ms
-Unloading 3 unused Assets / (Unknown). Loaded Objects now: 17731.
-Memory consumption went from 284.7 MB to 286.7 MB.
-Total: 13.914100 ms (FindLiveObjects: 1.332900 ms CreateObjectMapping: 0.481500 ms MarkObjects: 12.011200 ms  DeleteObjects: 0.086200 ms)
+Unloading 20 Unused Serialized files (Serialized files now loaded: 0)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.02 seconds
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 10'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
 
-FishSpawnValidator: defaultFishCount=150, minimumFishCount=125, maxFishCount=340, defaultPrefabCount=2
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 14'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 16'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 18'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 20'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 21'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 23'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 25'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 27'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 28'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 30'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 32'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 38'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 40'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Palm 42'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:135)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Simple_Beach_Models prefab for Palm is unavailable or could not be safely placed; using the procedural fallback.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:WarnMissingBeachPrefab (string) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:480)
+OceanEnvironment:CreateBeachPalmScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:148)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:90)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 480)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Ball'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_2'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Aquarius'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_1'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_2'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Aquarius'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Aquarius'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Ball'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_1'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_2'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Starfish'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Ball'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_1'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Ball'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_1'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Lifebuoy'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_2'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Lifebuoy'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Aquarius'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Ball'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_2'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Beach_Toy_1'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: skipped overlapping beach prefab 'Beach Ball'.
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+OceanEnvironment:TryReserveBeachPropBounds (UnityEngine.GameObject) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:498)
+OceanEnvironment:CreateBeachPrefabInstance (UnityEngine.GameObject,string,UnityEngine.Transform,UnityEngine.Vector3,single,UnityEngine.Vector3,single,bool) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:366)
+OceanEnvironment:CreateBeachSmallPropScatter (UnityEngine.Transform,single,single,single,single) (at Assets/Scripts/OceanEnvironment.BeachModels.cs:258)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:91)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 498)
+
+OceanEnvironment: Beach Props built. attempts=192, dryRejects=0, instantiateFailures=0, anchorFailures=0, overlapRejects=38, children=154
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+OceanEnvironment:CreateBeachModelDecorations () (at Assets/Scripts/OceanEnvironment.BeachModels.cs:92)
+OceanEnvironment:CreateDecorations () (at Assets/Scripts/OceanEnvironment.Decorations.cs:47)
+OceanEnvironment:BuildEnvironment () (at Assets/Scripts/OceanEnvironment.cs:177)
+OceanEnvironment:OnEnable () (at Assets/Scripts/OceanEnvironment.cs:107)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string,UnityEditor.SceneManagement.OpenSceneMode)
+UnityEditor.SceneManagement.EditorSceneManager:OpenScene (string)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:14)
+
+(Filename: Assets/Scripts/OceanEnvironment.BeachModels.cs Line: 92)
+
+Loaded scene 'Assets/Scenes/SampleScene.unity'
+	Deserialize:            14.386 ms
+	Integration:            2161.546 ms
+	Integration of assets:  2.431 ms
+	Thread Wait Time:       0.020 ms
+	Total Operation Time:   2178.382 ms
+Unloading 116 unused Assets / (379.9 KB). Loaded Objects now: 27741.
+Memory consumption went from 327.5 MB to 327.2 MB.
+Total: 11.695200 ms (FindLiveObjects: 2.645300 ms CreateObjectMapping: 0.590400 ms MarkObjects: 7.882300 ms  DeleteObjects: 0.575800 ms)
+
+FishSpawnValidator: defaultFishCount=230, minimumFishCount=185, maxFishCount=520, defaultPrefabCount=2
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
@@ -362,21 +1425,21 @@ UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,st
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
 FishSpawnValidator:ValidateSpawnerSettings (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:51)
-FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:26)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:27)
 
 (Filename: Assets/Editor/FishSpawnValidator.cs Line: 51)
 
-FishSpawnValidator: clownfishPrefab='ReleasedKakukuma', prefabRendererCount=3, instanceRendererCount=3, visualRendererCount=3, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(12.94, 12.43, 25.84), mediumNormalizedBoundsSize=(0.28, 0.26, 0.55), hasFishActor=False
+FishSpawnValidator: clownfishPrefab='ReleasedKakukuma', prefabRendererCount=1, instanceRendererCount=1, visualRendererCount=1, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(0.12, 0.13, 0.26), mediumNormalizedBoundsSize=(0.26, 0.27, 0.55), hasFishActor=False
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:153)
-FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:27)
+FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:179)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:28)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 153)
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 179)
 
 FishSpawnValidator: jellyfishPrefab='ReleasedKurage', prefabRendererCount=1, instanceRendererCount=1, visualRendererCount=1, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(2.47, 1.58, 2.42), mediumNormalizedBoundsSize=(0.55, 0.35, 0.54), hasFishActor=False
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -385,34 +1448,34 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:153)
-FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:28)
-
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 153)
-
-FishSpawnValidator: tunaPrefab='ReleasedKakukuma', prefabRendererCount=3, instanceRendererCount=3, visualRendererCount=3, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(12.94, 12.43, 25.84), mediumNormalizedBoundsSize=(0.28, 0.26, 0.55), hasFishActor=False
-UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:153)
+FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:179)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:29)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 153)
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 179)
 
-FishSpawnValidator: originalPrefab='ReleasedKakukuma', prefabRendererCount=3, instanceRendererCount=3, visualRendererCount=3, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(12.94, 12.43, 25.84), mediumNormalizedBoundsSize=(0.28, 0.26, 0.55), hasFishActor=False
+FishSpawnValidator: tunaPrefab='ReleasedKakukuma', prefabRendererCount=1, instanceRendererCount=1, visualRendererCount=1, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(0.12, 0.13, 0.26), mediumNormalizedBoundsSize=(0.26, 0.27, 0.55), hasFishActor=False
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:153)
+FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:179)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:30)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 153)
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 179)
+
+FishSpawnValidator: originalPrefab='ReleasedKakukuma', prefabRendererCount=1, instanceRendererCount=1, visualRendererCount=1, flatDrawingVisualCount=0, hasBounds=True, enabledCameras=0, enabledAudioListeners=0, enabledLights=0, boundsCenter=(0.00, 0.00, 0.00), boundsSize=(0.12, 0.13, 0.26), mediumNormalizedBoundsSize=(0.26, 0.27, 0.55), hasFishActor=False
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+FishSpawnValidator:ValidatePrefab (UnityEditor.SerializedObject,string,single) (at Assets/Editor/FishSpawnValidator.cs:179)
+FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:31)
+
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 179)
 
 FishSpawnValidator: modelRootSafety modelRoot=null, usesActorRoot=False
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -421,57 +1484,35 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidateModelRootDoesNotOverwriteActorRotation () (at Assets/Editor/FishSpawnValidator.cs:204)
+FishSpawnValidator:ValidateModelRootDoesNotOverwriteActorRotation () (at Assets/Editor/FishSpawnValidator.cs:212)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:32)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 204)
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 212)
 
-FishSpawnValidator: nicknameTagVisibility distance=88, uiTexts=0, activeUiTexts=0, screenLabelVisible=False
+FishSpawnValidator: nicknameTagVisibility distance=4, uiTexts=0, activeUiTexts=0, screenLabelVisible=False, worldTextCount=1, worldLabelVisible=True, worldLineVisible=True
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidateNicknameTagVisibility (FishSpawner,UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:288)
+FishSpawnValidator:ValidateNicknameTagVisibility (FishSpawner,UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:340)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:33)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 288)
-
-FishSpawnValidator: screen-space nickname tag did not become visible for a released Japanese-name fish in front of the camera.
-UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
-UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
-UnityEngine.Logger:Log (UnityEngine.LogType,object)
-UnityEngine.Debug:LogError (object)
-FishSpawnValidator:ValidateNicknameTagVisibility (FishSpawner,UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:294)
-FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:33)
-
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 294)
-
-Assertion failed on expression: '(ptr->GetHideFlags() & m_RequiredHideFlags) == m_RequiredHideFlags'
-UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.GameObject:CreatePrimitive (UnityEngine.PrimitiveType)
-FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:421)
-FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:397)
-FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
-
-[Assets/Editor/FishSpawnValidator.cs line 421]
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 340)
 
 Instantiating material due to calling renderer.material during edit mode. This will leak materials into the scene. You most likely want to use renderer.sharedMaterial instead.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.Renderer:GetMaterial ()
 UnityEngine.Renderer:get_material ()
-FishActor:ApplyColor (UnityEngine.Renderer[],UnityEngine.Color) (at Assets/Scripts/FishActor.Visuals.cs:118)
-FishActor:Apply (FishData) (at Assets/Scripts/FishActor.cs:349)
-FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:434)
-FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:397)
+FishActor:ApplyColor (UnityEngine.Renderer[],UnityEngine.Color) (at Assets/Scripts/FishActor.Visuals.cs:201)
+FishActor:Apply (FishData) (at Assets/Scripts/FishActor.cs:371)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:485)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:449)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
 
-[Assets/Scripts/FishActor.cs line 349]
+[Assets/Scripts/FishActor.cs line 371]
 
 FishSpawnValidator: defaultNicknameTagHidden scenario=focused, textVisible=False, lineVisible=False
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -480,34 +1521,24 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:483)
-FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:397)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:534)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:449)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 483)
-
-Assertion failed on expression: '(ptr->GetHideFlags() & m_RequiredHideFlags) == m_RequiredHideFlags'
-UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
-UnityEngine.StackTraceUtility:ExtractStackTrace ()
-UnityEngine.GameObject:CreatePrimitive (UnityEngine.PrimitiveType)
-FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:421)
-FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:398)
-FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
-
-[Assets/Editor/FishSpawnValidator.cs line 421]
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 534)
 
 Instantiating material due to calling renderer.material during edit mode. This will leak materials into the scene. You most likely want to use renderer.sharedMaterial instead.
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.Renderer:GetMaterial ()
 UnityEngine.Renderer:get_material ()
-FishActor:ApplyColor (UnityEngine.Renderer[],UnityEngine.Color) (at Assets/Scripts/FishActor.Visuals.cs:118)
-FishActor:Apply (FishData) (at Assets/Scripts/FishActor.cs:349)
-FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:434)
-FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:398)
+FishActor:ApplyColor (UnityEngine.Renderer[],UnityEngine.Color) (at Assets/Scripts/FishActor.Visuals.cs:201)
+FishActor:Apply (FishData) (at Assets/Scripts/FishActor.cs:371)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:485)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:450)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
 
-[Assets/Scripts/FishActor.cs line 349]
+[Assets/Scripts/FishActor.cs line 371]
 
 FishSpawnValidator: defaultNicknameTagHidden scenario=nearby, textVisible=False, lineVisible=False
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -516,35 +1547,35 @@ UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOpt
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:483)
-FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:398)
+FishSpawnValidator:ValidateDefaultNicknameTagHidden (UnityEditor.SerializedObject,bool,string) (at Assets/Editor/FishSpawnValidator.cs:534)
+FishSpawnValidator:ValidateDefaultNicknameTagsHidden (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:450)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:34)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 483)
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 534)
 
-FishSpawnValidator: defaultSchoolSpawn spawned=150, spanX=58.62, spanZ=57.93, wallPinned=0, broadlyDistributed=True, awayFromWalls=True
+FishSpawnValidator: defaultSchoolSpawn spawned=230, spanX=65.23, spanZ=58.68, wallPinned=0, broadlyDistributed=True, awayFromWalls=True
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidateDefaultSchoolSpawnDistribution (FishSpawner,UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:658)
+FishSpawnValidator:ValidateDefaultSchoolSpawnDistribution (FishSpawner,UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:708)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:35)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 658)
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 708)
 
-FishSpawnValidator: boundsRecovery position=(49.92, -1.40, 0.00), target=(34.96, -1.40, 0.73), targetMovesInward=True, targetHasWallMargin=True
+FishSpawnValidator: boundsRecovery position=(49.92, -1.40, 0.00), target=(34.96, 0.79, 1.31), targetMovesInward=True, targetHasWallMargin=True
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
 UnityEngine.StackTraceUtility:ExtractStackTrace ()
 UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
 UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
 UnityEngine.Logger:Log (UnityEngine.LogType,object)
 UnityEngine.Debug:Log (object)
-FishSpawnValidator:ValidateBoundsRecoveryTarget (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:706)
+FishSpawnValidator:ValidateBoundsRecoveryTarget (UnityEditor.SerializedObject) (at Assets/Editor/FishSpawnValidator.cs:755)
 FishSpawnValidator:Run () (at Assets/Editor/FishSpawnValidator.cs:36)
 
-(Filename: Assets/Editor/FishSpawnValidator.cs Line: 706)
+(Filename: Assets/Editor/FishSpawnValidator.cs Line: 755)
 
 FishSpawnValidator: releasedFishTargetLength=0.55
 UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
@@ -581,4 +1612,4 @@ CodeReloadManager destroyed
 Checking for leaked weakptr:
   Found no leaked weakptrs.
 [Package Manager] Server process was shutdown
-##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1783181517569,"processId":35852,"allocatedMemory":19615377,"memoryLabels":[{"Default":218734},{"Permanent":15276},{"NewDelete":65691},{"Thread":4237552},{"Manager":36173},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":851414},{"Material":24},{"GfxDevice":57360},{"Animation":392},{"Audio":3008},{"FreeType":8},{"FontEngine":736},{"Physics":2146},{"Physics2D":16},{"Serialization":952},{"Input":9880},{"JobScheduler":33024},{"TextLib":216},{"Mono":32},{"MonoCode":64},{"ScriptingNativeRuntime":155052},{"BaseObject":1620368},{"Resource":1184},{"Renderer":3008},{"Transform":4685},{"File":4013},{"WebCam":616},{"Culling":32},{"Terrain":11394},{"Wind":24},{"STL":40},{"String":16403},{"StaticString":6718},{"Utility":2673862},{"Curl":2559},{"PoolAlloc":2168},{"AI":80},{"TypeTree":13637},{"ScriptManager":448},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":120},{"GI":7792},{"Director":8320},{"CloudService":8000},{"WebRequest":6506},{"VR":48050},{"SceneManager":504},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":2377},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":472},{"Hierarchy":608},{"CoreStats":13112},{"Identifiers":12960},{"Gui":128},{"EditorUtility":140877},{"VersionControl":4},{"Undo":931},{"AssetDatabase":8911889},{"EditorGi":328},{"UnityConnect":37753},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":211},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2891},{"Windowing":456},{"Licensing":664},{"AssetReference":32},{"IPCStream":32}]}
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1783836425324,"processId":34612,"allocatedMemory":19619632,"memoryLabels":[{"Default":206982},{"Permanent":15276},{"NewDelete":65067},{"Thread":4230344},{"Manager":36173},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":850580},{"Material":24},{"GfxDevice":55320},{"Animation":392},{"Audio":3008},{"FreeType":8},{"FontEngine":736},{"Physics":2146},{"Physics2D":16},{"Serialization":952},{"Input":9880},{"JobScheduler":33024},{"TextLib":216},{"Mono":32},{"MonoCode":64},{"ScriptingNativeRuntime":155052},{"BaseObject":1620368},{"Resource":1184},{"Renderer":3008},{"Transform":4685},{"File":4013},{"WebCam":616},{"Culling":32},{"Terrain":11394},{"Wind":24},{"STL":40},{"String":15542},{"StaticString":6718},{"Utility":2673862},{"Curl":2559},{"PoolAlloc":2168},{"AI":80},{"TypeTree":13637},{"ScriptManager":448},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":120},{"GI":7792},{"Director":8320},{"CloudService":7856},{"WebRequest":808},{"VR":48050},{"SceneManager":504},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":2377},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":472},{"Hierarchy":608},{"CoreStats":13112},{"Identifiers":12960},{"Gui":128},{"EditorUtility":173645},{"VersionControl":4},{"Undo":931},{"AssetDatabase":8912527},{"EditorGi":328},{"UnityConnect":37753},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":211},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2901},{"Windowing":456},{"Licensing":664},{"AssetReference":32},{"IPCStream":32}]}

@@ -7,14 +7,64 @@ public partial class OceanEnvironment
     private void CreateMaterials()
     {
         seabedMaterial = MakeMaterial("Reef White Sand", new Color(0.94f, 0.9f, 0.72f, 1f), 0f);
-        waterMaterial = MakeMaterial("Bright Reef Water Surface", waterColor, 0.72f);
+        waterMaterial = MakeWaterMaterial();
+        underwaterSurfaceMaterial = MakeUnderwaterSurfaceMaterial();
         rockMaterial = MakeMaterial("Reef Rock", new Color(0.5f, 0.62f, 0.52f, 1f), 0f);
         coralMaterial = MakeMaterial("Warm Reef Coral", new Color(1f, 0.66f, 0.5f, 1f), 0f);
         whiteCoralMaterial = MakeMaterial("Pale Branch Coral", new Color(0.94f, 0.9f, 0.74f, 1f), 0f);
         shorelineMaterial = MakeMaterial("Dry Shore Sand", new Color(0.95f, 0.84f, 0.58f, 1f), 0f);
         shorePlantMaterial = MakeMaterial("Sparse Shore Grass", new Color(0.48f, 0.66f, 0.36f, 1f), 0f);
         causticLineMaterial = MakeUnlitMaterial("Thin Reef Caustics", new Color(0.66f, 0.95f, 1f, 0.22f));
-        foamMaterial = MakeUnlitMaterial("Soft Reef Surface Sparkle", foamColor);
+        ApplyYughuesSandMaterials();
+    }
+
+    private Material MakeWaterMaterial()
+    {
+        // Do not use the imported Simple Water Shader here. Its vertex graph
+        // replaces object-space Y with wave noise, so it visually cancels any
+        // water level baked into the mesh. The stable shader preserves the
+        // transform-owned water height exactly.
+        return MakeStableWaterMaterial();
+    }
+
+    private Material MakeStableWaterMaterial()
+    {
+        Shader shader = Shader.Find("OceanProjection/Stable Water");
+        if (shader == null || !shader.isSupported)
+        {
+            return MakeMaterial("Stable Reef Water Surface", waterColor, 0.72f);
+        }
+
+        Material material = new Material(shader)
+        {
+            name = "Stable Reef Water Surface",
+            hideFlags = GeneratedHideFlags
+        };
+        Color deep = waterColor;
+        deep.a = Mathf.Max(0.68f, deep.a);
+        material.SetColor("_BaseColor", deep);
+        material.SetColor("_ShallowColor", new Color(0.16f, 0.66f, 0.74f, deep.a));
+        material.SetFloat("_Opacity", 0.94f);
+        material.SetFloat("_Smoothness", 0.78f);
+        return material;
+    }
+
+    private Material MakeUnderwaterSurfaceMaterial()
+    {
+        Shader shader = Shader.Find("OceanProjection/Underwater Surface Cue");
+        if (shader == null || !shader.isSupported)
+        {
+            return MakeMaterial("Underwater Surface Cue", new Color(0.08f, 0.62f, 0.72f, 0.32f), 0.42f);
+        }
+
+        Material material = new Material(shader)
+        {
+            name = "Underwater Surface Cue",
+            hideFlags = GeneratedHideFlags
+        };
+        material.SetColor("_Tint", new Color(0.025f, 0.48f, 0.68f, 0.86f));
+        material.SetFloat("_WaterLevel", waterSurfaceY);
+        return material;
     }
 
     private Material MakeMaterial(string materialName, Color color, float transparent)
@@ -179,7 +229,7 @@ public partial class OceanEnvironment
 
         if (key.Contains("caustic") || key.Contains("sparkle") || key.Contains("foam"))
         {
-            return key.Contains("foam") || key.Contains("sparkle") ? foamMaterial : causticLineMaterial;
+            return causticLineMaterial;
         }
 
         if (key.Contains("coral"))

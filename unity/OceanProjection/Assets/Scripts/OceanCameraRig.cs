@@ -27,7 +27,7 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private bool useCinematicShots = true;
     [SerializeField] private OceanEnvironment oceanEnvironment;
     [SerializeField] private Vector2 cinematicShotSeconds = new Vector2(10f, 17f);
-    [SerializeField] private Vector2 cinematicDroneShotSeconds = new Vector2(7f, 12f);
+    [SerializeField] private Vector2 cinematicDroneShotSeconds = new Vector2(16f, 24f);
     [SerializeField] private Vector2 cinematicUnderwaterShotSeconds = new Vector2(18f, 28f);
     [SerializeField] private Vector2 cinematicFishFocusShotSeconds = new Vector2(24f, 38f);
     [SerializeField] private float cinematicSmoothTime = 3.2f;
@@ -35,15 +35,16 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float cinematicMaxSpeed = 22f;
     [SerializeField] private float cinematicUnderwaterMaxSpeed = 5.2f;
     [SerializeField] private float cinematicExploreInterestLookBlend = 0.46f;
-    [SerializeField] private float cinematicDroneHeightScale = 0.54f;
-    [SerializeField] private float cinematicDroneMinimumHeightScale = 0.5f;
-    [SerializeField] private float cinematicDroneFieldOfView = 64f;
+    [SerializeField] private float cinematicDroneFieldOfView = 50f;
     [SerializeField] private float cinematicDefaultFieldOfView = 48f;
     [SerializeField] private float cinematicFieldOfViewSmooth = 1.4f;
-    [SerializeField] private float cinematicDronePathVariation = 0.34f;
-    [SerializeField] private float cinematicDroneLookVariation = 0.46f;
-    [SerializeField] private float cinematicDroneLateralSweep = 0.2f;
+    [SerializeField] private float cinematicDroneMaxSpeed = 10f;
+    [SerializeField] private float cinematicDroneRotationSmooth = 0.42f;
+    [SerializeField] private float cinematicDroneMaxTurnDegreesPerSecond = 26f;
     [SerializeField] private float cinematicSurfaceHeight = 1.35f;
+    [SerializeField] private bool startCinematicTourInDroneOverview = true;
+    [SerializeField, Range(3f, 5f)] private float cinematicSurfacingSeconds = 4f;
+    [SerializeField, Range(3f, 6f)] private float cinematicDroneCutFadeSeconds = 5f;
 
     [Header("Diver Follow")]
     [SerializeField] private bool focusFish = true;
@@ -66,18 +67,18 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float maximumCameraSpeed = 5.8f;
     [SerializeField] private float focusTransitionSeconds = 1.45f;
     [SerializeField] private float focusTransitionMaxSpeedMultiplier = 1.35f;
-    [SerializeField] private float surfaceDiveSmoothTime = 0.075f;
-    [SerializeField] private float surfaceDiveMaxSpeed = 92f;
+    [SerializeField] private float surfaceDiveSmoothTime = 0.35f;
+    [SerializeField] private float surfaceDiveMaxSpeed = 18f;
     [SerializeField] private float surfaceDiveDiagonalOffset = 10f;
-    [SerializeField] private float surfaceDiveDuration = 0.82f;
+    [SerializeField] private float surfaceDiveDuration = 3.25f;
     [SerializeField] private float surfaceDiveArcHeight = 4.5f;
     [SerializeField] private float surfaceDiveArcForwardOffset = 18f;
     [SerializeField] private float surfaceDiveMinimumTargetDepth = 4.6f;
     [SerializeField] private float surfaceDiveDepthTrigger = 0.9f;
-    [SerializeField] private float surfaceDiveFieldOfViewKick = 16f;
-    [SerializeField] private float surfaceDiveFieldOfViewSmooth = 8.5f;
-    [SerializeField] private bool showSurfaceDiveSpeedLines = true;
-    [SerializeField] private int surfaceDiveSpeedLineCount = 22;
+    [SerializeField] private float surfaceDiveFieldOfViewKick = 8f;
+    [SerializeField] private float surfaceDiveFieldOfViewSmooth = 3.5f;
+    [SerializeField] private bool showSurfaceDiveSpeedLines;
+    [SerializeField] private int surfaceDiveSpeedLineCount = 12;
     [SerializeField] private float surfaceDiveSpeedLineDistance = 2.6f;
     [SerializeField] private float surfaceDiveSpeedLineLength = 0.48f;
     [SerializeField] private float surfaceDiveSpeedLineWidth = 0.022f;
@@ -172,13 +173,14 @@ public class OceanCameraRig : MonoBehaviour
     private float focusedFishSinceTime;
     private static readonly OceanCinematicShotKind[] CinematicSequence =
     {
+        OceanCinematicShotKind.DroneOverview,
         OceanCinematicShotKind.FishFocus,
         OceanCinematicShotKind.FishFocus,
         OceanCinematicShotKind.UnderwaterExplore,
         OceanCinematicShotKind.FishFocus,
         OceanCinematicShotKind.ReefDive,
         OceanCinematicShotKind.FishFocus,
-        OceanCinematicShotKind.DroneOverview,
+        OceanCinematicShotKind.ReefDive,
         OceanCinematicShotKind.UnderwaterExplore
     };
     private OceanCinematicShotKind currentCinematicShot = OceanCinematicShotKind.FishFocus;
@@ -196,18 +198,39 @@ public class OceanCameraRig : MonoBehaviour
     private Transform surfaceDiveSpeedLineRoot;
     private LineRenderer[] surfaceDiveSpeedLines;
     private Material surfaceDiveSpeedLineMaterial;
+    private readonly OceanDroneTransition droneTransition = new OceanDroneTransition();
+    private OceanCameraFade cameraFade;
+    private bool pendingInitialDronePlacement;
+
+    // Kept as a compatibility flag for older validation tooling.  The active
+    // route is now a continuous water entry, never a fade/cut.
+    public bool UsesDroneToUnderwaterCut => false;
+    public bool UsesContinuousDroneWaterEntry => true;
 
     private void OnDisable()
     {
         SetFocusedFish(null);
         ClearNearbyReleasedFishTags();
         SetSurfaceDiveSpeedLinesVisible(false);
+        ResolveCameraFade().SetAlpha(0f);
+    }
+
+    private void Start()
+    {
+        pendingInitialDronePlacement = useCinematicShots && startCinematicTourInDroneOverview;
     }
 
     private void LateUpdate()
     {
         if (useCinematicShots)
         {
+            if (pendingInitialDronePlacement
+                && OceanDroneOverview.TryEvaluate(ResolveOceanEnvironment(), 0f, out _, out _))
+            {
+                StartCinematicShot(OceanCinematicShotKind.DroneOverview, true);
+                pendingInitialDronePlacement = false;
+            }
+
             UpdateCinematicCamera();
             UpdateNearbyReleasedFishTags();
             return;
@@ -253,6 +276,12 @@ public class OceanCameraRig : MonoBehaviour
             BeginNextCinematicShot();
         }
 
+        if (droneTransition.IsActive)
+        {
+            UpdateDroneTransition();
+            return;
+        }
+
         if (currentCinematicShot == OceanCinematicShotKind.FishFocus)
         {
             ApplyCinematicFieldOfView(currentCinematicShot);
@@ -269,30 +298,52 @@ public class OceanCameraRig : MonoBehaviour
 
         bool droneStyleShot = IsDroneStyleShot(currentCinematicShot);
         bool underwaterScenicShot = IsUnderwaterScenicShot(currentCinematicShot);
+        // The legacy sub-second surface dive is intentionally disabled. Scenic
+        // underwater transitions use OceanDroneTransition instead.
+        bool surfaceDive = false;
+        float surfaceDiveRequiredSpeed = surfaceDive
+            ? Vector3.Distance(transform.position, surfaceDiveTargetPosition) / Mathf.Max(0.35f, surfaceDiveDuration) * 1.18f
+            : 0f;
         ApplyCinematicFieldOfView(currentCinematicShot);
-        float cinematicPositionSmoothTime = droneStyleShot
-            ? cinematicSmoothTime * 0.56f
-            : underwaterScenicShot
-                ? Mathf.Max(positionSmoothTime * 1.18f, cinematicSmoothTime * 0.92f)
-                : cinematicSmoothTime;
-        float maximumSpeed = droneStyleShot
-            ? cinematicMaxSpeed * 1.25f
-            : underwaterScenicShot
-                ? Mathf.Min(cinematicMaxSpeed, Mathf.Max(0.5f, cinematicUnderwaterMaxSpeed))
-                : cinematicMaxSpeed;
+        float cinematicPositionSmoothTime = surfaceDive
+            ? Mathf.Min(cinematicSmoothTime, Mathf.Max(0.05f, surfaceDiveSmoothTime))
+            : droneStyleShot
+                ? cinematicSmoothTime * 1.35f
+                : underwaterScenicShot
+                    ? Mathf.Max(positionSmoothTime * 1.18f, cinematicSmoothTime * 0.92f)
+                    : cinematicSmoothTime;
+        float maximumSpeed = surfaceDive
+            ? Mathf.Max(surfaceDiveMaxSpeed, cinematicMaxSpeed, surfaceDiveRequiredSpeed)
+            : droneStyleShot
+                ? Mathf.Max(0.5f, cinematicDroneMaxSpeed)
+                : underwaterScenicShot
+                    ? Mathf.Min(cinematicMaxSpeed, Mathf.Max(0.5f, cinematicUnderwaterMaxSpeed))
+                    : cinematicMaxSpeed;
         bool snapped = MoveCamera(
             desiredPosition,
             Mathf.Max(0.1f, cinematicPositionSmoothTime),
             Mathf.Max(0.1f, maximumSpeed)
         );
 
-        float rotationSmooth = droneStyleShot
-            ? cinematicRotationSmooth * 1.45f
-            : underwaterScenicShot
-                ? this.rotationSmooth * 0.9f
-                : cinematicRotationSmooth;
-        LookAtTarget(lookTarget, rotationSmooth, snapped);
-        SetSurfaceDiveSpeedLinesVisible(false);
+        float rotationSmooth = surfaceDive
+            ? cinematicRotationSmooth * 2.4f
+            : droneStyleShot
+                ? Mathf.Max(0.05f, cinematicDroneRotationSmooth)
+                : underwaterScenicShot
+                    ? this.rotationSmooth * 0.9f
+                    : cinematicRotationSmooth;
+        float maxTurnDegreesPerSecond = droneStyleShot
+            ? Mathf.Max(4f, cinematicDroneMaxTurnDegreesPerSecond)
+            : cameraMaxTurnDegreesPerSecond;
+        LookAtTarget(lookTarget, rotationSmooth, snapped, maxTurnDegreesPerSecond);
+        if (surfaceDive)
+        {
+            ApplySurfaceDiveCameraEffects(true);
+        }
+        else
+        {
+            SetSurfaceDiveSpeedLinesVisible(false);
+        }
     }
 
     private void BeginNextCinematicShot()
@@ -313,26 +364,161 @@ public class OceanCameraRig : MonoBehaviour
                 continue;
             }
 
-            currentCinematicShot = candidate;
-            cinematicShotStartedAt = Time.time;
-            cinematicShotDuration = RandomDurationForShot(candidate);
-            cinematicShotVariantSeed = Random.Range(0f, 1000f);
-            hasCinematicShot = true;
-            if (candidate != OceanCinematicShotKind.FishFocus)
-            {
-                SetFocusedFish(null);
-                intent = DiverIntent.Cruise;
-                surfaceDiveArcActive = false;
-                SetSurfaceDiveSpeedLinesVisible(false);
-            }
+            StartCinematicShot(candidate, false);
             return;
         }
 
-        currentCinematicShot = OceanCinematicShotKind.FishFocus;
+        StartCinematicShot(OceanCinematicShotKind.FishFocus, false);
+    }
+
+    private void UpdateDroneTransition()
+    {
+        bool wasActive = droneTransition.IsActive;
+        if (!droneTransition.TryEvaluate(Time.time, out Vector3 position, out Vector3 lookTarget, out float progress))
+        {
+            return;
+        }
+
+        transform.position = position;
+        LookAtTarget(lookTarget, 1.25f, false, cameraMaxTurnDegreesPerSecond);
+        Camera camera = ResolveRigCamera();
+        if (camera != null)
+        {
+            float defaultFov = cinematicDefaultFieldOfView > 0f ? cinematicDefaultFieldOfView : camera.fieldOfView;
+            float targetFov = OceanDroneTransition.FovForState(
+                defaultFov,
+                cinematicDroneFieldOfView,
+                droneTransition.State,
+                progress
+            );
+            camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFov, 1f - Mathf.Exp(-cinematicFieldOfViewSmooth * Time.deltaTime));
+        }
+
+        SetSurfaceDiveSpeedLinesVisible(false);
+        ResolveCameraFade().SetAlpha(droneTransition.FadeAlpha);
+        if (wasActive && !droneTransition.IsActive)
+        {
+            cinematicShotStartedAt = Time.time;
+            positionVelocity = Vector3.zero;
+        }
+    }
+
+    private void StartCinematicShot(OceanCinematicShotKind shot, bool placeImmediately)
+    {
+        OceanDroneTourState previousTourState = droneTransition.State;
+        currentCinematicShot = shot;
         cinematicShotStartedAt = Time.time;
-        cinematicShotDuration = RandomDuration(cinematicFishFocusShotSeconds, Mathf.Max(8f, cinematicShotSeconds.x));
+        cinematicShotDuration = RandomDurationForShot(shot);
         cinematicShotVariantSeed = Random.Range(0f, 1000f);
+        cinematicShotIndex = IndexOfCinematicShot(shot);
         hasCinematicShot = true;
+
+        if (shot != OceanCinematicShotKind.FishFocus)
+        {
+            SetFocusedFish(null);
+            intent = DiverIntent.Cruise;
+            surfaceDiveArcActive = false;
+            SetSurfaceDiveSpeedLinesVisible(false);
+        }
+
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        bool enteringDrone = shot == OceanCinematicShotKind.DroneOverview;
+        bool enteringUnderwater = shot == OceanCinematicShotKind.FishFocus || IsUnderwaterScenicShot(shot);
+        if (enteringDrone
+            && TryEvaluateCinematicShot(shot, 0f, environment, out Vector3 dronePosition, out Vector3 droneLookTarget))
+        {
+            if (placeImmediately)
+            {
+                transform.position = dronePosition;
+                transform.rotation = Quaternion.LookRotation(droneLookTarget - dronePosition, Vector3.up);
+                lastLookTarget = droneLookTarget;
+                hasLastLookTarget = true;
+                droneTransition.EnterDroneOverview();
+                ResolveCameraFade().SetAlpha(0f);
+                hasPlacedInitialCamera = true;
+                return;
+            }
+
+            Vector3 currentLookTarget = hasLastLookTarget ? lastLookTarget : transform.position + transform.forward * 8f;
+            droneTransition.Begin(
+                OceanDroneTourState.Surfacing,
+                transform.position,
+                currentLookTarget,
+                dronePosition,
+                droneLookTarget,
+                Time.time,
+                cinematicSurfacingSeconds
+            );
+            hasPlacedInitialCamera = true;
+            return;
+        }
+
+        if (enteringUnderwater && previousTourState == OceanDroneTourState.DroneOverview)
+        {
+            Vector3 currentLookTarget = hasLastLookTarget ? lastLookTarget : transform.position + transform.forward * 8f;
+            Vector3 entryDirection = currentLookTarget - transform.position;
+            entryDirection.y = 0f;
+            if (entryDirection.sqrMagnitude < 0.01f)
+            {
+                entryDirection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+            }
+
+            entryDirection = entryDirection.sqrMagnitude > 0.01f ? entryDirection.normalized : Vector3.forward;
+            float waterY = environment != null
+                ? environment.transform.TransformPoint(new Vector3(0f, environment.WaterSurfaceY, 0f)).y
+                : transform.position.y - 8f;
+
+            // The fish schools are intentionally kept in the compact active
+            // water area around the environment origin. Aim well ahead of the
+            // aerial camera so the entry traces a visible forward parabola
+            // instead of dropping almost vertically.
+            Vector3 divePosition = environment != null
+                ? environment.transform.TransformPoint(new Vector3(0f, environment.WaterSurfaceY - 4.5f, 0f))
+                : transform.position + entryDirection * 24f + Vector3.down * 8f;
+            divePosition += entryDirection * 22f;
+            divePosition.y = waterY - 4.5f;
+            // Finish looking horizontally along the water plane. The
+            // transition rotates toward this direction while following the
+            // parabolic descent, instead of continuing to stare downward.
+            Vector3 diveLookTarget = divePosition + entryDirection * 14f;
+
+            droneTransition.BeginWaterEntry(
+                transform.position,
+                currentLookTarget,
+                divePosition,
+                diveLookTarget,
+                Time.time,
+                cinematicDroneCutFadeSeconds
+            );
+            return;
+        }
+
+        if (!placeImmediately
+            || !TryEvaluateCinematicShot(shot, 0f, environment, out Vector3 position, out Vector3 lookTarget))
+        {
+            return;
+        }
+
+        transform.position = position;
+        positionVelocity = Vector3.zero;
+        hasPlacedInitialCamera = true;
+        lastLookTarget = lookTarget;
+        hasLastLookTarget = true;
+        SnapLookAt(lookTarget);
+        ApplyCinematicFieldOfView(shot);
+    }
+
+    private static int IndexOfCinematicShot(OceanCinematicShotKind shot)
+    {
+        for (int i = 0; i < CinematicSequence.Length; i++)
+        {
+            if (CinematicSequence[i] == shot)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     private bool TryEvaluateCinematicShot(
@@ -342,74 +528,23 @@ public class OceanCameraRig : MonoBehaviour
         out Vector3 position,
         out Vector3 lookTarget)
     {
+        if (shot == OceanCinematicShotKind.DroneOverview)
+        {
+            return OceanDroneOverview.TryEvaluate(environment, normalizedTime, out position, out lookTarget);
+        }
+
         float t = SmoothStep01(normalizedTime);
         float droneT = SmootherStep01(normalizedTime);
         Vector2 size = environment != null ? environment.ActiveAreaSize : new Vector2(Mathf.Max(1f, orbitSize.x * 4f), Mathf.Max(1f, orbitSize.z * 4f));
         float waterY = environment != null ? environment.WaterSurfaceY : center.y + orbitSize.y;
         Vector3 oceanCenter = OceanLocalToWorld(environment, new Vector3(0f, Mathf.Lerp(center.y, waterY - 3.5f, 0.45f), 0f));
         Vector3 reef = FeatureOrFallback(environment, OceanFeatureKind.Reef, new Vector3(size.x * 0.18f, waterY - 3f, size.y * 0.13f), size);
-        Vector3 beach = FeatureOrFallback(environment, OceanFeatureKind.Beach, new Vector3(size.x * 0.86f, waterY + 0.4f, -size.y * 0.16f), size);
+        Vector3 beach = BeachDecorationOrFallback(environment, new Vector3(size.x * 0.86f, waterY + 0.4f, -size.y * 0.16f));
         Vector3 trench = FeatureOrFallback(environment, OceanFeatureKind.Trench, new Vector3(-size.x * 0.32f, waterY - 14f, size.y * 0.27f), size);
         Vector3 rock = FeatureOrFallback(environment, OceanFeatureKind.RockMountain, new Vector3(-size.x * 0.28f, waterY - 3f, -size.y * 0.28f), size);
 
         switch (shot)
         {
-            case OceanCinematicShotKind.DroneOverview:
-            {
-                float maxSize = Mathf.Max(size.x, size.y);
-                float pathVariation = Mathf.Clamp01(cinematicDronePathVariation);
-                float lookVariation = Mathf.Clamp01(cinematicDroneLookVariation);
-                float mirror = CinematicVariantSign(0.11f);
-                float crossBend = CinematicVariantSigned(0.23f) * pathVariation;
-                float heightScale = Mathf.Max(cinematicDroneHeightScale, cinematicDroneMinimumHeightScale)
-                    * Mathf.Lerp(0.9f, 1.18f, CinematicVariant01(0.31f));
-                float height = maxSize * heightScale;
-                Vector3 p0 = OceanLocalToWorld(environment, new Vector3(
-                    -size.x * Mathf.Lerp(0.66f, 0.48f, CinematicVariant01(0.41f)),
-                    waterY + height * Mathf.Lerp(0.92f, 1.08f, CinematicVariant01(0.47f)),
-                    mirror * size.y * Mathf.Lerp(0.46f, 0.62f, CinematicVariant01(0.53f))
-                ));
-                Vector3 p1 = OceanLocalToWorld(environment, new Vector3(
-                    -size.x * Mathf.Lerp(0.54f, 0.34f, CinematicVariant01(0.59f)),
-                    waterY + height * Mathf.Lerp(0.95f, 1.16f, CinematicVariant01(0.61f)),
-                    mirror * size.y * Mathf.Lerp(0.26f, 0.5f, CinematicVariant01(0.67f))
-                ));
-                Vector3 p2 = OceanLocalToWorld(environment, new Vector3(
-                    size.x * Mathf.Lerp(-0.12f, 0.16f, CinematicVariant01(0.71f)),
-                    waterY + height * Mathf.Lerp(0.78f, 1.05f, CinematicVariant01(0.79f)),
-                    -mirror * size.y * (0.02f + crossBend * 0.32f)
-                ));
-                Vector3 p3 = OceanLocalToWorld(environment, new Vector3(
-                    size.x * Mathf.Lerp(0.2f, 0.46f, CinematicVariant01(0.83f)),
-                    waterY + height * Mathf.Lerp(0.62f, 0.92f, CinematicVariant01(0.89f)),
-                    -mirror * size.y * Mathf.Lerp(0.18f, 0.44f, CinematicVariant01(0.97f))
-                ));
-                position = CatmullRom(p0, p1, p2, p3, droneT);
-                Vector3 lateralGlide = Vector3.Cross(Vector3.up, FlattenDirection(p3 - p0));
-                if (lateralGlide.sqrMagnitude > 0.001f)
-                {
-                    lateralGlide.Normalize();
-                    position += lateralGlide
-                        * Mathf.Sin((droneT + CinematicVariant01(1.03f)) * Mathf.PI)
-                        * maxSize
-                        * Mathf.Max(0f, cinematicDroneLateralSweep)
-                        * pathVariation;
-                }
-
-                Vector3 lead = CatmullRom(p0, p1, p2, p3, Mathf.Clamp01(droneT + 0.12f));
-                Vector3 overviewCenter = OceanLocalToWorld(environment, new Vector3(
-                    size.x * CinematicVariantSigned(1.11f) * 0.18f,
-                    waterY - Mathf.Lerp(1.8f, 4.4f, CinematicVariant01(1.17f)),
-                    size.y * CinematicVariantSigned(1.23f) * 0.18f
-                ));
-                Vector3 landSide = Vector3.Lerp(beach + Vector3.up * Mathf.Lerp(1.0f, 2.5f, CinematicVariant01(1.29f)), overviewCenter, 0.35f);
-                Vector3 reefSweep = Vector3.Lerp(reef, trench + Vector3.up * 2.2f, Mathf.Clamp01(droneT * 0.42f + CinematicVariant01(1.31f) * 0.28f));
-                Vector3 rockSweep = Vector3.Lerp(rock, landSide, Mathf.Clamp01(0.18f + droneT * 0.82f));
-                Vector3 featureSweep = Vector3.Lerp(reefSweep, rockSweep, Mathf.Clamp01(0.22f + lookVariation * (0.18f + droneT * 0.54f)));
-                lookTarget = Vector3.Lerp(featureSweep, lead + Vector3.down * maxSize * Mathf.Lerp(0.18f, 0.34f, lookVariation), 0.22f);
-                lookTarget.y = Mathf.Lerp(waterY + 2.2f, waterY - Mathf.Lerp(4.2f, 7.0f, lookVariation), Mathf.Clamp01(droneT + 0.08f));
-                break;
-            }
             case OceanCinematicShotKind.SurfaceSkim:
             {
                 Vector3 p0 = beach + new Vector3(-size.x * 0.24f, waterY - 0.35f - beach.y, -size.y * 0.24f);
@@ -452,7 +587,25 @@ public class OceanCameraRig : MonoBehaviour
                 Vector3 p2 = SampleSwimPointWorld(environment, new Vector2(size.x * 0.12f, size.y * 0.02f), waterY - 7.4f, 3.2f, 2.4f);
                 Vector3 p3 = SampleSwimPointWorld(environment, new Vector2(size.x * 0.07f, size.y * 0.1f), waterY - 7.8f, 3.1f, 2.8f);
                 position = CatmullRom(p0, p1, p2, p3, t) + DiverDrift(Time.time * driftSpeed, 1f) * 0.28f;
-                lookTarget = Vector3.Lerp(reef + Vector3.up * 1.2f, trench + Vector3.up * 2.8f, t * 0.28f);
+                Vector3 reefLookTarget = Vector3.Lerp(reef + Vector3.up * 1.2f, trench + Vector3.up * 2.8f, t * 0.28f);
+                Vector3 travelDirection = FlattenDirection(p2 - p1);
+                if (travelDirection.sqrMagnitude < 0.001f)
+                {
+                    travelDirection = transform.forward;
+                }
+
+                // During the entry portion of a reef dive, look through a
+                // short distance of water rather than towards the distant
+                // horizon.  The result fills the upper frame with the moving
+                // water ceiling, which makes the camera's submerged state
+                // immediately legible while retaining the reef at the edge.
+                Vector3 surfaceLookTarget = position + travelDirection * 5.5f;
+                surfaceLookTarget.y = waterY - 0.08f;
+                // Preserve a substantial reef view during the entry.  The
+                // surface cue should be a clear ceiling in the upper frame,
+                // never an opaque blue screen that hides the destination.
+                float surfaceLookBlend = SmoothStep01(Mathf.InverseLerp(0.58f, 0.04f, t)) * 0.42f;
+                lookTarget = Vector3.Lerp(reefLookTarget, surfaceLookTarget, surfaceLookBlend);
                 break;
             }
             case OceanCinematicShotKind.TrenchRun:
@@ -512,6 +665,17 @@ public class OceanCameraRig : MonoBehaviour
         }
 
         return OceanLocalToWorld(environment, fallbackLocal);
+    }
+
+    private Vector3 BeachDecorationOrFallback(OceanEnvironment environment, Vector3 fallbackLocal)
+    {
+        if (environment != null && environment.TryGetBeachDecorationPoint(out Vector3 point))
+        {
+            return point;
+        }
+
+        Vector2 beachTourSize = environment != null ? environment.OceanSize : new Vector2(Mathf.Abs(fallbackLocal.x) * 2f, Mathf.Abs(fallbackLocal.z) * 2f);
+        return FeatureOrFallback(environment, OceanFeatureKind.Beach, fallbackLocal, beachTourSize);
     }
 
     private Vector3 SampleOceanFloorWorld(OceanEnvironment environment, Vector2 localXZ, float fallbackY)
@@ -931,7 +1095,7 @@ public class OceanCameraRig : MonoBehaviour
 
         float defaultFov = cinematicDefaultFieldOfView > 0f ? cinematicDefaultFieldOfView : camera.fieldOfView;
         float targetFov = shot == OceanCinematicShotKind.DroneOverview
-            ? Mathf.Max(defaultFov, cinematicDroneFieldOfView)
+            ? OceanDroneTransition.FovForState(defaultFov, cinematicDroneFieldOfView, droneTransition.State, 1f)
             : defaultFov;
         float blend = 1f - Mathf.Exp(-Mathf.Max(0.1f, cinematicFieldOfViewSmooth) * Time.deltaTime);
         camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFov, blend);
@@ -1120,6 +1284,20 @@ public class OceanCameraRig : MonoBehaviour
         return rigCamera;
     }
 
+    private OceanCameraFade ResolveCameraFade()
+    {
+        if (cameraFade == null)
+        {
+            cameraFade = GetComponent<OceanCameraFade>();
+            if (cameraFade == null)
+            {
+                cameraFade = gameObject.AddComponent<OceanCameraFade>();
+            }
+        }
+
+        return cameraFade;
+    }
+
     private static float RandomDuration(Vector2 range, float fallback)
     {
         float min = Mathf.Min(range.x, range.y);
@@ -1143,11 +1321,6 @@ public class OceanCameraRig : MonoBehaviour
     private float CinematicVariantSigned(float salt)
     {
         return CinematicVariant01(salt) * 2f - 1f;
-    }
-
-    private float CinematicVariantSign(float salt)
-    {
-        return CinematicVariant01(salt) < 0.5f ? -1f : 1f;
     }
 
     private static float PseudoRandom01(int index, float salt)
@@ -2428,6 +2601,11 @@ public class OceanCameraRig : MonoBehaviour
 
     private void LookAtTarget(Vector3 lookTarget, float smooth, bool snap)
     {
+        LookAtTarget(lookTarget, smooth, snap, cameraMaxTurnDegreesPerSecond);
+    }
+
+    private void LookAtTarget(Vector3 lookTarget, float smooth, bool snap, float maxTurnDegreesPerSecond)
+    {
         bool canSnap = snap && !hasLastLookTarget;
         lastLookTarget = lookTarget;
         hasLastLookTarget = true;
@@ -2438,7 +2616,7 @@ public class OceanCameraRig : MonoBehaviour
             return;
         }
 
-        SmoothLookAt(lookTarget, smooth);
+        SmoothLookAt(lookTarget, smooth, maxTurnDegreesPerSecond);
     }
 
     private void SnapLookAt(Vector3 lookTarget)
@@ -2452,7 +2630,7 @@ public class OceanCameraRig : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
     }
 
-    private void SmoothLookAt(Vector3 lookTarget, float smooth)
+    private void SmoothLookAt(Vector3 lookTarget, float smooth, float maxTurnDegreesPerSecond)
     {
         Vector3 lookDirection = lookTarget - transform.position;
         if (lookDirection.sqrMagnitude < 0.001f)
@@ -2469,7 +2647,7 @@ public class OceanCameraRig : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(
             transform.rotation,
             blendedRotation,
-            Mathf.Max(8f, cameraMaxTurnDegreesPerSecond) * Time.deltaTime
+            Mathf.Max(8f, maxTurnDegreesPerSecond) * Time.deltaTime
         );
     }
 }

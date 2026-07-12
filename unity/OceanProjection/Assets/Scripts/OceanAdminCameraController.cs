@@ -16,9 +16,11 @@ public class OceanAdminCameraController : MonoBehaviour
     [SerializeField] private OceanEnvironment oceanEnvironment;
 
     [Header("Aerial View")]
-    [SerializeField] private float minimumAerialHeight = 22f;
-    [SerializeField] private float aerialDistanceScale = 0.68f;
-    [SerializeField] private float aerialBackOffsetScale = 0.14f;
+    [SerializeField] private float aerialHeight = 42f;
+    [SerializeField] private float aerialBackDistance = 64f;
+    [SerializeField] private float aerialHoldSeconds = 7f;
+    [SerializeField] private float aerialArrivalDistance = 2.5f;
+    [SerializeField] private float aerialMaximumSeconds = 18f;
 
     [Header("Fish Focus")]
     [SerializeField] private float fishFollowDistance = 5.4f;
@@ -33,6 +35,8 @@ public class OceanAdminCameraController : MonoBehaviour
     private AdminCameraMode mode = AdminCameraMode.Roam;
     private FishActor focusedFish;
     private Vector3 positionVelocity;
+    private float aerialStartedAt;
+    private float aerialArrivedAt = -1f;
 
     private void Awake()
     {
@@ -73,6 +77,8 @@ public class OceanAdminCameraController : MonoBehaviour
     {
         ClearFocusedFish();
         mode = AdminCameraMode.Aerial;
+        aerialStartedAt = Time.time;
+        aerialArrivedAt = -1f;
         BeginManualControl();
         Debug.Log("OceanAdminCameraController: switched to aerial view.");
     }
@@ -82,6 +88,7 @@ public class OceanAdminCameraController : MonoBehaviour
         ClearFocusedFish();
         mode = AdminCameraMode.Roam;
         positionVelocity = Vector3.zero;
+        aerialArrivedAt = -1f;
         if (automaticRig != null)
         {
             automaticRig.enabled = true;
@@ -119,20 +126,38 @@ public class OceanAdminCameraController : MonoBehaviour
     private void UpdateAerialView()
     {
         Vector3 lookTarget = Vector3.zero;
-        float areaScale = 30f;
+        Vector3 desiredPosition = Vector3.up * Mathf.Max(1f, aerialHeight)
+            + Vector3.back * Mathf.Max(1f, aerialBackDistance);
         if (oceanEnvironment != null)
         {
-            Vector2 oceanSize = oceanEnvironment.OceanSize;
-            areaScale = Mathf.Max(12f, oceanSize.x, oceanSize.y);
-            lookTarget = oceanEnvironment.transform.TransformPoint(
-                new Vector3(0f, oceanEnvironment.WaterSurfaceY - 2f, 0f)
-            );
+            oceanEnvironment.GetDroneInterestPoints(out Vector3 beachCenter, out Vector3 waterInterest);
+            Vector3 shoreward = Vector3.ProjectOnPlane(beachCenter - waterInterest, Vector3.up);
+            shoreward = shoreward.sqrMagnitude > 0.001f ? shoreward.normalized : Vector3.right;
+            lookTarget = Vector3.Lerp(waterInterest, beachCenter, 0.34f);
+            desiredPosition = lookTarget
+                - shoreward * Mathf.Max(1f, aerialBackDistance)
+                + Vector3.up * Mathf.Max(1f, aerialHeight);
         }
 
-        Vector3 desiredPosition = lookTarget
-            + Vector3.up * Mathf.Max(minimumAerialHeight, areaScale * aerialDistanceScale)
-            + Vector3.back * (areaScale * aerialBackOffsetScale);
         MoveAndLook(desiredPosition, lookTarget);
+
+        if (Vector3.Distance(transform.position, desiredPosition) <= Mathf.Max(0.1f, aerialArrivalDistance))
+        {
+            if (aerialArrivedAt < 0f)
+            {
+                aerialArrivedAt = Time.time;
+            }
+            else if (Time.time - aerialArrivedAt >= Mathf.Max(0f, aerialHoldSeconds))
+            {
+                ResumeRoam();
+                return;
+            }
+        }
+
+        if (Time.time - aerialStartedAt >= Mathf.Max(aerialHoldSeconds, aerialMaximumSeconds))
+        {
+            ResumeRoam();
+        }
     }
 
     private void UpdateFishFocus()

@@ -276,25 +276,24 @@ MonoBehaviour:
   lookAhead: 4.5
   cameraMaxTurnDegreesPerSecond: 72
   useCinematicShots: 1
-  oceanEnvironment: {fileID: 0}
+  oceanEnvironment: {fileID: 695204832}
   cinematicShotSeconds: {x: 10, y: 17}
-  cinematicDroneShotSeconds: {x: 7, y: 12}
+  cinematicDroneShotSeconds: {x: 18, y: 28}
   cinematicUnderwaterShotSeconds: {x: 18, y: 28}
   cinematicFishFocusShotSeconds: {x: 24, y: 38}
-  cinematicSmoothTime: 2.8
+  cinematicSmoothTime: 2.55
   cinematicRotationSmooth: 1.65
-  cinematicMaxSpeed: 18
+  cinematicMaxSpeed: 28
   cinematicUnderwaterMaxSpeed: 5.2
   cinematicExploreInterestLookBlend: 0.46
-  cinematicDroneHeightScale: 0.54
-  cinematicDroneMinimumHeightScale: 0.5
-  cinematicDroneFieldOfView: 64
+  cinematicDroneFieldOfView: 50
   cinematicDefaultFieldOfView: 48
   cinematicFieldOfViewSmooth: 1.4
-  cinematicDronePathVariation: 0.34
-  cinematicDroneLookVariation: 0.46
-  cinematicDroneLateralSweep: 0.2
+  cinematicDroneMaxSpeed: 9.5
+  cinematicDroneRotationSmooth: 0.36
+  cinematicDroneMaxTurnDegreesPerSecond: 22
   cinematicSurfaceHeight: 1.35
+  startCinematicTourInDroneOverview: 1
   focusFish: 1
   targetRefreshSeconds: 5
   prioritizeReleasedFish: 1
@@ -315,18 +314,20 @@ MonoBehaviour:
   maximumCameraSpeed: 5.8
   focusTransitionSeconds: 1.45
   focusTransitionMaxSpeedMultiplier: 1.35
-  surfaceDiveSmoothTime: 0.075
-  surfaceDiveMaxSpeed: 92
+  cinematicSurfacingSeconds: 4
+  cinematicDroneCutFadeSeconds: 5
+  surfaceDiveSmoothTime: 0.35
+  surfaceDiveMaxSpeed: 18
   surfaceDiveDiagonalOffset: 10
-  surfaceDiveDuration: 0.82
+  surfaceDiveDuration: 3.25
   surfaceDiveArcHeight: 4.5
   surfaceDiveArcForwardOffset: 18
   surfaceDiveMinimumTargetDepth: 4.6
   surfaceDiveDepthTrigger: 0.9
-  surfaceDiveFieldOfViewKick: 16
-  surfaceDiveFieldOfViewSmooth: 8.5
-  showSurfaceDiveSpeedLines: 1
-  surfaceDiveSpeedLineCount: 22
+  surfaceDiveFieldOfViewKick: 8
+  surfaceDiveFieldOfViewSmooth: 3.5
+  showSurfaceDiveSpeedLines: 0
+  surfaceDiveSpeedLineCount: 12
   surfaceDiveSpeedLineDistance: 2.6
   surfaceDiveSpeedLineLength: 0.48
   surfaceDiveSpeedLineWidth: 0.022
@@ -532,34 +533,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ef4a7f779346e4893b9733271df1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanEnvironment
-  oceanSize: {x: 560, y: 420}
+  oceanSize: {x: 420, y: 280}
   seabedY: -8
-  waterSurfaceY: 4.5
+  waterSurfaceY: 4.65
+  shorelineSurfaceY: 4.5
   seabedResolution: 160
   decorationSeed: 4217
   activeAreaSize: {x: 100, y: 68}
   activeDecorationPadding: 18
   createOpenOceanBackdrop: 1
-  openOceanBackdropScale: 2.4
+  openOceanBackdropScale: 2
+  openOceanBackdropDepthScale: 2.1
   createVisibleShoreline: 1
   shorelineWidth: 120
-  shorelineWaterInset: 4.5
-  shorelineFoamLineCount: 3
-  shorelineResolution: 40
+  shorelineWaterInset: 0
+  shorelineFoamLineCount: 0
+  shorelineResolution: 56
   outerRockCount: 260
   outerCoralCount: 320
-  shoreAccentCount: 95
+  shoreAccentCount: 130
+  useSimpleBeachModelsWhenAvailable: 1
+  beachPalmCount: 42
+  beachParasolCount: 24
+  beachSmallPropCount: 96
+  beachModelScale: 1.1
+  useYughuesSandMaterialsWhenAvailable: 1
+  dryBeachSandMaterial: {fileID: 2100000, guid: fc3b1278c2f433e4c95790c289231b42, type: 2}
+  seabedSandMaterial: {fileID: 2100000, guid: 9fbbd38626fd1904daa084e924084008, type: 2}
+  dryBeachSandMaterialName: M_YFSM_Sand03
+  seabedSandMaterialName: M_YFSM_Sand05
+  beachParasolPrefab: {fileID: 100100000, guid: c6e57c1a8618b5a4c804579c38c0fad4, type: 3}
+  beachPalmPrefab: {fileID: 100100000, guid: ffce903a7cc67c947bef67dfea1e5da1, type: 3}
+  beachSunbedPrefab: {fileID: 100100000, guid: c9cb93a6763f77f4c9a3a3ff98f48b8f, type: 3}
+  beachDeskPrefab: {fileID: 100100000, guid: edca26c698d8bd4428fff61f9d5c257e, type: 3}
+  beachLifebuoyPrefab: {fileID: 100100000, guid: 376af70facb3ac143abcc5e80351f8ba, type: 3}
+  beachStarfishPrefab: {fileID: 100100000, guid: 99928c5851a125b4c84f2315371a4207, type: 3}
+  beachBallPrefab: {fileID: 100100000, guid: c17cc213a8a2010499538d6b007166f7, type: 3}
+  beachToyOnePrefab: {fileID: 100100000, guid: a14c6e2e1c7ae344aac481ddd02c283f, type: 3}
+  beachToyTwoPrefab: {fileID: 100100000, guid: cf0ecae8390004a42b20891eff83702b, type: 3}
+  beachAquariusPrefab: {fileID: 100100000, guid: 56e474ff9b3895944b79290e28762573, type: 3}
   seabedRelief: 3.1
   basinCount: 5
   reefMoundCount: 7
   reefDecorationBias: 0.74
-  waterColor: {r: 0.13, g: 0.72, b: 0.9, a: 0.42}
+  waterColor: {r: 0.1, g: 0.54, b: 0.7, a: 0.72}
   deepFogColor: {r: 0.08, g: 0.42, b: 0.55, a: 1}
   fogDensity: 0.014
   waterResolution: 128
-  waveAmplitude: 0.32
-  waveSpeed: 0.68
-  waveLength: 0.32
   tintCameras: 1
   useSuimonoWhenAvailable: 0
   keepFallbackWaterWithSuimono: 1
@@ -570,11 +590,12 @@ MonoBehaviour:
   suimonoSurfacePrefabHint: Suimono_Surface
   shallowWaterColor: {r: 0.25, g: 0.78, b: 0.86, a: 0.5}
   foamColor: {r: 0.86, g: 0.98, b: 1, a: 0.36}
+  createUnderwaterSurfaceCue: 0
   rockCount: 68
   simpleCoralCount: 72
   branchCoralCount: 96
   bubbleColumnCount: 0
-  causticLineCount: 96
+  causticLineCount: 18
   usePandazoleNaturePackWhenAvailable: 1
   pandazoleRockShare: 0.72
   pandazoleCoralShare: 0.78
@@ -680,6 +701,9 @@ MonoBehaviour:
   defaultFishAlivePrefabs:
   - {fileID: 5440476660054940829, guid: 7c609d199e833e64e80264c75b43688d, type: 3}
   - {fileID: 3793146743532390487, guid: 89c7d56787878bd45a97b081a69b5b43, type: 3}
+  emperorAngelfishPrefab: {fileID: 2446271334105567411, guid: 42eafa6a5f7d9f44f889f0c0c14ca4d9, type: 3}
+  emperorAngelfishSchoolShare: 0.09
+  emperorAngelfishTargetLengthRange: {x: 0.18, y: 0.38}
   fishParent: {fileID: 0}
   center: {x: 0, y: -1.4, z: 0}
   size: {x: 100, y: 10.2, z: 68}

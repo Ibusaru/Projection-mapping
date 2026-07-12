@@ -4,13 +4,13 @@ using UnityEngine.TextCore.LowLevel;
 
 public partial class FishActor
 {
-    private const float MinReadableNicknameTextViewportHeight = 0.055f;
+    private const float MinReadableNicknameTextViewportHeight = 0.038f;
     private const float BelowLineNicknameLayoutPenalty = 0.12f;
     private const float MaxNicknameTagRevealDistance = 6.2f;
     private const float MinNicknameTagRevealSeconds = 0.64f;
     private const float MinNicknameTagRetreatSeconds = 0.24f;
     private const float StickyNicknameTagOverflowTolerance = 0.025f;
-    private const float MaxNicknameTextViewportWidth = 0.46f;
+    private const float MaxNicknameTextViewportWidth = 0.38f;
     private static readonly Color NicknameTagTextColor = Color.black;
     private static readonly Color NicknameTagOutlineColor = new Color(0f, 0f, 0f, 0f);
     private static readonly Color NicknameTagShadowColor = new Color(0f, 0f, 0f, 0f);
@@ -1038,7 +1038,7 @@ public partial class FishActor
 
     private float NicknameFallbackCharacterSize()
     {
-        return Mathf.Clamp(nicknameTagFontSize * 0.18f, 0.055f, 0.16f);
+        return Mathf.Clamp(nicknameTagFontSize * 0.14f, 0.04f, 0.12f);
     }
 
     private bool ShouldUseNicknameTag()

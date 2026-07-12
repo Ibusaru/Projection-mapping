@@ -24,41 +24,50 @@ internal sealed class OceanSeabedTerrain
     };
 
     private readonly Vector2 oceanSize;
+    private readonly Vector2 activeAreaSize;
+    private readonly float shorelineWidth;
+    private readonly int shorelineSeed;
     private readonly float seabedY;
     private readonly float waterSurfaceY;
+    private readonly float shorelineSurfaceY;
     private readonly float relief;
     private readonly float noiseOffsetX;
     private readonly float noiseOffsetZ;
     private readonly Vector2 rockMountainCenter;
     private readonly Vector2 reefCenter;
-    private readonly Vector2 beachCenter;
     private readonly Vector2 trenchCenter;
     private readonly TerrainFeature[] basins;
     private readonly TerrainFeature[] reefMounds;
 
     private OceanSeabedTerrain(
         Vector2 oceanSize,
+        Vector2 activeAreaSize,
+        float shorelineWidth,
+        int shorelineSeed,
         float seabedY,
         float waterSurfaceY,
+        float shorelineSurfaceY,
         float relief,
         float noiseOffsetX,
         float noiseOffsetZ,
         Vector2 rockMountainCenter,
         Vector2 reefCenter,
-        Vector2 beachCenter,
         Vector2 trenchCenter,
         TerrainFeature[] basins,
         TerrainFeature[] reefMounds)
     {
         this.oceanSize = oceanSize;
+        this.activeAreaSize = activeAreaSize;
+        this.shorelineWidth = shorelineWidth;
+        this.shorelineSeed = shorelineSeed;
         this.seabedY = seabedY;
         this.waterSurfaceY = waterSurfaceY;
+        this.shorelineSurfaceY = shorelineSurfaceY;
         this.relief = Mathf.Max(0f, relief);
         this.noiseOffsetX = noiseOffsetX;
         this.noiseOffsetZ = noiseOffsetZ;
         this.rockMountainCenter = rockMountainCenter;
         this.reefCenter = reefCenter;
-        this.beachCenter = beachCenter;
         this.trenchCenter = trenchCenter;
         this.basins = basins;
         this.reefMounds = reefMounds;
@@ -66,8 +75,11 @@ internal sealed class OceanSeabedTerrain
 
     public static OceanSeabedTerrain Create(
         Vector2 oceanSize,
+        Vector2 activeAreaSize,
+        float shorelineWidth,
         float seabedY,
         float waterSurfaceY,
+        float shorelineSurfaceY,
         int seed,
         float relief,
         int basinCount,
@@ -79,21 +91,23 @@ internal sealed class OceanSeabedTerrain
         float noiseOffsetZ = Range(random, -1000f, 1000f);
         Vector2 rockMountainCenter = new Vector2(-safeSize.x * 0.28f, -safeSize.y * 0.28f);
         Vector2 reefCenter = new Vector2(safeSize.x * 0.18f, safeSize.y * 0.16f);
-        Vector2 beachCenter = new Vector2(safeSize.x * 0.39f, -safeSize.y * 0.2f);
         Vector2 trenchCenter = new Vector2(-safeSize.x * 0.32f, safeSize.y * 0.27f);
         TerrainFeature[] basins = BuildFeatures(safeSize, random, BasinAnchors, basinCount, relief, false);
         TerrainFeature[] reefMounds = BuildFeatures(safeSize, random, ReefAnchors, reefMoundCount, relief, true);
 
         return new OceanSeabedTerrain(
             safeSize,
+            activeAreaSize,
+            shorelineWidth,
+            seed,
             seabedY,
             waterSurfaceY,
+            shorelineSurfaceY,
             relief,
             noiseOffsetX,
             noiseOffsetZ,
             rockMountainCenter,
             reefCenter,
-            beachCenter,
             trenchCenter,
             basins,
             reefMounds
@@ -114,7 +128,29 @@ internal sealed class OceanSeabedTerrain
 
     public float SampleHeight(float x, float z)
     {
-        float height = seabedY + SampleSandRipple(x, z);
+        float shorelineX = OceanShorelineLayout.StartX(oceanSize, activeAreaSize, shorelineWidth, shorelineSeed, z);
+        if (x >= shorelineX)
+        {
+            // The dry-sand renderer is only a material overlay. Keep the actual
+            // seabed directly beneath it so the beach and grounded props read
+            // as solid terrain when viewed from below the water surface.
+            const float beachSurfaceSupportGap = 0.035f;
+            return OceanShorelineLayout.SampleLandHeight(
+                oceanSize,
+                activeAreaSize,
+                shorelineWidth,
+                shorelineSeed,
+                shorelineSurfaceY,
+                x,
+                z
+            ) - beachSurfaceSupportGap;
+        }
+
+        float offshoreDistance = Mathf.Max(0f, shorelineX - x);
+        float offshoreRelief = SmootherStep(Mathf.InverseLerp(28f, 145f, offshoreDistance));
+        float shallowBlend = 1f - SmootherStep(Mathf.InverseLerp(20f, 138f, offshoreDistance));
+
+        float height = seabedY + SampleSandRipple(x, z) * Mathf.Lerp(0.08f, 1f, offshoreRelief);
         height += SampleBroadOceanTilt(x, z);
 
         float shapedRelief = 0f;
@@ -129,15 +165,23 @@ internal sealed class OceanSeabedTerrain
         }
 
         float maximumRelief = Mathf.Max(0.2f, relief);
-        height += Mathf.Clamp(shapedRelief, -maximumRelief * 1.55f, maximumRelief * 1.45f);
-        height += SampleBarrierReef(x, z);
-        height += SampleBeachShelf(x, z);
-        height += SampleTrench(x, z);
-        float rockyLift = SampleRockyField(x, z);
+        height += Mathf.Clamp(shapedRelief, -maximumRelief * 1.55f, maximumRelief * 1.45f) * offshoreRelief;
+        height += SampleBarrierReef(x, z) * offshoreRelief;
+        height += SampleTrench(x, z) * offshoreRelief;
+        float rockyLift = SampleRockyField(x, z) * offshoreRelief;
         if (rockyLift > 0f)
         {
             height += Mathf.Max(0f, Mathf.Min(rockyLift, waterSurfaceY - 1.35f - height));
         }
+
+        // The near-shore shelf is a target profile, not an additive lift.  This
+        // keeps reef/basin noise from punching irregular sand islands through a
+        // transparent water surface.
+        float shelfProgress = SmootherStep(Mathf.InverseLerp(0f, 138f, offshoreDistance));
+        // Meet the supported beach datum instead of leaving the old 1.35 m
+        // vertical void beneath the sand overlay.
+        float shelfTarget = Mathf.Lerp(shorelineSurfaceY - 0.035f, shorelineSurfaceY - 7.4f, shelfProgress);
+        height = Mathf.Lerp(height, shelfTarget, shallowBlend);
 
         return height;
     }
@@ -168,7 +212,13 @@ internal sealed class OceanSeabedTerrain
                 point = new Vector3(0f, waterSurfaceY + Mathf.Max(oceanSize.x, oceanSize.y) * 0.22f, 0f);
                 return true;
             case OceanFeatureKind.Beach:
-                point = SamplePosition(beachCenter.x, beachCenter.y);
+                point = OceanShorelineLayout.ShowcaseCenter(
+                    oceanSize,
+                    activeAreaSize,
+                    shorelineWidth,
+                    shorelineSeed,
+                    shorelineSurfaceY
+                );
                 return true;
             case OceanFeatureKind.Reef:
                 point = SamplePosition(reefCenter.x, reefCenter.y);
@@ -191,19 +241,6 @@ internal sealed class OceanSeabedTerrain
         float south = SmootherStep(Mathf.InverseLerp(oceanSize.y * 0.34f, -oceanSize.y * 0.5f, z));
         float basinDrift = FbmSigned(x, z, 0.0085f, 4, 2.04f, 0.5f) * 0.65f;
         return -west * 0.95f - south * 0.48f + basinDrift;
-    }
-
-    private float SampleBeachShelf(float x, float z)
-    {
-        float coastNoise = FbmSigned(0f, z, 0.018f, 4, 2.08f, 0.53f);
-        float shorelineX = oceanSize.x * 0.34f + coastNoise * oceanSize.x * 0.035f;
-        float shelf = SmootherStep(Mathf.InverseLerp(shorelineX - oceanSize.x * 0.42f, shorelineX + oceanSize.x * 0.035f, x));
-        float lagoon = SmootherStep(Mathf.InverseLerp(shorelineX - oceanSize.x * 0.27f, shorelineX + oceanSize.x * 0.015f, x));
-        float drySand = SmootherStep(Mathf.InverseLerp(shorelineX + oceanSize.x * 0.035f, shorelineX + oceanSize.x * 0.15f, x));
-        float cove = 1f - SmootherStep(EllipticalDistance(new Vector2(x, z), beachCenter, new Vector2(oceanSize.x * 0.24f, oceanSize.y * 0.34f), -7f));
-        float beachGrain = FbmSigned(x, z, 0.055f, 3, 2.2f, 0.48f) * 0.16f;
-        float shallowTargetLift = (waterSurfaceY - 1.55f - seabedY) * shelf;
-        return shallowTargetLift + lagoon * 0.55f + drySand * 0.72f + cove * 0.22f + beachGrain * shelf;
     }
 
     private float SampleBarrierReef(float x, float z)
@@ -229,7 +266,8 @@ internal sealed class OceanSeabedTerrain
         float core = 1f - SmootherStep(Mathf.Clamp01((across - 0.04f) / 1.22f));
         float wall = Ring(across, 1.18f, 2.35f);
         float fracture = RidgedFbm(x, z, 0.052f, 4, 2.05f, 0.5f) * 1.05f;
-        float beachGap = SmootherStep(Mathf.InverseLerp(oceanSize.x * 0.32f, oceanSize.x * 0.48f, Vector2.Distance(new Vector2(x, z), beachCenter)));
+        float shorelineX = OceanShorelineLayout.StartX(oceanSize, activeAreaSize, shorelineWidth, shorelineSeed, z);
+        float beachGap = SmootherStep(Mathf.InverseLerp(80f, 180f, shorelineX - x));
         return alongMask * beachGap * (-6.25f * core - fracture * core * 0.52f + wall * 0.42f);
     }
 
