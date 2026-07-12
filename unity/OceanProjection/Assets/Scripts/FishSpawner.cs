@@ -97,6 +97,32 @@ public class FishSpawner : MonoBehaviour
         TrimOldFishes();
     }
 
+    public bool DeleteReleasedFish(string fishId)
+    {
+        string key = string.IsNullOrWhiteSpace(fishId) ? "" : fishId.Trim().ToLowerInvariant();
+        if (string.IsNullOrWhiteSpace(key)
+            || !releasedFishByKey.TryGetValue(key, out FishActor actor)
+            || actor == null)
+        {
+            return false;
+        }
+
+        releasedFishByKey.Remove(key);
+        int queuedCount = fishQueue.Count;
+        for (int index = 0; index < queuedCount; index++)
+        {
+            FishActor queuedActor = fishQueue.Dequeue();
+            if (queuedActor != null && queuedActor != actor)
+            {
+                fishQueue.Enqueue(queuedActor);
+            }
+        }
+
+        Destroy(actor.gameObject);
+        Debug.Log($"FishSpawner: deleted released fish id='{fishId}'.");
+        return true;
+    }
+
     private void SpawnFishes(IReadOnlyList<FishData> fishes)
     {
         foreach (FishData fish in fishes)

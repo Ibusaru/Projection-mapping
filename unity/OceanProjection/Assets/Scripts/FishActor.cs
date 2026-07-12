@@ -202,6 +202,7 @@ public partial class FishActor : MonoBehaviour
 
     public float SpawnTime { get; private set; }
     public string Nickname { get; private set; } = "";
+    public string SourceId { get; private set; } = "";
     public bool IsReleasedFish => releasedFish;
     public float CameraFocusRadius => EstimateFocusRadius();
     public Vector3 VisualCenter => EstimateVisualCenter();
@@ -361,6 +362,7 @@ public partial class FishActor : MonoBehaviour
             return;
         }
 
+        SourceId = string.IsNullOrWhiteSpace(data.id) ? SourceId : data.id.Trim();
         species = string.IsNullOrWhiteSpace(data.species) ? "original" : data.species;
         personality = string.IsNullOrWhiteSpace(data.personality) ? "calm" : data.personality;
         Nickname = SanitizeNickname(data.nickname);

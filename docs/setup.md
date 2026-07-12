@@ -25,8 +25,17 @@ git push -u origin main
 1. Supabaseで新規プロジェクトを作る。
 2. SQL Editorを開く。
 3. `docs/supabase.sql` の内容を実行する。
-4. Project Settings > API から `Project URL` と `anon public key` を確認する。
-5. `web/.env.example` を参考に `web/.env.local` を作る。
+4. 管理画面を使う場合は `docs/supabase-admin-migration.sql` も実行する。
+5. Supabase Dashboardの Authentication > Users で管理者ユーザーを作成し、SQL Editorで次を実行する。
+
+```sql
+insert into public.admins (user_id) values ('作成したユーザーのUUID');
+```
+
+管理画面は公開URLの `/admin`（ローカルでは `http://localhost:5173/admin`）から開く。
+
+6. Project Settings > API から `Project URL` と `anon public key` を確認する。
+7. `web/.env.example` を参考に `web/.env.local` を作る。
 
 ```text
 VITE_SUPABASE_URL=https://your-project.supabase.co
@@ -55,9 +64,10 @@ http://PCのIPアドレス:5173
 1. Unityプロジェクトは `unity/OceanProjection` を開く。
 2. 実行時コードの本体は `unity/OceanProjection/Assets/Scripts` に置く。
 3. `FishApiClient` と `FishSpawner` がシーン内GameObjectにアタッチされていることを確認する。
-4. Supabase URLとanon keyは、公開リポジトリへ残さないため `web/.env.local` または環境変数で渡す。
-5. 魚のPrefabを `FishSpawner` に設定する。
-6. Playして、Webから放流した魚がスポーンするか確認する。
+4. 管理用の `OceanAdminCommandClient` と `OceanAdminCameraController` は実行時に自動追加される。
+5. Supabase URLとanon keyは、公開リポジトリへ残さないため `web/.env.local` または環境変数で渡す。
+6. 魚のPrefabを `FishSpawner` に設定する。
+7. Playして、Webから放流した魚がスポーンするか、管理画面の命令が反映されるか確認する。
 
 Unity Editorはローカル開発用に `web/.env.local` の `VITE_SUPABASE_URL` と `VITE_SUPABASE_ANON_KEY` も読む。うまく読めない場合は、Unity起動前にPowerShellで環境変数を設定する。
 
