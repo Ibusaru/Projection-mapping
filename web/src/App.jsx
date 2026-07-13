@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Check, Fish, Gauge, Palette, QrCode, RotateCcw, Send, SlidersHorizontal, Waves, X } from "lucide-react";
+import { Check, Fish, Palette, QrCode, RotateCcw, Send, SlidersHorizontal, Waves, X } from "lucide-react";
 import { DrawingCanvas } from "./components/DrawingCanvas";
 import { FishSizeSelector } from "./components/FishSizeSelector";
 import { QrPanel } from "./components/QrPanel";
 import { ReleaseSuccessDialog } from "./components/ReleaseSuccessDialog";
-import { brushColors, brushSizeRange, fillToleranceRange } from "./config/fishOptions";
+import { brushColors, brushSizeRange } from "./config/fishOptions";
 import { fishSizeOptions } from "./config/releaseOptions";
 import { uploadFishDrawing } from "./data/fishDrawingStore";
 import { useReleaseCooldown } from "./hooks/useReleaseCooldown";
@@ -21,7 +21,6 @@ export function App() {
   const [nicknameTouched, setNicknameTouched] = useState(false);
   const [brushColor, setBrushColor] = useState(brushColors[0].value);
   const [brushSize, setBrushSize] = useState(brushSizeRange.defaultValue);
-  const [fillTolerance, setFillTolerance] = useState(fillToleranceRange.defaultValue);
   const [fishSize, setFishSize] = useState("medium");
   const [tool, setTool] = useState("brush");
   const [status, setStatus] = useState("idle");
@@ -158,7 +157,6 @@ export function App() {
         <DrawingCanvas
           brushColor={brushColor}
           brushSize={brushSize}
-          fillTolerance={fillTolerance}
           onColorPick={handleColorChange}
           onDrawingActive={setIsDrawingActive}
           onToolChange={setTool}
@@ -186,16 +184,6 @@ export function App() {
             type="button"
           >
             <SlidersHorizontal size={19} />
-          </button>
-          <button
-            aria-label="塗りつぶし感度"
-            aria-pressed={activeToolPanel === "fill"}
-            className={activeToolPanel === "fill" ? "icon-button selected" : "icon-button"}
-            onClick={() => toggleToolPanel("fill")}
-            title="塗りつぶし感度（近い色をまとめて塗る強さ）"
-            type="button"
-          >
-            <Gauge size={19} />
           </button>
           <button
             aria-label="全部消す"
@@ -269,24 +257,6 @@ export function App() {
                 style={{ "--brush-size": `${brushSize}px`, "--brush-color": brushColor }}
               />
             </div>
-          </div>
-
-          <div className="tool-section fill-section">
-            <label className="tool-section-title" htmlFor="fill-tolerance">
-              <Gauge size={18} />
-              <span>塗りつぶし感度</span>
-              <span className="size-value">{fillTolerance}</span>
-            </label>
-            <input
-              aria-label="塗りつぶし感度（近い色をまとめて塗る強さ）"
-              id="fill-tolerance"
-              max={fillToleranceRange.max}
-              min={fillToleranceRange.min}
-              onChange={(event) => setFillTolerance(Number(event.target.value))}
-              step="1"
-              type="range"
-              value={fillTolerance}
-            />
           </div>
 
           <button
