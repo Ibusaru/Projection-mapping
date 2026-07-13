@@ -41,7 +41,7 @@ function sanitizePathPart(value) {
     .slice(0, 48);
 }
 
-export async function uploadFishDrawing({ nickname, blob }) {
+export async function uploadFishDrawing({ nickname, blob, size = defaultFishPayload.size }) {
   if (!supabase) {
     const localFish = readLocalFishes();
     const id = createId();
@@ -51,6 +51,7 @@ export async function uploadFishDrawing({ nickname, blob }) {
       ...defaultFishPayload,
       id,
       nickname,
+      size,
       texture_path: `local/${safeName}/${id}.png`,
       texture_url: publicUrl,
       created_at: new Date().toISOString(),
@@ -81,6 +82,7 @@ export async function uploadFishDrawing({ nickname, blob }) {
   const payload = {
     ...defaultFishPayload,
     nickname,
+    size,
     texture_path: texturePath,
     texture_url: textureUrl,
     updated_at: new Date().toISOString(),
