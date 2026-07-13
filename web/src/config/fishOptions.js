@@ -19,12 +19,6 @@ export const brushSizeRange = {
   defaultValue: 18,
 };
 
-export const fillToleranceRange = {
-  min: 0,
-  max: 72,
-  defaultValue: 18,
-};
-
 export const defaultFishPayload = {
   species: "original",
   main_color: "#ffffff",

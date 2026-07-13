@@ -8,6 +8,7 @@ const MAX_HISTORY_STEPS = 30;
 const EMPTY_ALPHA_THRESHOLD = 24;
 const SEAM_ALPHA_THRESHOLD = 180;
 const SEAM_GROW_STEPS = 2;
+const FILL_TOLERANCE = 18;
 const FISH_SILHOUETTE_FILL = "rgba(9, 31, 42, 0.86)";
 const FISH_EXPORT_BASE_FILL = "rgba(255, 255, 255, 1)";
 let paintMaskPixels = null;
@@ -247,7 +248,7 @@ function ToolButton({ active, children, disabled, label, onClick }) {
 }
 
 export const DrawingCanvas = forwardRef(function DrawingCanvas(
-  { brushColor, brushSize, fillTolerance, tool, onColorPick, onDrawingActive, onToolChange },
+  { brushColor, brushSize, tool, onColorPick, onDrawingActive, onToolChange },
   ref
 ) {
   const canvasRef = useRef(null);
@@ -390,7 +391,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     }
 
     if (tool === "fill") {
-      if (floodFill(canvasRef.current, point, brushColor, fillTolerance)) {
+      if (floodFill(canvasRef.current, point, brushColor, FILL_TOLERANCE)) {
         pushHistory();
       }
       return;
