@@ -1,9 +1,13 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Check, Fish, Gauge, Palette, QrCode, RotateCcw, Send, SlidersHorizontal, Waves, X } from "lucide-react";
 import { DrawingCanvas } from "./components/DrawingCanvas";
+import { FishSizeSelector } from "./components/FishSizeSelector";
 import { QrPanel } from "./components/QrPanel";
+import { ReleaseSuccessDialog } from "./components/ReleaseSuccessDialog";
 import { brushColors, brushSizeRange, fillToleranceRange } from "./config/fishOptions";
+import { fishSizeOptions } from "./config/releaseOptions";
 import { uploadFishDrawing } from "./data/fishDrawingStore";
+import { useReleaseCooldown } from "./hooks/useReleaseCooldown";
 import {
   BLANK_NICKNAME_MESSAGE,
   NG_NICKNAME_MESSAGE,
@@ -18,6 +22,7 @@ export function App() {
   const [brushColor, setBrushColor] = useState(brushColors[0].value);
   const [brushSize, setBrushSize] = useState(brushSizeRange.defaultValue);
   const [fillTolerance, setFillTolerance] = useState(fillToleranceRange.defaultValue);
+  const [fishSize, setFishSize] = useState("medium");
   const [tool, setTool] = useState("brush");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
@@ -25,12 +30,16 @@ export function App() {
   const [isDrawingActive, setIsDrawingActive] = useState(false);
   const [activeToolPanel, setActiveToolPanel] = useState("");
   const [shouldShakeNickname, setShouldShakeNickname] = useState(false);
+  const [releasedFish, setReleasedFish] = useState(null);
+  const { remainingSeconds, startCooldown } = useReleaseCooldown();
 
   const nicknameError = useMemo(() => validateNickname(nickname), [nickname]);
   const shouldShowNicknameError =
     nicknameTouched || nicknameError === NG_NICKNAME_MESSAGE || nicknameError === BLANK_NICKNAME_MESSAGE;
   const shownNicknameError = shouldShowNicknameError ? nicknameError : "";
-  const canSubmit = !nicknameError && status !== "sending";
+  const isCoolingDown = remainingSeconds > 0;
+  const canSubmit = !nicknameError && status !== "sending" && !isCoolingDown;
+  const selectedFishSize = fishSizeOptions.find((option) => option.value === fishSize);
   const nicknameInputClass = [
     "nickname-input",
     shownNicknameError ? "invalid" : "",
@@ -60,6 +69,12 @@ export function App() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    if (isCoolingDown) {
+      setStatus("cooldown");
+      setMessage(`次の放流まであと${remainingSeconds}秒です。`);
+      return;
+    }
+
     const normalized = normalizeNickname(nickname);
     const error = validateNickname(nickname);
     setNicknameTouched(true);
@@ -77,10 +92,12 @@ export function App() {
       const blob = await drawingRef.current.exportPngBlob();
       if (!blob) throw new Error("PNGを書き出せませんでした");
 
-      await uploadFishDrawing({ nickname: normalized, blob });
+      await uploadFishDrawing({ nickname: normalized, blob, size: fishSize });
 
+      startCooldown();
       setStatus("success");
       setMessage("送信しました。海に新しい魚として追加されます。");
+      setReleasedFish({ nickname: normalized, sizeLabel: selectedFishSize?.label ?? "ふつう" });
     } catch (submitError) {
       setStatus("error");
       const detail = submitError?.message ? ` (${submitError.message})` : "";
@@ -112,6 +129,8 @@ export function App() {
       triggerNicknameShake();
     }
   }
+
+  const closeReleaseDialog = useCallback(() => setReleasedFish(null), []);
 
   return (
     <main className="app-shell">
@@ -302,6 +321,7 @@ export function App() {
           <p className={shownNicknameError ? "hint error" : "hint"} id="nickname-hint">
             {shownNicknameError || "1から12文字で入力してね。送信ごとに新しい魚が増えます。"}
           </p>
+          <FishSizeSelector onChange={setFishSize} value={fishSize} />
         </section>
 
         {message ? (
@@ -313,11 +333,23 @@ export function App() {
 
         <button className="release-button" disabled={!canSubmit} type="submit">
           <Send size={20} />
-          {status === "sending" ? "送信中..." : "海へ送る"}
+          {status === "sending"
+            ? "送信中..."
+            : isCoolingDown
+              ? `次の放流まであと${remainingSeconds}秒`
+              : "海へ送る"}
         </button>
       </form>
 
       {isQrOpen ? <QrPanel onClose={() => setIsQrOpen(false)} /> : null}
+      {releasedFish ? (
+        <ReleaseSuccessDialog
+          fishSizeLabel={releasedFish.sizeLabel}
+          nickname={releasedFish.nickname}
+          onClose={closeReleaseDialog}
+          remainingSeconds={remainingSeconds}
+        />
+      ) : null}
     </main>
   );
 }
