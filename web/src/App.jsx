@@ -4,6 +4,7 @@ import { DrawingCanvas } from "./components/DrawingCanvas";
 import { FishSizeSelector } from "./components/FishSizeSelector";
 import { QrPanel } from "./components/QrPanel";
 import { ReleaseSuccessDialog } from "./components/ReleaseSuccessDialog";
+import { ReleaseSendingDialog } from "./components/ReleaseSendingDialog";
 import { brushColors, brushSizeRange } from "./config/fishOptions";
 import { fishSizeOptions } from "./config/releaseOptions";
 import { uploadFishDrawing } from "./data/fishDrawingStore";
@@ -294,7 +295,7 @@ export function App() {
           <FishSizeSelector onChange={setFishSize} value={fishSize} />
         </section>
 
-        {message ? (
+        {message && status !== "sending" ? (
           <p className={`status ${status}`}>
             {status === "success" ? <Check size={18} /> : null}
             {message}
@@ -312,6 +313,7 @@ export function App() {
       </form>
 
       {isQrOpen ? <QrPanel onClose={() => setIsQrOpen(false)} /> : null}
+      {status === "sending" ? <ReleaseSendingDialog /> : null}
       {releasedFish ? (
         <ReleaseSuccessDialog
           fishSizeLabel={releasedFish.sizeLabel}
