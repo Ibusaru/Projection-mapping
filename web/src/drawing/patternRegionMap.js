@@ -1,5 +1,6 @@
-import { createFishPatternPath, normalizeFishPatternId } from "../config/fishPatternGuides";
+import { normalizeFishPatternId } from "../config/fishPatternGuides";
 import { createFishSilhouettePath, fishCanvasSize } from "../config/fishSilhouette";
+import { renderFishGuideLayer } from "./fishGuideRenderer";
 
 const WIDTH = fishCanvasSize.width;
 const HEIGHT = fishCanvasSize.height;
@@ -33,15 +34,11 @@ function getBarrierMask(patternId) {
   const barriers = new Uint8Array(PIXEL_COUNT);
   if (patternId === "none") return barriers;
 
-  const canvas = document.createElement("canvas");
-  canvas.width = WIDTH;
-  canvas.height = HEIGHT;
+  const canvas = renderFishGuideLayer(patternId, {
+    lineWidth: BARRIER_LINE_WIDTH,
+    strokeStyle: "#fff",
+  });
   const context = canvas.getContext("2d", { willReadFrequently: true });
-  context.strokeStyle = "#fff";
-  context.lineCap = "round";
-  context.lineJoin = "round";
-  context.lineWidth = BARRIER_LINE_WIDTH;
-  context.stroke(createFishPatternPath(patternId));
 
   const pixels = context.getImageData(0, 0, WIDTH, HEIGHT).data;
   const mask = getFishMask();
