@@ -19,7 +19,7 @@
   gap: 7px;
 }
 
-.name-panel .fish-size-option {
+.fish-size-option {
   position: relative;
   display: flex;
   align-items: center;
@@ -94,6 +94,64 @@
   width: min(100%, 420px);
   padding: 26px 22px 22px;
   text-align: center;
+}
+
+.release-settings-dialog {
+  justify-items: stretch;
+  max-height: min(100%, 680px);
+  overflow-y: auto;
+  text-align: left;
+}
+
+.release-settings-dialog h2,
+.release-settings-dialog > p {
+  text-align: center;
+}
+
+.release-settings-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 2px;
+  border-radius: 999px;
+  color: #23888d;
+  background: rgba(53, 214, 166, 0.16);
+}
+
+.release-settings-fields {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.release-settings-label {
+  color: #163037;
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+.release-settings-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.release-settings-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 48px;
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.release-settings-cancel {
+  color: #365b60;
+  border: 1px solid rgba(18, 52, 58, 0.16);
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .sending-dialog {
@@ -240,7 +298,7 @@
     gap: 3px;
   }
 
-  .name-panel .fish-size-option {
+  .release-settings-dialog .fish-size-option {
     gap: 0;
     min-height: 34px;
     padding: 3px;
@@ -265,6 +323,10 @@
     gap: 6px;
     width: min(100%, 420px);
     padding: 10px 14px;
+  }
+
+  .release-settings-dialog {
+    max-height: calc(100svh - 16px);
   }
 
   .release-dialog-close {

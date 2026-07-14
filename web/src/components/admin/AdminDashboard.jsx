@@ -17,6 +17,7 @@ import {
   issueCameraCommand,
   signOutAdmin,
 } from "../../data/adminStore";
+import { AdminDeleteDialog } from "./AdminDeleteDialog";
 
 const speciesLabels = {
   clownfish: "クマノミ",
@@ -41,7 +42,7 @@ export function AdminDashboard({ session, onSignedOut }) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [busyAction, setBusyAction] = useState("");
-  const [pendingDeleteId, setPendingDeleteId] = useState("");
+  const [deleteCandidate, setDeleteCandidate] = useState(null);
   const [notice, setNotice] = useState(null);
 
   const selectedFish = useMemo(
@@ -72,6 +73,12 @@ export function AdminDashboard({ session, onSignedOut }) {
     refreshFishes();
   }, []);
 
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timeoutId = window.setTimeout(() => setNotice(null), notice.type === "error" ? 5000 : 3200);
+    return () => window.clearTimeout(timeoutId);
+  }, [notice]);
+
   async function runCameraCommand(action, successText, fish = null) {
     setBusyAction(action);
     setNotice(null);
@@ -85,19 +92,20 @@ export function AdminDashboard({ session, onSignedOut }) {
     }
   }
 
-  async function handleDelete(fish) {
-    if (pendingDeleteId !== fish.id) {
-      setPendingDeleteId(fish.id);
-      return;
-    }
+  function handleDelete(fish) {
+    setDeleteCandidate(fish);
+  }
 
+  async function confirmDelete() {
+    if (!deleteCandidate) return;
+    const fish = deleteCandidate;
     setBusyAction(`delete-${fish.id}`);
     setNotice(null);
     try {
       await deleteAdminFish(fish);
       setFishes((current) => current.filter((item) => item.id !== fish.id));
       setSelectedId((current) => current === fish.id ? "" : current);
-      setPendingDeleteId("");
+      setDeleteCandidate(null);
       setNotice({ type: "success", text: `「${fish.nickname}」を削除しました` });
     } catch (error) {
       setNotice({ type: "error", text: `削除できません: ${error.message}` });
@@ -133,7 +141,7 @@ export function AdminDashboard({ session, onSignedOut }) {
         <p className="admin-demo-banner">ローカルプレビューです。カメラ命令は送信されません。</p>
       ) : null}
 
-      {notice ? <p className={`admin-notice ${notice.type}`} role="status">{notice.text}</p> : null}
+      {notice ? <p aria-live="polite" className={`admin-notice ${notice.type}`} role="status">{notice.text}</p> : null}
 
       <section className="admin-camera-panel">
         <div className="admin-section-heading">
@@ -209,7 +217,6 @@ export function AdminDashboard({ session, onSignedOut }) {
         <div className="admin-fish-list">
           {shownFishes.map((fish) => {
             const selected = fish.id === selectedId;
-            const confirming = fish.id === pendingDeleteId;
             return (
               <article className={selected ? "admin-fish-row selected" : "admin-fish-row"} key={fish.id}>
                 <button className="admin-fish-select" onClick={() => setSelectedId(fish.id)} type="button">
@@ -223,23 +230,28 @@ export function AdminDashboard({ session, onSignedOut }) {
                   <span className="admin-radio" aria-hidden="true" />
                 </button>
                 <button
-                  aria-label={confirming ? `「${fish.nickname}」を完全に削除` : `「${fish.nickname}」を削除`}
-                  className={confirming ? "admin-delete-button confirming" : "admin-delete-button"}
+                  aria-label={`「${fish.nickname}」を削除`}
+                  className="admin-delete-button"
                   disabled={busyAction === `delete-${fish.id}`}
-                  onBlur={() => setPendingDeleteId((current) => current === fish.id ? "" : current)}
                   onClick={() => handleDelete(fish)}
                   type="button"
                 >
                   <Trash2 size={17} />
-                  <span>
-                    {busyAction === `delete-${fish.id}` ? "削除中" : confirming ? "もう一度押して削除" : "削除"}
-                  </span>
+                  <span>削除</span>
                 </button>
               </article>
             );
           })}
         </div>
       </section>
+      {deleteCandidate ? (
+        <AdminDeleteDialog
+          fish={deleteCandidate}
+          isDeleting={busyAction === `delete-${deleteCandidate.id}`}
+          onCancel={() => setDeleteCandidate(null)}
+          onConfirm={confirmDelete}
+        />
+      ) : null}
     </main>
   );
 }

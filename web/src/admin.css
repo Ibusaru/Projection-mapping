@@ -358,18 +358,26 @@
   font-size: 0.72rem;
 }
 
-.admin-delete-button.confirming {
-  color: #28100e;
-  border-color: var(--admin-danger);
-  background: var(--admin-danger);
-}
-
-.admin-notice,
 .admin-demo-banner {
   margin: 0 0 18px;
   padding: 12px 15px;
   border-radius: 12px;
   font-size: 0.82rem;
+}
+
+.admin-notice {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  z-index: 80;
+  width: min(calc(100% - 32px), 460px);
+  margin: 0;
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  transform: translateX(-50%);
+  box-shadow: 0 18px 42px rgba(0, 8, 13, 0.28);
+  animation: admin-toast-in 180ms ease-out;
 }
 
 .admin-notice.success {
@@ -387,6 +395,120 @@
 .admin-demo-banner {
   border: 1px solid rgba(255, 136, 125, 0.22);
   background: rgba(255, 105, 94, 0.09);
+}
+
+.admin-delete-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(2, 15, 21, 0.68);
+  backdrop-filter: blur(8px);
+}
+
+.admin-delete-dialog {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: min(100%, 420px);
+  padding: 30px 24px 24px;
+  border: 1px solid rgba(255, 136, 125, 0.3);
+  border-radius: 20px;
+  background: var(--admin-panel-strong);
+  box-shadow: 0 28px 80px rgba(0, 8, 13, 0.46);
+  text-align: center;
+}
+
+.admin-delete-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--admin-muted);
+  border: 1px solid var(--admin-line);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-delete-icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  color: #301410;
+  border-radius: 999px;
+  background: var(--admin-danger);
+  box-shadow: 0 12px 30px rgba(255, 136, 125, 0.2);
+}
+
+.admin-delete-dialog h2 {
+  color: var(--admin-text);
+  font-size: 1.28rem;
+}
+
+.admin-delete-fish-summary {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 9px 11px;
+  color: var(--admin-text);
+  border: 1px solid var(--admin-line);
+  border-radius: 12px;
+  background: rgba(2, 20, 28, 0.42);
+  text-align: left;
+}
+
+.admin-delete-fish-summary .admin-fish-thumb {
+  width: 42px;
+  height: 42px;
+}
+
+.admin-delete-description {
+  color: var(--admin-muted);
+  font-size: 0.82rem;
+}
+
+.admin-delete-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  margin-top: 3px;
+}
+
+.admin-delete-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 46px;
+  border-radius: 10px;
+  font-weight: 900;
+}
+
+.admin-delete-cancel {
+  color: var(--admin-text);
+  border: 1px solid var(--admin-line);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-delete-confirm {
+  color: #28100e;
+  border: 1px solid var(--admin-danger);
+  background: var(--admin-danger);
+}
+
+.admin-delete-actions button:disabled,
+.admin-delete-close:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .admin-empty {
@@ -500,6 +622,17 @@
   to { transform: rotate(360deg); }
 }
 
+@keyframes admin-toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 @media (max-width: 740px) {
   .admin-account > span {
     display: none;
@@ -605,5 +738,9 @@
   .admin-fish-list {
     max-height: min(52dvh, 430px);
     gap: 6px;
+  }
+
+  .admin-delete-dialog {
+    padding: 26px 16px 16px;
   }
 }
