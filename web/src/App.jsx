@@ -1,11 +1,24 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Check, Palette, QrCode, RotateCcw, Send, SlidersHorizontal, Waves, X } from "lucide-react";
+import {
+  Check,
+  LayoutGrid,
+  Palette,
+  QrCode,
+  RotateCcw,
+  Send,
+  SlidersHorizontal,
+  Waves,
+  X,
+} from "lucide-react";
 import { DrawingCanvas } from "./components/DrawingCanvas";
+import { FishPatternThumbnail } from "./components/FishPatternGuideCanvas";
+import { FishPatternPickerDialog } from "./components/FishPatternPickerDialog";
 import { QrPanel } from "./components/QrPanel";
 import { ReleaseSuccessDialog } from "./components/ReleaseSuccessDialog";
 import { ReleaseSendingDialog } from "./components/ReleaseSendingDialog";
 import { ReleaseSettingsDialog } from "./components/ReleaseSettingsDialog";
 import { brushColors, brushSizeRange } from "./config/fishOptions";
+import { DEFAULT_FISH_PATTERN_ID, getFishPatternOption } from "./config/fishPatternGuides";
 import { fishSizeOptions } from "./config/releaseOptions";
 import { uploadFishDrawing } from "./data/fishDrawingStore";
 import { useReleaseCooldown } from "./hooks/useReleaseCooldown";
@@ -30,6 +43,9 @@ export function App() {
   const [isReleaseSettingsOpen, setIsReleaseSettingsOpen] = useState(false);
   const [isDrawingActive, setIsDrawingActive] = useState(false);
   const [activeToolPanel, setActiveToolPanel] = useState("");
+  const [patternId, setPatternId] = useState(DEFAULT_FISH_PATTERN_ID);
+  const [hasDrawing, setHasDrawing] = useState(false);
+  const [isPatternPickerOpen, setIsPatternPickerOpen] = useState(false);
   const [shouldShakeNickname, setShouldShakeNickname] = useState(false);
   const [releasedFish, setReleasedFish] = useState(null);
   const { remainingSeconds, startCooldown } = useReleaseCooldown();
@@ -42,6 +58,7 @@ export function App() {
   const canSubmit = !nicknameError && status !== "sending" && !isCoolingDown;
   const canOpenReleaseSettings = status !== "sending" && !isCoolingDown;
   const selectedFishSize = fishSizeOptions.find((option) => option.value === fishSize);
+  const selectedPattern = getFishPatternOption(patternId);
   const nicknameInputClass = [
     "nickname-input",
     shownNicknameError ? "invalid" : "",
@@ -122,6 +139,12 @@ export function App() {
     setActiveToolPanel("");
   }
 
+  function changePattern(nextPatternId, { resetDrawing }) {
+    if (resetDrawing) drawingRef.current?.reset();
+    setPatternId(nextPatternId);
+    setActiveToolPanel("");
+  }
+
   function handleNicknameChange(event) {
     const nextValue = event.target.value;
     const nextError = validateNickname(nextValue);
@@ -164,7 +187,9 @@ export function App() {
           brushSize={brushSize}
           onColorPick={handleColorChange}
           onDrawingActive={setIsDrawingActive}
+          onDrawingStateChange={setHasDrawing}
           onToolChange={setTool}
+          patternId={patternId}
           ref={drawingRef}
           tool={tool}
         />
@@ -189,6 +214,17 @@ export function App() {
             type="button"
           >
             <SlidersHorizontal size={19} />
+          </button>
+          <button
+            aria-expanded={isPatternPickerOpen}
+            aria-label={`下絵：${selectedPattern.label}`}
+            aria-haspopup="dialog"
+            className="icon-button"
+            onClick={() => setIsPatternPickerOpen(true)}
+            title={`下絵：${selectedPattern.label}`}
+            type="button"
+          >
+            <LayoutGrid size={19} />
           </button>
           <button
             aria-label="全部消す"
@@ -264,6 +300,28 @@ export function App() {
             </div>
           </div>
 
+          <div className="tool-section pattern-section">
+            <div className="tool-section-title">
+              <LayoutGrid size={18} />
+              <span>下絵</span>
+            </div>
+            <button
+              aria-expanded={isPatternPickerOpen}
+              aria-haspopup="dialog"
+              className="pattern-picker-trigger"
+              onClick={() => setIsPatternPickerOpen(true)}
+              type="button"
+            >
+              <span className="pattern-picker-trigger-preview">
+                <FishPatternThumbnail patternId={patternId} />
+              </span>
+              <span className="pattern-picker-trigger-copy">
+                <strong>下絵：{selectedPattern.label}</strong>
+                <small>模様を選ぶ</small>
+              </span>
+            </button>
+          </div>
+
           <button
             aria-label="全部消す"
             className="icon-button clear-button"
@@ -298,6 +356,14 @@ export function App() {
       </div>
 
       {isQrOpen ? <QrPanel onClose={() => setIsQrOpen(false)} /> : null}
+      {isPatternPickerOpen ? (
+        <FishPatternPickerDialog
+          activePatternId={patternId}
+          hasDrawing={hasDrawing}
+          onChange={changePattern}
+          onClose={() => setIsPatternPickerOpen(false)}
+        />
+      ) : null}
       {isReleaseSettingsOpen ? (
         <ReleaseSettingsDialog
           canSubmit={canSubmit}

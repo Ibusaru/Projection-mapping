@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { AdminApp } from "./AdminApp";
 import { App } from "./App";
 import "./styles.css";
+import "./drawing-patterns.css";
 import "./release.css";
 import "./admin.css";
 
