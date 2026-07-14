@@ -11,7 +11,7 @@ export const fishPatternOptions = [
     id: "none",
     label: "OFF",
     title: "模様なし",
-    description: "丸い目だけをガイドにする",
+    description: "模様も目も表示しない",
   },
 ];
 
