@@ -48,6 +48,18 @@ function getCanvasPoint(canvas, event) {
   };
 }
 
+function getCanvasCursorPosition(canvas, event) {
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) return null;
+
+  return {
+    left: event.clientX - rect.left,
+    top: event.clientY - rect.top,
+    scaleX: rect.width / CANVAS_WIDTH,
+    scaleY: rect.height / CANVAS_HEIGHT,
+  };
+}
+
 function toHexColor(red, green, blue) {
   return `#${[red, green, blue]
     .map((value) => value.toString(16).padStart(2, "0"))
@@ -258,8 +270,15 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
   const historyRef = useRef([]);
   const historyIndexRef = useRef(-1);
   const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
+  const [eraserCursor, setEraserCursor] = useState(null);
 
   useEffect(() => () => onDrawingActive?.(false), [onDrawingActive]);
+
+  useEffect(() => {
+    if (tool !== "eraser") {
+      setEraserCursor(null);
+    }
+  }, [tool]);
 
   function updateHistoryState() {
     setHistoryState({
@@ -382,6 +401,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
   function startDrawing(event) {
     event.preventDefault();
+    updateEraserCursor(event);
     event.currentTarget.setPointerCapture?.(event.pointerId);
     const point = getCanvasPoint(canvasRef.current, event);
 
@@ -408,6 +428,26 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     if (!drawingRef.current) return;
     event.preventDefault();
     drawSegment(getCanvasPoint(canvasRef.current, event));
+  }
+
+  function updateEraserCursor(event) {
+    if (tool !== "eraser") return;
+    setEraserCursor(getCanvasCursorPosition(canvasRef.current, event));
+  }
+
+  function handlePointerMove(event) {
+    updateEraserCursor(event);
+    moveDrawing(event);
+  }
+
+  function handlePointerLeave(event) {
+    stopDrawing(event);
+    setEraserCursor(null);
+  }
+
+  function handlePointerCancel(event) {
+    stopDrawing(event);
+    setEraserCursor(null);
   }
 
   function stopDrawing(event) {
@@ -441,14 +481,27 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
           aria-label="お絵描きキャンバス"
           className={`drawing-canvas tool-${tool}`}
           height={CANVAS_HEIGHT}
-          onPointerCancel={stopDrawing}
+          onPointerCancel={handlePointerCancel}
           onPointerDown={startDrawing}
-          onPointerLeave={stopDrawing}
-          onPointerMove={moveDrawing}
+          onPointerEnter={updateEraserCursor}
+          onPointerLeave={handlePointerLeave}
+          onPointerMove={handlePointerMove}
           onPointerUp={stopDrawing}
           ref={canvasRef}
           width={CANVAS_WIDTH}
         />
+        {tool === "eraser" && eraserCursor ? (
+          <span
+            aria-hidden="true"
+            className="eraser-cursor"
+            style={{
+              "--eraser-height": `${brushSize * eraserCursor.scaleY}px`,
+              "--eraser-left": `${eraserCursor.left}px`,
+              "--eraser-top": `${eraserCursor.top}px`,
+              "--eraser-width": `${brushSize * eraserCursor.scaleX}px`,
+            }}
+          />
+        ) : null}
         <div className="canvas-toolbar canvas-toolbar-left" role="toolbar" aria-label="描画ツール">
           <div className="tool-group">
             <ToolButton active={tool === "brush"} label="ペン" onClick={() => onToolChange("brush")}>
