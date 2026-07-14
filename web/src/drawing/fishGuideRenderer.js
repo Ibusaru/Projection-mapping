@@ -31,10 +31,10 @@ export function renderFishGuideLayer(patternId, { lineWidth, strokeStyle }) {
     });
 
     context.restore();
+    context.globalCompositeOperation = "source-over";
+    context.stroke(getFishEyePath());
   }
 
-  context.globalCompositeOperation = "source-over";
-  context.stroke(getFishEyePath());
   context.restore();
   return canvas;
 }

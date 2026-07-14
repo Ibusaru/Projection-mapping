@@ -4,10 +4,10 @@ const SCALE_STEP_X = 78;
 const SCALE_STEP_Y = 78;
 const SCALE_ROW_OFFSET = SCALE_STEP_X / 2;
 const SCALE_FIELD_BOUNDS = {
-  left: 190,
-  right: 760,
-  top: 135,
-  bottom: 390,
+  left: 250,
+  right: 900,
+  top: 70,
+  bottom: 460,
 };
 const EYE = { x: 180, y: 215, radius: 28 };
 
@@ -88,11 +88,11 @@ export function getFishScaleCoveragePath() {
   if (cachedScaleCoveragePath) return cachedScaleCoveragePath;
 
   const path = new Path2D();
-  path.moveTo(274, 151);
-  path.bezierCurveTo(350, 111, 535, 116, 665, 178);
-  path.bezierCurveTo(690, 224, 685, 304, 650, 346);
-  path.bezierCurveTo(545, 399, 385, 436, 286, 395);
-  path.bezierCurveTo(238, 345, 235, 215, 274, 151);
+  path.moveTo(330, 78);
+  path.bezierCurveTo(470, 43, 665, 108, 798, 157);
+  path.bezierCurveTo(838, 211, 840, 309, 795, 366);
+  path.bezierCurveTo(655, 414, 470, 455, 334, 414);
+  path.bezierCurveTo(288, 351, 286, 160, 330, 78);
   path.closePath();
 
   cachedScaleCoveragePath = path;

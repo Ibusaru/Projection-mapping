@@ -82,11 +82,11 @@ export function FishScaleGuideDialog({ activePatternId, onClose, onSelect }) {
           </div>
         </header>
         <p id="scale-guide-description" className="pattern-dialog-description">
-          目の輪郭はどちらでも表示されます。あとから切り替えても、描いた絵と履歴は残ります。
+          模様OFFでは目も含めてガイドを消します。あとから切り替えても、描いた絵と履歴は残ります。
         </p>
         <p className="pattern-preserve-note">
           <CheckCircle2 aria-hidden="true" size={16} />
-          丸い目をそのまま塗りつぶせます
+          模様ONでは丸い目もそのまま塗りつぶせます
         </p>
 
         <div className="scale-guide-grid">
