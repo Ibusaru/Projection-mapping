@@ -15,15 +15,15 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.22533877, g: 0.69251025, b: 0.7952592, a: 1}
+  m_FogColor: {r: 0.1706412, g: 0.6556671, b: 0.7947312, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.006134464
+  m_FogDensity: 0.0067284717
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.58, g: 0.88, b: 0.96, a: 1}
-  m_AmbientEquatorColor: {r: 0.24, g: 0.66, b: 0.76, a: 1}
-  m_AmbientGroundColor: {r: 0.2, g: 0.38, b: 0.34, a: 1}
-  m_AmbientIntensity: 1.22
+  m_AmbientSkyColor: {r: 0.38, g: 0.78, b: 0.9, a: 1}
+  m_AmbientEquatorColor: {r: 0.18, g: 0.58, b: 0.72, a: 1}
+  m_AmbientGroundColor: {r: 0.1, g: 0.34, b: 0.46, a: 1}
+  m_AmbientIntensity: 1.3751168
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
@@ -156,8 +156,8 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.23848775, g: 0.7171646, b: 0.8174481, a: 1}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.1706412, g: 0.6556671, b: 0.7947312, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -294,6 +294,8 @@ MonoBehaviour:
   cinematicDroneMaxTurnDegreesPerSecond: 22
   cinematicSurfaceHeight: 1.35
   startCinematicTourInDroneOverview: 0
+  cinematicSurfacingSeconds: 4
+  cinematicDroneCutFadeSeconds: 5
   focusFish: 1
   targetRefreshSeconds: 5
   prioritizeReleasedFish: 1
@@ -314,8 +316,6 @@ MonoBehaviour:
   maximumCameraSpeed: 5.8
   focusTransitionSeconds: 1.45
   focusTransitionMaxSpeedMultiplier: 1.35
-  cinematicSurfacingSeconds: 4
-  cinematicDroneCutFadeSeconds: 5
   surfaceDiveSmoothTime: 0.35
   surfaceDiveMaxSpeed: 18
   surfaceDiveDiagonalOffset: 10
@@ -351,6 +351,7 @@ MonoBehaviour:
   cruiseSeconds: {x: 7, y: 12}
   cruiseInterestLookBlend: 0.42
   cruiseInterestApproachBlend: 0.46
+  cruiseDestinationReachDistance: 2.4
   roamLookSweepBlend: 0.72
   roamLookSweepDistance: 11
   roamLookSweepSideOffset: 7.4
@@ -377,10 +378,6 @@ MonoBehaviour:
   goodObservationAngleDegrees: 52
   observationOrbitSmoothTime: 1.8
   observationOrbitMaxDegreesPerSecond: 85
-  rearViewRecoveryStartAngle: 100
-  rearViewRecoverySmoothTime: 0.75
-  rearViewRecoveryMaxSpeed: 10
-  observationStartAngleTolerance: 20
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,6 +534,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ef4a7f779346e4893b9733271df1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanEnvironment
+  useSimpleBeachModelsWhenAvailable: 1
+  beachPalmCount: 42
+  beachParasolCount: 24
+  beachSmallPropCount: 96
+  beachModelScale: 1.1
+  useYughuesSandMaterialsWhenAvailable: 1
+  dryBeachSandMaterial: {fileID: 2100000, guid: fc3b1278c2f433e4c95790c289231b42, type: 2}
+  seabedSandMaterial: {fileID: 2100000, guid: 9fbbd38626fd1904daa084e924084008, type: 2}
+  dryBeachSandMaterialName: M_YFSM_Sand03
+  seabedSandMaterialName: M_YFSM_Sand05
+  beachParasolPrefab: {fileID: 919132149155446097, guid: ffa90c3781f4be54087fe844b71f015e, type: 3}
+  beachPalmPrefab: {fileID: 919132149155446097, guid: d3b82c5f058682f44b3eb1a669186416, type: 3}
+  beachSunbedPrefab: {fileID: 919132149155446097, guid: b9aca88b61615234aa9e28c338cff9da, type: 3}
+  beachDeskPrefab: {fileID: 919132149155446097, guid: f4e155a1dd45fa14485582f45bc010d2, type: 3}
+  beachLifebuoyPrefab: {fileID: 5587422251236282729, guid: 376af70facb3ac143abcc5e80351f8ba, type: 3}
+  beachStarfishPrefab: {fileID: 919132149155446097, guid: ec1e8cab2037905458dcb90ea31c6f91, type: 3}
+  beachBallPrefab: {fileID: 919132149155446097, guid: fda5e074207fcdd4a84645177d0505dc, type: 3}
+  beachToyOnePrefab: {fileID: 919132149155446097, guid: fe5bd9d6f522de644ae52ab28bab7b7c, type: 3}
+  beachToyTwoPrefab: {fileID: 919132149155446097, guid: 916ef413481457943b9b70cbece421e2, type: 3}
+  beachAquariusPrefab: {fileID: 919132149155446097, guid: 94a67e51af76b9c4caac6ddd68f0ca86, type: 3}
   oceanSize: {x: 420, y: 280}
   seabedY: -8
   waterSurfaceY: 4.65
@@ -554,31 +571,10 @@ MonoBehaviour:
   createVisibleShoreline: 1
   shorelineWidth: 120
   shorelineWaterInset: 0
-  shorelineFoamLineCount: 0
   shorelineResolution: 56
   outerRockCount: 260
   outerCoralCount: 320
   shoreAccentCount: 130
-  useSimpleBeachModelsWhenAvailable: 1
-  beachPalmCount: 42
-  beachParasolCount: 24
-  beachSmallPropCount: 96
-  beachModelScale: 1.1
-  useYughuesSandMaterialsWhenAvailable: 1
-  dryBeachSandMaterial: {fileID: 2100000, guid: fc3b1278c2f433e4c95790c289231b42, type: 2}
-  seabedSandMaterial: {fileID: 2100000, guid: 9fbbd38626fd1904daa084e924084008, type: 2}
-  dryBeachSandMaterialName: M_YFSM_Sand03
-  seabedSandMaterialName: M_YFSM_Sand05
-  beachParasolPrefab: {fileID: 100100000, guid: c6e57c1a8618b5a4c804579c38c0fad4, type: 3}
-  beachPalmPrefab: {fileID: 100100000, guid: ffce903a7cc67c947bef67dfea1e5da1, type: 3}
-  beachSunbedPrefab: {fileID: 100100000, guid: c9cb93a6763f77f4c9a3a3ff98f48b8f, type: 3}
-  beachDeskPrefab: {fileID: 100100000, guid: edca26c698d8bd4428fff61f9d5c257e, type: 3}
-  beachLifebuoyPrefab: {fileID: 100100000, guid: 376af70facb3ac143abcc5e80351f8ba, type: 3}
-  beachStarfishPrefab: {fileID: 100100000, guid: 99928c5851a125b4c84f2315371a4207, type: 3}
-  beachBallPrefab: {fileID: 100100000, guid: c17cc213a8a2010499538d6b007166f7, type: 3}
-  beachToyOnePrefab: {fileID: 100100000, guid: a14c6e2e1c7ae344aac481ddd02c283f, type: 3}
-  beachToyTwoPrefab: {fileID: 100100000, guid: cf0ecae8390004a42b20891eff83702b, type: 3}
-  beachAquariusPrefab: {fileID: 100100000, guid: 56e474ff9b3895944b79290e28762573, type: 3}
   seabedRelief: 3.1
   basinCount: 5
   reefMoundCount: 7
@@ -589,12 +585,10 @@ MonoBehaviour:
   waterResolution: 256
   tintCameras: 1
   simpleWaterMaterial: {fileID: 2100000, guid: 19ac4fcfcf42b4344a6c7d97a5cd61fc, type: 2}
-  underwaterSurfaceDeepTint: {r: 0.17, g: 0.65, b: 0.79, a: 1}
-  underwaterSurfaceShallowTint: {r: 0.2, g: 0.72, b: 0.82, a: 1}
-  underwaterSurfaceDeepAlpha: 0.3
-  underwaterSurfaceShallowAlpha: 0.08
-  underwaterSurfaceReflectionPower: 0.035
-  underwaterSurfaceSmoothness: 0.72
+  underwaterSurfaceDeepAlpha: 0.42
+  underwaterSurfaceShallowAlpha: 0.12
+  underwaterSurfaceReflectionPower: 0.08
+  underwaterSurfaceSmoothness: 0.82
   useProceduralSky: 1
   skyTint: {r: 0.38, g: 0.72, b: 0.92, a: 1}
   skyGroundColor: {r: 0.34, g: 0.56, b: 0.62, a: 1}
@@ -733,8 +727,6 @@ MonoBehaviour:
   center: {x: 0, y: -1.4, z: 0}
   size: {x: 150, y: 12, z: 105}
   releasedFishTargetLength: 0.55
-  smallReleasedFishTargetLength: 0.3
-  largeReleasedFishSizeMultiplier: 1.45
   releasedFishSpawnSpread: {x: 24, y: 6, z: 16}
   minimumReleasedFishSpawnDistanceFromCamera: 9
   spawnPositionAttempts: 18

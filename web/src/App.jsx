@@ -293,7 +293,7 @@ export function App() {
             ? "送信中..."
             : isCoolingDown
               ? `次の放流まであと${remainingSeconds}秒`
-              : "海へ送る"}
+              : "名前をつけて海へ送る"}
         </button>
       </div>
 

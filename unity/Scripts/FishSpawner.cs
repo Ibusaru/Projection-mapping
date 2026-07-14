@@ -21,6 +21,10 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private Vector3 size = new Vector3(16f, 7f, 10f);
     [FormerlySerializedAs("releasedFishScaleMultiplier")]
     [SerializeField] private float releasedFishTargetLength = 0.55f;
+    [Tooltip("Small released fish target length. 0.30 matches the default clownfish scale.")]
+    [SerializeField] private float smallReleasedFishTargetLength = 0.30f;
+    [Tooltip("Large released fish multiplier relative to the medium target length.")]
+    [SerializeField] private float largeReleasedFishSizeMultiplier = 1.45f;
     [SerializeField] private Vector3 releasedFishSpawnSpread = new Vector3(11f, 4f, 7f);
     [SerializeField] private float minimumReleasedFishSpawnDistanceFromCamera = 7f;
     [SerializeField] private int spawnPositionAttempts = 18;
@@ -79,6 +83,7 @@ public class FishSpawner : MonoBehaviour
         if (apiClient != null)
         {
             apiClient.OnNewFishes += SpawnFishes;
+            apiClient.OnRemovedFishKeys += RemoveReleasedFishes;
         }
     }
 
@@ -87,6 +92,7 @@ public class FishSpawner : MonoBehaviour
         if (apiClient != null)
         {
             apiClient.OnNewFishes -= SpawnFishes;
+            apiClient.OnRemovedFishKeys -= RemoveReleasedFishes;
         }
     }
 
@@ -105,6 +111,19 @@ public class FishSpawner : MonoBehaviour
             }
 
             SpawnFish(fish);
+        }
+    }
+
+    private void RemoveReleasedFishes(IReadOnlyList<string> fishKeys)
+    {
+        if (fishKeys == null)
+        {
+            return;
+        }
+
+        foreach (string fishKey in fishKeys)
+        {
+            DeleteReleasedFish(fishKey);
         }
     }
 
@@ -146,14 +165,15 @@ public class FishSpawner : MonoBehaviour
         actor.SetReleasedFish(true);
         actor.SetSwimBounds(center, size);
         actor.Apply(fish);
-        NormalizeReleasedFishScale(instance, fish.size);
+        float targetLength = ReleasedFishTargetLength(fish.size);
+        NormalizeFishScaleToLength(instance, targetLength);
         fishQueue.Enqueue(actor);
         if (!string.IsNullOrWhiteSpace(fishKey))
         {
             releasedFishByKey[fishKey] = actor;
         }
 
-        Debug.Log($"FishSpawner: spawned '{fish.nickname}' ({fish.species}) key='{fishKey}' at {position}. trackedReleased={releasedFishByKey.Count}, totalQueue={fishQueue.Count}");
+        Debug.Log($"FishSpawner: spawned '{fish.nickname}' ({fish.species}, size={fish.size}, targetLength={targetLength:0.00}) key='{fishKey}' at {position}. trackedReleased={releasedFishByKey.Count}, totalQueue={fishQueue.Count}");
         Debug.Log($"FishSpawner: visual state for '{fish.nickname}' -> {actor.DescribeVisualState()}");
 
         TrimOverflow();
@@ -646,7 +666,18 @@ public class FishSpawner : MonoBehaviour
 
     private void NormalizeReleasedFishScale(GameObject instance, string sizeName)
     {
-        NormalizeFishScaleToLength(instance, Mathf.Max(0.05f, releasedFishTargetLength) * ReleasedFishSizeMultiplier(sizeName));
+        NormalizeFishScaleToLength(instance, ReleasedFishTargetLength(sizeName));
+    }
+
+    private float ReleasedFishTargetLength(string sizeName)
+    {
+        float mediumTargetLength = Mathf.Max(0.05f, releasedFishTargetLength);
+        return sizeName switch
+        {
+            "small" => Mathf.Max(0.05f, smallReleasedFishTargetLength),
+            "large" => mediumTargetLength * Mathf.Max(1f, largeReleasedFishSizeMultiplier),
+            _ => mediumTargetLength
+        };
     }
 
     private void NormalizeFishScaleToLength(GameObject instance, float targetLength)
@@ -687,16 +718,6 @@ public class FishSpawner : MonoBehaviour
         }
 
         return hasBounds ? bounds : new Bounds(instance.transform.position, Vector3.one);
-    }
-
-    private static float ReleasedFishSizeMultiplier(string sizeName)
-    {
-        return sizeName switch
-        {
-            "small" => 0.78f,
-            "large" => 1.18f,
-            _ => 1f
-        };
     }
 
     private void TrimOverflow()

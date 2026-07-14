@@ -19,6 +19,7 @@ public class FishApiClient : MonoBehaviour
     private readonly Dictionary<string, string> seenFishVersions = new Dictionary<string, string>();
 
     public event Action<IReadOnlyList<FishData>> OnNewFishes;
+    public event Action<IReadOnlyList<string>> OnRemovedFishKeys;
 
     private void Start()
     {
@@ -64,7 +65,9 @@ public class FishApiClient : MonoBehaviour
     {
         string baseUrl = supabaseUrl.TrimEnd('/');
         List<FishData> newFishes = new List<FishData>();
+        HashSet<string> currentFishKeys = new HashSet<string>();
         int pageLimit = Mathf.Max(1, catchUpPageLimit);
+        bool snapshotComplete = false;
 
         for (int page = 0; page < pageLimit; page++)
         {
@@ -86,6 +89,7 @@ public class FishApiClient : MonoBehaviour
 
             if (list?.items == null || list.items.Length == 0)
             {
+                snapshotComplete = true;
                 break;
             }
 
@@ -93,12 +97,29 @@ public class FishApiClient : MonoBehaviour
 
             for (int index = list.items.Length - 1; index >= 0; index--)
             {
+                string fishKey = FishKey(list.items[index]);
+                if (!string.IsNullOrWhiteSpace(fishKey))
+                {
+                    currentFishKeys.Add(fishKey);
+                }
+
                 CollectNewFish(list.items[index], newFishes);
             }
 
             if (list.items.Length < fetchLimit)
             {
+                snapshotComplete = true;
                 break;
+            }
+        }
+
+        if (snapshotComplete)
+        {
+            List<string> removedFishKeys = CollectRemovedFishKeys(currentFishKeys);
+            if (removedFishKeys.Count > 0)
+            {
+                Debug.Log($"FishApiClient: detected {removedFishKeys.Count} fish removed from the database.");
+                OnRemovedFishKeys?.Invoke(removedFishKeys);
             }
         }
 
@@ -107,6 +128,30 @@ public class FishApiClient : MonoBehaviour
             Debug.Log($"FishApiClient: received {newFishes.Count} new fish.");
             OnNewFishes?.Invoke(newFishes);
         }
+    }
+
+    private List<string> CollectRemovedFishKeys(HashSet<string> currentFishKeys)
+    {
+        List<string> removedFishKeys = new List<string>();
+        List<string> staleFishKeys = new List<string>();
+
+        foreach (string fishKey in seenFishVersions.Keys)
+        {
+            if (!currentFishKeys.Contains(fishKey))
+            {
+                staleFishKeys.Add(fishKey);
+            }
+        }
+
+        foreach (string fishKey in staleFishKeys)
+        {
+            if (seenFishVersions.Remove(fishKey))
+            {
+                removedFishKeys.Add(fishKey);
+            }
+        }
+
+        return removedFishKeys;
     }
 
     private string BuildFetchUrl(string baseUrl, int page)
