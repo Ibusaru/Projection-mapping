@@ -12,6 +12,16 @@ internal static class OceanDroneOverview
         out Vector3 position,
         out Vector3 lookTarget)
     {
+        return TryEvaluate(environment, normalizedTime, 0f, out position, out lookTarget);
+    }
+
+    public static bool TryEvaluate(
+        OceanEnvironment environment,
+        float normalizedTime,
+        float routeVariant,
+        out Vector3 position,
+        out Vector3 lookTarget)
+    {
         position = Vector3.zero;
         lookTarget = Vector3.zero;
         if (environment == null)
@@ -33,20 +43,26 @@ internal static class OceanDroneOverview
         Vector3 roiCenter = Vector3.Lerp(waterInterest, beachCenter, 0.32f);
         roiCenter.y = environment.transform.TransformPoint(new Vector3(0f, environment.WaterSurfaceY + 0.7f, 0f)).y;
 
-        // Keep the ocean dominant and crop the finite rear/side land edges.
-        // The beach remains a secondary band in the upper part of the frame.
-        float height = 78f + Mathf.Sin(t * Mathf.PI) * 2f;
-        // Stay offset from the shoreline normal.  Passing directly over the
-        // normal puts the near-water anchor below the lower frame edge.
-        // Keep the shoreline centered in the opening frame. A large fixed
-        // side offset made the finite shoreline caps read like clipped map
-        // edges at the upper corners, especially on a 16:9 Game view.
-        float lateralOffset = Mathf.Lerp(-8f, 8f, t);
-        position = roiCenter - shoreward * 96f + lateral * lateralOffset + Vector3.up * height;
+        // Travel through a broad, shallow figure-eight instead of hovering on
+        // one aerial tripod. The route stays on the ocean side of the beach so
+        // the extended water backdrop continues to hide the finite world edge.
+        float phaseOffset = Mathf.Sin(routeVariant * 0.731f) * 0.28f * Mathf.PI;
+        float routeMirror = Mathf.Sin(routeVariant * 1.913f + 0.6f) >= 0f ? 1f : -1f;
+        float phase = Mathf.Lerp(-0.72f, 0.82f, t) * Mathf.PI + phaseOffset;
+        float lateralOffset = Mathf.Sin(phase) * 31f * routeMirror;
+        float oceanOffset = 98f + Mathf.Cos(phase * 1.15f) * 14f;
+        float heightVariation = Mathf.Sin(routeVariant * 1.271f) * 4f;
+        float height = 73f + heightVariation + Mathf.Sin(phase * 0.8f + 0.45f) * 9f;
+        position = roiCenter - shoreward * oceanOffset + lateral * lateralOffset + Vector3.up * height;
         // Aim slightly below the shoreline center so the opening frame gives
         // the sea more vertical weight and crops the finite end caps above
         // the frame instead of presenting them as hard corner edges.
-        lookTarget = Vector3.Lerp(waterInterest, beachCenter, Mathf.Lerp(0.11f, 0.17f, t)) + Vector3.down * 1.8f;
+        float shoreLookBlend = Mathf.Lerp(0.1f, 0.2f, 0.5f + 0.5f * Mathf.Sin(phase * 0.7f));
+        lookTarget = Vector3.Lerp(waterInterest, beachCenter, shoreLookBlend)
+            + lateral * Mathf.Sin(phase * 0.55f) * 5.5f * routeMirror
+            // Keep the beach below the upper safe-frame edge at both ends of
+            // the route while preserving plenty of water in the lower frame.
+            + Vector3.up * 1.2f;
         return IsFinite(position) && IsFinite(lookTarget);
     }
 

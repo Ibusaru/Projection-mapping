@@ -27,9 +27,9 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private bool useCinematicShots = true;
     [SerializeField] private OceanEnvironment oceanEnvironment;
     [SerializeField] private Vector2 cinematicShotSeconds = new Vector2(10f, 17f);
-    [SerializeField] private Vector2 cinematicDroneShotSeconds = new Vector2(16f, 24f);
-    [SerializeField] private Vector2 cinematicUnderwaterShotSeconds = new Vector2(18f, 28f);
-    [SerializeField] private Vector2 cinematicFishFocusShotSeconds = new Vector2(24f, 38f);
+    [SerializeField] private Vector2 cinematicDroneShotSeconds = new Vector2(12f, 18f);
+    [SerializeField] private Vector2 cinematicUnderwaterShotSeconds = new Vector2(14f, 22f);
+    [SerializeField] private Vector2 cinematicFishFocusShotSeconds = new Vector2(14f, 22f);
     [SerializeField] private float cinematicSmoothTime = 3.2f;
     [SerializeField] private float cinematicRotationSmooth = 1.35f;
     [SerializeField] private float cinematicMaxSpeed = 22f;
@@ -42,7 +42,7 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float cinematicDroneRotationSmooth = 0.42f;
     [SerializeField] private float cinematicDroneMaxTurnDegreesPerSecond = 26f;
     [SerializeField] private float cinematicSurfaceHeight = 1.35f;
-    [SerializeField] private bool startCinematicTourInDroneOverview = true;
+    [SerializeField] private bool startCinematicTourInDroneOverview;
     [SerializeField, Range(3f, 5f)] private float cinematicSurfacingSeconds = 4f;
     [SerializeField, Range(3f, 6f)] private float cinematicDroneCutFadeSeconds = 5f;
 
@@ -121,8 +121,8 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float recentFishFocusPenalty = 10f;
     [SerializeField] private float currentFishRepeatPenalty = 18f;
     [SerializeField] private bool showNearbyReleasedFishTagsWhileRoaming = true;
-    [SerializeField] private float nearbyReleasedFishTagDistance = 6.4f;
-    [SerializeField] private float nearbyReleasedFishTagHysteresis = 1.2f;
+    [SerializeField] private float nearbyReleasedFishTagDistance = 18f;
+    [SerializeField] private float nearbyReleasedFishTagHysteresis = 2f;
     [SerializeField, Range(-0.2f, 0.95f)] private float nearbyReleasedFishTagForwardDot = 0.18f;
     [SerializeField, Range(1, 4)] private int maxNearbyReleasedFishTags = 2;
     [Header("Diver Observation Angles")]
@@ -134,6 +134,10 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private float goodObservationAngleDegrees = 52f;
     [SerializeField] private float observationOrbitSmoothTime = 1.8f;
     [SerializeField] private float observationOrbitMaxDegreesPerSecond = 85f;
+    [SerializeField, Range(90f, 150f)] private float rearViewRecoveryStartAngle = 100f;
+    [SerializeField, Range(0.25f, 1.5f)] private float rearViewRecoverySmoothTime = 0.75f;
+    [SerializeField, Range(6f, 16f)] private float rearViewRecoveryMaxSpeed = 10f;
+    [SerializeField, Range(8f, 30f)] private float observationStartAngleTolerance = 20f;
 
     private FishActor focusedFish;
     private DiverIntent intent = DiverIntent.Cruise;
@@ -171,22 +175,16 @@ public class OceanCameraRig : MonoBehaviour
     private readonly HashSet<FishActor> nearbyTaggedReleasedFish = new HashSet<FishActor>();
     private readonly List<FishActor> nearbyTagPruneBuffer = new List<FishActor>();
     private float focusedFishSinceTime;
-    private static readonly OceanCinematicShotKind[] CinematicSequence =
+    private FishActor nextFishFocusExclusion;
+    private static readonly OceanCinematicShotKind[] CinematicBreakSequence =
     {
-        OceanCinematicShotKind.DroneOverview,
-        OceanCinematicShotKind.FishFocus,
-        OceanCinematicShotKind.FishFocus,
         OceanCinematicShotKind.UnderwaterExplore,
-        OceanCinematicShotKind.FishFocus,
-        OceanCinematicShotKind.ReefDive,
-        OceanCinematicShotKind.FishFocus,
-        OceanCinematicShotKind.ReefDive,
-        OceanCinematicShotKind.UnderwaterExplore
+        OceanCinematicShotKind.DroneOverview
     };
     private OceanCinematicShotKind currentCinematicShot = OceanCinematicShotKind.FishFocus;
     private float cinematicShotStartedAt;
     private float cinematicShotDuration = 12f;
-    private int cinematicShotIndex = -1;
+    private int cinematicBreakIndex = -1;
     private bool hasCinematicShot;
     private Camera rigCamera;
     private float cinematicShotVariantSeed;
@@ -206,6 +204,10 @@ public class OceanCameraRig : MonoBehaviour
     // route is now a continuous water entry, never a fade/cut.
     public bool UsesDroneToUnderwaterCut => false;
     public bool UsesContinuousDroneWaterEntry => true;
+    public bool UsesBriefRearViewRecovery => rearViewRecoveryStartAngle <= 110f
+        && rearViewRecoverySmoothTime <= 1f
+        && rearViewRecoveryMaxSpeed >= 8f
+        && observationStartAngleTolerance <= 24f;
 
     private void OnDisable()
     {
@@ -267,6 +269,72 @@ public class OceanCameraRig : MonoBehaviour
     public bool TryEvaluateCinematicShot(OceanCinematicShotKind shot, float normalizedTime, out Vector3 position, out Vector3 lookTarget)
     {
         return TryEvaluateCinematicShot(shot, normalizedTime, ResolveOceanEnvironment(), out position, out lookTarget);
+    }
+
+    public void RequestDroneOverview()
+    {
+        useCinematicShots = true;
+        pendingInitialDronePlacement = false;
+        enabled = true;
+        SetFocusedFish(null);
+        PrepareTourStateFromCurrentHeight();
+        lastLookTarget = transform.position + transform.forward * 14f;
+        hasLastLookTarget = true;
+        positionVelocity = Vector3.zero;
+        StartCinematicShot(OceanCinematicShotKind.DroneOverview, false);
+    }
+
+    public void RequestUnderwaterRoam()
+    {
+        useCinematicShots = true;
+        pendingInitialDronePlacement = false;
+        enabled = true;
+        SetFocusedFish(null);
+        PrepareTourStateFromCurrentHeight();
+        lastLookTarget = transform.position + transform.forward * 14f;
+        hasLastLookTarget = true;
+        positionVelocity = Vector3.zero;
+        StartCinematicShot(OceanCinematicShotKind.UnderwaterExplore, false);
+    }
+
+    public void RequestFishFocus()
+    {
+        RequestFishFocus(null);
+    }
+
+    public void RequestNextFishFocus(FishActor previousFish)
+    {
+        RequestFishFocus(previousFish);
+    }
+
+    private void RequestFishFocus(FishActor previousFish)
+    {
+        useCinematicShots = true;
+        pendingInitialDronePlacement = false;
+        enabled = true;
+        nextFishFocusExclusion = previousFish;
+        SetFocusedFish(null);
+        PrepareTourStateFromCurrentHeight();
+        lastLookTarget = transform.position + transform.forward * 14f;
+        hasLastLookTarget = true;
+        positionVelocity = Vector3.zero;
+        StartCinematicShot(OceanCinematicShotKind.FishFocus, false);
+    }
+
+    private void PrepareTourStateFromCurrentHeight()
+    {
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        float waterY = environment != null
+            ? environment.transform.TransformPoint(new Vector3(0f, environment.WaterSurfaceY, 0f)).y
+            : center.y + orbitSize.y;
+        if (transform.position.y >= waterY + 0.35f)
+        {
+            droneTransition.EnterDroneOverview();
+        }
+        else
+        {
+            droneTransition.EnterUnderwater();
+        }
     }
 
     private void UpdateCinematicCamera()
@@ -348,18 +416,23 @@ public class OceanCameraRig : MonoBehaviour
 
     private void BeginNextCinematicShot()
     {
-        OceanEnvironment environment = ResolveOceanEnvironment();
-        for (int attempt = 0; attempt < CinematicSequence.Length; attempt++)
+        // Fish focus is the baseline state. Every free-roam or aerial break
+        // returns here before another break can begin.
+        if (!hasCinematicShot || currentCinematicShot != OceanCinematicShotKind.FishFocus)
         {
-            cinematicShotIndex = (cinematicShotIndex + 1) % CinematicSequence.Length;
-            OceanCinematicShotKind candidate = CinematicSequence[cinematicShotIndex];
-            if (candidate == OceanCinematicShotKind.FishFocus && (!focusFish || !HasAnyActiveFish()))
-            {
-                continue;
-            }
+            StartCinematicShot(
+                focusFish ? OceanCinematicShotKind.FishFocus : OceanCinematicShotKind.UnderwaterExplore,
+                false
+            );
+            return;
+        }
 
-            if (candidate != OceanCinematicShotKind.FishFocus
-                && !TryEvaluateCinematicShot(candidate, 0f, environment, out _, out _))
+        OceanEnvironment environment = ResolveOceanEnvironment();
+        for (int attempt = 0; attempt < CinematicBreakSequence.Length; attempt++)
+        {
+            cinematicBreakIndex = (cinematicBreakIndex + 1) % CinematicBreakSequence.Length;
+            OceanCinematicShotKind candidate = CinematicBreakSequence[cinematicBreakIndex];
+            if (!TryEvaluateCinematicShot(candidate, 0f, environment, out _, out _))
             {
                 continue;
             }
@@ -368,7 +441,10 @@ public class OceanCameraRig : MonoBehaviour
             return;
         }
 
-        StartCinematicShot(OceanCinematicShotKind.FishFocus, false);
+        StartCinematicShot(
+            focusFish ? OceanCinematicShotKind.FishFocus : OceanCinematicShotKind.UnderwaterExplore,
+            false
+        );
     }
 
     private void UpdateDroneTransition()
@@ -410,7 +486,6 @@ public class OceanCameraRig : MonoBehaviour
         cinematicShotStartedAt = Time.time;
         cinematicShotDuration = RandomDurationForShot(shot);
         cinematicShotVariantSeed = Random.Range(0f, 1000f);
-        cinematicShotIndex = IndexOfCinematicShot(shot);
         hasCinematicShot = true;
 
         if (shot != OceanCinematicShotKind.FishFocus)
@@ -488,7 +563,8 @@ public class OceanCameraRig : MonoBehaviour
                 divePosition,
                 diveLookTarget,
                 Time.time,
-                cinematicDroneCutFadeSeconds
+                cinematicDroneCutFadeSeconds,
+                waterY
             );
             return;
         }
@@ -508,19 +584,6 @@ public class OceanCameraRig : MonoBehaviour
         ApplyCinematicFieldOfView(shot);
     }
 
-    private static int IndexOfCinematicShot(OceanCinematicShotKind shot)
-    {
-        for (int i = 0; i < CinematicSequence.Length; i++)
-        {
-            if (CinematicSequence[i] == shot)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
     private bool TryEvaluateCinematicShot(
         OceanCinematicShotKind shot,
         float normalizedTime,
@@ -530,7 +593,13 @@ public class OceanCameraRig : MonoBehaviour
     {
         if (shot == OceanCinematicShotKind.DroneOverview)
         {
-            return OceanDroneOverview.TryEvaluate(environment, normalizedTime, out position, out lookTarget);
+            return OceanDroneOverview.TryEvaluate(
+                environment,
+                normalizedTime,
+                cinematicShotVariantSeed,
+                out position,
+                out lookTarget
+            );
         }
 
         float t = SmoothStep01(normalizedTime);
@@ -578,6 +647,15 @@ public class OceanCameraRig : MonoBehaviour
                     lead - position,
                     cinematicExploreInterestLookBlend
                 );
+                // Once during each roaming shot, lift the composition toward
+                // the luminous ceiling. The reef and fish remain in frame,
+                // while the viewer gets a repeated visual reminder that the
+                // camera is below a moving surface rather than in open air.
+                Vector3 surfaceDirection = FlattenDirection(lead - position);
+                Vector3 surfaceLookTarget = position + surfaceDirection * 9f;
+                surfaceLookTarget.y = waterY - 0.06f;
+                float surfaceReveal = Mathf.Pow(Mathf.Max(0f, Mathf.Sin(t * Mathf.PI * 2f)), 2f);
+                lookTarget = Vector3.Lerp(lookTarget, surfaceLookTarget, surfaceReveal * 0.28f);
                 break;
             }
             case OceanCinematicShotKind.ReefDive:
@@ -1059,12 +1137,6 @@ public class OceanCameraRig : MonoBehaviour
         return environment != null ? environment.transform.TransformPoint(local) : center + local;
     }
 
-    private bool HasAnyActiveFish()
-    {
-        IReadOnlyList<FishActor> fishes = FishActor.AllActiveFishes;
-        return fishes != null && fishes.Count > 0;
-    }
-
     private float RandomDurationForShot(OceanCinematicShotKind shot)
     {
         if (shot == OceanCinematicShotKind.FishFocus)
@@ -1467,6 +1539,17 @@ public class OceanCameraRig : MonoBehaviour
             speed *= Mathf.Max(1f, focusTransitionMaxSpeedMultiplier);
         }
 
+        float rearViewRecovery = focusedFish != null && !surfaceDive
+            ? RearViewRecoveryBlend(currentFocusPoint, focusForward)
+            : 0f;
+        if (rearViewRecovery > 0f)
+        {
+            float recoverySmoothTime = Mathf.Clamp(rearViewRecoverySmoothTime, 0.25f, 1.5f);
+            float recoveryMaxSpeed = Mathf.Max(speed, Mathf.Clamp(rearViewRecoveryMaxSpeed, 6f, 16f));
+            moveSmoothTime = Mathf.Lerp(moveSmoothTime, Mathf.Min(moveSmoothTime, recoverySmoothTime), rearViewRecovery);
+            speed = Mathf.Lerp(speed, recoveryMaxSpeed, rearViewRecovery);
+        }
+
         bool snapped = MoveCamera(desiredPosition, moveSmoothTime, speed);
         LookAtTarget(lookTarget, rotationSmooth, snapped);
         ApplySurfaceDiveCameraEffects(surfaceDive);
@@ -1752,6 +1835,27 @@ public class OceanCameraRig : MonoBehaviour
         return Mathf.Clamp(angle, -limit, limit);
     }
 
+    private float RearViewRecoveryBlend(Vector3 focusPoint, Vector3 focusForward)
+    {
+        float actualAngle = Mathf.Abs(CurrentPhysicalObservationAngleDegrees(focusPoint, focusForward));
+        float startAngle = Mathf.Clamp(rearViewRecoveryStartAngle, 90f, 150f);
+        float fullRecoveryAngle = Mathf.Min(175f, startAngle + 50f);
+        return SmoothStep01(Mathf.InverseLerp(startAngle, fullRecoveryAngle, actualAngle));
+    }
+
+    private float CurrentPhysicalObservationAngleDegrees(Vector3 focusPoint, Vector3 focusForward)
+    {
+        Vector3 flatForward = FlattenDirection(focusForward);
+        Vector3 toCamera = transform.position - focusPoint;
+        Vector3 flatToCamera = new Vector3(toCamera.x, 0f, toCamera.z);
+        if (flatToCamera.sqrMagnitude < 0.001f)
+        {
+            return 0f;
+        }
+
+        return Vector3.SignedAngle(flatForward, flatToCamera.normalized, Vector3.up);
+    }
+
     private static float RandomInRange(Vector2 range)
     {
         return Random.Range(Mathf.Min(range.x, range.y), Mathf.Max(range.x, range.y));
@@ -1906,7 +2010,22 @@ public class OceanCameraRig : MonoBehaviour
 
         RequeueCompletedFocusedFish(fishes);
 
-        FishActor fish = PickQueuedReleasedFish(fishes);
+        FishActor fish = null;
+        bool selectNextFish = nextFishFocusExclusion != null;
+        if (selectNextFish)
+        {
+            bool releasedOnly = prioritizeReleasedFish && HasReleasedFish(fishes, nextFishFocusExclusion);
+            fish = PickCinematicFish(fishes, releasedOnly, nextFishFocusExclusion);
+            if (fish == null)
+            {
+                fish = PickCinematicFish(fishes, false);
+            }
+            nextFishFocusExclusion = null;
+        }
+        else
+        {
+            fish = PickQueuedReleasedFish(fishes);
+        }
         bool selectedQueuedFish = fish != null;
         bool hasReleasedFish = HasReleasedFish(fishes);
         bool foundSchool = false;
@@ -1979,7 +2098,8 @@ public class OceanCameraRig : MonoBehaviour
             return;
         }
 
-        if (!HasReachedFocusedFishObserveStartDistance())
+        if (!HasReachedFocusedFishObservationAngle()
+            || !HasReachedFocusedFishObserveStartDistance())
         {
             focusedFishObserveDistanceReachedAt = 0f;
             return;
@@ -1998,6 +2118,22 @@ public class OceanCameraRig : MonoBehaviour
         }
 
         StartFocusedFishObservationTimer();
+    }
+
+    private bool HasReachedFocusedFishObservationAngle()
+    {
+        if (focusedFish == null)
+        {
+            return false;
+        }
+
+        float actualAngle = CurrentPhysicalObservationAngleDegrees(
+            focusedFish.VisualCenter,
+            focusedFish.transform.forward
+        );
+        float angleError = Mathf.Abs(Mathf.DeltaAngle(actualAngle, targetObservationAngleDegrees));
+        float tolerance = Mathf.Clamp(observationStartAngleTolerance, 8f, 30f);
+        return angleError <= tolerance;
     }
 
     private bool HasReachedFocusedFishObserveStartDistance()
@@ -2343,6 +2479,14 @@ public class OceanCameraRig : MonoBehaviour
 
     private FishActor PickCinematicFish(IReadOnlyList<FishActor> fishes, bool releasedOnly)
     {
+        return PickCinematicFish(fishes, releasedOnly, null);
+    }
+
+    private FishActor PickCinematicFish(
+        IReadOnlyList<FishActor> fishes,
+        bool releasedOnly,
+        FishActor excludedFish)
+    {
         FishActor best = null;
         float bestScore = float.NegativeInfinity;
         int eligibleCount = CountEligibleFish(fishes, releasedOnly);
@@ -2352,6 +2496,11 @@ public class OceanCameraRig : MonoBehaviour
         {
             FishActor fish = fishes[i];
             if (fish == null)
+            {
+                continue;
+            }
+
+            if (fish == excludedFish)
             {
                 continue;
             }
@@ -2472,10 +2621,15 @@ public class OceanCameraRig : MonoBehaviour
 
     private static bool HasReleasedFish(IReadOnlyList<FishActor> fishes)
     {
+        return HasReleasedFish(fishes, null);
+    }
+
+    private static bool HasReleasedFish(IReadOnlyList<FishActor> fishes, FishActor excludedFish)
+    {
         for (int i = 0; i < fishes.Count; i++)
         {
             FishActor fish = fishes[i];
-            if (fish != null && fish.IsReleasedFish)
+            if (fish != null && fish != excludedFish && fish.IsReleasedFish)
             {
                 return true;
             }

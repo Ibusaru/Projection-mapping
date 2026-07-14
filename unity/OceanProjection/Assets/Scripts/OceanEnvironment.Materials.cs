@@ -3,12 +3,17 @@ using UnityEngine;
 public partial class OceanEnvironment
 {
     private const HideFlags GeneratedHideFlags = HideFlags.DontSaveInEditor | HideFlags.DontSaveInBuild;
+    private const string WaterDeepColorProperty = "Color_36218622185947c6a5ae36366d8e21d8";
+    private const string WaterShallowColorProperty = "Color_93e06cd551a5449091bcde90b46765a0";
+    private const string WaterReflectionPowerProperty = "Vector1_dada42ebfac44076897b6de67441ba32";
+    private const string WaterSmoothnessProperty = "Vector1_6269b1025b26473ca8bc61634f34b537";
 
     private void CreateMaterials()
     {
         seabedMaterial = MakeMaterial("Reef White Sand", new Color(0.94f, 0.9f, 0.72f, 1f), 0f);
-        waterMaterial = MakeWaterMaterial();
-        underwaterSurfaceMaterial = MakeUnderwaterSurfaceMaterial();
+        waterMaterial = MakeSimpleWaterMaterial("Simple Water Surface", false);
+        underwaterSurfaceMaterial = MakeSimpleWaterMaterial("Simple Water Underside", true);
+        skyboxMaterial = MakeSkyboxMaterial();
         rockMaterial = MakeMaterial("Reef Rock", new Color(0.5f, 0.62f, 0.52f, 1f), 0f);
         coralMaterial = MakeMaterial("Warm Reef Coral", new Color(1f, 0.66f, 0.5f, 1f), 0f);
         whiteCoralMaterial = MakeMaterial("Pale Branch Coral", new Color(0.94f, 0.9f, 0.74f, 1f), 0f);
@@ -18,52 +23,97 @@ public partial class OceanEnvironment
         ApplyYughuesSandMaterials();
     }
 
-    private Material MakeWaterMaterial()
+    private Material MakeSimpleWaterMaterial(string runtimeName, bool configureForUnderwaterView)
     {
-        // Do not use the imported Simple Water Shader here. Its vertex graph
-        // replaces object-space Y with wave noise, so it visually cancels any
-        // water level baked into the mesh. The stable shader preserves the
-        // transform-owned water height exactly.
-        return MakeStableWaterMaterial();
-    }
-
-    private Material MakeStableWaterMaterial()
-    {
-        Shader shader = Shader.Find("OceanProjection/Stable Water");
-        if (shader == null || !shader.isSupported)
+        Material source = simpleWaterMaterial != null
+            ? simpleWaterMaterial
+            : Resources.Load<Material>("Water_mat_03");
+        if (source == null || !IsUsableShader(source.shader))
         {
-            return MakeMaterial("Stable Reef Water Surface", waterColor, 0.72f);
+            Debug.LogError(
+                "OceanEnvironment: Simple Water Shader URP/Resources/Water_mat_03 is missing or unsupported."
+            );
+            return MakeMaterial(runtimeName + " Fallback", waterColor, 0.72f);
         }
 
-        Material material = new Material(shader)
+        // Clone the imported preset so generated-object hide flags never alter
+        // the project asset itself. Its ShaderGraph, textures and wave values
+        // remain exactly those supplied by Simple Water Shader URP.
+        Material material = new Material(source)
         {
-            name = "Stable Reef Water Surface",
+            name = runtimeName + " (Water_mat_03)",
             hideFlags = GeneratedHideFlags
         };
-        Color deep = waterColor;
-        deep.a = Mathf.Max(0.68f, deep.a);
-        material.SetColor("_BaseColor", deep);
-        material.SetColor("_ShallowColor", new Color(0.16f, 0.66f, 0.74f, deep.a));
-        material.SetFloat("_Opacity", 0.94f);
-        material.SetFloat("_Smoothness", 0.78f);
+
+        if (configureForUnderwaterView)
+        {
+            ConfigureUnderwaterWaterMaterial(material);
+        }
+
         return material;
     }
 
-    private Material MakeUnderwaterSurfaceMaterial()
+    private void ConfigureUnderwaterWaterMaterial(Material material)
     {
-        Shader shader = Shader.Find("OceanProjection/Underwater Surface Cue");
+        if (material.HasProperty(WaterDeepColorProperty))
+        {
+            Color deepColor = new Color(
+                underwaterSurfaceDeepTint.r,
+                underwaterSurfaceDeepTint.g,
+                underwaterSurfaceDeepTint.b,
+                underwaterSurfaceDeepAlpha
+            );
+            material.SetColor(WaterDeepColorProperty, deepColor);
+        }
+
+        if (material.HasProperty(WaterShallowColorProperty))
+        {
+            Color shallowColor = new Color(
+                underwaterSurfaceShallowTint.r,
+                underwaterSurfaceShallowTint.g,
+                underwaterSurfaceShallowTint.b,
+                underwaterSurfaceShallowAlpha
+            );
+            material.SetColor(WaterShallowColorProperty, shallowColor);
+        }
+
+        SetFloatIfPresent(material, WaterReflectionPowerProperty, underwaterSurfaceReflectionPower);
+        SetFloatIfPresent(material, WaterSmoothnessProperty, underwaterSurfaceSmoothness);
+    }
+
+    private Material MakeSkyboxMaterial()
+    {
+        if (!useProceduralSky)
+        {
+            return null;
+        }
+
+        Shader shader = Shader.Find("Skybox/Procedural");
         if (shader == null || !shader.isSupported)
         {
-            return MakeMaterial("Underwater Surface Cue", new Color(0.08f, 0.62f, 0.72f, 0.32f), 0.42f);
+            return null;
         }
 
         Material material = new Material(shader)
         {
-            name = "Underwater Surface Cue",
+            name = "Clear Reef Procedural Sky",
             hideFlags = GeneratedHideFlags
         };
-        material.SetColor("_Tint", new Color(0.025f, 0.48f, 0.68f, 0.86f));
-        material.SetFloat("_WaterLevel", waterSurfaceY);
+        SetFloatIfPresent(material, "_SunDisk", 2f);
+        SetFloatIfPresent(material, "_SunSize", skySunSize);
+        SetFloatIfPresent(material, "_SunSizeConvergence", 4.5f);
+        SetFloatIfPresent(material, "_AtmosphereThickness", skyAtmosphereThickness);
+        SetFloatIfPresent(material, "_Exposure", skyExposure);
+        if (material.HasProperty("_SkyTint"))
+        {
+            material.SetColor("_SkyTint", skyTint);
+        }
+
+        if (material.HasProperty("_GroundColor"))
+        {
+            material.SetColor("_GroundColor", skyGroundColor);
+        }
+
         return material;
     }
 

@@ -26,6 +26,9 @@ public class OceanAdminCameraController : MonoBehaviour
     [SerializeField] private float fishFollowDistance = 5.4f;
     [SerializeField] private float fishFollowHeight = 0.8f;
     [SerializeField] private float focusLookAhead = 1.4f;
+    [SerializeField] private float fishFocusHoldSeconds = 7f;
+    [SerializeField] private float fishFocusArrivalDistance = 1.25f;
+    [SerializeField] private float fishFocusMaximumSeconds = 18f;
 
     [Header("Motion")]
     [SerializeField] private float positionSmoothTime = 1.25f;
@@ -37,6 +40,8 @@ public class OceanAdminCameraController : MonoBehaviour
     private Vector3 positionVelocity;
     private float aerialStartedAt;
     private float aerialArrivedAt = -1f;
+    private float fishFocusStartedAt;
+    private float fishFocusArrivedAt = -1f;
 
     private void Awake()
     {
@@ -76,6 +81,14 @@ public class OceanAdminCameraController : MonoBehaviour
     public void ShowAerialView()
     {
         ClearFocusedFish();
+        if (automaticRig != null)
+        {
+            mode = AdminCameraMode.Roam;
+            automaticRig.RequestDroneOverview();
+            Debug.Log("OceanAdminCameraController: requested moving aerial tour.");
+            return;
+        }
+
         mode = AdminCameraMode.Aerial;
         aerialStartedAt = Time.time;
         aerialArrivedAt = -1f;
@@ -89,11 +102,26 @@ public class OceanAdminCameraController : MonoBehaviour
         mode = AdminCameraMode.Roam;
         positionVelocity = Vector3.zero;
         aerialArrivedAt = -1f;
+        fishFocusArrivedAt = -1f;
         if (automaticRig != null)
         {
-            automaticRig.enabled = true;
+            automaticRig.RequestUnderwaterRoam();
         }
         Debug.Log("OceanAdminCameraController: resumed automatic roaming.");
+    }
+
+    public void ResumeFishFocus()
+    {
+        ClearFocusedFish();
+        mode = AdminCameraMode.Roam;
+        positionVelocity = Vector3.zero;
+        aerialArrivedAt = -1f;
+        fishFocusArrivedAt = -1f;
+        if (automaticRig != null)
+        {
+            automaticRig.RequestFishFocus();
+        }
+        Debug.Log("OceanAdminCameraController: resumed automatic fish focus.");
     }
 
     public bool FocusFish(string fishId)
@@ -109,6 +137,8 @@ public class OceanAdminCameraController : MonoBehaviour
         focusedFish = targetFish;
         focusedFish.SetCameraFocused(true);
         mode = AdminCameraMode.FishFocus;
+        fishFocusStartedAt = Time.time;
+        fishFocusArrivedAt = -1f;
         BeginManualControl();
         Debug.Log($"OceanAdminCameraController: focused fish '{focusedFish.Nickname}' ({fishId}).");
         return true;
@@ -149,14 +179,14 @@ public class OceanAdminCameraController : MonoBehaviour
             }
             else if (Time.time - aerialArrivedAt >= Mathf.Max(0f, aerialHoldSeconds))
             {
-                ResumeRoam();
+                ResumeFishFocus();
                 return;
             }
         }
 
         if (Time.time - aerialStartedAt >= Mathf.Max(aerialHoldSeconds, aerialMaximumSeconds))
         {
-            ResumeRoam();
+            ResumeFishFocus();
         }
     }
 
@@ -164,7 +194,7 @@ public class OceanAdminCameraController : MonoBehaviour
     {
         if (focusedFish == null || !focusedFish.isActiveAndEnabled)
         {
-            ResumeRoam();
+            ResumeFishFocus();
             return;
         }
 
@@ -181,6 +211,39 @@ public class OceanAdminCameraController : MonoBehaviour
         Vector3 desiredPosition = focusPoint - forward * distance + Vector3.up * fishFollowHeight;
         Vector3 lookTarget = focusPoint + forward * focusLookAhead;
         MoveAndLook(desiredPosition, lookTarget);
+
+        if (Vector3.Distance(transform.position, desiredPosition) <= Mathf.Max(0.1f, fishFocusArrivalDistance))
+        {
+            if (fishFocusArrivedAt < 0f)
+            {
+                fishFocusArrivedAt = Time.time;
+            }
+            else if (Time.time - fishFocusArrivedAt >= Mathf.Max(0f, fishFocusHoldSeconds))
+            {
+                ResumeAfterFishFocus();
+                return;
+            }
+        }
+
+        float maximumSeconds = Mathf.Max(fishFocusHoldSeconds, fishFocusMaximumSeconds);
+        if (Time.time - fishFocusStartedAt >= maximumSeconds)
+        {
+            ResumeAfterFishFocus();
+        }
+    }
+
+    private void ResumeAfterFishFocus()
+    {
+        FishActor completedFish = focusedFish;
+        ClearFocusedFish();
+        mode = AdminCameraMode.Roam;
+        positionVelocity = Vector3.zero;
+        fishFocusArrivedAt = -1f;
+        if (automaticRig != null)
+        {
+            automaticRig.RequestNextFishFocus(completedFish);
+        }
+        Debug.Log("OceanAdminCameraController: completed admin focus and advanced to the next fish.");
     }
 
     private void MoveAndLook(Vector3 desiredPosition, Vector3 lookTarget)

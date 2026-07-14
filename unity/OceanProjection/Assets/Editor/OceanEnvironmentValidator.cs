@@ -212,6 +212,21 @@ public static class OceanEnvironmentValidator
 
         valid &= ValidateDroneOverview(environment, cameraRig);
         valid &= ValidateDroneCut(cameraRig);
+        valid &= ValidateRearViewRecovery(cameraRig);
+
+        return valid;
+    }
+
+    private static bool ValidateRearViewRecovery(OceanCameraRig cameraRig)
+    {
+        bool valid = cameraRig.UsesBriefRearViewRecovery;
+        Debug.Log($"OceanEnvironmentValidator: briefRearViewRecovery={valid}");
+        if (!valid)
+        {
+            Debug.LogError(
+                "OceanEnvironmentValidator: rear fish views must recover quickly and start the observation hold after reaching the intended angle."
+            );
+        }
 
         return valid;
     }
@@ -335,6 +350,8 @@ public static class OceanEnvironmentValidator
         }
 
         valid &= ValidateWaterSurfaceCoordinatePath(environment, root);
+        valid &= ValidateHorizonCoverage(environment, root);
+        valid &= ValidateUnderwaterFogBackground(environment);
 
         foreach (Renderer renderer in renderers)
         {
@@ -367,9 +384,95 @@ public static class OceanEnvironmentValidator
         return valid;
     }
 
+    private static bool ValidateUnderwaterFogBackground(OceanEnvironment environment)
+    {
+        Camera camera = Camera.main != null ? Camera.main : Object.FindAnyObjectByType<Camera>();
+        if (camera == null)
+        {
+            Debug.LogError("OceanEnvironmentValidator: camera is missing for underwater background validation.");
+            return false;
+        }
+
+        float localCameraY = environment.transform.InverseTransformPoint(camera.transform.position).y;
+        bool cameraIsUnderwater = localCameraY < environment.WaterSurfaceY - 0.06f;
+        bool usesSolidFogBackground = camera.clearFlags == CameraClearFlags.SolidColor;
+        Color difference = camera.backgroundColor - RenderSettings.fogColor;
+        bool matchesFogColor = Mathf.Max(
+            Mathf.Abs(difference.r),
+            Mathf.Max(Mathf.Abs(difference.g), Mathf.Abs(difference.b))
+        ) <= 0.005f;
+        bool valid = !cameraIsUnderwater || (usesSolidFogBackground && matchesFogColor);
+
+        Debug.Log(
+            $"OceanEnvironmentValidator: underwaterBackground cameraY={localCameraY:0.00}, " +
+            $"waterY={environment.WaterSurfaceY:0.00}, clearFlags={camera.clearFlags}, " +
+            $"background={camera.backgroundColor}, fog={RenderSettings.fogColor}, valid={valid}"
+        );
+        if (!valid)
+        {
+            Debug.LogError(
+                "OceanEnvironmentValidator: an underwater camera must clear to the fog colour so the distant " +
+                "seabed cannot meet an unfogged skybox as a horizontal band."
+            );
+        }
+
+        return valid;
+    }
+
+    private static bool ValidateHorizonCoverage(OceanEnvironment environment, Transform root)
+    {
+        Camera camera = Object.FindAnyObjectByType<Camera>();
+        Transform water = root.Find("Water Surface");
+        Transform shoreline = root.Find("Visible Shoreline");
+        Transform horizonSeabed = root.Find("Horizon Seabed Continuation");
+        MeshFilter waterFilter = water != null ? water.GetComponent<MeshFilter>() : null;
+        MeshFilter shorelineFilter = shoreline != null ? shoreline.GetComponent<MeshFilter>() : null;
+        MeshFilter horizonFilter = horizonSeabed != null ? horizonSeabed.GetComponent<MeshFilter>() : null;
+        if (camera == null
+            || waterFilter == null || waterFilter.sharedMesh == null
+            || shorelineFilter == null || shorelineFilter.sharedMesh == null
+            || horizonFilter == null || horizonFilter.sharedMesh == null)
+        {
+            Debug.LogError("OceanEnvironmentValidator: horizon coverage geometry is missing.");
+            return false;
+        }
+
+        float requiredDistance = camera.farClipPlane + 80f;
+        Bounds waterBounds = waterFilter.sharedMesh.bounds;
+        Bounds shorelineBounds = shorelineFilter.sharedMesh.bounds;
+        Bounds horizonBounds = horizonFilter.sharedMesh.bounds;
+        bool configuredBeyondFarClip = environment.HorizonBackdropDistance >= requiredDistance;
+        bool waterCoversHorizon = waterBounds.min.x <= -requiredDistance
+            && waterBounds.min.z <= -requiredDistance
+            && waterBounds.max.z >= requiredDistance;
+        bool landCoversHorizon = shorelineBounds.max.x >= requiredDistance
+            && shorelineBounds.min.z <= -requiredDistance * 0.98f
+            && shorelineBounds.max.z >= requiredDistance * 0.98f;
+        bool seabedCoversHorizon = horizonBounds.min.x <= -requiredDistance
+            && horizonBounds.max.x >= requiredDistance
+            && horizonBounds.min.z <= -requiredDistance
+            && horizonBounds.max.z >= requiredDistance;
+        bool valid = configuredBeyondFarClip
+            && waterCoversHorizon
+            && landCoversHorizon
+            && seabedCoversHorizon;
+
+        Debug.Log(
+            $"OceanEnvironmentValidator: horizonCoverage configured={environment.HorizonBackdropDistance:0.0}, " +
+            $"required={requiredDistance:0.0}, water={waterBounds}, land={shorelineBounds}, " +
+            $"seabed={horizonBounds}, valid={valid}"
+        );
+        if (!valid)
+        {
+            Debug.LogError("OceanEnvironmentValidator: generated horizon does not cover the camera far clip.");
+        }
+
+        return valid;
+    }
+
     private static bool ValidateWaterSurfaceCoordinatePath(OceanEnvironment environment, Transform root)
     {
-        const string expectedShaderName = "OceanProjection/Stable Water";
+        const string expectedShaderName = "Shader Graphs/WaterShader";
         const float coordinateTolerance = 0.01f;
 
         Transform waterSurface = root.Find("Water Surface");
@@ -393,17 +496,17 @@ public static class OceanEnvironmentValidator
             && Mathf.Abs(surfaceLocalPosition.x) <= coordinateTolerance
             && Mathf.Abs(surfaceLocalPosition.z) <= coordinateTolerance;
         bool worldLevelMatches = Vector3.Distance(generatedWorldPosition, expectedWorldPosition) <= coordinateTolerance;
-        bool usesStableShader = shader.name == expectedShaderName;
+        bool usesImportedWaterShader = shader.name == expectedShaderName;
 
         Debug.Log(
             $"OceanEnvironmentValidator: waterCoordinatePath meshLocalY={meshLocalY:0.000}, " +
             $"transformLocalPosition={surfaceLocalPosition}, generatedWorldY={generatedWorldPosition.y:0.000}, " +
             $"expectedWorldY={expectedWorldPosition.y:0.000}, shader={shader.name}, " +
             $"meshUsesLocalZero={meshUsesLocalZero}, transformOwnsWaterLevel={transformOwnsWaterLevel}, " +
-            $"worldLevelMatches={worldLevelMatches}, usesStableShader={usesStableShader}"
+            $"worldLevelMatches={worldLevelMatches}, usesImportedWaterShader={usesImportedWaterShader}"
         );
 
-        if (!meshUsesLocalZero || !transformOwnsWaterLevel || !worldLevelMatches || !usesStableShader)
+        if (!meshUsesLocalZero || !transformOwnsWaterLevel || !worldLevelMatches || !usesImportedWaterShader)
         {
             Debug.LogError(
                 "OceanEnvironmentValidator: Water Surface must use a local-zero mesh, put waterSurfaceY on its Transform, " +

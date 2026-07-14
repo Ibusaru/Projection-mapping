@@ -11,7 +11,7 @@ internal static class OceanWaterSurfaceLevelApplier
     private const float TargetWaterSurfaceY = 4.65f;
     private const float MinimumContentClearance = 0.12f;
     private const float CoordinateTolerance = 0.01f;
-    private const string StableWaterShaderName = "OceanProjection/Stable Water";
+    private const string SimpleWaterShaderName = "Shader Graphs/WaterShader";
     private const string VerificationLogName = "OceanWaterSurfaceLevelApplier.log";
 
     static OceanWaterSurfaceLevelApplier()
@@ -111,7 +111,7 @@ internal static class OceanWaterSurfaceLevelApplier
         string shaderName = shader != null ? shader.name : "<none>";
         bool coordinatePathValid = Mathf.Abs(meshLocalY) <= CoordinateTolerance
             && Mathf.Abs(transformLocalY - environment.WaterSurfaceY) <= CoordinateTolerance
-            && shaderName == StableWaterShaderName;
+            && shaderName == SimpleWaterShaderName;
         float highestContentY = FindHighestUnderwaterContentY(environment, generatedRoot, out string highestContentName);
         float contentClearance = float.IsNegativeInfinity(highestContentY)
             ? float.PositiveInfinity

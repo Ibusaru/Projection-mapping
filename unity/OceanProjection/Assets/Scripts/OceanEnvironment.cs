@@ -25,11 +25,16 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private Vector2 activeAreaSize = new Vector2(100f, 68f);
     [SerializeField] private float activeDecorationPadding = 18f;
     [SerializeField] private bool createOpenOceanBackdrop = true;
-    [SerializeField, Range(1f, 2.4f)] private float openOceanBackdropScale = 2f;
+    [SerializeField, Range(1f, 2.4f)] private float openOceanBackdropScale = 2.2f;
     // Extend only the open-water depth so the aerial camera never sees the
     // finite Z edge of the generated shoreline shell. This does not enlarge
     // the playable land or fish area.
-    [SerializeField, Range(1f, 3f)] private float openOceanBackdropDepthScale = 2.1f;
+    [SerializeField, Range(1f, 3f)] private float openOceanBackdropDepthScale = 2.35f;
+    // Keep every generated edge beyond the camera far clip, including on the
+    // ultra-wide projection where side rays are almost horizontal.
+    [SerializeField, Range(600f, 1800f)] private float horizonBackdropDistance = 1250f;
+    [SerializeField, Range(2f, 20f)] private float horizonSeabedDrop = 8f;
+    [SerializeField, Range(40f, 360f)] private float horizonSeabedBlendDistance = 220f;
     [SerializeField] private bool createVisibleShoreline = true;
     [SerializeField, Range(8f, 300f)] private float shorelineWidth = 120f;
     // Kept serialized for existing scenes. A water inset or fixed foam lines
@@ -50,8 +55,30 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private Color waterColor = new Color(0.10f, 0.54f, 0.70f, 0.72f);
     [SerializeField] private Color deepFogColor = new Color(0.08f, 0.42f, 0.55f, 1f);
     [SerializeField] private float fogDensity = 0.014f;
-    [SerializeField, Range(16, 128)] private int waterResolution = 128;
+    [SerializeField, Range(16, 256)] private int waterResolution = 192;
     [SerializeField] private bool tintCameras = true;
+    [SerializeField] private Material simpleWaterMaterial;
+    [SerializeField] private Color underwaterSurfaceDeepTint = new Color(0.17f, 0.65f, 0.79f, 1f);
+    [SerializeField] private Color underwaterSurfaceShallowTint = new Color(0.2f, 0.72f, 0.82f, 1f);
+    [SerializeField, Range(0f, 1f)] private float underwaterSurfaceDeepAlpha = 0.3f;
+    [SerializeField, Range(0f, 1f)] private float underwaterSurfaceShallowAlpha = 0.08f;
+    [SerializeField, Range(0f, 1f)] private float underwaterSurfaceReflectionPower = 0.035f;
+    [SerializeField, Range(0f, 1f)] private float underwaterSurfaceSmoothness = 0.72f;
+
+    [Header("Sky")]
+    [SerializeField] private bool useProceduralSky = true;
+    [SerializeField] private Color skyTint = new Color(0.38f, 0.72f, 0.92f, 1f);
+    [SerializeField] private Color skyGroundColor = new Color(0.34f, 0.56f, 0.62f, 1f);
+    [SerializeField, Range(0.2f, 2f)] private float skyExposure = 1.08f;
+    [SerializeField, Range(0f, 5f)] private float skyAtmosphereThickness = 0.72f;
+    [SerializeField, Range(0.02f, 0.2f)] private float skySunSize = 0.105f;
+
+    [Header("Sunlight")]
+    [SerializeField] private Color sunLightColor = new Color(1f, 0.96f, 0.82f, 1f);
+    [SerializeField, Range(0f, 5f)] private float mainSunIntensity = 2.35f;
+    [SerializeField] private Color fillLightColor = new Color(0.52f, 0.86f, 1f, 1f);
+    [SerializeField, Range(0f, 3f)] private float fillLightIntensity = 0.82f;
+    [SerializeField, Range(0f, 5f)] private float underwaterSunSpotIntensity = 2.1f;
 
     [Header("Suimono Water System")]
     [SerializeField] private bool useSuimonoWhenAvailable;
@@ -64,9 +91,9 @@ public partial class OceanEnvironment : MonoBehaviour
     [SerializeField] private Color shallowWaterColor = new Color(0.25f, 0.78f, 0.86f, 0.5f);
     [SerializeField] private Color foamColor = new Color(0.86f, 0.98f, 1f, 0.36f);
 
-    // The main stable water surface is double-sided. Keep this legacy second
-    // surface opt-in only so aerial views cannot show two overlapping planes.
-    [SerializeField] private bool createUnderwaterSurfaceCue = false;
+    // Simple Water Shader URP is single-sided. A reversed copy of the same
+    // imported material keeps the surface readable from below.
+    [SerializeField] private bool createUnderwaterSurfaceCue = true;
 
     [Header("Decorations")]
     [SerializeField] private int rockCount = 68;
@@ -85,6 +112,7 @@ public partial class OceanEnvironment : MonoBehaviour
     private Material seabedMaterial;
     private Material waterMaterial;
     private Material underwaterSurfaceMaterial;
+    private Material skyboxMaterial;
     private Material rockMaterial;
     private Material coralMaterial;
     private Material whiteCoralMaterial;
@@ -107,6 +135,13 @@ public partial class OceanEnvironment : MonoBehaviour
     {
         seabedResolution = Mathf.Max(16, seabedResolution);
         waterResolution = Mathf.Max(16, waterResolution);
+        underwaterSurfaceDeepAlpha = Mathf.Clamp01(underwaterSurfaceDeepAlpha);
+        underwaterSurfaceShallowAlpha = Mathf.Clamp01(underwaterSurfaceShallowAlpha);
+        underwaterSurfaceReflectionPower = Mathf.Clamp01(underwaterSurfaceReflectionPower);
+        underwaterSurfaceSmoothness = Mathf.Clamp01(underwaterSurfaceSmoothness);
+        mainSunIntensity = Mathf.Max(0f, mainSunIntensity);
+        fillLightIntensity = Mathf.Max(0f, fillLightIntensity);
+        underwaterSunSpotIntensity = Mathf.Max(0f, underwaterSunSpotIntensity);
         seabedRelief = Mathf.Max(0f, seabedRelief);
         basinCount = Mathf.Max(0, basinCount);
         reefMoundCount = Mathf.Max(0, reefMoundCount);
@@ -114,6 +149,9 @@ public partial class OceanEnvironment : MonoBehaviour
         activeDecorationPadding = Mathf.Max(0f, activeDecorationPadding);
         openOceanBackdropScale = Mathf.Clamp(openOceanBackdropScale, 1f, 2.4f);
         openOceanBackdropDepthScale = Mathf.Max(1f, openOceanBackdropDepthScale);
+        horizonBackdropDistance = Mathf.Max(600f, horizonBackdropDistance);
+        horizonSeabedDrop = Mathf.Max(2f, horizonSeabedDrop);
+        horizonSeabedBlendDistance = Mathf.Max(40f, horizonSeabedBlendDistance);
         shorelineWidth = Mathf.Max(1f, shorelineWidth);
         shorelineWaterInset = 0f;
         shorelineResolution = Mathf.Max(4, shorelineResolution);
@@ -158,6 +196,7 @@ public partial class OceanEnvironment : MonoBehaviour
         MarkGeneratedObject(generatedRoot.gameObject);
 
         CreateSeabed();
+        CreateHorizonSeabedContinuation();
         bool suimonoActive = useSuimonoWhenAvailable && CreateSuimonoWater();
         if (!suimonoActive || keepFallbackWaterWithSuimono)
         {
@@ -188,7 +227,7 @@ public partial class OceanEnvironment : MonoBehaviour
         RenderSettings.fogMode = FogMode.ExponentialSquared;
         RenderSettings.fogColor = deepFogColor;
         RenderSettings.fogDensity = fogDensity;
-        RenderSettings.skybox = null;
+        RenderSettings.skybox = skyboxMaterial;
         RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
         RenderSettings.ambientSkyColor = new Color(0.58f, 0.88f, 0.96f);
         RenderSettings.ambientEquatorColor = new Color(0.24f, 0.66f, 0.76f);
@@ -202,7 +241,7 @@ public partial class OceanEnvironment : MonoBehaviour
 
         foreach (Camera camera in Camera.allCameras)
         {
-            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.clearFlags = skyboxMaterial != null ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(0.42f, 0.78f, 0.92f, 1f);
         }
 
@@ -218,9 +257,9 @@ public partial class OceanEnvironment : MonoBehaviour
         float depth = Mathf.Max(0f, waterSurfaceY - localCameraY);
         float depthBlend = Smooth01(Mathf.InverseLerp(1.5f, 24f, depth));
         float aboveWaterBlend = Smooth01(Mathf.InverseLerp(waterSurfaceY + 0.5f, waterSurfaceY + 8f, localCameraY));
-        float densityMultiplier = Mathf.Lerp(0.42f, 1.42f, depthBlend);
+        float densityMultiplier = Mathf.Lerp(0.465f, 1.2f, depthBlend);
         densityMultiplier = Mathf.Lerp(densityMultiplier, 0.18f, aboveWaterBlend);
-        Color shallowColor = new Color(0.24f, 0.72f, 0.82f, 1f);
+        Color shallowColor = new Color(0.18f, 0.68f, 0.82f, 1f);
         Color skyColor = new Color(0.45f, 0.82f, 0.94f, 1f);
 
         RenderSettings.fog = true;
@@ -229,17 +268,43 @@ public partial class OceanEnvironment : MonoBehaviour
         RenderSettings.fogColor = Color.Lerp(shallowColor, deepFogColor, Mathf.Lerp(0.08f, 0.72f, depthBlend));
         RenderSettings.fogColor = Color.Lerp(RenderSettings.fogColor, skyColor, aboveWaterBlend * 0.86f);
 
+        float underwaterPresence = Smooth01(Mathf.InverseLerp(waterSurfaceY + 0.08f, waterSurfaceY - 0.55f, localCameraY));
+        RenderSettings.ambientSkyColor = Color.Lerp(
+            new Color(0.58f, 0.88f, 0.96f),
+            new Color(0.38f, 0.78f, 0.9f),
+            underwaterPresence
+        );
+        RenderSettings.ambientEquatorColor = Color.Lerp(
+            new Color(0.24f, 0.66f, 0.76f),
+            new Color(0.18f, 0.58f, 0.72f),
+            underwaterPresence
+        );
+        RenderSettings.ambientGroundColor = Color.Lerp(
+            new Color(0.2f, 0.38f, 0.34f),
+            new Color(0.1f, 0.34f, 0.46f),
+            underwaterPresence
+        );
+        float underwaterAmbientIntensity = Mathf.Lerp(1.38f, 1.15f, depthBlend);
+        RenderSettings.ambientIntensity = Mathf.Lerp(1.22f, underwaterAmbientIntensity, underwaterPresence);
+
         if (!tintCameras)
         {
             return;
         }
 
-        Color cameraColor = Color.Lerp(shallowColor, deepFogColor, depthBlend * 0.52f);
-        cameraColor = Color.Lerp(cameraColor, skyColor, aboveWaterBlend * 0.9f);
         foreach (Camera item in Camera.allCameras)
         {
-            item.clearFlags = CameraClearFlags.SolidColor;
-            item.backgroundColor = cameraColor;
+            float itemLocalY = transform.InverseTransformPoint(item.transform.position).y;
+            bool itemAboveWater = itemLocalY >= waterSurfaceY + 0.06f;
+            // Above water, the procedural sky supplies the distant sun. Below
+            // water, the empty background must use the exact fog colour: a
+            // skybox is not affected by scene fog and otherwise meets the
+            // fogged seabed as a conspicuous horizontal band. The imported
+            // water material still renders the transparent, moving surface.
+            item.clearFlags = itemAboveWater && skyboxMaterial != null
+                ? CameraClearFlags.Skybox
+                : CameraClearFlags.SolidColor;
+            item.backgroundColor = itemAboveWater ? skyColor : RenderSettings.fogColor;
         }
     }
 
