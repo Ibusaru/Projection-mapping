@@ -112,8 +112,7 @@ h1 {
   -webkit-user-select: none;
 }
 
-.silhouette-canvas,
-.drawing-canvas {
+.fish-canvas-layer {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -606,8 +605,7 @@ input[type="range"] {
     min-height: calc((100vw - 20px) * 0.5 + 52px);
   }
 
-  .silhouette-canvas,
-  .drawing-canvas {
+  .fish-canvas-layer {
     inset: 0 0 52px;
     height: auto;
   }
@@ -731,8 +729,7 @@ input[type="range"] {
     aspect-ratio: auto;
   }
 
-  .silhouette-canvas,
-  .drawing-canvas {
+  .fish-canvas-layer {
     top: calc(50% - 10px);
     left: 50%;
     width: min(calc(100% - 124px), calc((100% - 112px) * 2));
