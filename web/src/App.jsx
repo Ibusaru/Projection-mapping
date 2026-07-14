@@ -11,14 +11,13 @@ import {
   X,
 } from "lucide-react";
 import { DrawingCanvas } from "./components/DrawingCanvas";
-import { FishPatternThumbnail } from "./components/FishPatternGuideCanvas";
-import { FishPatternPickerDialog } from "./components/FishPatternPickerDialog";
+import { FishScaleGuideDialog } from "./components/FishScaleGuideDialog";
 import { QrPanel } from "./components/QrPanel";
 import { ReleaseSuccessDialog } from "./components/ReleaseSuccessDialog";
 import { ReleaseSendingDialog } from "./components/ReleaseSendingDialog";
 import { ReleaseSettingsDialog } from "./components/ReleaseSettingsDialog";
 import { brushColors, brushSizeRange } from "./config/fishOptions";
-import { DEFAULT_FISH_PATTERN_ID, getFishPatternOption } from "./config/fishPatternGuides";
+import { DEFAULT_FISH_PATTERN_ID } from "./config/fishPatternGuides";
 import { fishSizeOptions } from "./config/releaseOptions";
 import { uploadFishDrawing } from "./data/fishDrawingStore";
 import { useReleaseCooldown } from "./hooks/useReleaseCooldown";
@@ -44,8 +43,7 @@ export function App() {
   const [isDrawingActive, setIsDrawingActive] = useState(false);
   const [activeToolPanel, setActiveToolPanel] = useState("");
   const [patternId, setPatternId] = useState(DEFAULT_FISH_PATTERN_ID);
-  const [hasDrawing, setHasDrawing] = useState(false);
-  const [isPatternPickerOpen, setIsPatternPickerOpen] = useState(false);
+  const [isScaleChoiceOpen, setIsScaleChoiceOpen] = useState(true);
   const [shouldShakeNickname, setShouldShakeNickname] = useState(false);
   const [releasedFish, setReleasedFish] = useState(null);
   const { remainingSeconds, startCooldown } = useReleaseCooldown();
@@ -58,7 +56,7 @@ export function App() {
   const canSubmit = !nicknameError && status !== "sending" && !isCoolingDown;
   const canOpenReleaseSettings = status !== "sending" && !isCoolingDown;
   const selectedFishSize = fishSizeOptions.find((option) => option.value === fishSize);
-  const selectedPattern = getFishPatternOption(patternId);
+  const isScaleGuideEnabled = patternId === "scales";
   const nicknameInputClass = [
     "nickname-input",
     shownNicknameError ? "invalid" : "",
@@ -139,10 +137,13 @@ export function App() {
     setActiveToolPanel("");
   }
 
-  function changePattern(nextPatternId, { resetDrawing }) {
-    if (resetDrawing) drawingRef.current?.reset();
+  function selectScaleGuide(nextPatternId) {
     setPatternId(nextPatternId);
     setActiveToolPanel("");
+  }
+
+  function toggleScaleGuide() {
+    selectScaleGuide(isScaleGuideEnabled ? "none" : "scales");
   }
 
   function handleNicknameChange(event) {
@@ -187,7 +188,6 @@ export function App() {
           brushSize={brushSize}
           onColorPick={handleColorChange}
           onDrawingActive={setIsDrawingActive}
-          onDrawingStateChange={setHasDrawing}
           onToolChange={setTool}
           patternId={patternId}
           ref={drawingRef}
@@ -216,12 +216,11 @@ export function App() {
             <SlidersHorizontal size={19} />
           </button>
           <button
-            aria-expanded={isPatternPickerOpen}
-            aria-label={`下絵：${selectedPattern.label}`}
-            aria-haspopup="dialog"
-            className="icon-button"
-            onClick={() => setIsPatternPickerOpen(true)}
-            title={`下絵：${selectedPattern.label}`}
+            aria-label={`模様：${isScaleGuideEnabled ? "ON" : "OFF"}`}
+            aria-pressed={isScaleGuideEnabled}
+            className={isScaleGuideEnabled ? "icon-button selected" : "icon-button"}
+            onClick={toggleScaleGuide}
+            title={`模様：${isScaleGuideEnabled ? "ON" : "OFF"}`}
             type="button"
           >
             <LayoutGrid size={19} />
@@ -301,24 +300,20 @@ export function App() {
           </div>
 
           <div className="tool-section pattern-section">
-            <div className="tool-section-title">
-              <LayoutGrid size={18} />
-              <span>下絵</span>
-            </div>
             <button
-              aria-expanded={isPatternPickerOpen}
-              aria-haspopup="dialog"
-              className="pattern-picker-trigger"
-              onClick={() => setIsPatternPickerOpen(true)}
+              aria-checked={isScaleGuideEnabled}
+              aria-label={`模様：${isScaleGuideEnabled ? "ON" : "OFF"}`}
+              className={isScaleGuideEnabled ? "scale-guide-toggle is-on" : "scale-guide-toggle"}
+              onClick={toggleScaleGuide}
+              role="switch"
               type="button"
             >
-              <span className="pattern-picker-trigger-preview">
-                <FishPatternThumbnail patternId={patternId} />
+              <LayoutGrid aria-hidden="true" size={17} />
+              <span>模様</span>
+              <span aria-hidden="true" className="scale-toggle-track">
+                <span className="scale-toggle-knob" />
               </span>
-              <span className="pattern-picker-trigger-copy">
-                <strong>下絵：{selectedPattern.label}</strong>
-                <small>模様を選ぶ</small>
-              </span>
+              <strong>{isScaleGuideEnabled ? "ON" : "OFF"}</strong>
             </button>
           </div>
 
@@ -356,12 +351,11 @@ export function App() {
       </div>
 
       {isQrOpen ? <QrPanel onClose={() => setIsQrOpen(false)} /> : null}
-      {isPatternPickerOpen ? (
-        <FishPatternPickerDialog
+      {isScaleChoiceOpen ? (
+        <FishScaleGuideDialog
           activePatternId={patternId}
-          hasDrawing={hasDrawing}
-          onChange={changePattern}
-          onClose={() => setIsPatternPickerOpen(false)}
+          onClose={() => setIsScaleChoiceOpen(false)}
+          onSelect={selectScaleGuide}
         />
       ) : null}
       {isReleaseSettingsOpen ? (
