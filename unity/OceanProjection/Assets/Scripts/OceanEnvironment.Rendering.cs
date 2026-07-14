@@ -11,9 +11,10 @@ public partial class OceanEnvironment
         float mainHalfX = oceanSize.x * 0.5f;
         float mainHalfZ = oceanSize.y * 0.5f;
         float extensionScale = createOpenOceanBackdrop ? Mathf.Clamp(openOceanBackdropScale, 1f, 2.4f) : 1f;
-        float halfX = mainHalfX * extensionScale;
+        float horizonHalfExtent = HorizonBackdropHalfExtent();
+        float halfX = Mathf.Max(mainHalfX * extensionScale, horizonHalfExtent);
         float depthScale = createOpenOceanBackdrop ? Mathf.Clamp(openOceanBackdropDepthScale, 1f, 3f) : 1f;
-        float halfZ = mainHalfZ * extensionScale * depthScale;
+        float halfZ = Mathf.Max(mainHalfZ * extensionScale * depthScale, horizonHalfExtent);
         float coastlineHalfZ = CoastlineRenderHalfZ();
 
         for (int z = 0; z < points; z++)
@@ -51,6 +52,7 @@ public partial class OceanEnvironment
         }
 
         waterMesh = new Mesh { name = "Generated Water Surface Mesh" };
+        waterMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         waterMesh.vertices = vertices;
         waterMesh.uv = uvs;
         waterMesh.triangles = triangles;
@@ -60,9 +62,8 @@ public partial class OceanEnvironment
         GameObject water = new GameObject("Water Surface");
         water.transform.SetParent(generatedRoot, false);
         // Keep the authoritative water level on the transform. The imported
-        // Simple Water Shader Graph reconstructs vertex Position and replaces
-        // local Y with wave noise, so baking the world height into mesh
-        // vertices made every configured waterSurfaceY render back near zero.
+        // Simple Water Shader Graph owns local wave displacement, while this
+        // transform supplies the configured world height.
         water.transform.localPosition = Vector3.up * waterSurfaceY;
         water.AddComponent<MeshFilter>().sharedMesh = waterMesh;
         water.AddComponent<MeshRenderer>().sharedMaterial = waterMaterial;
@@ -75,16 +76,25 @@ public partial class OceanEnvironment
             return;
         }
 
+        float mainHalfX = oceanSize.x * 0.5f;
+        float halfX = createOpenOceanBackdrop
+            ? Mathf.Max(mainHalfX, HorizonBackdropHalfExtent())
+            : mainHalfX;
+        float halfZ = CoastlineRenderHalfZ();
         int zSegments = Mathf.Max(4, shorelineResolution);
         int xSegments = Mathf.Max(4, Mathf.RoundToInt(shorelineResolution * 0.36f));
+        if (createOpenOceanBackdrop)
+        {
+            // The non-linear inland distribution keeps the original beach
+            // dense while allowing the distant land to reach beyond far clip.
+            zSegments = Mathf.Max(zSegments, Mathf.CeilToInt(halfZ * 2f / 9f));
+            xSegments = Mathf.Max(64, Mathf.RoundToInt(shorelineResolution * 1.15f));
+        }
         int zPoints = zSegments + 1;
         int xPoints = xSegments + 1;
         Vector3[] vertices = new Vector3[zPoints * xPoints];
         Vector2[] uvs = new Vector2[vertices.Length];
         int[] triangles = new int[zSegments * xSegments * 6];
-        float halfX = oceanSize.x * 0.5f;
-        float halfZ = CoastlineRenderHalfZ();
-
         for (int z = 0; z < zPoints; z++)
         {
             float v = z / (float)zSegments;
@@ -94,13 +104,16 @@ public partial class OceanEnvironment
             for (int x = 0; x < xPoints; x++)
             {
                 float u = x / (float)xSegments;
-                float localX = Mathf.Lerp(shorelineX, halfX, u);
+                float inlandU = createOpenOceanBackdrop ? u * u : u;
+                float localX = Mathf.Lerp(shorelineX, halfX, inlandU);
                 vertices[z * xPoints + x] = new Vector3(
                     localX,
                     SampleShorelineLandHeight(localX, localZ),
                     localZ
                 );
-                uvs[z * xPoints + x] = new Vector2(u * 2.4f, v * 5f);
+                uvs[z * xPoints + x] = createOpenOceanBackdrop
+                    ? new Vector2((localX - shorelineX) * 0.022f, (localZ + halfZ) * 0.009f)
+                    : new Vector2(u * 2.4f, v * 5f);
             }
         }
 
@@ -120,6 +133,7 @@ public partial class OceanEnvironment
         }
 
         Mesh shoreMesh = new Mesh { name = "Generated Visible Shoreline Mesh" };
+        shoreMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         shoreMesh.vertices = vertices;
         shoreMesh.uv = uvs;
         shoreMesh.triangles = triangles;
@@ -143,9 +157,26 @@ public partial class OceanEnvironment
         GameObject cue = new GameObject("Underwater Water Surface Cue");
         cue.transform.SetParent(generatedRoot, false);
         cue.transform.localPosition = Vector3.up * (waterSurfaceY - 0.035f);
-        cue.AddComponent<MeshFilter>().sharedMesh = waterMesh;
+        cue.AddComponent<MeshFilter>().sharedMesh = CreateReversedWaterMesh();
         cue.AddComponent<MeshRenderer>().sharedMaterial = underwaterSurfaceMaterial;
-        underwaterSurfaceMaterial.SetFloat("_WaterLevel", transform.TransformPoint(new Vector3(0f, waterSurfaceY, 0f)).y);
+    }
+
+    private Mesh CreateReversedWaterMesh()
+    {
+        Mesh reversedMesh = Instantiate(waterMesh);
+        reversedMesh.name = "Generated Water Surface Underside Mesh";
+        int[] triangles = reversedMesh.triangles;
+        for (int i = 0; i < triangles.Length; i += 3)
+        {
+            int first = triangles[i];
+            triangles[i] = triangles[i + 1];
+            triangles[i + 1] = first;
+        }
+
+        reversedMesh.triangles = triangles;
+        reversedMesh.RecalculateNormals();
+        reversedMesh.RecalculateBounds();
+        return reversedMesh;
     }
 
     private float ShorelineActiveHalfX(float halfX)
@@ -166,7 +197,13 @@ public partial class OceanEnvironment
     private float CoastlineRenderHalfZ()
     {
         float mainHalfZ = oceanSize.y * 0.5f;
-        return createOpenOceanBackdrop ? mainHalfZ * 1.45f : mainHalfZ;
+        if (!createOpenOceanBackdrop)
+        {
+            return mainHalfZ;
+        }
+
+        float detailedHalfZ = mainHalfZ * Mathf.Clamp(openOceanBackdropScale * 0.93f, 1.45f, 2.25f);
+        return Mathf.Max(detailedHalfZ, HorizonBackdropHalfExtent() * 0.9f);
     }
 
     private float ShorelineStartX(float z)
@@ -186,13 +223,19 @@ public partial class OceanEnvironment
 
     private void CreateSunlight()
     {
+        // A Directional Light defines the procedural sky sun at infinite
+        // distance. There is deliberately no physical sun mesh: a nearby
+        // emissive sphere is reflected by the water and looks submerged from
+        // below, regardless of how high it is placed.
+        Vector3 directionToSun = new Vector3(0.28f, 0.9f, -0.24f).normalized;
+        Vector3 sunDirection = -directionToSun;
         GameObject sunObject = new GameObject("Clear Reef Sun");
         sunObject.transform.SetParent(generatedRoot, false);
-        sunObject.transform.rotation = Quaternion.LookRotation(new Vector3(-0.28f, -0.9f, 0.24f).normalized, Vector3.up);
+        sunObject.transform.rotation = Quaternion.LookRotation(sunDirection, Vector3.up);
         Light sun = sunObject.AddComponent<Light>();
         sun.type = LightType.Directional;
-        sun.color = new Color(1f, 0.96f, 0.82f);
-        sun.intensity = 1.85f;
+        sun.color = sunLightColor;
+        sun.intensity = mainSunIntensity;
         sun.shadows = LightShadows.Soft;
         RenderSettings.sun = sun;
 
@@ -201,8 +244,8 @@ public partial class OceanEnvironment
         fillObject.transform.rotation = Quaternion.LookRotation(new Vector3(0.38f, -0.72f, -0.32f).normalized, Vector3.up);
         Light fill = fillObject.AddComponent<Light>();
         fill.type = LightType.Directional;
-        fill.color = new Color(0.52f, 0.86f, 1f);
-        fill.intensity = 0.58f;
+        fill.color = fillLightColor;
+        fill.intensity = fillLightIntensity;
         fill.shadows = LightShadows.None;
 
         int spotCount = 7;
@@ -214,19 +257,18 @@ public partial class OceanEnvironment
             lightObject.transform.SetParent(generatedRoot, false);
             float ratio = spotCount <= 1 ? 0f : i / (float)(spotCount - 1);
             lightObject.transform.position = new Vector3(Mathf.Lerp(-activeHalfX, activeHalfX, ratio), waterSurfaceY - 0.08f, Mathf.Lerp(-activeHalfZ, activeHalfZ, Mathf.PingPong(i * 0.37f, 1f)));
-            lightObject.transform.rotation = Quaternion.LookRotation(new Vector3(Mathf.Lerp(-0.22f, 0.22f, ratio), -1f, 0.28f).normalized, Vector3.up);
+            lightObject.transform.rotation = Quaternion.LookRotation(sunDirection, Vector3.up);
 
             Light spot = lightObject.AddComponent<Light>();
             spot.type = LightType.Spot;
             spot.color = new Color(0.76f, 0.96f, 1f);
-            spot.intensity = 1.65f;
+            spot.intensity = underwaterSunSpotIntensity;
             spot.range = waterSurfaceY - seabedY + 18f;
             spot.spotAngle = 52f;
             spot.shadows = LightShadows.None;
         }
 
     }
-
     private void CreateCausticLines()
     {
         int visibleCount = Mathf.Min(causticLineCount, 18);

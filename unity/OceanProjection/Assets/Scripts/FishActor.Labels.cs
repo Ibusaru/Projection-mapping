@@ -6,7 +6,7 @@ public partial class FishActor
 {
     private const float MinReadableNicknameTextViewportHeight = 0.038f;
     private const float BelowLineNicknameLayoutPenalty = 0.12f;
-    private const float MaxNicknameTagRevealDistance = 6.2f;
+    private const float MaxNicknameTagRevealDistance = 24f;
     private const float MinNicknameTagRevealSeconds = 0.64f;
     private const float MinNicknameTagRetreatSeconds = 0.24f;
     private const float StickyNicknameTagOverflowTolerance = 0.025f;

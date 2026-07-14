@@ -278,9 +278,9 @@ MonoBehaviour:
   useCinematicShots: 1
   oceanEnvironment: {fileID: 695204832}
   cinematicShotSeconds: {x: 10, y: 17}
-  cinematicDroneShotSeconds: {x: 18, y: 28}
-  cinematicUnderwaterShotSeconds: {x: 18, y: 28}
-  cinematicFishFocusShotSeconds: {x: 24, y: 38}
+  cinematicDroneShotSeconds: {x: 12, y: 18}
+  cinematicUnderwaterShotSeconds: {x: 14, y: 22}
+  cinematicFishFocusShotSeconds: {x: 14, y: 22}
   cinematicSmoothTime: 2.55
   cinematicRotationSmooth: 1.65
   cinematicMaxSpeed: 28
@@ -293,7 +293,7 @@ MonoBehaviour:
   cinematicDroneRotationSmooth: 0.36
   cinematicDroneMaxTurnDegreesPerSecond: 22
   cinematicSurfaceHeight: 1.35
-  startCinematicTourInDroneOverview: 1
+  startCinematicTourInDroneOverview: 0
   focusFish: 1
   targetRefreshSeconds: 5
   prioritizeReleasedFish: 1
@@ -365,8 +365,8 @@ MonoBehaviour:
   recentFishFocusPenalty: 10
   currentFishRepeatPenalty: 18
   showNearbyReleasedFishTagsWhileRoaming: 1
-  nearbyReleasedFishTagDistance: 6.4
-  nearbyReleasedFishTagHysteresis: 1.2
+  nearbyReleasedFishTagDistance: 18
+  nearbyReleasedFishTagHysteresis: 2
   nearbyReleasedFishTagForwardDot: 0.18
   maxNearbyReleasedFishTags: 2
   frontViewAngleRange: {x: 10, y: 22}
@@ -377,6 +377,10 @@ MonoBehaviour:
   goodObservationAngleDegrees: 52
   observationOrbitSmoothTime: 1.8
   observationOrbitMaxDegreesPerSecond: 85
+  rearViewRecoveryStartAngle: 100
+  rearViewRecoverySmoothTime: 0.75
+  rearViewRecoveryMaxSpeed: 10
+  observationStartAngleTolerance: 20
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,8 +546,11 @@ MonoBehaviour:
   activeAreaSize: {x: 100, y: 68}
   activeDecorationPadding: 18
   createOpenOceanBackdrop: 1
-  openOceanBackdropScale: 2
-  openOceanBackdropDepthScale: 2.1
+  openOceanBackdropScale: 2.2
+  openOceanBackdropDepthScale: 2.35
+  horizonBackdropDistance: 1250
+  horizonSeabedDrop: 8
+  horizonSeabedBlendDistance: 220
   createVisibleShoreline: 1
   shorelineWidth: 120
   shorelineWaterInset: 0
@@ -579,8 +586,26 @@ MonoBehaviour:
   waterColor: {r: 0.1, g: 0.54, b: 0.7, a: 0.72}
   deepFogColor: {r: 0.08, g: 0.42, b: 0.55, a: 1}
   fogDensity: 0.014
-  waterResolution: 128
+  waterResolution: 256
   tintCameras: 1
+  simpleWaterMaterial: {fileID: 2100000, guid: 19ac4fcfcf42b4344a6c7d97a5cd61fc, type: 2}
+  underwaterSurfaceDeepTint: {r: 0.17, g: 0.65, b: 0.79, a: 1}
+  underwaterSurfaceShallowTint: {r: 0.2, g: 0.72, b: 0.82, a: 1}
+  underwaterSurfaceDeepAlpha: 0.3
+  underwaterSurfaceShallowAlpha: 0.08
+  underwaterSurfaceReflectionPower: 0.035
+  underwaterSurfaceSmoothness: 0.72
+  useProceduralSky: 1
+  skyTint: {r: 0.38, g: 0.72, b: 0.92, a: 1}
+  skyGroundColor: {r: 0.34, g: 0.56, b: 0.62, a: 1}
+  skyExposure: 1.08
+  skyAtmosphereThickness: 0.72
+  skySunSize: 0.105
+  sunLightColor: {r: 1, g: 0.96, b: 0.82, a: 1}
+  mainSunIntensity: 2.35
+  fillLightColor: {r: 0.52, g: 0.86, b: 1, a: 1}
+  fillLightIntensity: 0.82
+  underwaterSunSpotIntensity: 2.1
   useSuimonoWhenAvailable: 0
   keepFallbackWaterWithSuimono: 1
   renderSuimonoSurfaceInUrp: 0
@@ -590,7 +615,7 @@ MonoBehaviour:
   suimonoSurfacePrefabHint: Suimono_Surface
   shallowWaterColor: {r: 0.25, g: 0.78, b: 0.86, a: 0.5}
   foamColor: {r: 0.86, g: 0.98, b: 1, a: 0.36}
-  createUnderwaterSurfaceCue: 0
+  createUnderwaterSurfaceCue: 1
   rockCount: 68
   simpleCoralCount: 72
   branchCoralCount: 96
@@ -706,7 +731,7 @@ MonoBehaviour:
   emperorAngelfishTargetLengthRange: {x: 0.18, y: 0.38}
   fishParent: {fileID: 0}
   center: {x: 0, y: -1.4, z: 0}
-  size: {x: 100, y: 10.2, z: 68}
+  size: {x: 150, y: 12, z: 105}
   releasedFishTargetLength: 0.55
   releasedFishSpawnSpread: {x: 24, y: 6, z: 16}
   minimumReleasedFishSpawnDistanceFromCamera: 9
@@ -714,18 +739,18 @@ MonoBehaviour:
   oceanEnvironment: {fileID: 0}
   spawnSeabedClearance: 1.1
   spawnDefaultFishOnStart: 1
-  defaultFishCount: 230
+  defaultFishCount: 320
   defaultFishTargetLengthRange: {x: 0.18, y: 0.38}
-  defaultSchoolSpread: {x: 84, y: 6.2, z: 54}
+  defaultSchoolSpread: {x: 138, y: 8, z: 92}
   defaultSchoolYawJitter: 62
-  defaultSchoolClusterCount: 24
-  defaultSchoolClusterRadiusRange: {x: 2.4, y: 5.6}
-  defaultSchoolEdgeMargin: 8
+  defaultSchoolClusterCount: 34
+  defaultSchoolClusterRadiusRange: {x: 2.8, y: 6.4}
+  defaultSchoolEdgeMargin: 7
   mediumSchoolChance: 0.28
   autoFindFishAlivePrefabs: 1
   disableImportedFishMotion: 1
-  maxFishCount: 520
-  minimumFishCount: 185
+  maxFishCount: 620
+  minimumFishCount: 260
   lifetimeSeconds: 600
 --- !u!114 &963426409
 MonoBehaviour:

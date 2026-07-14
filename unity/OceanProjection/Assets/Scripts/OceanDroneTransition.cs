@@ -23,6 +23,7 @@ internal sealed class OceanDroneTransition
     private Vector3 endLookTarget;
     private float startedAt;
     private float duration;
+    private float waterSurfaceY;
 
     public OceanDroneTourState State => state;
     public bool IsActive => state == OceanDroneTourState.Surfacing
@@ -33,6 +34,12 @@ internal sealed class OceanDroneTransition
     public void EnterDroneOverview()
     {
         state = OceanDroneTourState.DroneOverview;
+        FadeAlpha = 0f;
+    }
+
+    public void EnterUnderwater()
+    {
+        state = OceanDroneTourState.Underwater;
         FadeAlpha = 0f;
     }
 
@@ -61,7 +68,8 @@ internal sealed class OceanDroneTransition
         Vector3 underwaterPosition,
         Vector3 underwaterLookTarget,
         float startedAt,
-        float entrySeconds)
+        float entrySeconds,
+        float waterSurfaceY)
     {
         state = OceanDroneTourState.WaterEntry;
         startPosition = aerialPosition;
@@ -79,6 +87,7 @@ internal sealed class OceanDroneTransition
         endLookTarget = underwaterPosition + levelDirection * 14f;
         this.startedAt = startedAt;
         duration = Mathf.Clamp(entrySeconds, 3f, 6f);
+        this.waterSurfaceY = waterSurfaceY;
         FadeAlpha = 0f;
     }
 
@@ -101,12 +110,18 @@ internal sealed class OceanDroneTransition
 
         if (state == OceanDroneTourState.WaterEntry)
         {
-            // Quintic ease-in/out gives zero velocity at both ends. The
-            // 4t(1-t) term is an explicit parabolic arc, keeping forward
-            // movement visible while the camera descends through the surface.
-            float arcHeight = Mathf.Clamp(Vector3.Distance(startPosition, endPosition) * 0.09f, 6f, 18f);
-            float parabola = 4f * eased * (1f - eased);
-            position = Vector3.Lerp(startPosition, endPosition, eased) + Vector3.up * (arcHeight * parabola);
+            // Descend monotonically through the surface. The old parabolic
+            // lift climbed even higher before diving, which exposed the finite
+            // coastline and made a manually requested return feel backwards.
+            Vector3 controlA = Vector3.Lerp(startPosition, endPosition, 0.32f);
+            Vector3 controlB = Vector3.Lerp(startPosition, endPosition, 0.68f);
+            controlA.y = Mathf.Lerp(
+                startPosition.y,
+                Mathf.Min(startPosition.y, waterSurfaceY + 4f),
+                0.56f
+            );
+            controlB.y = Mathf.Clamp(waterSurfaceY + 0.12f, endPosition.y, controlA.y);
+            position = CubicBezier(startPosition, controlA, controlB, endPosition, eased);
 
             Vector3 startView = startLookTarget - startPosition;
             Vector3 levelView = endLookTarget - endPosition;
@@ -121,11 +136,17 @@ internal sealed class OceanDroneTransition
         }
         else
         {
-            Vector3 midpoint = Vector3.Lerp(startPosition, endPosition, 0.5f);
-            float arcHeight = Mathf.Clamp(Vector3.Distance(startPosition, endPosition) * 0.12f, 4f, 30f);
-            midpoint += Vector3.up * arcHeight;
-            position = QuadraticBezier(startPosition, midpoint, endPosition, eased);
-            lookTarget = Vector3.Lerp(startLookTarget, endLookTarget, eased);
+            // Surfacing is also monotonic. Blend view directions around the
+            // moving camera instead of interpolating two distant world points;
+            // this avoids sweeping across the side caps of the generated map.
+            position = Vector3.Lerp(startPosition, endPosition, eased);
+            Vector3 startView = startLookTarget - startPosition;
+            Vector3 endView = endLookTarget - endPosition;
+            Vector3 startDirection = startView.sqrMagnitude > 0.001f ? startView.normalized : Vector3.forward;
+            Vector3 endDirection = endView.sqrMagnitude > 0.001f ? endView.normalized : startDirection;
+            Vector3 viewDirection = Vector3.Slerp(startDirection, endDirection, Smooth01(progress)).normalized;
+            float lookDistance = Mathf.Lerp(Mathf.Max(8f, startView.magnitude), Mathf.Max(12f, endView.magnitude), eased);
+            lookTarget = position + viewDirection * lookDistance;
         }
         FadeAlpha = 0f;
 
@@ -175,11 +196,14 @@ internal sealed class OceanDroneTransition
         return defaultFov;
     }
 
-    private static Vector3 QuadraticBezier(Vector3 start, Vector3 control, Vector3 end, float value)
+    private static Vector3 CubicBezier(Vector3 start, Vector3 controlA, Vector3 controlB, Vector3 end, float value)
     {
         float t = Mathf.Clamp01(value);
         float inverse = 1f - t;
-        return inverse * inverse * start + 2f * inverse * t * control + t * t * end;
+        return inverse * inverse * inverse * start
+            + 3f * inverse * inverse * t * controlA
+            + 3f * inverse * t * t * controlB
+            + t * t * t * end;
     }
 
     private static float Smooth01(float value)

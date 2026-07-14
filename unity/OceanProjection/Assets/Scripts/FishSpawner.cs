@@ -21,7 +21,7 @@ public class FishSpawner : MonoBehaviour
 
     [Header("Spawn Area")]
     [SerializeField] private Vector3 center = Vector3.zero;
-    [SerializeField] private Vector3 size = new Vector3(16f, 7f, 10f);
+    [SerializeField] private Vector3 size = new Vector3(150f, 12f, 105f);
     [FormerlySerializedAs("releasedFishScaleMultiplier")]
     [SerializeField] private float releasedFishTargetLength = 0.55f;
     [SerializeField] private Vector3 releasedFishSpawnSpread = new Vector3(11f, 4f, 7f);
@@ -32,21 +32,21 @@ public class FishSpawner : MonoBehaviour
 
     [Header("Default School")]
     [SerializeField] private bool spawnDefaultFishOnStart = true;
-    [SerializeField] private int defaultFishCount = 230;
+    [SerializeField] private int defaultFishCount = 320;
     [FormerlySerializedAs("defaultFishScaleRange")]
     [SerializeField] private Vector2 defaultFishTargetLengthRange = new Vector2(0.18f, 0.38f);
-    [SerializeField] private Vector3 defaultSchoolSpread = new Vector3(44f, 4.4f, 28f);
+    [SerializeField] private Vector3 defaultSchoolSpread = new Vector3(138f, 8f, 92f);
     [SerializeField] private float defaultSchoolYawJitter = 62f;
-    [SerializeField] private int defaultSchoolClusterCount = 22;
-    [SerializeField] private Vector2 defaultSchoolClusterRadiusRange = new Vector2(2.0f, 4.2f);
-    [SerializeField] private float defaultSchoolEdgeMargin = 4.8f;
+    [SerializeField] private int defaultSchoolClusterCount = 34;
+    [SerializeField] private Vector2 defaultSchoolClusterRadiusRange = new Vector2(2.8f, 6.4f);
+    [SerializeField] private float defaultSchoolEdgeMargin = 7f;
     [SerializeField] private float mediumSchoolChance = 0.28f;
     [SerializeField] private bool autoFindFishAlivePrefabs = true;
     [SerializeField] private bool disableImportedFishMotion = true;
 
     [Header("Lifetime")]
-    [SerializeField] private int maxFishCount = 520;
-    [SerializeField] private int minimumFishCount = 185;
+    [SerializeField] private int maxFishCount = 620;
+    [SerializeField] private int minimumFishCount = 260;
     [SerializeField] private float lifetimeSeconds = 600f;
 
     private readonly Queue<FishActor> fishQueue = new Queue<FishActor>();

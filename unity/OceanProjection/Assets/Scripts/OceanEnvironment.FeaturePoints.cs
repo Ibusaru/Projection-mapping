@@ -6,6 +6,7 @@ public partial class OceanEnvironment
     public float ShorelineSurfaceY => shorelineSurfaceY;
     public Vector2 OceanSize => oceanSize;
     public Vector2 ActiveAreaSize => activeAreaSize;
+    public float HorizonBackdropDistance => HorizonBackdropHalfExtent();
 
     public float SampleSandMaterialTransitionHeight(float localZ)
     {

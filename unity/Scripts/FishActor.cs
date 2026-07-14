@@ -36,7 +36,7 @@ public partial class FishActor : MonoBehaviour
     [SerializeField] private float nicknameTagMinApparentRadiusViewport = 0.045f;
     [SerializeField] private float nicknameTagNearScaleDistance = 1.2f;
     [SerializeField] private float nicknameTagFarScaleDistance = 9.5f;
-    [SerializeField] private Vector2 nicknameTagDistanceScaleRange = new Vector2(0.82f, 1.12f);
+    [SerializeField] private Vector2 nicknameTagDistanceScaleRange = new Vector2(0.82f, 0.92f);
     [SerializeField] private float nicknameTagMinFitScale = 0.48f;
     [SerializeField] private float nicknameTagRevealSeconds = 0.68f;
     [SerializeField] private float nicknameTagRetreatSeconds = 0.26f;
