@@ -1,7 +1,6 @@
 import { createFishSilhouettePath } from "../config/fishSilhouette";
 import {
   fishGuideCanvasSize,
-  getFishDorsalFinGuidePath,
   getFishEyePath,
   getFishScaleCoveragePath,
   getFishScalePaths,
@@ -33,7 +32,6 @@ export function renderFishGuideLayer(patternId, { lineWidth, strokeStyle }) {
 
     context.restore();
     context.globalCompositeOperation = "source-over";
-    context.stroke(getFishDorsalFinGuidePath());
     context.stroke(getFishEyePath());
   }
 
