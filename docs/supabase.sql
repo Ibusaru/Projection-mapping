@@ -127,6 +127,42 @@ create index if not exists fishes_created_at_idx on public.fishes (created_at de
 create index if not exists fishes_spawned_created_at_idx on public.fishes (spawned, created_at);
 create index if not exists fishes_updated_at_idx on public.fishes (updated_at desc);
 
+-- Keep the active fish rotation bounded. Existing deployments can run
+-- docs/supabase-fish-retention-75.sql to install this and trim old rows.
+create or replace function public.trim_fishes_to_limit_75()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  delete from public.fishes
+  where id in (
+    select id
+    from public.fishes
+    order by created_at desc, id desc
+    offset 75
+  );
+  return null;
+end;
+$$;
+
+revoke all on function public.trim_fishes_to_limit_75() from public, anon, authenticated;
+
+drop trigger if exists fishes_retention_limit_75 on public.fishes;
+create trigger fishes_retention_limit_75
+after insert on public.fishes
+for each statement
+execute function public.trim_fishes_to_limit_75();
+
+delete from public.fishes
+where id in (
+  select id
+  from public.fishes
+  order by created_at desc, id desc
+  offset 75
+);
+
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('fish-drawings', 'fish-drawings', true, 2097152, array['image/png'])
 on conflict (id) do update set

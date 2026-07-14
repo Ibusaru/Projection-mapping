@@ -82,7 +82,7 @@ export function ReleaseSettingsDialog({
           </button>
           <button className="release-dialog-action" disabled={!canSubmit} type="submit">
             <Send size={18} />
-            放流する
+            海へ放流
           </button>
         </div>
       </form>

@@ -84,6 +84,7 @@ public class FishSpawner : MonoBehaviour
         if (apiClient != null)
         {
             apiClient.OnNewFishes += SpawnFishes;
+            apiClient.OnRemovedFishKeys += RemoveReleasedFishes;
         }
     }
 
@@ -92,6 +93,7 @@ public class FishSpawner : MonoBehaviour
         if (apiClient != null)
         {
             apiClient.OnNewFishes -= SpawnFishes;
+            apiClient.OnRemovedFishKeys -= RemoveReleasedFishes;
         }
     }
 
@@ -136,6 +138,19 @@ public class FishSpawner : MonoBehaviour
             }
 
             SpawnFish(fish);
+        }
+    }
+
+    private void RemoveReleasedFishes(IReadOnlyList<string> fishKeys)
+    {
+        if (fishKeys == null)
+        {
+            return;
+        }
+
+        foreach (string fishKey in fishKeys)
+        {
+            DeleteReleasedFish(fishKey);
         }
     }
 
