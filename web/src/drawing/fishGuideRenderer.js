@@ -20,8 +20,10 @@ export function renderFishGuideLayer(patternId, { lineWidth, strokeStyle }) {
   context.strokeStyle = strokeStyle;
 
   if (patternId === "scales") {
+    const scaleCoveragePath = getFishScaleCoveragePath();
+
     context.save();
-    context.clip(getFishScaleCoveragePath());
+    context.clip(scaleCoveragePath);
 
     getFishScalePaths().forEach((scalePath) => {
       context.globalCompositeOperation = "destination-out";
@@ -32,6 +34,7 @@ export function renderFishGuideLayer(patternId, { lineWidth, strokeStyle }) {
 
     context.restore();
     context.globalCompositeOperation = "source-over";
+    context.stroke(scaleCoveragePath);
     context.stroke(getFishEyePath());
   }
 

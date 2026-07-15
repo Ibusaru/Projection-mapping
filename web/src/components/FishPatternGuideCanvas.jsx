@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from "react";
 import { createFishSilhouettePath, fishCanvasSize } from "../config/fishSilhouette";
 import { renderFishGuideLayer } from "../drawing/fishGuideRenderer";
 
-const GUIDE_STROKE = "rgba(255, 255, 255, 0.62)";
-const GUIDE_WIDTH = 3;
+const GUIDE_STROKE = "#38e8ff";
+const GUIDE_WIDTH = 5;
 const PREVIEW_SCALE = 0.25;
 const PREVIEW_SILHOUETTE_FILL = "rgba(9, 31, 42, 0.76)";
 
