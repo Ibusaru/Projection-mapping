@@ -1,22 +1,11 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import {
-  Check,
-  LayoutGrid,
-  Palette,
-  QrCode,
-  Send,
-  SlidersHorizontal,
-  Waves,
-  X,
-} from "lucide-react";
+import { Check, Palette, QrCode, RotateCcw, Send, SlidersHorizontal, Waves, X } from "lucide-react";
 import { DrawingCanvas } from "./components/DrawingCanvas";
-import { FishScaleGuideDialog } from "./components/FishScaleGuideDialog";
 import { QrPanel } from "./components/QrPanel";
 import { ReleaseSuccessDialog } from "./components/ReleaseSuccessDialog";
 import { ReleaseSendingDialog } from "./components/ReleaseSendingDialog";
 import { ReleaseSettingsDialog } from "./components/ReleaseSettingsDialog";
 import { brushColors, brushSizeRange } from "./config/fishOptions";
-import { DEFAULT_FISH_PATTERN_ID } from "./config/fishPatternGuides";
 import { fishSizeOptions } from "./config/releaseOptions";
 import { uploadFishDrawing } from "./data/fishDrawingStore";
 import { useReleaseCooldown } from "./hooks/useReleaseCooldown";
@@ -41,8 +30,6 @@ export function App() {
   const [isReleaseSettingsOpen, setIsReleaseSettingsOpen] = useState(false);
   const [isDrawingActive, setIsDrawingActive] = useState(false);
   const [activeToolPanel, setActiveToolPanel] = useState("");
-  const [patternId, setPatternId] = useState(DEFAULT_FISH_PATTERN_ID);
-  const [isScaleChoiceOpen, setIsScaleChoiceOpen] = useState(true);
   const [shouldShakeNickname, setShouldShakeNickname] = useState(false);
   const [releasedFish, setReleasedFish] = useState(null);
   const { remainingSeconds, startCooldown } = useReleaseCooldown();
@@ -55,7 +42,6 @@ export function App() {
   const canSubmit = !nicknameError && status !== "sending" && !isCoolingDown;
   const canOpenReleaseSettings = status !== "sending" && !isCoolingDown;
   const selectedFishSize = fishSizeOptions.find((option) => option.value === fishSize);
-  const isScaleGuideEnabled = patternId === "scales";
   const nicknameInputClass = [
     "nickname-input",
     shownNicknameError ? "invalid" : "",
@@ -131,13 +117,9 @@ export function App() {
     setActiveToolPanel((currentPanel) => (currentPanel === panelName ? "" : panelName));
   }
 
-  function selectScaleGuide(nextPatternId) {
-    setPatternId(nextPatternId);
+  function clearDrawing() {
+    drawingRef.current?.clear();
     setActiveToolPanel("");
-  }
-
-  function toggleScaleGuide() {
-    selectScaleGuide(isScaleGuideEnabled ? "none" : "scales");
   }
 
   function handleNicknameChange(event) {
@@ -183,7 +165,6 @@ export function App() {
           onColorPick={handleColorChange}
           onDrawingActive={setIsDrawingActive}
           onToolChange={setTool}
-          patternId={patternId}
           ref={drawingRef}
           tool={tool}
         />
@@ -210,14 +191,13 @@ export function App() {
             <SlidersHorizontal size={19} />
           </button>
           <button
-            aria-label={`模様：${isScaleGuideEnabled ? "ON" : "OFF"}`}
-            aria-pressed={isScaleGuideEnabled}
-            className={isScaleGuideEnabled ? "icon-button selected" : "icon-button"}
-            onClick={toggleScaleGuide}
-            title={`模様：${isScaleGuideEnabled ? "ON" : "OFF"}`}
+            aria-label="全部消す"
+            className="icon-button"
+            onClick={clearDrawing}
+            title="全部消す"
             type="button"
           >
-            <LayoutGrid size={19} />
+            <RotateCcw size={19} />
           </button>
         </div>
 
@@ -284,23 +264,15 @@ export function App() {
             </div>
           </div>
 
-          <div className="tool-section pattern-section">
-            <button
-              aria-checked={isScaleGuideEnabled}
-              aria-label={`模様：${isScaleGuideEnabled ? "ON" : "OFF"}`}
-              className={isScaleGuideEnabled ? "scale-guide-toggle is-on" : "scale-guide-toggle"}
-              onClick={toggleScaleGuide}
-              role="switch"
-              type="button"
-            >
-              <LayoutGrid aria-hidden="true" size={17} />
-              <span>模様</span>
-              <span aria-hidden="true" className="scale-toggle-track">
-                <span className="scale-toggle-knob" />
-              </span>
-              <strong>{isScaleGuideEnabled ? "ON" : "OFF"}</strong>
-            </button>
-          </div>
+          <button
+            aria-label="全部消す"
+            className="icon-button clear-button"
+            onClick={clearDrawing}
+            title="全部消す"
+            type="button"
+          >
+            <RotateCcw size={19} />
+          </button>
         </section>
 
         {message && status !== "sending" ? (
@@ -326,13 +298,6 @@ export function App() {
       </div>
 
       {isQrOpen ? <QrPanel onClose={() => setIsQrOpen(false)} /> : null}
-      {isScaleChoiceOpen ? (
-        <FishScaleGuideDialog
-          activePatternId={patternId}
-          onClose={() => setIsScaleChoiceOpen(false)}
-          onSelect={selectScaleGuide}
-        />
-      ) : null}
       {isReleaseSettingsOpen ? (
         <ReleaseSettingsDialog
           canSubmit={canSubmit}
