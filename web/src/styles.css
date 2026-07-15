@@ -112,7 +112,8 @@ h1 {
   -webkit-user-select: none;
 }
 
-.fish-canvas-layer {
+.silhouette-canvas,
+.drawing-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -440,6 +441,10 @@ input[type="range"] {
   font-weight: 900;
 }
 
+.clear-button {
+  justify-self: end;
+}
+
 .qr-trigger {
   display: inline-flex;
   gap: 7px;
@@ -601,7 +606,8 @@ input[type="range"] {
     min-height: calc((100vw - 20px) * 0.5 + 52px);
   }
 
-  .fish-canvas-layer {
+  .silhouette-canvas,
+  .drawing-canvas {
     inset: 0 0 52px;
     height: auto;
   }
@@ -652,6 +658,11 @@ input[type="range"] {
 
   .size-section {
     grid-column: 1 / -1;
+  }
+
+  .clear-button {
+    grid-column: 2;
+    grid-row: auto;
   }
 
   .size-control {
@@ -720,7 +731,8 @@ input[type="range"] {
     aspect-ratio: auto;
   }
 
-  .fish-canvas-layer {
+  .silhouette-canvas,
+  .drawing-canvas {
     top: calc(50% - 10px);
     left: 50%;
     width: min(calc(100% - 124px), calc((100% - 112px) * 2));
@@ -816,7 +828,8 @@ input[type="range"] {
   }
 
   .color-section,
-  .size-section {
+  .size-section,
+  .clear-button {
     grid-column: auto;
   }
 
@@ -828,6 +841,10 @@ input[type="range"] {
   .tools-panel.section-colors .color-section,
   .tools-panel.section-brush .size-section {
     display: grid;
+  }
+
+  .tools-panel .clear-button {
+    display: none;
   }
 
   .tool-section {

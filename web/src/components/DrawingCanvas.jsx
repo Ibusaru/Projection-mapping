@@ -1,8 +1,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { Eraser, PaintBucket, Paintbrush, Pipette, Redo2, RotateCcw, Undo2 } from "lucide-react";
+import { Eraser, PaintBucket, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-react";
 import { createFishSilhouettePath, fishCanvasSize } from "../config/fishSilhouette";
-import { getFishPatternRegionMap, warmFishPatternRegionMap } from "../drawing/patternRegionMap";
-import { FishPatternGuideCanvas } from "./FishPatternGuideCanvas";
 
 const CANVAS_WIDTH = fishCanvasSize.width;
 const CANVAS_HEIGHT = fishCanvasSize.height;
@@ -127,26 +125,13 @@ function paintPixel(data, offset, maskAlpha, replacement, transparentTarget) {
   return changed;
 }
 
-function addSoftSeamPixel(
-  index,
-  data,
-  mask,
-  regionMap,
-  targetRegion,
-  filled,
-  filledPixels,
-  nextFrontier
-) {
+function addSoftSeamPixel(index, data, mask, filled, filledPixels, nextFrontier) {
   if (filledPixels[index]) {
     return;
   }
 
   const offset = index * 4;
-  if (
-    mask[offset + 3] === 0
-    || regionMap[index] !== targetRegion
-    || data[offset + 3] > SEAM_ALPHA_THRESHOLD
-  ) {
+  if (mask[offset + 3] === 0 || data[offset + 3] > SEAM_ALPHA_THRESHOLD) {
     return;
   }
 
@@ -155,7 +140,7 @@ function addSoftSeamPixel(
   nextFrontier.push(index);
 }
 
-function closeSoftSeams(data, mask, regionMap, targetRegion, filled, filledPixels) {
+function closeSoftSeams(data, mask, filled, filledPixels) {
   let frontier = filled.slice();
 
   for (let step = 0; step < SEAM_GROW_STEPS && frontier.length > 0; step += 1) {
@@ -166,54 +151,10 @@ function closeSoftSeams(data, mask, regionMap, targetRegion, filled, filledPixel
       const x = index % CANVAS_WIDTH;
       const y = Math.floor(index / CANVAS_WIDTH);
 
-      if (x > 0) {
-        addSoftSeamPixel(
-          index - 1,
-          data,
-          mask,
-          regionMap,
-          targetRegion,
-          filled,
-          filledPixels,
-          nextFrontier
-        );
-      }
-      if (x < CANVAS_WIDTH - 1) {
-        addSoftSeamPixel(
-          index + 1,
-          data,
-          mask,
-          regionMap,
-          targetRegion,
-          filled,
-          filledPixels,
-          nextFrontier
-        );
-      }
-      if (y > 0) {
-        addSoftSeamPixel(
-          index - CANVAS_WIDTH,
-          data,
-          mask,
-          regionMap,
-          targetRegion,
-          filled,
-          filledPixels,
-          nextFrontier
-        );
-      }
-      if (y < CANVAS_HEIGHT - 1) {
-        addSoftSeamPixel(
-          index + CANVAS_WIDTH,
-          data,
-          mask,
-          regionMap,
-          targetRegion,
-          filled,
-          filledPixels,
-          nextFrontier
-        );
-      }
+      if (x > 0) addSoftSeamPixel(index - 1, data, mask, filled, filledPixels, nextFrontier);
+      if (x < CANVAS_WIDTH - 1) addSoftSeamPixel(index + 1, data, mask, filled, filledPixels, nextFrontier);
+      if (y > 0) addSoftSeamPixel(index - CANVAS_WIDTH, data, mask, filled, filledPixels, nextFrontier);
+      if (y < CANVAS_HEIGHT - 1) addSoftSeamPixel(index + CANVAS_WIDTH, data, mask, filled, filledPixels, nextFrontier);
     }
 
     frontier = nextFrontier;
@@ -235,7 +176,7 @@ function getPaintMaskPixels() {
   return paintMaskPixels;
 }
 
-function floodFill(canvas, point, fillColor, tolerance, patternId) {
+function floodFill(canvas, point, fillColor, tolerance) {
   const context = canvas.getContext("2d", { willReadFrequently: true });
   const path = createPaintableFishPath();
   const startX = Math.max(0, Math.min(CANVAS_WIDTH - 1, Math.floor(point.x)));
@@ -247,12 +188,7 @@ function floodFill(canvas, point, fillColor, tolerance, patternId) {
   const image = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   const data = image.data;
   const mask = getPaintMaskPixels();
-  const regionMap = getFishPatternRegionMap(patternId);
-  const startIndex = startY * CANVAS_WIDTH + startX;
-  const targetRegion = regionMap[startIndex];
-  if (targetRegion === 0) return false;
-
-  const startOffset = startIndex * 4;
+  const startOffset = (startY * CANVAS_WIDTH + startX) * 4;
   const target = {
     r: data[startOffset],
     g: data[startOffset + 1],
@@ -264,7 +200,7 @@ function floodFill(canvas, point, fillColor, tolerance, patternId) {
 
   const visited = new Uint8Array(CANVAS_WIDTH * CANVAS_HEIGHT);
   const filledPixels = new Uint8Array(CANVAS_WIDTH * CANVAS_HEIGHT);
-  const stack = [startIndex];
+  const stack = [startY * CANVAS_WIDTH + startX];
   const filled = [];
   let changed = false;
 
@@ -277,11 +213,7 @@ function floodFill(canvas, point, fillColor, tolerance, patternId) {
 
     const offset = index * 4;
     const maskAlpha = mask[offset + 3];
-    if (
-      maskAlpha === 0
-      || regionMap[index] !== targetRegion
-      || !isFillCandidate(data, offset, target, tolerance, transparentTarget)
-    ) {
+    if (maskAlpha === 0 || !isFillCandidate(data, offset, target, tolerance, transparentTarget)) {
       continue;
     }
 
@@ -297,7 +229,7 @@ function floodFill(canvas, point, fillColor, tolerance, patternId) {
   }
 
   if (filled.length > 0) {
-    closeSoftSeams(data, mask, regionMap, targetRegion, filled, filledPixels);
+    closeSoftSeams(data, mask, filled, filledPixels);
 
     for (let i = 0; i < filled.length; i += 1) {
       const offset = filled[i] * 4;
@@ -310,13 +242,6 @@ function floodFill(canvas, point, fillColor, tolerance, patternId) {
   }
 
   return changed;
-}
-
-function hasVisibleDrawing(imageData) {
-  for (let offset = 3; offset < imageData.data.length; offset += 4) {
-    if (imageData.data[offset] > EMPTY_ALPHA_THRESHOLD) return true;
-  }
-  return false;
 }
 
 function ToolButton({ active, children, disabled, label, onClick }) {
@@ -335,16 +260,7 @@ function ToolButton({ active, children, disabled, label, onClick }) {
 }
 
 export const DrawingCanvas = forwardRef(function DrawingCanvas(
-  {
-    brushColor,
-    brushSize,
-    patternId,
-    tool,
-    onColorPick,
-    onDrawingActive,
-    onDrawingStateChange,
-    onToolChange,
-  },
+  { brushColor, brushSize, tool, onColorPick, onDrawingActive, onToolChange },
   ref
 ) {
   const canvasRef = useRef(null);
@@ -353,7 +269,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
   const lastPointRef = useRef(null);
   const historyRef = useRef([]);
   const historyIndexRef = useRef(-1);
-  const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false, hasDrawing: false });
+  const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
   const [eraserCursor, setEraserCursor] = useState(null);
 
   useEffect(() => () => onDrawingActive?.(false), [onDrawingActive]);
@@ -364,16 +280,10 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     }
   }, [tool]);
 
-  useEffect(() => {
-    warmFishPatternRegionMap(patternId);
-  }, [patternId]);
-
   function updateHistoryState() {
-    const currentSnapshot = historyRef.current[historyIndexRef.current];
     setHistoryState({
       canUndo: historyIndexRef.current > 0,
       canRedo: historyIndexRef.current < historyRef.current.length - 1,
-      hasDrawing: currentSnapshot?.hasDrawing ?? false,
     });
   }
 
@@ -382,8 +292,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     if (!canvas) return;
 
     const context = canvas.getContext("2d", { willReadFrequently: true });
-    const image = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    const snapshot = { image, hasDrawing: hasVisibleDrawing(image) };
+    const snapshot = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     const activeHistory = historyRef.current.slice(0, historyIndexRef.current + 1);
     activeHistory.push(snapshot);
 
@@ -394,7 +303,6 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     historyRef.current = activeHistory;
     historyIndexRef.current = activeHistory.length - 1;
     updateHistoryState();
-    onDrawingStateChange?.(snapshot.hasDrawing);
   }
 
   function restoreHistory(index) {
@@ -403,30 +311,9 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    context.putImageData(snapshot.image, 0, 0);
+    context.putImageData(snapshot, 0, 0);
     historyIndexRef.current = index;
     updateHistoryState();
-    onDrawingStateChange?.(snapshot.hasDrawing);
-  }
-
-  function resetDrawing() {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d", { willReadFrequently: true });
-    context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    const image = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    historyRef.current = [{ image, hasDrawing: false }];
-    historyIndexRef.current = 0;
-    updateHistoryState();
-    onDrawingStateChange?.(false);
-  }
-
-  function clearDrawing() {
-    if (!historyRef.current[historyIndexRef.current]?.hasDrawing) return;
-
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-    context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    pushHistory();
   }
 
   useEffect(() => {
@@ -440,10 +327,10 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
   useImperativeHandle(ref, () => ({
     clear() {
-      clearDrawing();
-    },
-    reset() {
-      resetDrawing();
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+      context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      pushHistory();
     },
     undo() {
       if (historyIndexRef.current <= 0) return;
@@ -524,7 +411,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     }
 
     if (tool === "fill") {
-      if (floodFill(canvasRef.current, point, brushColor, FILL_TOLERANCE, patternId)) {
+      if (floodFill(canvasRef.current, point, brushColor, FILL_TOLERANCE)) {
         pushHistory();
       }
       return;
@@ -580,7 +467,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
       <div className="canvas-stage">
         <canvas
           aria-hidden="true"
-          className="fish-canvas-layer silhouette-canvas"
+          className="silhouette-canvas"
           height={CANVAS_HEIGHT}
           ref={(node) => {
             if (!node) return;
@@ -592,7 +479,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
         />
         <canvas
           aria-label="お絵描きキャンバス"
-          className={`fish-canvas-layer drawing-canvas tool-${tool}`}
+          className={`drawing-canvas tool-${tool}`}
           height={CANVAS_HEIGHT}
           onPointerCancel={handlePointerCancel}
           onPointerDown={startDrawing}
@@ -603,7 +490,6 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
           ref={canvasRef}
           width={CANVAS_WIDTH}
         />
-        <FishPatternGuideCanvas patternId={patternId} />
         {tool === "eraser" && eraserCursor ? (
           <span
             aria-hidden="true"
@@ -640,9 +526,6 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
             </ToolButton>
             <ToolButton disabled={!historyState.canRedo} label="やり直す" onClick={() => restoreHistory(historyIndexRef.current + 1)}>
               <Redo2 size={19} />
-            </ToolButton>
-            <ToolButton disabled={!historyState.hasDrawing} label="全部消してやり直す" onClick={clearDrawing}>
-              <RotateCcw size={19} />
             </ToolButton>
           </div>
         </div>
