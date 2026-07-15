@@ -8,7 +8,6 @@
 
 .pattern-guide-canvas {
   z-index: 2;
-  mix-blend-mode: difference;
   pointer-events: none;
 }
 
