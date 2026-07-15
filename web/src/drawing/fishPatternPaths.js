@@ -9,54 +9,74 @@ const SCALE_FIELD_BOUNDS = {
   top: 70,
   bottom: 460,
 };
-const EYE = { x: 180, y: 215, radius: 28 };
+const SCALE_START = { x: -47, y: -42 };
+const SCALE_CURVES = [
+  [{ x: -11, y: -59 }, { x: 40, y: -51 }, { x: 54, y: -15 }],
+  [{ x: 68, y: 24 }, { x: 38, y: 55 }, { x: 0, y: 59 }],
+  [{ x: -31, y: 60 }, { x: -49, y: 36 }, { x: -45, y: 8 }],
+  [{ x: -41, y: -13 }, { x: -38, y: -31 }, SCALE_START],
+];
+const SCALE_CURVE_SAMPLE_STEPS = 12;
+const EYE = { x: 180, y: 215, radius: 18 };
 
 let cachedEyePath = null;
 let cachedScaleCoveragePath = null;
-let cachedScalePaths = null;
+let cachedScaleEntries = null;
 
-function createScalePath(centerX, centerY) {
-  const path = new Path2D();
+function getCubicBezierPoint(start, controlOne, controlTwo, end, progress) {
+  const inverse = 1 - progress;
+  const inverseSquared = inverse * inverse;
+  const progressSquared = progress * progress;
 
-  path.moveTo(centerX - 47, centerY - 42);
-  path.bezierCurveTo(
-    centerX - 11,
-    centerY - 59,
-    centerX + 40,
-    centerY - 51,
-    centerX + 54,
-    centerY - 15
-  );
-  path.bezierCurveTo(
-    centerX + 68,
-    centerY + 24,
-    centerX + 38,
-    centerY + 55,
-    centerX,
-    centerY + 59
-  );
-  path.bezierCurveTo(
-    centerX - 31,
-    centerY + 60,
-    centerX - 49,
-    centerY + 36,
-    centerX - 45,
-    centerY + 8
-  );
-  path.bezierCurveTo(
-    centerX - 41,
-    centerY - 13,
-    centerX - 38,
-    centerY - 31,
-    centerX - 47,
-    centerY - 42
-  );
-  path.closePath();
-  return path;
+  return {
+    x: inverseSquared * inverse * start.x
+      + 3 * inverseSquared * progress * controlOne.x
+      + 3 * inverse * progressSquared * controlTwo.x
+      + progressSquared * progress * end.x,
+    y: inverseSquared * inverse * start.y
+      + 3 * inverseSquared * progress * controlOne.y
+      + 3 * inverse * progressSquared * controlTwo.y
+      + progressSquared * progress * end.y,
+  };
 }
 
-export function getFishScalePaths() {
-  if (cachedScalePaths) return cachedScalePaths;
+function createScaleEntry(centerX, centerY) {
+  const path = new Path2D();
+  const outlinePoints = [];
+  let start = SCALE_START;
+
+  path.moveTo(centerX + start.x, centerY + start.y);
+
+  SCALE_CURVES.forEach(([controlOne, controlTwo, end]) => {
+    path.bezierCurveTo(
+      centerX + controlOne.x,
+      centerY + controlOne.y,
+      centerX + controlTwo.x,
+      centerY + controlTwo.y,
+      centerX + end.x,
+      centerY + end.y
+    );
+
+    for (let step = 1; step <= SCALE_CURVE_SAMPLE_STEPS; step += 1) {
+      const point = getCubicBezierPoint(
+        start,
+        controlOne,
+        controlTwo,
+        end,
+        step / SCALE_CURVE_SAMPLE_STEPS
+      );
+      outlinePoints.push({ x: centerX + point.x, y: centerY + point.y });
+    }
+
+    start = end;
+  });
+
+  path.closePath();
+  return { centerX, centerY, outlinePoints, path };
+}
+
+export function getFishScaleEntries() {
+  if (cachedScaleEntries) return cachedScaleEntries;
 
   const entries = [];
   let rowIndex = 0;
@@ -73,15 +93,15 @@ export function getFishScalePaths() {
       centerX <= SCALE_FIELD_BOUNDS.right;
       centerX += SCALE_STEP_X
     ) {
-      entries.push({ centerX, centerY, path: createScalePath(centerX, centerY) });
+      entries.push(createScaleEntry(centerX, centerY));
     }
 
     rowIndex += 1;
   }
 
   entries.sort((left, right) => right.centerX - left.centerX || right.centerY - left.centerY);
-  cachedScalePaths = entries.map((entry) => entry.path);
-  return cachedScalePaths;
+  cachedScaleEntries = entries;
+  return cachedScaleEntries;
 }
 
 export function getFishScaleCoveragePath() {

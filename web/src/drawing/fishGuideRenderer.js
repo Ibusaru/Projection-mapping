@@ -3,8 +3,12 @@ import {
   fishGuideCanvasSize,
   getFishEyePath,
   getFishScaleCoveragePath,
-  getFishScalePaths,
+  getFishScaleEntries,
 } from "./fishPatternPaths";
+
+function isScaleInsideCoverage(context, coveragePath, outlinePoints) {
+  return outlinePoints.every(({ x, y }) => context.isPointInPath(coveragePath, x, y));
+}
 
 export function renderFishGuideLayer(patternId, { lineWidth, strokeStyle }) {
   const canvas = document.createElement("canvas");
@@ -22,19 +26,16 @@ export function renderFishGuideLayer(patternId, { lineWidth, strokeStyle }) {
   if (patternId === "scales") {
     const scaleCoveragePath = getFishScaleCoveragePath();
 
-    context.save();
-    context.clip(scaleCoveragePath);
+    getFishScaleEntries()
+      .filter(({ outlinePoints }) => isScaleInsideCoverage(context, scaleCoveragePath, outlinePoints))
+      .forEach(({ path: scalePath }) => {
+        context.globalCompositeOperation = "destination-out";
+        context.fill(scalePath);
+        context.globalCompositeOperation = "source-over";
+        context.stroke(scalePath);
+      });
 
-    getFishScalePaths().forEach((scalePath) => {
-      context.globalCompositeOperation = "destination-out";
-      context.fill(scalePath);
-      context.globalCompositeOperation = "source-over";
-      context.stroke(scalePath);
-    });
-
-    context.restore();
     context.globalCompositeOperation = "source-over";
-    context.stroke(scaleCoveragePath);
     context.stroke(getFishEyePath());
   }
 
