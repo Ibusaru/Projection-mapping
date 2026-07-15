@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { Eraser, PaintBucket, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-react";
+import { Eraser, Minus, PaintBucket, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-react";
 import { createFishSilhouettePath, fishCanvasSize } from "../config/fishSilhouette";
 
 const CANVAS_WIDTH = fishCanvasSize.width;
@@ -267,6 +267,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
   const drawingRef = useRef(false);
   const changedRef = useRef(false);
   const lastPointRef = useRef(null);
+  const lineStartSnapshotRef = useRef(null);
   const historyRef = useRef([]);
   const historyIndexRef = useRef(-1);
   const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
@@ -386,6 +387,34 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     lastPointRef.current = point;
   }
 
+  function drawStraightLine(point) {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    const startPoint = lastPointRef.current;
+    const startSnapshot = lineStartSnapshotRef.current;
+    if (!startPoint || !startSnapshot) return;
+
+    context.putImageData(startSnapshot, 0, 0);
+    context.save();
+    context.clip(createPaintableFishPath());
+    context.lineCap = "round";
+    context.lineWidth = brushSize;
+    context.strokeStyle = brushColor;
+    context.fillStyle = brushColor;
+    context.beginPath();
+    if (startPoint.x === point.x && startPoint.y === point.y) {
+      context.arc(point.x, point.y, brushSize * 0.5, 0, Math.PI * 2);
+      context.fill();
+    } else {
+      context.moveTo(startPoint.x, startPoint.y);
+      context.lineTo(point.x, point.y);
+      context.stroke();
+    }
+    context.restore();
+
+    changedRef.current = true;
+  }
+
   function pickColor(point) {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d", { willReadFrequently: true });
@@ -421,13 +450,24 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     onDrawingActive?.(true);
     changedRef.current = false;
     lastPointRef.current = point;
-    drawSegment(point);
+    if (tool === "line") {
+      const context = canvasRef.current.getContext("2d", { willReadFrequently: true });
+      lineStartSnapshotRef.current = context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      drawStraightLine(point);
+    } else {
+      drawSegment(point);
+    }
   }
 
   function moveDrawing(event) {
     if (!drawingRef.current) return;
     event.preventDefault();
-    drawSegment(getCanvasPoint(canvasRef.current, event));
+    const point = getCanvasPoint(canvasRef.current, event);
+    if (tool === "line") {
+      drawStraightLine(point);
+    } else {
+      drawSegment(point);
+    }
   }
 
   function updateEraserCursor(event) {
@@ -460,6 +500,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     onDrawingActive?.(false);
     changedRef.current = false;
     lastPointRef.current = null;
+    lineStartSnapshotRef.current = null;
   }
 
   return (
@@ -506,6 +547,9 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
           <div className="tool-group">
             <ToolButton active={tool === "brush"} label="ペン" onClick={() => onToolChange("brush")}>
               <Paintbrush size={19} />
+            </ToolButton>
+            <ToolButton active={tool === "line"} label="直線" onClick={() => onToolChange("line")}>
+              <Minus size={19} />
             </ToolButton>
             <ToolButton active={tool === "fill"} label="塗りつぶし" onClick={() => onToolChange("fill")}>
               <PaintBucket size={19} />
