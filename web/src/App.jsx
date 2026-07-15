@@ -4,7 +4,6 @@ import {
   LayoutGrid,
   Palette,
   QrCode,
-  RotateCcw,
   Send,
   SlidersHorizontal,
   Waves,
@@ -132,11 +131,6 @@ export function App() {
     setActiveToolPanel((currentPanel) => (currentPanel === panelName ? "" : panelName));
   }
 
-  function clearDrawing() {
-    drawingRef.current?.clear();
-    setActiveToolPanel("");
-  }
-
   function selectScaleGuide(nextPatternId) {
     setPatternId(nextPatternId);
     setActiveToolPanel("");
@@ -225,15 +219,6 @@ export function App() {
           >
             <LayoutGrid size={19} />
           </button>
-          <button
-            aria-label="全部消す"
-            className="icon-button"
-            onClick={clearDrawing}
-            title="全部消す"
-            type="button"
-          >
-            <RotateCcw size={19} />
-          </button>
         </div>
 
         <section className={toolsPanelClassName} aria-label="描画設定">
@@ -316,16 +301,6 @@ export function App() {
               <strong>{isScaleGuideEnabled ? "ON" : "OFF"}</strong>
             </button>
           </div>
-
-          <button
-            aria-label="全部消す"
-            className="icon-button clear-button"
-            onClick={clearDrawing}
-            title="全部消す"
-            type="button"
-          >
-            <RotateCcw size={19} />
-          </button>
         </section>
 
         {message && status !== "sending" ? (

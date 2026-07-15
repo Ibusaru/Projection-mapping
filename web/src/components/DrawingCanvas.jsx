@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { Eraser, PaintBucket, Paintbrush, Pipette, Redo2, Undo2 } from "lucide-react";
+import { Eraser, PaintBucket, Paintbrush, Pipette, Redo2, RotateCcw, Undo2 } from "lucide-react";
 import { createFishSilhouettePath, fishCanvasSize } from "../config/fishSilhouette";
 import { getFishPatternRegionMap, warmFishPatternRegionMap } from "../drawing/patternRegionMap";
 import { FishPatternGuideCanvas } from "./FishPatternGuideCanvas";
@@ -353,7 +353,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
   const lastPointRef = useRef(null);
   const historyRef = useRef([]);
   const historyIndexRef = useRef(-1);
-  const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
+  const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false, hasDrawing: false });
   const [eraserCursor, setEraserCursor] = useState(null);
 
   useEffect(() => () => onDrawingActive?.(false), [onDrawingActive]);
@@ -369,9 +369,11 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
   }, [patternId]);
 
   function updateHistoryState() {
+    const currentSnapshot = historyRef.current[historyIndexRef.current];
     setHistoryState({
       canUndo: historyIndexRef.current > 0,
       canRedo: historyIndexRef.current < historyRef.current.length - 1,
+      hasDrawing: currentSnapshot?.hasDrawing ?? false,
     });
   }
 
@@ -418,6 +420,15 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
     onDrawingStateChange?.(false);
   }
 
+  function clearDrawing() {
+    if (!historyRef.current[historyIndexRef.current]?.hasDrawing) return;
+
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    pushHistory();
+  }
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
@@ -429,10 +440,7 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
 
   useImperativeHandle(ref, () => ({
     clear() {
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-      context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-      pushHistory();
+      clearDrawing();
     },
     reset() {
       resetDrawing();
@@ -632,6 +640,9 @@ export const DrawingCanvas = forwardRef(function DrawingCanvas(
             </ToolButton>
             <ToolButton disabled={!historyState.canRedo} label="やり直す" onClick={() => restoreHistory(historyIndexRef.current + 1)}>
               <Redo2 size={19} />
+            </ToolButton>
+            <ToolButton disabled={!historyState.hasDrawing} label="全部消してやり直す" onClick={clearDrawing}>
+              <RotateCcw size={19} />
             </ToolButton>
           </div>
         </div>
