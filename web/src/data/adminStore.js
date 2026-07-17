@@ -70,6 +70,23 @@ export async function fetchAdminFishes() {
   return data ?? [];
 }
 
+export function observeAdminFishes(onChange, onStatus = () => {}) {
+  if (!adminSupabase) return () => {};
+
+  const channel = adminSupabase
+    .channel("admin-fishes")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "fishes" },
+      onChange,
+    )
+    .subscribe(onStatus);
+
+  return () => {
+    void adminSupabase.removeChannel(channel);
+  };
+}
+
 export async function issueCameraCommand(action, fish = null) {
   if (!adminSupabase) return;
 
