@@ -127,6 +127,28 @@ create index if not exists fishes_created_at_idx on public.fishes (created_at de
 create index if not exists fishes_spawned_created_at_idx on public.fishes (spawned, created_at);
 create index if not exists fishes_updated_at_idx on public.fishes (updated_at desc);
 
+-- Let Unity and the admin page receive INSERT/UPDATE/DELETE events over Supabase Realtime.
+-- Existing deployments can run docs/supabase-fishes-realtime.sql once.
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication where pubname = 'supabase_realtime'
+  ) then
+    execute 'create publication supabase_realtime';
+  end if;
+
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'fishes'
+  ) then
+    execute 'alter publication supabase_realtime add table public.fishes';
+  end if;
+end;
+$$;
+
 -- Keep the active fish rotation bounded. Existing deployments can run
 -- docs/supabase-fish-retention-75.sql to install this and trim old rows.
 create or replace function public.trim_fishes_to_limit_75()

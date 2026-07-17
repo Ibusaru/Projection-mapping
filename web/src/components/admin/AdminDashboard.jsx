@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowUpFromLine,
   Camera,
@@ -15,8 +15,10 @@ import {
   fetchAdminFishes,
   isAdminBackendConfigured,
   issueCameraCommand,
+  observeAdminFishes,
   signOutAdmin,
 } from "../../data/adminStore";
+import { applyAdminFishRealtimeChange } from "../../data/adminFishRealtime";
 import { AdminDeleteDialog } from "./AdminDeleteDialog";
 
 const speciesLabels = {
@@ -44,6 +46,8 @@ export function AdminDashboard({ session, onSignedOut }) {
   const [busyAction, setBusyAction] = useState("");
   const [deleteCandidate, setDeleteCandidate] = useState(null);
   const [notice, setNotice] = useState(null);
+  const refreshInFlight = useRef(false);
+  const pendingRealtimeChanges = useRef([]);
 
   const selectedFish = useMemo(
     () => fishes.find((fish) => fish.id === selectedId) ?? null,
@@ -57,12 +61,24 @@ export function AdminDashboard({ session, onSignedOut }) {
 
   async function refreshFishes(showNotice = false) {
     setLoading(true);
+    refreshInFlight.current = true;
+    pendingRealtimeChanges.current = [];
     try {
       const nextFishes = await fetchAdminFishes();
-      setFishes(nextFishes);
-      setSelectedId((current) => nextFishes.some((fish) => fish.id === current) ? current : "");
+      const pendingChanges = pendingRealtimeChanges.current;
+      const synchronizedFishes = pendingChanges.reduce(applyAdminFishRealtimeChange, nextFishes);
+      refreshInFlight.current = false;
+      pendingRealtimeChanges.current = [];
+      setFishes(synchronizedFishes);
+      setSelectedId((current) => synchronizedFishes.some((fish) => fish.id === current) ? current : "");
       if (showNotice) setNotice({ type: "success", text: "魚一覧を更新しました" });
     } catch (error) {
+      const pendingChanges = pendingRealtimeChanges.current;
+      refreshInFlight.current = false;
+      pendingRealtimeChanges.current = [];
+      if (pendingChanges.length > 0) {
+        setFishes((current) => pendingChanges.reduce(applyAdminFishRealtimeChange, current));
+      }
       setNotice({ type: "error", text: `魚一覧を取得できません: ${error.message}` });
     } finally {
       setLoading(false);
@@ -70,7 +86,29 @@ export function AdminDashboard({ session, onSignedOut }) {
   }
 
   useEffect(() => {
+    const stopObserving = observeAdminFishes(
+      (payload) => {
+        if (refreshInFlight.current) {
+          pendingRealtimeChanges.current.push(payload);
+        } else {
+          setFishes((current) => applyAdminFishRealtimeChange(current, payload));
+        }
+
+        if (payload.eventType === "DELETE") {
+          setSelectedId((current) => current === payload.old?.id ? "" : current);
+        }
+      },
+      (status) => {
+        if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+          setNotice({
+            type: "error",
+            text: "リアルタイム接続が不安定です。必要に応じて更新ボタンを押してください。",
+          });
+        }
+      },
+    );
     refreshFishes();
+    return stopObserving;
   }, []);
 
   useEffect(() => {

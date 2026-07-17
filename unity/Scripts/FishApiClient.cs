@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,12 +13,22 @@ public class FishApiClient : MonoBehaviour
     [SerializeField] private string supabaseUrl = "";
     [SerializeField] private string supabaseAnonKey = "";
 
-    [Header("Polling")]
+    [Header("Realtime")]
+    [SerializeField] private bool useRealtime = true;
+    [SerializeField] private float realtimeSafetyRefreshSeconds = 60f;
+
+    [Header("Polling fallback")]
     [SerializeField] private float pollingSeconds = 8f;
     [SerializeField] private int fetchLimit = 100;
     [SerializeField] private int catchUpPageLimit = 6;
 
     private readonly Dictionary<string, string> seenFishVersions = new Dictionary<string, string>();
+    private readonly ConcurrentQueue<string> realtimeChanges = new ConcurrentQueue<string>();
+    private SupabaseRealtimeListener realtimeListener;
+    private bool isFetching;
+    private bool lastRealtimeSubscribed;
+    private int realtimeStatusRevision;
+    private int snapshotRequested;
 
     public event Action<IReadOnlyList<FishData>> OnNewFishes;
     public event Action<IReadOnlyList<string>> OnRemovedFishKeys;
@@ -48,20 +60,105 @@ public class FishApiClient : MonoBehaviour
         fetchLimit = Mathf.Max(1, fetchLimit);
         catchUpPageLimit = Mathf.Max(1, catchUpPageLimit);
         pollingSeconds = Mathf.Max(1f, pollingSeconds);
-        Debug.Log($"FishApiClient: Supabase config loaded. Polling every {pollingSeconds:0.#} seconds.");
-        StartCoroutine(PollLoop());
+        realtimeSafetyRefreshSeconds = Mathf.Max(pollingSeconds, realtimeSafetyRefreshSeconds);
+
+        if (useRealtime)
+        {
+            try
+            {
+                realtimeListener = new SupabaseRealtimeListener(
+                    supabaseUrl,
+                    supabaseAnonKey,
+                    realtimeChanges.Enqueue
+                );
+                realtimeListener.Start();
+                Debug.Log(
+                    $"FishApiClient: Realtime starting. REST fallback={pollingSeconds:0.#}s, "
+                    + $"safety refresh={realtimeSafetyRefreshSeconds:0.#}s."
+                );
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning(
+                    $"FishApiClient: Realtime could not start ({exception.Message}). "
+                    + $"Using REST polling every {pollingSeconds:0.#} seconds."
+                );
+            }
+        }
+        else
+        {
+            Debug.Log($"FishApiClient: Realtime disabled. Polling every {pollingSeconds:0.#} seconds.");
+        }
+
+        StartCoroutine(SyncLoop());
     }
 
-    private IEnumerator PollLoop()
+    private void Update()
+    {
+        UpdateRealtimeStatus();
+
+        if (isFetching)
+        {
+            return;
+        }
+
+        int processedChanges = 0;
+        while (processedChanges < 100 && realtimeChanges.TryDequeue(out string messageJson))
+        {
+            try
+            {
+                ApplyRealtimeChange(messageJson);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogWarning($"FishApiClient: invalid Realtime change ({exception.Message}); refreshing snapshot.");
+                Interlocked.Exchange(ref snapshotRequested, 1);
+            }
+
+            processedChanges++;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        realtimeListener?.Dispose();
+        realtimeListener = null;
+    }
+
+    private IEnumerator SyncLoop()
     {
         while (true)
         {
+            Interlocked.Exchange(ref snapshotRequested, 0);
             yield return FetchLatestFishes();
-            yield return new WaitForSeconds(pollingSeconds);
+
+            float waitSeconds = realtimeListener != null && realtimeListener.IsSubscribed
+                ? realtimeSafetyRefreshSeconds
+                : pollingSeconds;
+            float refreshAt = Time.realtimeSinceStartup + waitSeconds;
+
+            while (Time.realtimeSinceStartup < refreshAt
+                   && Volatile.Read(ref snapshotRequested) == 0)
+            {
+                yield return null;
+            }
         }
     }
 
     private IEnumerator FetchLatestFishes()
+    {
+        isFetching = true;
+        try
+        {
+            yield return FetchLatestFishSnapshot();
+        }
+        finally
+        {
+            isFetching = false;
+        }
+    }
+
+    private IEnumerator FetchLatestFishSnapshot()
     {
         string baseUrl = supabaseUrl.TrimEnd('/');
         List<FishData> newFishes = new List<FishData>();
@@ -127,6 +224,84 @@ public class FishApiClient : MonoBehaviour
         {
             Debug.Log($"FishApiClient: received {newFishes.Count} new fish.");
             OnNewFishes?.Invoke(newFishes);
+        }
+    }
+
+    private void UpdateRealtimeStatus()
+    {
+        if (realtimeListener == null)
+        {
+            return;
+        }
+
+        bool isSubscribed = realtimeListener.IsSubscribed;
+        if (isSubscribed != lastRealtimeSubscribed)
+        {
+            lastRealtimeSubscribed = isSubscribed;
+            Interlocked.Exchange(ref snapshotRequested, 1);
+        }
+
+        int revision = realtimeListener.StatusRevision;
+        if (revision == realtimeStatusRevision)
+        {
+            return;
+        }
+
+        realtimeStatusRevision = revision;
+        if (isSubscribed)
+        {
+            Debug.Log($"FishApiClient: {realtimeListener.StatusMessage}");
+        }
+        else
+        {
+            Debug.LogWarning(
+                $"FishApiClient: {realtimeListener.StatusMessage} "
+                + $"REST fallback remains active every {pollingSeconds:0.#} seconds."
+            );
+        }
+    }
+
+    private void ApplyRealtimeChange(string messageJson)
+    {
+        RealtimeChangeEnvelope envelope = JsonUtility.FromJson<RealtimeChangeEnvelope>(messageJson);
+        RealtimeChangeData change = envelope?.payload?.data;
+        if (change == null
+            || !string.Equals(change.schema, "public", StringComparison.Ordinal)
+            || !string.Equals(change.table, "fishes", StringComparison.Ordinal))
+        {
+            Interlocked.Exchange(ref snapshotRequested, 1);
+            return;
+        }
+
+        switch (change.type)
+        {
+            case "INSERT":
+            case "UPDATE":
+                List<FishData> changedFishes = new List<FishData>();
+                CollectNewFish(change.record, changedFishes);
+                if (changedFishes.Count > 0)
+                {
+                    Debug.Log($"FishApiClient: received {change.type} through Realtime.");
+                    OnNewFishes?.Invoke(changedFishes);
+                }
+                break;
+
+            case "DELETE":
+                string removedFishKey = FishKey(change.old_record);
+                if (string.IsNullOrWhiteSpace(removedFishKey))
+                {
+                    Interlocked.Exchange(ref snapshotRequested, 1);
+                    return;
+                }
+
+                seenFishVersions.Remove(removedFishKey);
+                Debug.Log($"FishApiClient: received DELETE through Realtime for '{removedFishKey}'.");
+                OnRemovedFishKeys?.Invoke(new[] { removedFishKey });
+                break;
+
+            default:
+                Interlocked.Exchange(ref snapshotRequested, 1);
+                break;
         }
     }
 
@@ -347,5 +522,27 @@ public class FishApiClient : MonoBehaviour
         }
 
         return "";
+    }
+
+    [Serializable]
+    private sealed class RealtimeChangeEnvelope
+    {
+        public RealtimeChangePayload payload;
+    }
+
+    [Serializable]
+    private sealed class RealtimeChangePayload
+    {
+        public RealtimeChangeData data;
+    }
+
+    [Serializable]
+    private sealed class RealtimeChangeData
+    {
+        public string schema;
+        public string table;
+        public string type;
+        public FishData record;
+        public FishData old_record;
     }
 }
