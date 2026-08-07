@@ -21,10 +21,10 @@ public class FishSpawner : MonoBehaviour
     [SerializeField] private Vector3 size = new Vector3(16f, 7f, 10f);
     [FormerlySerializedAs("releasedFishScaleMultiplier")]
     [SerializeField] private float releasedFishTargetLength = 0.55f;
-    [Tooltip("Small released fish target length. 0.30 matches the default clownfish scale.")]
-    [SerializeField] private float smallReleasedFishTargetLength = 0.30f;
+    [Tooltip("Small released fish target length. Kept well below medium so the size choice is obvious in the ocean.")]
+    [SerializeField] private float smallReleasedFishTargetLength = 0.24f;
     [Tooltip("Large released fish multiplier relative to the medium target length.")]
-    [SerializeField] private float largeReleasedFishSizeMultiplier = 1.45f;
+    [SerializeField] private float largeReleasedFishSizeMultiplier = 1.85f;
     [SerializeField] private Vector3 releasedFishSpawnSpread = new Vector3(11f, 4f, 7f);
     [SerializeField] private float minimumReleasedFishSpawnDistanceFromCamera = 7f;
     [SerializeField] private int spawnPositionAttempts = 18;

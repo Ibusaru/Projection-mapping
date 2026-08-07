@@ -317,17 +317,24 @@ public static class OceanEnvironmentValidator
 
         bool valid = true;
         bool dontSave = (root.gameObject.hideFlags & HideFlags.DontSaveInEditor) != 0;
+        bool excludedFromBuild = (root.gameObject.hideFlags & HideFlags.DontSaveInBuild) != 0;
         Renderer[] renderers = root.GetComponentsInChildren<Renderer>(true);
         MeshCollider seabedCollider = root.GetComponentInChildren<MeshCollider>(true);
         bool hasSuimonoComponent = HasGeneratedSuimonoComponent(root);
         Debug.Log(
-            $"OceanEnvironmentValidator: generatedRootDontSave={dontSave}, rendererCount={renderers.Length}, " +
+            $"OceanEnvironmentValidator: generatedRootDontSave={dontSave}, excludedFromBuild={excludedFromBuild}, rendererCount={renderers.Length}, " +
             $"hasSeabedCollider={seabedCollider != null}, hasSuimonoComponent={hasSuimonoComponent}"
         );
 
         if (!dontSave)
         {
             Debug.LogError("OceanEnvironmentValidator: generated environment root can be saved into the scene.");
+            valid = false;
+        }
+
+        if (excludedFromBuild)
+        {
+            Debug.LogError("OceanEnvironmentValidator: generated environment must not be excluded from standalone builds.");
             valid = false;
         }
 

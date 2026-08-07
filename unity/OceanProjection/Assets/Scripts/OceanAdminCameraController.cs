@@ -134,6 +134,15 @@ public class OceanAdminCameraController : MonoBehaviour
         }
 
         ClearFocusedFish();
+        mode = AdminCameraMode.Roam;
+        positionVelocity = Vector3.zero;
+        fishFocusArrivedAt = -1f;
+        if (automaticRig != null && automaticRig.RequestSpecificFishFocus(targetFish))
+        {
+            Debug.Log($"OceanAdminCameraController: requested normal cinematic focus for '{targetFish.Nickname}' ({fishId}).");
+            return true;
+        }
+
         focusedFish = targetFish;
         focusedFish.SetCameraFocused(true);
         mode = AdminCameraMode.FishFocus;

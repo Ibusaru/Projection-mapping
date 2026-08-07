@@ -174,6 +174,7 @@ public class OceanCameraRig : MonoBehaviour
     private readonly List<FishActor> focusQueuePruneBuffer = new List<FishActor>();
     private readonly HashSet<FishActor> nearbyTaggedReleasedFish = new HashSet<FishActor>();
     private readonly List<FishActor> nearbyTagPruneBuffer = new List<FishActor>();
+    private bool hasSeededReleasedFishFocusRotation;
     private float focusedFishSinceTime;
     private FishActor nextFishFocusExclusion;
     private static readonly OceanCinematicShotKind[] CinematicBreakSequence =
@@ -224,6 +225,14 @@ public class OceanCameraRig : MonoBehaviour
 
     private void LateUpdate()
     {
+        FishActor newlyAddedFish = TrackReleasedFishFocusCandidates(FishActor.AllActiveFishes);
+        if (ShouldInterruptCinematicBreakFor(newlyAddedFish))
+        {
+            OceanCinematicShotKind interruptedShot = currentCinematicShot;
+            RequestSpecificFishFocus(newlyAddedFish);
+            Debug.Log($"OceanCameraRig: interrupted {interruptedShot} to prioritize newly added fish '{newlyAddedFish.Nickname}'.");
+        }
+
         if (useCinematicShots)
         {
             if (pendingInitialDronePlacement
@@ -305,6 +314,43 @@ public class OceanCameraRig : MonoBehaviour
     public void RequestNextFishFocus(FishActor previousFish)
     {
         RequestFishFocus(previousFish);
+    }
+
+    public bool RequestSpecificFishFocus(FishActor targetFish)
+    {
+        if (targetFish == null || !targetFish.isActiveAndEnabled)
+        {
+            return false;
+        }
+
+        useCinematicShots = true;
+        pendingInitialDronePlacement = false;
+        enabled = true;
+        nextFishFocusExclusion = null;
+        PrepareTourStateFromCurrentHeight();
+        lastLookTarget = transform.position + transform.forward * 14f;
+        hasLastLookTarget = true;
+        positionVelocity = Vector3.zero;
+        RemoveFishFromFocusQueues(targetFish);
+        StartCinematicShot(OceanCinematicShotKind.FishFocus, false);
+
+        SetFocusedFish(targetFish);
+        intent = DiverIntent.ApproachFish;
+        currentFocusPoint = targetFish.VisualCenter;
+        currentFocusForward = targetFish.transform.forward;
+        currentFocusRadius = targetFish.CameraFocusRadius;
+        ChooseObservationAngle(currentFocusPoint, currentFocusForward);
+        BeginFocusedFishObservationAfterTag(FishObserveDurationForCurrentAngle());
+        return true;
+    }
+
+    private bool ShouldInterruptCinematicBreakFor(FishActor newlyAddedFish)
+    {
+        return newlyAddedFish != null
+            && useCinematicShots
+            && hasCinematicShot
+            && (currentCinematicShot == OceanCinematicShotKind.DroneOverview
+                || IsUnderwaterScenicShot(currentCinematicShot));
     }
 
     private void RequestFishFocus(FishActor previousFish)
@@ -528,7 +574,9 @@ public class OceanCameraRig : MonoBehaviour
             return;
         }
 
-        if (enteringUnderwater && previousTourState == OceanDroneTourState.DroneOverview)
+        if (enteringUnderwater
+            && (previousTourState == OceanDroneTourState.DroneOverview
+                || previousTourState == OceanDroneTourState.Surfacing))
         {
             Vector3 currentLookTarget = hasLastLookTarget ? lastLookTarget : transform.position + transform.forward * 8f;
             Vector3 entryDirection = currentLookTarget - transform.position;
@@ -1992,6 +2040,7 @@ public class OceanCameraRig : MonoBehaviour
     private void RefreshDiverIntentIfNeeded()
     {
         IReadOnlyList<FishActor> fishes = FishActor.AllActiveFishes;
+        TrackReleasedFishFocusCandidates(fishes);
         if (fishes == null || fishes.Count == 0)
         {
             ClearReleasedFishFocusQueues();
@@ -2000,8 +2049,6 @@ public class OceanCameraRig : MonoBehaviour
             nextTargetRefreshTime = Time.time + ScanDelay();
             return;
         }
-
-        TrackReleasedFishFocusCandidates(fishes);
 
         if (ShouldHoldCurrentIntent())
         {
@@ -2182,9 +2229,16 @@ public class OceanCameraRig : MonoBehaviour
         return Time.time < nextTargetRefreshTime;
     }
 
-    private void TrackReleasedFishFocusCandidates(IReadOnlyList<FishActor> fishes)
+    private FishActor TrackReleasedFishFocusCandidates(IReadOnlyList<FishActor> fishes)
     {
+        if (fishes == null)
+        {
+            return null;
+        }
+
         PruneKnownReleasedFish(fishes);
+        bool seedExistingFishRotation = !hasSeededReleasedFishFocusRotation;
+        FishActor firstNewFish = null;
 
         for (int i = 0; i < fishes.Count; i++)
         {
@@ -2195,8 +2249,26 @@ public class OceanCameraRig : MonoBehaviour
             }
 
             knownReleasedFish.Add(fish);
-            EnqueueNewFishFocus(fish);
+            if (seedExistingFishRotation)
+            {
+                // Fish from the first REST snapshot belong to the normal
+                // rotation. Only fish discovered after this baseline are new,
+                // never-focused candidates that should jump ahead of it.
+                EnqueueReleasedFishFocus(fish);
+            }
+            else
+            {
+                EnqueueNewFishFocus(fish);
+                firstNewFish ??= fish;
+            }
         }
+
+        if (seedExistingFishRotation && knownReleasedFish.Count > 0)
+        {
+            hasSeededReleasedFishFocusRotation = true;
+        }
+
+        return firstNewFish;
     }
 
     private void RequeueCompletedFocusedFish(IReadOnlyList<FishActor> activeFishes)
@@ -2232,6 +2304,32 @@ public class OceanCameraRig : MonoBehaviour
 
         releasedFishFocusQueue.Enqueue(fish);
         queuedReleasedFishFocus.Add(fish);
+    }
+
+    private void RemoveFishFromFocusQueues(FishActor fish)
+    {
+        if (fish == null)
+        {
+            return;
+        }
+
+        RemoveFishFromQueue(newFishFocusQueue, fish);
+        RemoveFishFromQueue(releasedFishFocusQueue, fish);
+        queuedNewFishFocus.Remove(fish);
+        queuedReleasedFishFocus.Remove(fish);
+    }
+
+    private static void RemoveFishFromQueue(Queue<FishActor> queue, FishActor fish)
+    {
+        int count = queue.Count;
+        for (int i = 0; i < count; i++)
+        {
+            FishActor queuedFish = queue.Dequeue();
+            if (queuedFish != fish)
+            {
+                queue.Enqueue(queuedFish);
+            }
+        }
     }
 
     private FishActor PickQueuedReleasedFish(IReadOnlyList<FishActor> activeFishes)
@@ -2284,6 +2382,7 @@ public class OceanCameraRig : MonoBehaviour
         queuedNewFishFocus.Clear();
         queuedReleasedFishFocus.Clear();
         focusQueuePruneBuffer.Clear();
+        hasSeededReleasedFishFocusRotation = false;
     }
 
     private static bool IsReleasedFocusCandidate(FishActor fish)
