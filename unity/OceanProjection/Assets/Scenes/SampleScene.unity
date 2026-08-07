@@ -733,8 +733,8 @@ MonoBehaviour:
   center: {x: 0, y: -1.4, z: 0}
   size: {x: 150, y: 12, z: 105}
   releasedFishTargetLength: 0.55
-  smallReleasedFishTargetLength: 0.3
-  largeReleasedFishSizeMultiplier: 1.45
+  smallReleasedFishTargetLength: 0.24
+  largeReleasedFishSizeMultiplier: 1.85
   releasedFishSpawnSpread: {x: 24, y: 6, z: 16}
   minimumReleasedFishSpawnDistanceFromCamera: 9
   spawnPositionAttempts: 18

@@ -2,7 +2,13 @@ using UnityEngine;
 
 public partial class OceanEnvironment
 {
-    private const HideFlags GeneratedHideFlags = HideFlags.DontSaveInEditor | HideFlags.DontSaveInBuild;
+    // The hierarchy is rebuilt by OceanEnvironment when the scene starts.
+    // Keep editor previews out of the scene file, but never mark runtime
+    // terrain as DontSaveInBuild: that flag can strip the generated world from
+    // a standalone player.
+    private static HideFlags GeneratedHideFlags => Application.isPlaying
+        ? HideFlags.None
+        : HideFlags.DontSaveInEditor;
     private const string WaterDeepColorProperty = "Color_36218622185947c6a5ae36366d8e21d8";
     private const string WaterShallowColorProperty = "Color_93e06cd551a5449091bcde90b46765a0";
     private const string WaterReflectionPowerProperty = "Vector1_dada42ebfac44076897b6de67441ba32";
