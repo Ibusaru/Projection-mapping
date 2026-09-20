@@ -280,8 +280,7 @@ MonoBehaviour:
   cinematicShotSeconds: {x: 10, y: 17}
   cinematicDroneShotSeconds: {x: 12, y: 18}
   cinematicUnderwaterShotSeconds: {x: 14, y: 22}
-  cinematicFishFocusShotSeconds: {x: 14, y: 22}
-  cinematicDroneIntervalSeconds: 120
+  cinematicFishFocusShotSeconds: {x: 120, y: 120}
   cinematicSmoothTime: 2.55
   cinematicRotationSmooth: 1.65
   cinematicMaxSpeed: 28

@@ -29,8 +29,7 @@ public class OceanCameraRig : MonoBehaviour
     [SerializeField] private Vector2 cinematicShotSeconds = new Vector2(10f, 17f);
     [SerializeField] private Vector2 cinematicDroneShotSeconds = new Vector2(12f, 18f);
     [SerializeField] private Vector2 cinematicUnderwaterShotSeconds = new Vector2(14f, 22f);
-    [SerializeField] private Vector2 cinematicFishFocusShotSeconds = new Vector2(14f, 22f);
-    [SerializeField, Min(1f)] private float cinematicDroneIntervalSeconds = 120f;
+    [SerializeField] private Vector2 cinematicFishFocusShotSeconds = new Vector2(120f, 120f);
     [SerializeField] private float cinematicSmoothTime = 3.2f;
     [SerializeField] private float cinematicRotationSmooth = 1.35f;
     [SerializeField] private float cinematicMaxSpeed = 22f;
@@ -181,7 +180,7 @@ public class OceanCameraRig : MonoBehaviour
     private OceanCinematicShotKind currentCinematicShot = OceanCinematicShotKind.FishFocus;
     private float cinematicShotStartedAt;
     private float cinematicShotDuration = 12f;
-    private float nextCinematicDroneAt;
+    private OceanCinematicShotKind nextCinematicBreak = OceanCinematicShotKind.UnderwaterExplore;
     private bool hasCinematicShot;
     private Camera rigCamera;
     private float cinematicShotVariantSeed;
@@ -216,7 +215,6 @@ public class OceanCameraRig : MonoBehaviour
 
     private void Start()
     {
-        nextCinematicDroneAt = Time.time + Mathf.Max(1f, cinematicDroneIntervalSeconds);
         pendingInitialDronePlacement = useCinematicShots && startCinematicTourInDroneOverview;
     }
 
@@ -382,15 +380,12 @@ public class OceanCameraRig : MonoBehaviour
 
     private void UpdateCinematicCamera()
     {
-        bool droneDue = hasCinematicShot
-            && currentCinematicShot != OceanCinematicShotKind.DroneOverview
-            && Time.time >= nextCinematicDroneAt;
         bool observingFish = currentCinematicShot == OceanCinematicShotKind.FishFocus
             && focusedFish != null
             && ShouldHoldCurrentIntent();
         // Shot deadlines request a change; they never cut an approach or observation short.
         if (!hasCinematicShot || (!droneTransition.IsActive && !observingFish
-            && (droneDue || Time.time >= cinematicShotStartedAt + cinematicShotDuration)))
+            && Time.time >= cinematicShotStartedAt + cinematicShotDuration))
         {
             BeginNextCinematicShot();
         }
@@ -467,17 +462,8 @@ public class OceanCameraRig : MonoBehaviour
 
     private void BeginNextCinematicShot()
     {
-        if (hasCinematicShot
-            && currentCinematicShot != OceanCinematicShotKind.DroneOverview
-            && Time.time >= nextCinematicDroneAt
-            && TryEvaluateCinematicShot(OceanCinematicShotKind.DroneOverview, 0f, ResolveOceanEnvironment(), out _, out _))
-        {
-            StartCinematicShot(OceanCinematicShotKind.DroneOverview, false);
-            return;
-        }
-
-        // Between scheduled aerial trips, alternate fish focus and underwater roaming.
-        // A completed aerial trip also returns to fish focus.
+        // Each fish rotation gets its full interval, then one alternating scenic break.
+        // A completed break always returns to fish focus.
         if (!hasCinematicShot || currentCinematicShot != OceanCinematicShotKind.FishFocus)
         {
             StartCinematicShot(
@@ -487,7 +473,14 @@ public class OceanCameraRig : MonoBehaviour
             return;
         }
 
-        StartCinematicShot(OceanCinematicShotKind.UnderwaterExplore, false);
+        OceanCinematicShotKind nextShot = nextCinematicBreak;
+        if (nextShot == OceanCinematicShotKind.DroneOverview
+            && !TryEvaluateCinematicShot(nextShot, 0f, ResolveOceanEnvironment(), out _, out _))
+        {
+            nextShot = OceanCinematicShotKind.UnderwaterExplore;
+        }
+
+        StartCinematicShot(nextShot, false);
     }
 
     private void UpdateDroneTransition()
@@ -533,8 +526,12 @@ public class OceanCameraRig : MonoBehaviour
 
         if (shot == OceanCinematicShotKind.DroneOverview)
         {
-            // Count from the actual aerial departure, including manually requested trips.
-            nextCinematicDroneAt = Time.time + Mathf.Max(1f, cinematicDroneIntervalSeconds);
+            nextCinematicBreak = OceanCinematicShotKind.UnderwaterExplore;
+        }
+        else if (IsUnderwaterScenicShot(shot))
+        {
+            // Advance on entry so manual trips and new-fish interruptions keep the order.
+            nextCinematicBreak = OceanCinematicShotKind.DroneOverview;
         }
 
         if (shot != OceanCinematicShotKind.FishFocus)
