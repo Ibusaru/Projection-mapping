@@ -18,6 +18,7 @@ import {
 
 export function App() {
   const drawingRef = useRef(null);
+  const submissionInFlightRef = useRef(false);
   const [nickname, setNickname] = useState("");
   const [nicknameTouched, setNicknameTouched] = useState(false);
   const [brushColor, setBrushColor] = useState(brushColors[0].value);
@@ -71,6 +72,8 @@ export function App() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    // React state alone does not lock a second submit before the next render.
+    if (submissionInFlightRef.current) return;
     if (isCoolingDown) {
       setStatus("cooldown");
       setMessage(`次の放流まであと${remainingSeconds}秒です。`);
@@ -87,6 +90,7 @@ export function App() {
       return;
     }
 
+    submissionInFlightRef.current = true;
     setStatus("sending");
     setIsReleaseSettingsOpen(false);
     setMessage("海へ送っています...");
@@ -106,6 +110,8 @@ export function App() {
       const detail = submitError?.message ? ` (${submitError.message})` : "";
       setMessage(`送信に失敗しました。Supabase設定か通信を確認してください。${detail}`);
       console.error(submitError);
+    } finally {
+      submissionInFlightRef.current = false;
     }
   }
 
