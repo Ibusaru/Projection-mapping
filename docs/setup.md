@@ -86,3 +86,5 @@ $env:OCEAN_SUPABASE_ANON_KEY="your-anon-key"
 3. MapMap、HeavyM、TouchDesignerなどにOBS出力または画面キャプチャを渡す。
 4. 壁面をメイン、天井を背景演出として補正する。
 5. 魚やニックネームが壁と天井の境目に出すぎないようUnity側のカメラを調整する。
+
+> 接続先の最新の設定方法は [デプロイメモ](deploy.md#web-と-unity-の接続先を切り替える) を参照してください。Unity は Web の公開設定を起動時に取得します。

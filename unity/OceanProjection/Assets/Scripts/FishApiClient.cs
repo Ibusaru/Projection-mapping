@@ -41,28 +41,14 @@ public class FishApiClient : MonoBehaviour
         }
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        Dictionary<string, string> localEnv = ReadLocalEnvFile();
-        supabaseUrl = FirstNonEmpty(
-            supabaseUrl,
-            Environment.GetEnvironmentVariable("OCEAN_SUPABASE_URL"),
-            Environment.GetEnvironmentVariable("SUPABASE_URL"),
-            Environment.GetEnvironmentVariable("VITE_SUPABASE_URL"),
-            GetLocalEnvValue(localEnv, "VITE_SUPABASE_URL")
-        );
-        supabaseAnonKey = FirstNonEmpty(
-            supabaseAnonKey,
-            Environment.GetEnvironmentVariable("OCEAN_SUPABASE_ANON_KEY"),
-            Environment.GetEnvironmentVariable("SUPABASE_ANON_KEY"),
-            Environment.GetEnvironmentVariable("VITE_SUPABASE_ANON_KEY"),
-            GetLocalEnvValue(localEnv, "VITE_SUPABASE_ANON_KEY")
-        );
+        yield return OceanWebConfig.Load((url, key) => { supabaseUrl = url; supabaseAnonKey = key; });
 
         if (string.IsNullOrWhiteSpace(supabaseUrl) || string.IsNullOrWhiteSpace(supabaseAnonKey))
         {
-            Debug.LogWarning("FishApiClient: Supabase URL or anon key is empty. Set OCEAN_SUPABASE_URL/OCEAN_SUPABASE_ANON_KEY or web/.env.local.");
-            return;
+            Debug.LogWarning("FishApiClient: Supabase URL or anon key is empty. Check the Web configuration and restart.");
+            yield break;
         }
 
         fetchLimit = Mathf.Max(1, fetchLimit);
