@@ -66,28 +66,14 @@ public class OceanAdminCommandClient : MonoBehaviour
         }
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        Dictionary<string, string> localEnv = ReadLocalEnvFile();
-        supabaseUrl = FirstNonEmpty(
-            supabaseUrl,
-            Environment.GetEnvironmentVariable("OCEAN_SUPABASE_URL"),
-            Environment.GetEnvironmentVariable("SUPABASE_URL"),
-            Environment.GetEnvironmentVariable("VITE_SUPABASE_URL"),
-            GetLocalEnvValue(localEnv, "VITE_SUPABASE_URL")
-        );
-        supabaseAnonKey = FirstNonEmpty(
-            supabaseAnonKey,
-            Environment.GetEnvironmentVariable("OCEAN_SUPABASE_ANON_KEY"),
-            Environment.GetEnvironmentVariable("SUPABASE_ANON_KEY"),
-            Environment.GetEnvironmentVariable("VITE_SUPABASE_ANON_KEY"),
-            GetLocalEnvValue(localEnv, "VITE_SUPABASE_ANON_KEY")
-        );
+        yield return OceanWebConfig.Load((url, key) => { supabaseUrl = url; supabaseAnonKey = key; });
 
         if (string.IsNullOrWhiteSpace(supabaseUrl) || string.IsNullOrWhiteSpace(supabaseAnonKey))
         {
             Debug.LogWarning("OceanAdminCommandClient: Supabase URL or anon key is empty.");
-            return;
+            yield break;
         }
 
         pollingSeconds = Mathf.Max(0.5f, pollingSeconds);

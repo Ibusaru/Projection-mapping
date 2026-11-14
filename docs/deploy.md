@@ -38,3 +38,9 @@ VITE_PUBLIC_APP_URL=https://your-deployed-url
 
 - すぐ公開したい: `Vercel`
 - 将来 API や常駐サービスも Render にまとめたい: `Render`
+
+## Web と Unity の接続先を切り替える
+
+Vercel（Render を使う場合は Render）の `VITE_SUPABASE_URL` と `VITE_SUPABASE_ANON_KEY` を同じ Supabase プロジェクトの値に変更して再デプロイする。キーは公開用の legacy anon JWT を使い、service role / secret キーは設定しない。新しいプロジェクトには `docs/supabase.sql` と必要な管理画面用マイグレーションを適用する。データは自動で移行されない。
+
+Unity は起動時に Web の `ocean-config.json` を取得する。Windows ビルドでは `ocean-web-url.txt` を実行ファイルと同じフォルダーに置き、公開 Web の URL を一行で記入する。ビルド時に `OCEAN_WEB_URL` または `web/.env.local` の `VITE_PUBLIC_APP_URL` が設定されていれば、このファイルを自動生成する。Unity Editor でも同じ設定を使用できる。URL が変わらなければ、DB 切り替え後は Unity を再起動するだけでよい。取得に失敗すると接続せず、再起動が必要。設定ファイルには公開可能な anon キーが含まれる。
